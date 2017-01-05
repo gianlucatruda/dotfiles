@@ -9,13 +9,29 @@ alias ~="cd ~" # `cd` is probably faster to type though
 alias -- -="cd -"
 
 # Shortcuts
-alias d="cd ~/Documents/Dropbox"
+alias d="cd ~/Documents/GIANLUCA/Dropbox"
 alias dl="cd ~/Downloads"
 alias dt="cd ~/Desktop"
-alias p="cd ~/projects"
+alias p="cd ~/Projects"
+alias cur="cd ~/Current"
 alias g="git"
 alias h="history"
 alias j="jobs"
+
+# Custom by Gianluca
+alias cl='clear'
+alias p='ping 8.8.8.8'
+alias sshnm='ssh trdgia001@nightmare.cs.uct.ac.za'
+alias sshpi='ssh pi@10.0.0.99'
+alias vula='bash //Users/gianlucatruda/Documents/GIANLUCA/Dropbox/Work/Scripts/vsync/sync.sh'
+alias pf='sudo ping -f -s 56500 -t 60'
+alias nm='nmap -sP -A 10.0.0.0/24'
+alias dockerflow='bash //Users/gianlucatruda/Documents/GIANLUCA/Dropbox/Work/Scripts/dockerFlow/tf_dock.sh'
+alias hostthis='python -m SimpleHTTPServer 8000'
+alias composer='php /usr/local/bin/composer.phar'
+alias mysql='/usr/local/mysql/bin/mysql -u root -h 127.0.0.1 -p'
+alias mysqladmin='/usr/local/mysql/bin/mysqladmin'
+alias gitlog='git log --pretty=oneline -n 20 --graph --abbrev-commit'
 
 # Detect which `ls` flavor is in use
 if ls --color > /dev/null 2>&1; then # GNU `ls`
