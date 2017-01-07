@@ -1,3 +1,11 @@
+[user]
+    name = Gianluca Truda
+    email = gianlucatruda@gmail.com
+    signingkey = 422D168F442663DC 
+
+[commit]
+    gpgsign = true
+
 [alias]
 
 	# View abbreviated SHA, description, and history graph of the latest 20 commits
