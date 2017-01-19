@@ -18,7 +18,7 @@ source bootstrap.sh
 
 [Mathias Bynens](https://mathiasbynens.be/)
 
-## Credits
+## Creditsq
 
 * @ptb and [his _OS X Lion Setup_ repository](https://github.com/ptb/Mac-OS-X-Lion-Setup)
 * [Ben Alman](http://benalman.com/) and his [dotfiles repository](https://github.com/cowboy/dotfiles)
