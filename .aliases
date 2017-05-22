@@ -36,6 +36,7 @@ alias mysql_restart='/usr/local/mysql/support-files/mysql.server restart'
 alias mysqladmin='/usr/local/mysql/bin/mysqladmin'
 alias gitlog='git log --pretty=oneline -n 20 --graph --abbrev-commit'
 alias btooth='sudo bash //Users/gianlucatruda/Scripts/bluetoothSound/btSound.sh'
+alias wpaper='osascript ~/Pictures/Wallpapers/Time\ of\ Day/wallpaper.scpt'
 
 # Detect which `ls` flavor is in use
 if ls --color > /dev/null 2>&1; then # GNU `ls`
