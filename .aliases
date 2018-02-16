@@ -37,6 +37,7 @@ alias mysqladmin='/usr/local/mysql/bin/mysqladmin'
 alias gitlog='git log --pretty=oneline -n 20 --graph --abbrev-commit'
 alias btooth='sudo bash //Users/gianlucatruda/Scripts/bluetoothSound/btSound.sh'
 alias wpaper='osascript ~/Pictures/Wallpapers/Time\ of\ Day/wallpaper.scpt'
+alias stest='bash /Users/gianlucatruda/Documents/GIANLUCA/Dropbox/Work/Scripts/speedtester/speedtester.sh'
 
 # Detect which `ls` flavor is in use
 if ls --color > /dev/null 2>&1; then # GNU `ls`
