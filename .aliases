@@ -38,6 +38,9 @@ alias gitlog='git log --pretty=oneline -n 20 --graph --abbrev-commit'
 alias btooth='sudo bash //Users/gianlucatruda/Scripts/bluetoothSound/btSound.sh'
 alias wpaper='osascript ~/Pictures/Wallpapers/Time\ of\ Day/wallpaper.scpt'
 alias stest='bash /Users/gianlucatruda/Documents/GIANLUCA/Dropbox/Work/Scripts/speedtester/speedtester.sh'
+alias pip3='pip3.6'
+alias py3='python3'
+alias telebot='py3 //Users/gianlucatruda/Documents/GIANLUCA/Dropbox/Work/Scripts/telegram_bot/gt_telegram_bot.py'
 
 # Detect which `ls` flavor is in use
 if ls --color > /dev/null 2>&1; then # GNU `ls`
