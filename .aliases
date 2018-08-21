@@ -22,13 +22,15 @@ alias j="jobs"
 alias c='clear'
 alias p='ping 8.8.8.8'
 alias sshnm='ssh trdgia001@nightmare.cs.uct.ac.za'
-alias sshpi='ssh pi@10.0.0.99'
+# Syn my vula resources automatically via a script
 alias vula='bash //Users/gianlucatruda/Documents/GIANLUCA/Dropbox/Work/Scripts/vula-sync/sync.sh'
+# Runs a script to scan local network with nmap
 alias scan='bash //Users/gianlucatruda/Scripts/network-scan.sh'
 alias pf='sudo ping -f -s 56500 -t 60'
 alias nm='nmap -sP -A 10.0.0.0/24'
 alias dockerflow='bash //Users/gianlucatruda/Documents/GIANLUCA/Dropbox/Work/Scripts/dockerFlow/tf_dock.sh'
 alias hostthis='python -m SimpleHTTPServer 8000'
+# Run Composer - dependency manager for php
 alias composer='php /usr/local/bin/composer.phar'
 alias mysql='/usr/local/mysql/bin/mysql -u root -h localhost -p'
 alias mysqldir='/usr/local/mysql/bin/mysql'
@@ -39,8 +41,14 @@ alias btooth='sudo bash //Users/gianlucatruda/Scripts/bluetoothSound/btSound.sh'
 alias wpaper='osascript ~/Pictures/Wallpapers/Time\ of\ Day/wallpaper.scpt'
 alias stest='bash /Users/gianlucatruda/Documents/GIANLUCA/Dropbox/Work/Scripts/speedtester/speedtester.sh'
 alias pip3='pip3.6'
+alias py='python3.6'
+alias py2='python2'
 alias py3='python3'
+# Calls telebot script
 alias telebot='py3 //Users/gianlucatruda/Documents/GIANLUCA/Dropbox/Work/Scripts/telegram_bot/gt_telegram_bot.py'
+# Speeds up iTerm launch by clearing system logs
+alias faster='sudo rm /private/var/log/asl/*.asl'
+
 
 # Detect which `ls` flavor is in use
 if ls --color > /dev/null 2>&1; then # GNU `ls`
