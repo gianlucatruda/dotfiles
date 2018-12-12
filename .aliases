@@ -25,7 +25,7 @@ alias sshnm='ssh trdgia001@nightmare.cs.uct.ac.za'
 # Syn my vula resources automatically via a script
 alias vula='bash ~/Scripts/vula-sync/sync.sh'
 # Runs a script to scan local network with nmap
-alias scan='bash ~/Scripts/network-scan.sh'
+alias scan='bash ~/Scripts/network-scan/network-scan.sh'
 alias pf='sudo ping -f -s 56500 -t 60'
 alias nm='nmap -sP -A 10.0.0.0/24'
 alias dockerflow='bash ~/Scripts/dockerFlow/tf_dock.sh'
