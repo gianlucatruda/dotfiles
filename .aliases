@@ -50,6 +50,8 @@ alias telebot='python3.6 ~/Scripts/telegram_bot/gt_telegram_bot.py'
 alias faster='sudo rm /private/var/log/asl/*.asl'
 # Connect to DataProphet AWS instance and spawns a screen session
 alias sshdp='ssh -tt gianluca@54.229.114.251 screen -UxR'
+# Mount DataProphet AWS instance home directory locally
+alias mountmix='sudo sshfs -o allow_other,defer_permissions,IdentityFile=~/.ssh/id_rsa gianluca@54.229.114.251:/home/gianluca/ ~/mix'
 
 # Detect which `ls` flavor is in use
 if ls --color > /dev/null 2>&1; then # GNU `ls`
