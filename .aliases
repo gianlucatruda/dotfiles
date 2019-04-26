@@ -9,11 +9,7 @@ alias ~="cd ~" # `cd` is probably faster to type though
 alias -- -="cd -"
 
 # Shortcuts
-alias d="cd ~/Dropbox"
-alias dl="cd ~/Downloads"
 alias dt="cd ~/Desktop"
-alias pr="cd ~/Projects"
-alias cur="cd ~/Current"
 alias g="git"
 alias h="history"
 alias j="jobs"
@@ -21,37 +17,27 @@ alias j="jobs"
 # Custom by Gianluca
 alias c='clear'
 alias p='ping 8.8.8.8'
-alias sshnm='ssh trdgia001@nightmare.cs.uct.ac.za'
-# Syn my vula resources automatically via a script
-alias vula='bash ~/Scripts/vula-sync/sync.sh'
 # Runs a script to scan local network with nmap
 alias scan='bash ~/Scripts/network-scan/network-scan.sh'
 alias pf='sudo ping -f -s 56500 -t 60'
 alias nm='nmap -sP -A 10.0.0.0/24'
-alias dockerflow='bash ~/Scripts/dockerFlow/tf_dock.sh'
 alias hostthis='python -m SimpleHTTPServer 8000'
 # Run Composer - dependency manager for php
 alias composer='php /usr/local/bin/composer.phar'
-alias mysql='/usr/local/mysql/bin/mysql -u root -h localhost -p'
-alias mysqldir='/usr/local/mysql/bin/mysql'
-alias mysql_restart='/usr/local/mysql/support-files/mysql.server restart'
-alias mysqladmin='/usr/local/mysql/bin/mysqladmin'
 alias gitlog='git log --pretty=oneline -n 20 --graph --abbrev-commit'
+alias gs='git status'
 alias btooth='sudo bash ~/Scripts/bluetoothSound/btSound.sh'
 alias wpaper='osascript ~/Pictures/Wallpapers/Time\ of\ Day/wallpaper.scpt'
 alias stest='bash ~/Scripts/speedtestr/speedtester.sh'
-alias pip3='pip3.6'
-alias py='python3.6'
+alias py='python3'
 alias py2='python2'
 alias py3='python3'
 # Calls telebot script
-alias telebot='python3.6 ~/Scripts/telegram_bot/gt_telegram_bot.py'
+alias telebot='python3 ~/Scripts/telegram_bot/gt_telegram_bot.py'
 # Speeds up iTerm launch by clearing system logs
 alias faster='sudo rm /private/var/log/asl/*.asl'
 # Connect to DataProphet AWS instance and spawns a screen session
 alias sshdp='ssh -tt gianluca@54.229.114.251 screen -UxR'
-# Mount DataProphet AWS instance home directory locally
-alias mountmix='sudo sshfs -o allow_other,defer_permissions,IdentityFile=~/.ssh/id_rsa gianluca@54.229.114.251:/home/gianluca/ ~/mix'
 
 # Detect which `ls` flavor is in use
 if ls --color > /dev/null 2>&1; then # GNU `ls`
