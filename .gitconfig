@@ -1,10 +1,9 @@
 [user]
-    name = Gianluca Truda
-    email = gianlucatruda@gmail.com
-    signingkey = 422D168F442663DC 
+	name = Gianluca Truda
+	signingkey = DF192E48BAFF034F
+	email = gianluca@dataprophet.com
 
 [commit]
-    gpgsign = true
 
 [alias]
 
@@ -107,6 +106,7 @@
 	# Prevent showing files whose names contain non-ASCII symbols as unversioned.
 	# http://michael-kuehnel.de/git/2014/11/21/git-mac-osx-and-german-umlaute.html
 	precomposeunicode = false
+	editor = vim
 
 [color]
 
@@ -188,3 +188,7 @@
 [url "git://gist.github.com/"]
 
 	insteadOf = "gist:"
+[credential]
+	helper = osxkeychain
+[gpg]
+	# program = gpg1
