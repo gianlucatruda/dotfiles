@@ -19,7 +19,9 @@ endif
 
 " Don’t create backups when editing files in certain directories
 set backupskip=/tmp/*,/private/tmp/*
-
+" Indent using 4 spaces
+set tabstop=4
+set expandtab
 " Enable line numbers
 set number
 " Enable syntax highlighting
