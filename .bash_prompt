@@ -31,17 +31,17 @@ prompt_git() {
 
 			# Check for unstaged changes.
 			if ! $(git diff-files --quiet --ignore-submodules --); then
-				s+='!';
+				s+='*';
 			fi;
 
 			# Check for untracked files.
 			if [ -n "$(git ls-files --others --exclude-standard)" ]; then
-				s+='?';
+				s+='*';
 			fi;
 
 			# Check for stashed files.
 			if $(git rev-parse --verify refs/stash &>/dev/null); then
-				s+='$';
+				s+='s';
 			fi;
 
 		fi;
@@ -53,10 +53,9 @@ prompt_git() {
 			git rev-parse --short HEAD 2> /dev/null || \
 			echo '(unknown)')";
 
-		[ -n "${s}" ] && s=" [${s}]";
+		[ -n "${s}" ] && s=" ${s}";
 
-		# echo -e "${1}${branchName}${2}${s}"; # Place [] at end of branch name with symbols
-		echo -e "${1}${branchName}${2}";
+		echo -e "${1}${branchName}${2}${s}"; # Place [] at end of branch name with symbols
 	else
 		return;
 	fi;
@@ -93,14 +92,14 @@ else
 fi;
 
 userStyle="${blue}";
-hostStyle="${violet}";
+hostStyle="${yellow}";
 
 # Set the terminal title and prompt.
 PS1="\[\033]0;\W\007\]"; # working directory base name
 PS1+="\[${bold}\]\n"; # newline
 PS1+="\[${userStyle}\]\u"; # username
 PS1+="\[${white}\] | ";
-if [[ "${SSH_TTY}" ]]; then
+if [[ "${SSH_TTY}" ]]; then # only show hostname when using SSH
     PS1+="\[${hostStyle}\]\h"; # host
     PS1+="\[${white}\] | ";
 fi;
