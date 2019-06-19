@@ -11,6 +11,12 @@ cd dotfiles
 source bootstrap.sh
 ./.macos
 ```
+Install vundle and re-source
+```
+git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+source bootstrap.sh
+```
+
 Configure the `~/.extra` file
 
 ```bash
