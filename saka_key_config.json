@@ -9,7 +9,7 @@
     "Appearance": {},
     "Blacklist": {
       "default_copy_1555783932962": {
-        "blacklist": "https://patatap.com,https://shellshock.io,https://sidearms.io/,"
+        "blacklist": "https://patatap.com,https://shellshock.io,https://sidearms.io/,http://localhost:8888/notebooks/,"
       }
     },
     "General": {
@@ -208,56 +208,10 @@
             }
           ]
         ],
-        "openLinkInBackgroundTab": [
-          [
-            {
-              "code": "KeyF",
-              "key": "f"
-            },
-            {
-              "code": "KeyB",
-              "key": "b"
-            }
-          ]
-        ],
-        "openLinkInForegroundTab": [
-          [
-            {
-              "code": "KeyF",
-              "key": "f"
-            },
-            {
-              "code": "KeyF",
-              "key": "F",
-              "shiftKey": true
-            }
-          ]
-        ],
-        "openLinkInIncognitoWindow": [
-          [
-            {
-              "code": "KeyF",
-              "key": "f"
-            },
-            {
-              "code": "KeyN",
-              "key": "N",
-              "shiftKey": true
-            }
-          ]
-        ],
-        "openLinkInNewWindow": [
-          [
-            {
-              "code": "KeyF",
-              "key": "f"
-            },
-            {
-              "code": "KeyN",
-              "key": "n"
-            }
-          ]
-        ],
+        "openLinkInBackgroundTab": [],
+        "openLinkInForegroundTab": [],
+        "openLinkInIncognitoWindow": [],
+        "openLinkInNewWindow": [],
         "passAllKeys": [],
         "passOneKey": [],
         "physicalKeys": true,
