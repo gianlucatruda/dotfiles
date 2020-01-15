@@ -34,6 +34,8 @@ alias py='python3'
 alias py2='python2'
 alias py3='python3'
 # Calls telebot script
+# Run backupper script
+alias backupper='python3 ~/Scripts/backupper/backupper.py'
 alias telebot='python3 ~/Scripts/telegram_bot/gt_telegram_bot.py'
 # Speeds up iTerm launch by clearing system logs
 alias faster='sudo rm /private/var/log/asl/*.asl'
