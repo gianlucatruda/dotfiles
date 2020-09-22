@@ -1,0 +1,43 @@
+{
+    "window.closeWhenEmpty": false,
+    "editor.fontSize": 15,
+    "files.hotExit": "off",
+    "window.openFilesInNewWindow": "off",
+    "files.autoSave": "onFocusChange",
+    "files.trimTrailingWhitespace": true,
+    "editor.formatOnPaste": true,
+    "editor.multiCursorModifier": "ctrlCmd",
+    "editor.snippetSuggestions": "top",
+    "editor.rulers": [
+        72,
+        79
+    ],
+    "workbench.startupEditor": "newUntitledFile",
+    "window.restoreWindows": "none",
+    "window.zoomLevel": -1,
+    "python.pythonPath": "/Library/Frameworks/Python.framework/Versions/3.6/bin/python3",
+    "spellchecker.language": "en_GB-ise",
+    "editor.wordWrap": "on",
+    "explorer.confirmDelete": false,
+    "explorer.confirmDragAndDrop": false,
+    "editor.tabCompletion": "on",
+    "editor.minimap.enabled": false,
+    "editor.detectIndentation": false,
+    "[python]": {
+        "editor.tabSize": 4
+    },
+    "autoDocstring.docstringFormat": "numpy",
+    "kite.showWelcomeNotificationOnStartup": false,
+    "breadcrumbs.enabled": true,
+    "python.dataScience.sendSelectionToInteractiveWindow": false,
+    "editor.largeFileOptimizations": false,
+    "editor.acceptSuggestionOnEnter": "off",
+    "workbench.panel.defaultLocation": "right",
+    "tabnine.experimentalAutoImports": true,
+    "sourcery.token": "user_3OcHOXcP8grp19r__tSOK907LDbP4f7rBok0g_k1ec0LQoExrX9yXjC686Q",
+    "workbench.colorTheme": "Monokai",
+    "workbench.preferredDarkColorTheme": "Monokai",
+    "workbench.colorCustomizations": {
+
+    },
+}
