@@ -4,6 +4,9 @@ export PATH="$HOME/bin:$PATH";
 # Add Python3.6 directory to PATH
 export PATH="/Library/Frameworks/Python.framework/Versions/3.6/bin:${PATH}"
 
+# Add node_modules to PATH so that they can be run from CLI
+export PATH="~/node_modules/.bin:$PATH"
+
 # Load the shell dotfiles, and then some:
 # * ~/.path can be used to extend `$PATH`.
 # * ~/.extra can be used for other settings you don’t want to commit.
