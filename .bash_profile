@@ -55,3 +55,5 @@ complete -o "nospace" -W "Contacts Calendar Dock Finder Mail Safari iTunes Syste
 
 # Set git editor to vim
 git config --global core.editor "vim"
+
+export LSCOLORS=cxgxfxexbxegedabagacad
