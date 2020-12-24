@@ -16,11 +16,8 @@ Plugin 'VundleVim/Vundle.vim'
 call vundle#end()            " required
 filetype plugin indent on    " required
 
-" Use the Solarized Dark theme
-set background=dark
-colorscheme solarized
-let g:solarized_termtrans=1
 " Make Vim more useful
+filetype on
 set nocompatible
 " Enhance command-line completion
 set wildmenu
@@ -68,6 +65,10 @@ set title
 set showcmd
 " Start scrolling three lines before the horizontal window border
 set scrolloff=3
+" Word and Line wrapping
+set lbr "word wrap
+set tw=500
+set wrap "Wrap lines
 
 " Automatic commands
 if has("autocmd")
