@@ -16,6 +16,20 @@ Plugin 'VundleVim/Vundle.vim'
 call vundle#end()            " required
 filetype plugin indent on    " required
 
+" Enable syntax highlighting
+syntax on
+
+" Custom colour scheme : http://vimdoc.sourceforge.net/htmldoc/syntax.html#{group-name}
+" highlight Normal ctermfg=White
+highlight Comment ctermfg=DarkGray
+highlight Constant ctermfg=DarkGray
+highlight Identifier ctermfg=Green
+highlight Statement ctermfg=DarkBlue
+highlight PreProc ctermfg=DarkBlue
+highlight Type ctermfg=DarkRed
+highlight Special ctermfg=DarkMagenta
+highlight LineNr ctermfg=DarkGray
+
 " Make Vim more useful
 filetype on
 set nocompatible
@@ -41,8 +55,6 @@ set tabstop=4
 set expandtab
 " Enable line numbers
 set number
-" Enable syntax highlighting
-syntax on
 " Highlight searches
 set hlsearch
 " Highlight dynamically as pattern is typed
