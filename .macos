@@ -749,6 +749,13 @@ defaults write com.operasoftware.OperaDeveloper PMPrintingExpandedStateForPrint2
 # Install Sublime Text settings
 cp -r init/Preferences.sublime-settings ~/Library/Application\ Support/Sublime\ Text*/Packages/User/Preferences.sublime-settings 2> /dev/null
 ###############################################################################
+# VS Code
+###############################################################################
+defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false         # For VS Code
+defaults write com.microsoft.VSCodeInsiders ApplePressAndHoldEnabled -bool false # For VS Code Insider
+defaults write com.visualstudio.code.oss ApplePressAndHoldEnabled -bool false    # For VS Codium
+defaults delete -g ApplePressAndHoldEnabled                                      # If necessary, reset global default
+###############################################################################
 # Transmission.app                                                            #
 ###############################################################################
 # Use `~/Documents/Torrents` to store incomplete downloads
