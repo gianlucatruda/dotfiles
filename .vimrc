@@ -3,6 +3,11 @@ set nocompatible              " be iMproved, required
 " Enable syntax highlighting
 syntax on
 
+" Change cursor shape in different modes
+let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+let &t_SR = "\<Esc>]50;CursorShape=2\x7"
+let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+
 " Python-specific tweaks suggested by https://docs.python-guide.org/dev/env/#text-editors
 set textwidth=79  " lines longer than 79 columns will be broken
 set shiftwidth=4  " operation >> indents 4 columns; << unindents 4 columns
