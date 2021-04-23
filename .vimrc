@@ -19,11 +19,17 @@ let &t_SI.="\e[5 q" "SI = INSERT mode
 let &t_SR.="\e[4 q" "SR = REPLACE mode
 let &t_EI.="\e[1 q" "EI = NORMAL mode (ELSE)
 
+" Always show status line
+set laststatus=2
+" Format the status line
+set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l\ \ Column:\ %c
+
 " Python-specific tweaks suggested by https://docs.python-guide.org/dev/env/#text-editors
 set textwidth=79  " lines longer than 79 columns will be broken
 set shiftwidth=4  " operation >> indents 4 columns; << unindents 4 columns
 set tabstop=4     " a hard TAB displays as 4 columns
 set expandtab     " insert spaces when hitting TABs
+set smarttab      " Be smart when using tabs ;)
 set softtabstop=4 " insert/delete 4 spaces when hitting a TAB/BACKSPACE
 set shiftround    " round indent to multiple of 'shiftwidth'
 set autoindent    " align the new line indent with the previous line
@@ -39,9 +45,24 @@ highlight Type ctermfg=DarkRed
 highlight Special ctermfg=DarkMagenta
 highlight LineNr ctermfg=DarkGray
 
+" No annoying sound on errors
+set noerrorbells
+set novisualbell
+set t_vb=
+set tm=500
+" Properly disable sound on errors on MacVim
+if has("gui_macvim")
+    autocmd GUIEnter * set vb t_vb=
+endif
+
 " Make Vim more useful
 filetype on
 set nocompatible
+" Set to auto read when a file is changed from the outside
+set autoread
+au FocusGained,BufEnter * checktime
+" Ignore case when searching
+set ignorecase
 " Enhance command-line completion
 set wildmenu
 " Allow cursor keys in insert mode
@@ -59,17 +80,12 @@ endif
 
 " Don’t create backups when editing files in certain directories
 set backupskip=/tmp/*,/private/tmp/*
-" Indent using 4 spaces
-set tabstop=4
-set expandtab
 " Enable line numbers
 set number
 " Highlight searches
 set hlsearch
 " Highlight dynamically as pattern is typed
 set incsearch
-" Always show status line
-set laststatus=2
 " Enable mouse in all modes
 " set mouse=a
 " Don’t reset cursor to start of line when moving around.
@@ -98,3 +114,11 @@ if has("autocmd")
 	" Treat .md files as Markdown
 	autocmd BufNewFile,BufRead *.md setlocal filetype=markdown
 endif
+
+" Returns true if paste mode is enabled
+function! HasPaste()
+    if &paste
+        return 'PASTE MODE  '
+    endif
+    return ''
+endfunction
