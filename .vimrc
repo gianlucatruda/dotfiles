@@ -3,6 +3,11 @@ set nocompatible              " be iMproved, required
 " Enable syntax highlighting
 syntax on
 
+" Enable spellchecking for Markdown and text files
+setglobal spell spelllang=en_gb
+autocmd FileType markdown setlocal spell spelllang=en_gb
+autocmd FileType text setlocal spell spelllang=en_gb
+
 " Change cursor shape in different modes
 "  1 -> blinking block
 "  2 -> solid block 
