@@ -57,3 +57,9 @@ complete -o "nospace" -W "Contacts Calendar Dock Finder Mail Safari iTunes Syste
 git config --global core.editor "vim"
 
 export LSCOLORS=cxgxfxexbxegedabagacad
+
+# Reset cursor style to vertical bar
+reset-cursor() {
+  printf '\033]50;CursorShape=1\x7'
+}
+export PS1="$(reset-cursor)$PS1"
