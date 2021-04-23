@@ -55,8 +55,10 @@ if has("gui_macvim")
     autocmd GUIEnter * set vb t_vb=
 endif
 
-" Make Vim more useful
-filetype on
+filetype on           " Enable filetype detection
+filetype indent on    " Enable filetype-specific indenting
+filetype plugin on    " Enable filetype-specific plugins
+" not compatible with the old-fashion vi mode
 set nocompatible
 " Set to auto read when a file is changed from the outside
 set autoread
@@ -114,6 +116,10 @@ try
     set undofile
 catch
 endtry
+
+"Restore cursor to file position in previous editing session
+set viminfo='10,\"100,:20,%,n~/.viminfo
+au BufReadPost * if line("'\"") > 0|if line("'\"") <= line("$")|exe("norm '\"")|else|exe "norm $"|endif|endif
 
 " Automatic commands
 if has("autocmd")
