@@ -106,7 +106,6 @@ set showcmd
 set scrolloff=3
 " Word and Line wrapping
 set lbr "word wrap
-set tw=500
 set wrap "Wrap lines
 
 " => Turn persistent undo on
