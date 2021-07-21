@@ -14,7 +14,6 @@
     ],
     "workbench.startupEditor": "newUntitledFile",
     "window.restoreWindows": "none",
-    "window.zoomLevel": -1,
     "python.pythonPath": "/Library/Frameworks/Python.framework/Versions/3.6/bin/python3",
     "spellchecker.language": "en_GB-ise",
     "editor.wordWrap": "on",
@@ -29,15 +28,39 @@
     "autoDocstring.docstringFormat": "numpy",
     "kite.showWelcomeNotificationOnStartup": false,
     "breadcrumbs.enabled": true,
-    "python.dataScience.sendSelectionToInteractiveWindow": false,
     "editor.largeFileOptimizations": false,
     "editor.acceptSuggestionOnEnter": "off",
     "workbench.panel.defaultLocation": "right",
     "tabnine.experimentalAutoImports": true,
     "sourcery.token": "user_3OcHOXcP8grp19r__tSOK907LDbP4f7rBok0g_k1ec0LQoExrX9yXjC686Q",
-    "workbench.colorTheme": "Monokai",
     "workbench.preferredDarkColorTheme": "Monokai",
     "workbench.colorCustomizations": {
 
+    },
+    "editor.formatOnSaveMode": "modifications",
+    "workbench.colorTheme": "Monokai",
+    "jupyter.sendSelectionToInteractiveWindow": false,
+    "workbench.editorAssociations": {
+        "*.ipynb": "jupyter-notebook"
+    },
+    "spellright.documentTypes": [
+
+        "markdown",
+        "latex",
+        "plaintext"
+    ],
+    "spellright.language": [
+
+    ],
+    "jupyter.askForKernelRestart": false,
+    "python.defaultInterpreterPath": "/Library/Frameworks/Python.framework/Versions/3.6/bin/python3",
+    "editor.autoClosingDelete": "never",
+    "editor.autoClosingQuotes": "never",
+    "html.autoClosingTags": false,
+    "editor.autoClosingOvertype": "never",
+    "editor.autoClosingBrackets": "never",
+    "notebook.cellToolbarLocation": {
+        "default": "right",
+        "jupyter-notebook": "left"
     },
 }
