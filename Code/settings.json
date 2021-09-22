@@ -1,6 +1,6 @@
 {
     "window.closeWhenEmpty": false,
-    "editor.fontSize": 15,
+    "editor.fontSize": 14,
     "files.hotExit": "off",
     "window.openFilesInNewWindow": "off",
     "files.autoSave": "onFocusChange",
@@ -38,19 +38,17 @@
 
     },
     "editor.formatOnSaveMode": "modifications",
-    "workbench.colorTheme": "Monokai",
     "jupyter.sendSelectionToInteractiveWindow": false,
     "workbench.editorAssociations": {
         "*.ipynb": "jupyter-notebook"
     },
     "spellright.documentTypes": [
-
         "markdown",
         "latex",
         "plaintext"
     ],
     "spellright.language": [
-
+        "en"
     ],
     "jupyter.askForKernelRestart": false,
     "python.defaultInterpreterPath": "/Library/Frameworks/Python.framework/Versions/3.6/bin/python3",
@@ -63,4 +61,9 @@
         "default": "right",
         "jupyter-notebook": "left"
     },
+    "security.workspace.trust.untrustedFiles": "open",
+    "extensions.ignoreRecommendations": true,
+    "security.workspace.trust.emptyWindow": false,
+    "security.workspace.trust.enabled": false,
+    "workbench.colorTheme": "GitHub Dark Default",
 }
