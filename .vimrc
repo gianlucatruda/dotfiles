@@ -34,8 +34,8 @@ set softtabstop=4 " insert/delete 4 spaces when hitting a TAB/BACKSPACE
 set shiftround    " round indent to multiple of 'shiftwidth'
 set autoindent    " align the new line indent with the previous line
 
-" Custom colour scheme : http://vimdoc.sourceforge.net/htmldoc/syntax.html#{group-name}
-" highlight Normal ctermfg=White
+" Custom ANSI colour scheme : http://vimdoc.sourceforge.net/htmldoc/syntax.html#{group-name}
+highlight Normal ctermfg=White
 highlight Comment ctermfg=DarkGray
 highlight Constant ctermfg=DarkGray
 highlight Identifier ctermfg=Green
