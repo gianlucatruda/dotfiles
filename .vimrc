@@ -8,6 +8,11 @@ setglobal spell spelllang=en_gb
 autocmd FileType markdown setlocal spell spelllang=en_gb
 autocmd FileType text setlocal spell spelllang=en_gb
 
+" Enable automatick line breaks (textwrapping) ONLY on markdown and text files
+setglobal textwidth=0
+autocmd FileType markdown setlocal textwidth=90
+autocmd FileType text setlocal textwidth=90
+
 " Change cursor shape in different modes
 "  1 -> blinking block
 "  2 -> solid block 
@@ -25,7 +30,7 @@ set laststatus=2
 set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l\ \ Column:\ %c
 
 " Python-specific tweaks suggested by https://docs.python-guide.org/dev/env/#text-editors
-set textwidth=79  " lines longer than 79 columns will be broken
+" set textwidth=79  " lines longer than 79 columns will be broken
 set shiftwidth=4  " operation >> indents 4 columns; << unindents 4 columns
 set tabstop=4     " a hard TAB displays as 4 columns
 set expandtab     " insert spaces when hitting TABs
@@ -33,6 +38,7 @@ set smarttab      " Be smart when using tabs ;)
 set softtabstop=4 " insert/delete 4 spaces when hitting a TAB/BACKSPACE
 set shiftround    " round indent to multiple of 'shiftwidth'
 set autoindent    " align the new line indent with the previous line
+
 
 " Custom ANSI colour scheme : http://vimdoc.sourceforge.net/htmldoc/syntax.html#{group-name}
 highlight Normal ctermfg=White
