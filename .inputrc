@@ -1,3 +1,10 @@
+# Indicate which vim mode is active in the CLI by modifying cursor appearance
+# beam cursor (a vertical line) when you're in insert mode and a block cursor (a rectangle) when you're in normal mode
+set editing-mode vi
+set show-mode-in-prompt on
+set vi-ins-mode-string \1\e[6 q\2
+set vi-cmd-mode-string \1\e[2 q\2
+
 # Make Tab autocomplete regardless of filename case
 set completion-ignore-case on
 
