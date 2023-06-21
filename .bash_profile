@@ -61,6 +61,9 @@ complete -o "nospace" -W "Contacts Calendar Dock Finder Mail Safari iTunes Syste
 # Set git editor to vim
 git config --global core.editor "vim"
 
+# Use vim keybindings to edit lines in bash (with 'readline' library)
+set -o vi
+
 export LSCOLORS=cxgxfxexbxegedabagacad
 
 # Reset cursor style to vertical bar
