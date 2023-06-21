@@ -90,6 +90,8 @@ endif
 set backupskip=/tmp/*,/private/tmp/*
 " Enable line numbers
 set number
+" Enable relative line numbers
+set relativenumber
 " Highlight searches
 set hlsearch
 " Highlight dynamically as pattern is typed
