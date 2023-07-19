@@ -39,6 +39,10 @@ set softtabstop=4 " insert/delete 4 spaces when hitting a TAB/BACKSPACE
 set shiftround    " round indent to multiple of 'shiftwidth'
 set autoindent    " align the new line indent with the previous line
 
+" Override some settings when using specific filetypes
+" JavaScript and TypeScript
+autocmd FileType javascript jsx typescript setlocal shiftwidth=2 tabstop=2
+
 
 " Custom ANSI colour scheme : http://vimdoc.sourceforge.net/htmldoc/syntax.html#{group-name}
 highlight Normal ctermfg=White
