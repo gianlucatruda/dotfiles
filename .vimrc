@@ -8,7 +8,7 @@ setglobal spell spelllang=en_gb
 autocmd FileType markdown setlocal spell spelllang=en_gb
 autocmd FileType text setlocal spell spelllang=en_gb
 
-" Enable automatick line breaks (textwrapping) ONLY on markdown and text files
+" Enable automatic line breaks (textwrapping) ONLY on markdown and text files
 setglobal textwidth=0
 autocmd FileType markdown setlocal textwidth=90
 autocmd FileType text setlocal textwidth=90
@@ -29,6 +29,13 @@ set laststatus=2
 " Format the status line
 set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l\ \ Column:\ %c
 
+" Ensure filetypes are properly recognised
+autocmd BufNewFile,BufRead *.js setfiletype javascript
+autocmd BufNewFile,BufRead *.jsx setfiletype javascript.jsx
+autocmd BufNewFile,BufRead *.ts setfiletype typescript
+autocmd BufNewFile,BufRead *.tsx setfiletype typescript.tsx
+
+
 " Python-specific tweaks suggested by https://docs.python-guide.org/dev/env/#text-editors
 " set textwidth=79  " lines longer than 79 columns will be broken
 set shiftwidth=4  " operation >> indents 4 columns; << unindents 4 columns
@@ -40,9 +47,7 @@ set shiftround    " round indent to multiple of 'shiftwidth'
 set autoindent    " align the new line indent with the previous line
 
 " Override some settings when using specific filetypes
-" JavaScript and TypeScript
-autocmd FileType javascript jsx typescript setlocal shiftwidth=2 tabstop=2
-
+autocmd FileType javascript,javascript.jsx,javascriptreact,typescript,typscript.tsx,typescriptreact setlocal shiftwidth=2 tabstop=2 expandtab smarttab softtabstop=2
 
 " Custom ANSI colour scheme : http://vimdoc.sourceforge.net/htmldoc/syntax.html#{group-name}
 highlight Normal ctermfg=White
