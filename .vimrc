@@ -27,7 +27,8 @@ let &t_EI.="\e[1 q" "EI = NORMAL mode (ELSE)
 " Always show status line
 set laststatus=2
 " Format the status line
-set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l\ \ Column:\ %c
+" set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l\ \ Column:\ %c
+set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ Line:\ %l\ \ Column:\ %c\ \ \ CWD:\ %r%{getcwd()}%h
 
 " Ensure filetypes are properly recognised
 autocmd BufNewFile,BufRead *.js setfiletype javascript
