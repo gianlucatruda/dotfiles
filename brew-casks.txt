@@ -1,0 +1,12 @@
+background-music
+blackhole-16ch
+chromedriver
+dash
+jupyter-notebook-viewer
+macfuse
+opensc
+qlcolorcode
+qlmarkdown
+qlstephen
+qlvideo
+quicklook-json
