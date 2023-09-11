@@ -6,7 +6,10 @@ jupyter-notebook-viewer
 macfuse
 opensc
 qlcolorcode
+qlimagesize
 qlmarkdown
+qlmobi
 qlstephen
 qlvideo
+quicklook-csv
 quicklook-json
