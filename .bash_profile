@@ -3,11 +3,17 @@
 # Add `~/bin` to the `$PATH`
 export PATH="$HOME/bin:$PATH";
 
-# Add Python3.6 directory to PATH
-export PATH="/Library/Frameworks/Python.framework/Versions/3.6/bin:${PATH}"
-
 # Add node_modules to PATH so that they can be run from CLI
 export PATH="~/node_modules/.bin:$PATH"
+
+# Setting PATH for Python 3.10
+# The original version is saved in .bash_profile.pysave
+PATH="/Library/Frameworks/Python.framework/Versions/3.10/bin:${PATH}"
+export PATH
+
+eval "$(/opt/homebrew/bin/brew shellenv)"
+export MODULAR_HOME="/Users/gianluca/.modular"
+export PATH="/Users/gianluca/.modular/pkg/packages.modular.com_mojo/bin:$PATH"
 
 # Load the shell dotfiles, and then some:
 # * ~/.path can be used to extend `$PATH`.
@@ -89,7 +95,3 @@ test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shel
 # Fig post block. Keep at the bottom of this file.
 [[ -f "$HOME/.fig/shell/bash_profile.post.bash" ]] && builtin source "$HOME/.fig/shell/bash_profile.post.bash"
 
-# Setting PATH for Python 3.10
-# The original version is saved in .bash_profile.pysave
-PATH="/Library/Frameworks/Python.framework/Versions/3.10/bin:${PATH}"
-export PATH
