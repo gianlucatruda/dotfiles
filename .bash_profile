@@ -6,10 +6,10 @@ export PATH="$HOME/bin:$PATH";
 # Add node_modules to PATH so that they can be run from CLI
 export PATH="~/node_modules/.bin:$PATH"
 
-# Setting PATH for Python 3.10
-# The original version is saved in .bash_profile.pysave
-PATH="/Library/Frameworks/Python.framework/Versions/3.10/bin:${PATH}"
-export PATH
+# Pyenv setup https://github.com/pyenv/pyenv?tab=readme-ov-file#set-up-your-shell-environment-for-pyenv
+export PYENV_ROOT="$HOME/.pyenv"
+command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
 
 eval "$(/opt/homebrew/bin/brew shellenv)"
 export MODULAR_HOME="/Users/gianluca/.modular"
