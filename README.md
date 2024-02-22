@@ -1,55 +1,43 @@
-# Gianluca's macOS dotfiles
+# Gianluca's dotfiles
 
 ## Refactor TODOs
-- [ ] .extra streamlined, only secrets, called at the end.
-- [ ] Integrate `.exports` to somewhere else.
-- [ ] Integrate `.inputrc` to somewhere else? And tidy up.
-- [ ] .bash_profile tidied, reorganised
-- [ ] Most of `.functions` isn't stuff I use. Refactor and integrate into `.bash_profile` ?
+- [x] .extra streamlined, only secrets, called at the end.
+- [x] Integrate `.exports` to somewhere else.
+- [x] Integrate `.inputrc` to somewhere else? And tidy up.
+- [x] .bash_profile tidied, reorganised
 - [x] Full refactor of `.macos` init script.
-- [ ] Full refactor and test of `bootstrap.sh` initialisation script.
+- [x] Refactor `.aliases`
+- [x] Make sure all instances that refer to the home path use `$HOME` instead.
+- [x] Most of `.functions` isn't stuff I use. Refactor and integrate into `.bash_profile` ?
+- [x] Full refactor and test of `bootstrap.sh` initialisation script.
+- [x] Where can everything live? `XDG_CONFIG_HOME`?
+- [-] `git config <...>` -> Where should those live?
 - [ ] Deal with persisting `pyenv not found` on shell startup
+- [ ] symlink the actual dotfiles repo?
 - [ ] Set a custom default wallpaper in `.macos`
-- [ ] Make sure all instances that refer to the home path use `$HOME` instead.
-- [ ] `git config <...>` -> Where should those live?
-- [ ] Where can everything live? `XDG_CONFIG_HOME`? symlink the actual dotfiles repo?
 
-
-95% stolen from <a href="https://github.com/mathiasbynens/dotfiles">Mathias</a>
+Heavily modified adaptation of <a href="https://github.com/mathiasbynens/dotfiles">Mathias's dotfiles</a> that I've personalised since 2017.
 
 ### Configuring a new Mac
 
 After cloning the repo:
+
+Create the `~/.config/.extra` file
+
+```bash
+# Git credentials
+GIT_AUTHOR_NAME="Gianluca Truda"
+GIT_COMMITTER_NAME="$GIT_AUTHOR_NAME"
+GIT_AUTHOR_EMAIL="x@y.com"
+GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"
+git config --global user.name "$GIT_AUTHOR_NAME"
+git config --global user.email "$GIT_AUTHOR_EMAIL"
+git config --global commit.gpgsign true
+git config --global user.signingkey <signing key>
+```
 
 ```bash
 cd dotfiles
 source bootstrap.sh
 ./.macos
 ```
-Install vundle and re-source
-```
-git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-source bootstrap.sh
-```
-
-Configure the `~/.extra` file
-
-```bash
-# Git credentials
-GIT_AUTHOR_NAME="Gianluca Truda"
-GIT_COMMITTER_NAME="$GIT_AUTHOR_NAME"
-git config --global user.name "$GIT_AUTHOR_NAME"
-GIT_AUTHOR_EMAIL="x@y.com"
-GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"
-git config --global user.email "$GIT_AUTHOR_EMAIL"
-git config --global commit.gpgsign true
-git config --global user.signingkey <signing key>
-
-# Environment variables etc. below...
-
-```
-
-
-## Original Author
-
-[Mathias Bynens](https://mathiasbynens.be/)
