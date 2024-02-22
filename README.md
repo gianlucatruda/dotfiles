@@ -3,6 +3,7 @@
 ## Refactor TODOs
 - [ ] .extra streamlined, only secrets, called at the end.
 - [ ] Integrate `.exports` to somewhere else.
+- [ ] Integrate `.inputrc` to somewhere else? And tidy up.
 - [ ] .bash_profile tidied, reorganised
 - [ ] Most of `.functions` isn't stuff I use. Refactor and integrate into `.bash_profile` ?
 - [ ] Full refactor of `.macos` init script.
