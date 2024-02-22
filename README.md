@@ -9,6 +9,7 @@
 - [ ] Full refactor of `.macos` init script.
 - [ ] Full refactor and test of `bootstrap.sh` initialisation script.
 - [ ] Deal with persisting `pyenv not found` on shell startup
+- [ ] Set a custom default wallpaper in `.macos`
 
 
 95% stolen from <a href="https://github.com/mathiasbynens/dotfiles">Mathias</a>
