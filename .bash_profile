@@ -1,7 +1,16 @@
-# Fig pre block. Keep at the top of this file.
-[[ -f "$HOME/.fig/shell/bash_profile.pre.bash" ]] && builtin source "$HOME/.fig/shell/bash_profile.pre.bash"
 # Add `~/bin` to the `$PATH`
 export PATH="$HOME/bin:$PATH";
+
+# Load the shell dotfiles, and then some:
+# * ~/.path can be used to extend `$PATH`.
+# * ~/.extra can be used for other settings you don’t want to commit.
+for file in ~/.{path,bash_prompt,exports,aliases,functions,extra}; do
+	[ -r "$file" ] && [ -f "$file" ] && source "$file";
+done;
+unset file;
+
+# Export XDG config directory path
+export XDG_CONFIG_HOME="$HOME"/.config
 
 # Add node_modules to PATH so that they can be run from CLI
 export PATH="~/node_modules/.bin:$PATH"
@@ -14,14 +23,6 @@ eval "$(pyenv init -)"
 eval "$(/opt/homebrew/bin/brew shellenv)"
 export MODULAR_HOME="/Users/gianluca/.modular"
 export PATH="/Users/gianluca/.modular/pkg/packages.modular.com_mojo/bin:$PATH"
-
-# Load the shell dotfiles, and then some:
-# * ~/.path can be used to extend `$PATH`.
-# * ~/.extra can be used for other settings you don’t want to commit.
-for file in ~/.{path,bash_prompt,exports,aliases,functions,extra}; do
-	[ -r "$file" ] && [ -f "$file" ] && source "$file";
-done;
-unset file;
 
 # Update environment variables for tmux
 update_environment_from_tmux
@@ -92,6 +93,4 @@ export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
 
 test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
 
-# Fig post block. Keep at the bottom of this file.
-[[ -f "$HOME/.fig/shell/bash_profile.post.bash" ]] && builtin source "$HOME/.fig/shell/bash_profile.post.bash"
 
