@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-# Export XDG config directory path
-export XDG_CONFIG_HOME="$HOME"/.config
-
 # Make vim the default editor.
 export EDITOR='vim';
+
+# Set INPUTRC so Readline knows where to look for .inputrc
+export INPUTRC="${XDG_CONFIG_HOME}/.inputrc"
 
 # Enable persistent REPL history for `node`.
 export NODE_REPL_HISTORY=~/.node_history;
