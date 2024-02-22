@@ -1,5 +1,14 @@
 # Gianluca's macOS dotfiles
 
+## Refactor TODOs
+- [ ] .extra streamlined, only secrets, called at the end.
+- [ ] .bash_profile tidied, reorganised
+- [ ] Most of `.functions` isn't stuff I use. Refactor and integrate into `.bash_profile` ?
+- [ ] Full refactor of `.macos` init script.
+- [ ] Full refactor and test of `bootstrap.sh` initialisation script.
+- [ ] Deal with persisting `pyenv not found` on shell startup
+
+
 95% stolen from <a href="https://github.com/mathiasbynens/dotfiles">Mathias</a>
 
 ### Configuring a new Mac
