@@ -1,5 +1,6 @@
 # extras
 .extra
+.config/.extra
 
 # Compiled Python files
 *.pyc
