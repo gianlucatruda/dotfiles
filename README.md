@@ -6,10 +6,13 @@
 - [ ] Integrate `.inputrc` to somewhere else? And tidy up.
 - [ ] .bash_profile tidied, reorganised
 - [ ] Most of `.functions` isn't stuff I use. Refactor and integrate into `.bash_profile` ?
-- [ ] Full refactor of `.macos` init script.
+- [x] Full refactor of `.macos` init script.
 - [ ] Full refactor and test of `bootstrap.sh` initialisation script.
 - [ ] Deal with persisting `pyenv not found` on shell startup
 - [ ] Set a custom default wallpaper in `.macos`
+- [ ] Make sure all instances that refer to the home path use `$HOME` instead.
+- [ ] `git config <...>` -> Where should those live?
+- [ ] Where can everything live? `XDG_CONFIG_HOME`? symlink the actual dotfiles repo?
 
 
 95% stolen from <a href="https://github.com/mathiasbynens/dotfiles">Mathias</a>
