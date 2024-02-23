@@ -17,7 +17,8 @@ Heavily modified adaptation of [Mathias's dotfiles](https://github.com/mathiasby
 - [x] Where can everything live? `XDG_CONFIG_HOME`?
 - [ ] Fix git signing and authoring issues
 - [ ] Deal with persisting `pyenv not found` on shell startup
-- [ ] symlink the actual dotfiles repo?
+    - [ ] NeoVim's `:checkhealth` might help
+- [ ] symlink the actual dotfiles repo? See [here](https://github.com/mischavandenburg/dotfiles/blob/e417b14bdfa2a8fd54183944c8d1cd6095fa88bb/setup#L23)
 - [ ] Incorporate new NeoVim setup
 - [ ] Make `reload` alias system agnostic
 - [ ] Set a custom default wallpaper in `.macos`
