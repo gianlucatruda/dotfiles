@@ -13,6 +13,7 @@ function doIt() {
 	source ~/.bash_profile;
 }
 
+# If --force or -f argument, skip the y/n confirmation
 if [ "$1" == "--force" -o "$1" == "-f" ]; then
 	doIt;
 else

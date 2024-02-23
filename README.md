@@ -17,10 +17,14 @@ Heavily modified adaptation of [Mathias's dotfiles](https://github.com/mathiasby
 - [x] Where can everything live? `XDG_CONFIG_HOME`?
 - [x] Fix git signing and authoring issues
 - [ ] Deal with persisting `pyenv not found` on shell startup
-    - [ ] NeoVim's `:checkhealth` might help
-- [ ] symlink the actual dotfiles repo? See [here](https://github.com/mischavandenburg/dotfiles/blob/e417b14bdfa2a8fd54183944c8d1cd6095fa88bb/setup#L23)
+  - [ ] NeoVim's `:checkhealth` might help
+- [ ] Dotfiles management
+  - [-] Look into dotfiles management tools: `stow`, `chezmoi`, `yadm`. -> None are installed by default and all require a fair bit of config.
+  - [-] Use a [bare git repo](https://www.atlassian.com/git/tutorials/dotfiles) -> complex aliasing, weird vibes, clunky and specific initial config.
+  - [ ] symlink the actual dotfiles repo? See [here](https://github.com/mischavandenburg/dotfiles/blob/e417b14bdfa2a8fd54183944c8d1cd6095fa88bb/setup#L23)
 - [x] Incorporate new NeoVim setup
 - [x] Make `reload` alias system agnostic: already is: `exec $SHELL -l`
+- [ ] Ensure `bootstrap.sh` is idempotent (running it multiple times doesn't cause issues).
 - [ ] Test on Linux (and another mac)
 - [ ] Squash commit histories down, streamline `master` branch so everything is lean
 - [ ] Document structure, supported tools, and "philosophy"
