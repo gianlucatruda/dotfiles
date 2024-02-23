@@ -1,5 +1,9 @@
 # Gianluca's dotfiles
 
+Heavily modified adaptation of <a href="https://github.com/mathiasbynens/dotfiles">Mathias's dotfiles</a> that I've personalised since 2017.
+
+---
+
 ## Refactor TODOs
 - [x] .extra streamlined, only secrets, called at the end.
 - [x] Integrate `.exports` to somewhere else.
@@ -11,18 +15,28 @@
 - [x] Most of `.functions` isn't stuff I use. Refactor and integrate into `.bash_profile` ?
 - [x] Full refactor and test of `bootstrap.sh` initialisation script.
 - [x] Where can everything live? `XDG_CONFIG_HOME`?
-- [-] `git config <...>` -> Where should those live?
 - [ ] Deal with persisting `pyenv not found` on shell startup
 - [ ] symlink the actual dotfiles repo?
+- [ ] Incorporate new NeoVim setup
+- [ ] Make `reload` alias system agnostic
 - [ ] Set a custom default wallpaper in `.macos`
+- [ ] Test on Linux and/or another mac
 
-Heavily modified adaptation of <a href="https://github.com/mathiasbynens/dotfiles">Mathias's dotfiles</a> that I've personalised since 2017.
 
-### Configuring a new Mac
+## Installation
 
-After cloning the repo:
+```
+git clone git@github.com:gianlucatruda/dotfiles.git
+```
 
-Create the `~/.config/.extra` file
+## Setup / update 
+
+```bash
+cd dotfiles
+source bootstrap.sh
+```
+
+Create the `~/.config/.extra` file:
 
 ```bash
 # Git credentials
@@ -36,8 +50,15 @@ git config --global commit.gpgsign true
 git config --global user.signingkey <signing key>
 ```
 
+Then load up by running `reload`, which is an alias for:
+
 ```bash
-cd dotfiles
-source bootstrap.sh
-./.macos
+exec /opt/homebrew/bin/bash -l
 ```
+
+### Mac-specific setup
+
+```bash
+~/.config/.macos
+```
+
