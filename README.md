@@ -15,6 +15,7 @@ Heavily modified adaptation of [Mathias's dotfiles](https://github.com/mathiasby
 - [x] Most of `.functions` isn't stuff I use. Refactor and integrate into `.bash_profile` ?
 - [x] Full refactor and test of `bootstrap.sh` initialisation script.
 - [x] Where can everything live? `XDG_CONFIG_HOME`?
+- [ ] Fix git signing and authoring issues
 - [ ] Deal with persisting `pyenv not found` on shell startup
 - [ ] symlink the actual dotfiles repo?
 - [ ] Incorporate new NeoVim setup
