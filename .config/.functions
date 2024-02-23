@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+
+# Update environment variables in tmux (used in .bash_profile)
+function update_environment_from_tmux() {
+  if [ -n "${TMUX}" ]; then
+    eval "$(tmux show-environment -s)"
+  fi
+}
+
+# Create a new directory and enter it
+function mkd() {
+	mkdir -p "$@" && cd "$_";
+}
+
+# Determine size of a file or total size of a directory
+function fs() {
+	if du -b /dev/null > /dev/null 2>&1; then
+		local arg=-sbh;
+	else
+		local arg=-sh;
+	fi
+	if [[ -n "$@" ]]; then
+		du $arg -- "$@";
+	else
+		du $arg .[^.]* ./*;
+	fi;
+}
+
+# Use Git’s colored diff when available
+hash git &>/dev/null;
+if [ $? -eq 0 ]; then
+	function diff() {
+		git diff --no-index --color-words "$@";
+	}
+fi;
+
+# Decode \x{ABCD}-style Unicode escape sequences (referenced in .macos)
+function unidecode() {
+	perl -e "binmode(STDOUT, ':utf8'); print \"$@\"";
+	# print a newline unless we’re piping the output to another program
+	if [ -t 1 ]; then
+		echo ""; # newline
+	fi;
+}
+
+# `o` with no arguments opens the current directory (I use this all the time)
+function o() {
+	if [ $# -eq 0 ]; then
+		open .;
+	else
+		open "$@";
+	fi;
+}
+
+# `tre` is a shorthand for `tree` with hidden files and color enabled, ignoring
+# the `.git` directory, listing directories first. The output gets piped into
+# `less` with options to preserve color and line numbers, unless the output is
+# small enough for one screen.
+function tre() {
+	tree -aC -I '.git|node_modules|bower_components' --dirsfirst "$@" | less -FRNX;
+}
