@@ -20,9 +20,8 @@ Heavily modified adaptation of [Mathias's dotfiles](https://github.com/mathiasby
     - [ ] NeoVim's `:checkhealth` might help
 - [ ] symlink the actual dotfiles repo? See [here](https://github.com/mischavandenburg/dotfiles/blob/e417b14bdfa2a8fd54183944c8d1cd6095fa88bb/setup#L23)
 - [x] Incorporate new NeoVim setup
-- [ ] Make `reload` alias system agnostic
-- [ ] Set a custom default wallpaper in `.macos`
-- [ ] Test on Linux and/or another mac
+- [x] Make `reload` alias system agnostic: already is: `exec $SHELL -l`
+- [ ] Test on Linux (and another mac)
 - [ ] Squash commit histories down, streamline `master` branch so everything is lean
 - [ ] Document structure, supported tools, and "philosophy"
 - [ ] Publish repo publicly (and document at [gianluca.ai](http://gianluca.ai))
@@ -58,7 +57,7 @@ git config --global user.signingkey <signing key>
 Then load up by running `reload`, which is an alias for:
 
 ```bash
-exec /opt/homebrew/bin/bash -l
+exec $SHELL -l
 ```
 
 ### Mac-specific setup
