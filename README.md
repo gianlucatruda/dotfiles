@@ -15,17 +15,17 @@ Heavily modified adaptation of [Mathias's dotfiles](https://github.com/mathiasby
 - [x] Most of `.functions` isn't stuff I use. Refactor and integrate into `.bash_profile` ?
 - [x] Full refactor and test of `bootstrap.sh` initialisation script.
 - [x] Where can everything live? `XDG_CONFIG_HOME`?
-- [ ] Fix git signing and authoring issues
+- [x] Fix git signing and authoring issues
 - [ ] Deal with persisting `pyenv not found` on shell startup
     - [ ] NeoVim's `:checkhealth` might help
 - [ ] symlink the actual dotfiles repo? See [here](https://github.com/mischavandenburg/dotfiles/blob/e417b14bdfa2a8fd54183944c8d1cd6095fa88bb/setup#L23)
-- [ ] Incorporate new NeoVim setup
+- [x] Incorporate new NeoVim setup
 - [ ] Make `reload` alias system agnostic
 - [ ] Set a custom default wallpaper in `.macos`
 - [ ] Test on Linux and/or another mac
 - [ ] Squash commit histories down, streamline `master` branch so everything is lean
 - [ ] Document structure, supported tools, and "philosophy"
-- [ ] Publish repo publicly (and document at [gianluca.ai](http://gianluca.ai)
+- [ ] Publish repo publicly (and document at [gianluca.ai](http://gianluca.ai))
 
 
 ## Installation
