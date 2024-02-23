@@ -1,6 +1,6 @@
 # Gianluca's dotfiles
 
-Heavily modified adaptation of <a href="https://github.com/mathiasbynens/dotfiles">Mathias's dotfiles</a> that I've personalised since 2017.
+Heavily modified adaptation of [Mathias's dotfiles](https://github.com/mathiasbynens/dotfiles) that I've personalised since 2017.
 
 ---
 
@@ -21,6 +21,9 @@ Heavily modified adaptation of <a href="https://github.com/mathiasbynens/dotfile
 - [ ] Make `reload` alias system agnostic
 - [ ] Set a custom default wallpaper in `.macos`
 - [ ] Test on Linux and/or another mac
+- [ ] Squash commit histories down, streamline `master` branch so everything is lean
+- [ ] Document structure, supported tools, and "philosophy"
+- [ ] Publish repo publicly (and document at [gianluca.ai](http://gianluca.ai)
 
 
 ## Installation
