@@ -17,3 +17,6 @@ eval "$(pyenv init -)"
 # Modular / Mojo
 export MODULAR_HOME="$HOME/.modular"
 export PATH="$HOME/.modular/pkg/packages.modular.com_mojo/bin:$PATH"
+
+# GNU make (gmake) as make
+export PATH="/opt/homebrew/opt/make/libexec/gnubin:$PATH"
