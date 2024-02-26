@@ -5,10 +5,11 @@ cd "$(dirname "${BASH_SOURCE}")";
 function doIt() {
 	rsync --exclude ".git/" \
 		--exclude ".DS_Store" \
-		--exclude "bootstrap.sh" \
+		--exclude "*.sh" \
 		--exclude "README.md" \
 		--exclude ".extra" \
 		--exclude ".gitignore" \
+		--exclude ".config/.homebrew" \
 		-avh --no-perms . ~;
 	source ~/.bash_profile;
 }

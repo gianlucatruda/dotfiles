@@ -7,6 +7,7 @@ argon2
 aribb24
 aspell
 autoconf
+automake
 bash
 bash-completion@2
 bat
@@ -138,6 +139,7 @@ lynx
 lz4
 lzo
 m4
+make
 mbedtls
 modular
 moreutils
@@ -192,6 +194,7 @@ rav1e
 rbenv
 readline
 rename
+ripgrep
 rlwrap
 rtmpdump
 rubberband

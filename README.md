@@ -30,16 +30,16 @@ Heavily modified adaptation of [Mathias's dotfiles](https://github.com/mathiasby
 - [x] Fix htop config to sort by CPU util desc.
 - [x] Deal with persisting `pyenv not found` on shell startup
 - [x] Install neovim LSPs for favourite languages with Mason
+- [x] Ensure `bootstrap.sh` is idempotent (running it multiple times doesn't cause issues).
 - [ ] Get linters and formatters configured for nvim (Mason)
   - [ ] nvim-lint
   - [ ] formatter.nvim
 - [ ] Neovim tweaks (see [this video](https://youtu.be/w7i4amO_zaE)):
   - [ ] Harpoon for moving between marks rapidly
   - [ ] Undo tree for undo history 
-- [-] Ensure `bootstrap.sh` is idempotent (running it multiple times doesn't cause issues).
-- [ ] Write `backsync.sh`, the inverse of `bootstrap.sh`, to rsync dotfiles back to repo (and also save brew packages to a .txt)
+- [-] Write `backsync.sh`, the inverse of `bootstrap.sh`, to rsync dotfiles changes back to repo
+- [-] Document structure, supported tools, and "philosophy"
 - [ ] Test on Linux (and another mac)
-- [ ] Document structure, supported tools, and "philosophy"
 - [ ] Publish repo publicly (and document at [gianluca.ai](http://gianluca.ai))
 
 ---
@@ -107,6 +107,7 @@ tree -a -L 3 --gitignore -I .git/ -I .gitignore -I README.md
 │       └── init.lua
 ├── .tmux.conf
 ├── .vimrc
+├── backsync.sh
 └── bootstrap.sh
 ```
 
@@ -147,7 +148,15 @@ exec $SHELL -l
 ### Mac-specific setup
 
 ```bash
-~/.config/.macos
+source ~/.config/.macos
+```
+
+### Backsync (in progress)
+
+Currently this just dumps homebrew package and cask lists to text files in `.config/.homebrew/`
+
+```bash
+source backsync.sh
 ```
 
 ---
