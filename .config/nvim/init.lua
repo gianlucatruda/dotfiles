@@ -44,6 +44,11 @@ P.S. You can delete this when you're done too. It's your config now :)
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
+-- Gianluca's custom keymaps (many adapted from ThePrimeagen: https://www.youtube.com/watch?v=w7i4amO_zaE)
+-- Visual mode: move selected lines up and down with J and K (i.e. shift+j and shift+k)
+vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv")
+vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv")
+
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    https://github.com/folke/lazy.nvim
 --    `:help lazy.nvim.txt` for more info
