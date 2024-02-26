@@ -5,6 +5,7 @@ size = 16
 
 [font.normal]
 family = "Menlo" # Alacritty default on macOS
+# family = "UbuntuMono Nerd Font"
 
 [window]
 decorations = "None"
