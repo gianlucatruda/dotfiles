@@ -20,6 +20,7 @@ alias c='clear'
 alias p='ping 8.8.8.8'
 alias py='python3'
 alias python='python3'
+alias v='nvim .' # v opens neovim in explorer at current dir
 
 # Git
 alias gitlog='git log --pretty=oneline -n 20 --graph --abbrev-commit'
