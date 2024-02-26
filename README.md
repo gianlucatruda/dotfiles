@@ -23,8 +23,9 @@ Heavily modified adaptation of [Mathias's dotfiles](https://github.com/mathiasby
 - [x] Incorporate new NeoVim setup
 - [x] Make `reload` alias system agnostic: already is: `exec $SHELL -l`
 - [x] Fix alacritty font rendering (in Tmux)
-- [-] Customise nvim setup. Lean
-- [-] Tidy nvim plugins and streamline
+- [x] Customise nvim setup. Lean
+- [x] Tidy nvim plugins and streamline
+- [x] "Migrate" `.vimrc` setup from vim to `init.lua` setup for nvim (honestly unnecessary, as kickstart.nvim is mostly to my liking already).
 - [ ] Fix colours of `git status` (modified different from deleted)
 - [ ] Fix htop config to sort by CPU util desc.
 - [ ] Ensure `bootstrap.sh` is idempotent (running it multiple times doesn't cause issues).
@@ -33,7 +34,13 @@ Heavily modified adaptation of [Mathias's dotfiles](https://github.com/mathiasby
 - [ ] Test on Linux (and another mac)
 - [ ] Document structure, supported tools, and "philosophy"
 - [ ] Publish repo publicly (and document at [gianluca.ai](http://gianluca.ai))
-- [ ] 
+
+
+Helpful trick to list all lazy-installed plugins in a readible format (uses `jq`):
+
+```bash
+cat ~/.config/nvim/lazy-lock.json | jq 'keys'
+```
 
 ---
 
@@ -44,12 +51,16 @@ Heavily modified adaptation of [Mathias's dotfiles](https://github.com/mathiasby
 - BASH
 - Tmux 
 - Vim (with lean .vimrc, no plugins)
-- neoVim (TODO in progress)
 - Karabiner
 - Homebrew
 - Alacritty
 - htop (and btm)
 - iTerm (now favouring alacritty)
+- neoVim (TODO in progress)
+  - Packer: Plugin/package management for Neovim.
+  - Lazy.nvim : How does this compare or build atop Packer?
+  - Mason: Plugin for managing language servers (via LSP)
+
 
 ### Structure (TODO update, automate?)
 
