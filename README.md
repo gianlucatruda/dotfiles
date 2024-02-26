@@ -54,53 +54,61 @@ Heavily modified adaptation of [Mathias's dotfiles](https://github.com/mathiasby
 - Karabiner
 - Homebrew
 - Alacritty
-- htop (and btm)
+- htop
 - iTerm (now favouring alacritty)
-- neoVim (TODO in progress)
+- neoVim (in progress)
   - Packer: Plugin/package management for Neovim.
   - Lazy.nvim : How does this compare or build atop Packer?
   - Mason: Plugin for managing language servers (via LSP)
+  - Telescope
+  - Treesitter
 
 
-### Structure (TODO update, automate?)
+### Structure 
 
- ```
- .config
-├── .aliases
-├── .bash_prompt
-├── .exports
-├── .functions
-├── .gitconfig
-├── .homebrew
-│   ├── brew-casks.txt
-│   ├── brew-packages.txt
-│   └── brew.sh
-├── .inputrc
-├── .iterm_config
-│   ├── Default.json
-│   ├── com.googlecode.iterm2.plist
-│   └── gianluca_custom.itermcolors
-├── .macos
-├── .path
-├── .vscode
-│   ├── keybindings.json
-│   └── settings.json
-├── htop
-│   └── htoprc
-├── karabiner
-│   ├── complex_modifications
-│   └── karabiner.json
-└── nvim
-    ├── .gitignore
-    ├── .neoconf.json
-    ├── README.md
-    ├── init.lua
-    ├── lazy-lock.json
-    ├── lazyvim.json
-    ├── lua
-    └── stylua.toml
- 
- ```
+Generate with:
+
+```bash
+tree -a -L 3 --gitignore -I .git/ -I .gitignore -I README.md
+```
+
+```
+.
+├── .bash_profile
+├── .bashrc
+├── .config
+│   ├── .aliases
+│   ├── .bash_prompt
+│   ├── .exports
+│   ├── .functions
+│   ├── .homebrew
+│   │   ├── brew-casks.txt
+│   │   ├── brew-packages.txt
+│   │   └── brew.sh
+│   ├── .inputrc
+│   ├── .iterm_config
+│   │   ├── Default.json
+│   │   ├── com.googlecode.iterm2.plist
+│   │   └── gianluca_custom.itermcolors
+│   ├── .macos
+│   ├── .path
+│   ├── .vscode
+│   │   ├── keybindings.json
+│   │   └── settings.json
+│   ├── alacritty.toml
+│   ├── git
+│   │   └── config
+│   ├── htop
+│   │   └── htoprc
+│   ├── karabiner
+│   │   ├── complex_modifications
+│   │   └── karabiner.json
+│   └── nvim
+│       └── init.lua
+├── .tmux.conf
+├── .vimrc
+└── bootstrap.sh
+```
 
 
 ## Installation
@@ -146,21 +154,22 @@ exec $SHELL -l
 
 ## Notes
 
-`h: mason-quickstart`:
+From `h: mason-quickstart`:
 > Although many packages are perfectly usable out of the box through Neovim
 builtins, it is recommended to use other 3rd party plugins to further
 integrate these. The following plugins are recommended:
--   LSP: `lspconfig` & `mason-lspconfig.nvim`
--   DAP: `nvim-dap` & `nvim-dap-ui`
--   Linters: `null-ls.nvim` or `nvim-lint`
--   Formatters: `null-ls.nvim` or `formatter.nvim`
-formatter.nvim        https://github.com/mhartington/formatter.nvim
-lspconfig             https://github.com/neovim/nvim-lspconfig
-mason-lspconfig.nvim  https://github.com/williamboman/mason-lspconfig.nvim
-null-ls.nvim          https://github.com/jose-elias-alvarez/null-ls.nvim
-nvim-dap              https://github.com/mfussenegger/nvim-dap
-nvim-dap-ui           https://github.com/rcarriga/nvim-dap-ui
-nvim-lint             https://github.com/mfussenegger/nvim-lint
+  -   LSP: `lspconfig` & `mason-lspconfig.nvim`
+  -   DAP: `nvim-dap` & `nvim-dap-ui`
+  -   Linters: `null-ls.nvim` or `nvim-lint`
+  -   Formatters: `null-ls.nvim` or `formatter.nvim`
+
+  formatter.nvim        https://github.com/mhartington/formatter.nvim
+  lspconfig             https://github.com/neovim/nvim-lspconfig
+  mason-lspconfig.nvim  https://github.com/williamboman/mason-lspconfig.nvim
+  null-ls.nvim          https://github.com/jose-elias-alvarez/null-ls.nvim
+  nvim-dap              https://github.com/mfussenegger/nvim-dap
+  nvim-dap-ui           https://github.com/rcarriga/nvim-dap-ui
+  nvim-lint             https://github.com/mfussenegger/nvim-lint
 
 
 Helpful trick to list all lazy-installed plugins in a readible format (uses `jq`):
