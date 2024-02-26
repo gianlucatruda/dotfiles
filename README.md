@@ -29,18 +29,18 @@ Heavily modified adaptation of [Mathias's dotfiles](https://github.com/mathiasby
 - [x] Fix colours of `git status` (modified different from deleted)
 - [x] Fix htop config to sort by CPU util desc.
 - [x] Deal with persisting `pyenv not found` on shell startup
-- [ ] Install neovim LSPs for favourite languages with Mason
+- [x] Install neovim LSPs for favourite languages with Mason
+- [ ] Get linters and formatters configured for nvim (Mason)
+  - [ ] nvim-lint
+  - [ ] formatter.nvim
+- [ ] Neovim tweaks (see [this video](https://youtu.be/w7i4amO_zaE)):
+  - [ ] Harpoon for moving between marks rapidly
+  - [ ] Undo tree for undo history 
 - [-] Ensure `bootstrap.sh` is idempotent (running it multiple times doesn't cause issues).
+- [ ] Write `backsync.sh`, the inverse of `bootstrap.sh`, to rsync dotfiles back to repo (and also save brew packages to a .txt)
 - [ ] Test on Linux (and another mac)
 - [ ] Document structure, supported tools, and "philosophy"
 - [ ] Publish repo publicly (and document at [gianluca.ai](http://gianluca.ai))
-
-
-Helpful trick to list all lazy-installed plugins in a readible format (uses `jq`):
-
-```bash
-cat ~/.config/nvim/lazy-lock.json | jq 'keys'
-```
 
 ---
 
@@ -140,5 +140,32 @@ exec $SHELL -l
 
 ```bash
 ~/.config/.macos
+```
+
+---
+
+## Notes
+
+`h: mason-quickstart`:
+> Although many packages are perfectly usable out of the box through Neovim
+builtins, it is recommended to use other 3rd party plugins to further
+integrate these. The following plugins are recommended:
+-   LSP: `lspconfig` & `mason-lspconfig.nvim`
+-   DAP: `nvim-dap` & `nvim-dap-ui`
+-   Linters: `null-ls.nvim` or `nvim-lint`
+-   Formatters: `null-ls.nvim` or `formatter.nvim`
+formatter.nvim        https://github.com/mhartington/formatter.nvim
+lspconfig             https://github.com/neovim/nvim-lspconfig
+mason-lspconfig.nvim  https://github.com/williamboman/mason-lspconfig.nvim
+null-ls.nvim          https://github.com/jose-elias-alvarez/null-ls.nvim
+nvim-dap              https://github.com/mfussenegger/nvim-dap
+nvim-dap-ui           https://github.com/rcarriga/nvim-dap-ui
+nvim-lint             https://github.com/mfussenegger/nvim-lint
+
+
+Helpful trick to list all lazy-installed plugins in a readible format (uses `jq`):
+
+```bash
+cat ~/.config/nvim/lazy-lock.json | jq 'keys'
 ```
 
