@@ -16,19 +16,80 @@ Heavily modified adaptation of [Mathias's dotfiles](https://github.com/mathiasby
 - [x] Full refactor and test of `bootstrap.sh` initialisation script.
 - [x] Where can everything live? `XDG_CONFIG_HOME`?
 - [x] Fix git signing and authoring issues
-- [ ] Deal with persisting `pyenv not found` on shell startup
-  - [ ] NeoVim's `:checkhealth` might help
-- [ ] Dotfiles management
-  - [-] Look into dotfiles management tools: `stow`, `chezmoi`, `yadm`. -> None are installed by default and all require a fair bit of config.
-  - [-] Use a [bare git repo](https://www.atlassian.com/git/tutorials/dotfiles) -> complex aliasing, weird vibes, clunky and specific initial config.
-  - [ ] symlink the actual dotfiles repo? See [here](https://github.com/mischavandenburg/dotfiles/blob/e417b14bdfa2a8fd54183944c8d1cd6095fa88bb/setup#L23)
+- [-] Dotfiles management
+  - Look into dotfiles management tools: `stow`, `chezmoi`, `yadm`. -> None are installed by default and all require a fair bit of config.
+  - Use a [bare git repo](https://www.atlassian.com/git/tutorials/dotfiles) -> complex aliasing, weird vibes, clunky and specific initial config.
+  - Symlink the actual dotfiles repo? See [here](https://github.com/mischavandenburg/dotfiles/blob/e417b14bdfa2a8fd54183944c8d1cd6095fa88bb/setup#L23)
 - [x] Incorporate new NeoVim setup
 - [x] Make `reload` alias system agnostic: already is: `exec $SHELL -l`
+- [x] Fix alacritty font rendering (in Tmux)
+- [-] Customise nvim setup. Lean
+- [-] Tidy nvim plugins and streamline
+- [ ] Fix colours of `git status` (modified different from deleted)
+- [ ] Fix htop config to sort by CPU util desc.
 - [ ] Ensure `bootstrap.sh` is idempotent (running it multiple times doesn't cause issues).
+- [ ] Deal with persisting `pyenv not found` on shell startup
+  - NeoVim's `:checkhealth` might help
 - [ ] Test on Linux (and another mac)
-- [ ] Squash commit histories down, streamline `master` branch so everything is lean
 - [ ] Document structure, supported tools, and "philosophy"
 - [ ] Publish repo publicly (and document at [gianluca.ai](http://gianluca.ai))
+- [ ] 
+
+---
+
+## Explanation
+
+### Tools 
+
+- BASH
+- Tmux 
+- Vim (with lean .vimrc, no plugins)
+- neoVim (TODO in progress)
+- Karabiner
+- Homebrew
+- Alacritty
+- htop (and btm)
+- iTerm (now favouring alacritty)
+
+### Structure (TODO update, automate?)
+
+ ```
+ .config
+├── .aliases
+├── .bash_prompt
+├── .exports
+├── .functions
+├── .gitconfig
+├── .homebrew
+│   ├── brew-casks.txt
+│   ├── brew-packages.txt
+│   └── brew.sh
+├── .inputrc
+├── .iterm_config
+│   ├── Default.json
+│   ├── com.googlecode.iterm2.plist
+│   └── gianluca_custom.itermcolors
+├── .macos
+├── .path
+├── .vscode
+│   ├── keybindings.json
+│   └── settings.json
+├── htop
+│   └── htoprc
+├── karabiner
+│   ├── complex_modifications
+│   └── karabiner.json
+└── nvim
+    ├── .gitignore
+    ├── .neoconf.json
+    ├── README.md
+    ├── init.lua
+    ├── lazy-lock.json
+    ├── lazyvim.json
+    ├── lua
+    └── stylua.toml
+ 
+ ```
 
 
 ## Installation
