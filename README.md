@@ -28,9 +28,9 @@ Heavily modified adaptation of [Mathias's dotfiles](https://github.com/mathiasby
 - [x] "Migrate" `.vimrc` setup from vim to `init.lua` setup for nvim (honestly unnecessary, as kickstart.nvim is mostly to my liking already).
 - [x] Fix colours of `git status` (modified different from deleted)
 - [x] Fix htop config to sort by CPU util desc.
-- [ ] Ensure `bootstrap.sh` is idempotent (running it multiple times doesn't cause issues).
-- [ ] Deal with persisting `pyenv not found` on shell startup
-  - NeoVim's `:checkhealth` might help
+- [x] Deal with persisting `pyenv not found` on shell startup
+- [ ] Install neovim LSPs for favourite languages with Mason
+- [-] Ensure `bootstrap.sh` is idempotent (running it multiple times doesn't cause issues).
 - [ ] Test on Linux (and another mac)
 - [ ] Document structure, supported tools, and "philosophy"
 - [ ] Publish repo publicly (and document at [gianluca.ai](http://gianluca.ai))
