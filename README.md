@@ -39,6 +39,8 @@ Heavily modified adaptation of [Mathias's dotfiles](https://github.com/mathiasby
   - [ ] Undo tree for undo history 
 - [-] Write `backsync.sh`, the inverse of `bootstrap.sh`, to rsync dotfiles changes back to repo
 - [-] Document structure, supported tools, and "philosophy"
+- [ ] Have a look at [dotfiles.github.io](https://dotfiles.github.io/) for more ideas
+- [ ] Look into [mackup](https://github.com/lra/mackup) for keeping application settings in sync.
 - [ ] Test on Linux (and another mac)
 - [ ] Publish repo publicly (and document at [gianluca.ai](http://gianluca.ai))
 
@@ -103,12 +105,15 @@ tree -a -L 3 --gitignore -I .git/ -I .gitignore -I README.md
 │   ├── karabiner
 │   │   ├── complex_modifications
 │   │   └── karabiner.json
-│   └── nvim
-│       └── init.lua
-├── .tmux.conf
+│   ├── nvim
+│   │   └── init.lua
+│   └── tmux
+│       └── tmux.conf
 ├── .vimrc
 ├── backsync.sh
 └── bootstrap.sh
+
+11 directories, 26 files
 ```
 
 
