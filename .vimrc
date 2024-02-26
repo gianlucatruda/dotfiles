@@ -36,6 +36,9 @@ autocmd BufNewFile,BufRead *.jsx setfiletype javascript.jsx
 autocmd BufNewFile,BufRead *.ts setfiletype typescript
 autocmd BufNewFile,BufRead *.tsx setfiletype typescript.tsx
 
+" Verical ruler / column to track line width
+set colorcolumn=80
+highlight ColorColumn ctermbg=darkgrey guibg=darkgrey
 
 " Python-specific tweaks suggested by https://docs.python-guide.org/dev/env/#text-editors
 " set textwidth=79  " lines longer than 79 columns will be broken
