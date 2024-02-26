@@ -26,8 +26,8 @@ Heavily modified adaptation of [Mathias's dotfiles](https://github.com/mathiasby
 - [x] Customise nvim setup. Lean
 - [x] Tidy nvim plugins and streamline
 - [x] "Migrate" `.vimrc` setup from vim to `init.lua` setup for nvim (honestly unnecessary, as kickstart.nvim is mostly to my liking already).
-- [ ] Fix colours of `git status` (modified different from deleted)
-- [ ] Fix htop config to sort by CPU util desc.
+- [x] Fix colours of `git status` (modified different from deleted)
+- [x] Fix htop config to sort by CPU util desc.
 - [ ] Ensure `bootstrap.sh` is idempotent (running it multiple times doesn't cause issues).
 - [ ] Deal with persisting `pyenv not found` on shell startup
   - NeoVim's `:checkhealth` might help
