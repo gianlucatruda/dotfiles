@@ -1,0 +1,18 @@
+# Adapted from https://github.com/mischavandenburg/dotfiles
+
+[font]
+size = 16
+
+[font.normal]
+family = "Menlo" # Alacritty default on macOS
+
+[window]
+decorations = "None"
+startup_mode = "Windowed"
+
+[window.padding]
+x = 5
+y = 5
+
+
+
