@@ -44,10 +44,17 @@ P.S. You can delete this when you're done too. It's your config now :)
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
--- Gianluca's custom keymaps (many adapted from ThePrimeagen: https://www.youtube.com/watch?v=w7i4amO_zaE)
+-- Gianluca's custom keymaps --------------------------------------------------------
+
 -- Visual mode: move selected lines up and down with J and K (i.e. shift+j and shift+k)
+-- (adapted from ThePrimeagen: https://www.youtube.com/watch?v=w7i4amO_zaE)
 vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv")
 vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv")
+-- Insert current date in yyyy-mm-dd format
+vim.keymap.set('n', '<leader>id', function()
+  vim.cmd("r!date +\\%F")
+end, { desc = '[I]nsert current [D]ate' })
+
 
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    https://github.com/folke/lazy.nvim
