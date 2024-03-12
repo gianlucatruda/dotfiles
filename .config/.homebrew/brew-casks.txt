@@ -4,6 +4,7 @@ blackhole-16ch
 chromedriver
 dash
 jupyter-notebook-viewer
+kap
 macfuse
 opensc
 qlcolorcode
