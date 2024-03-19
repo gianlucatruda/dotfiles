@@ -1,4 +1,4 @@
-# Adapted from https://github.com/mischavandenburg/dotfiles
+# https://alacritty.org/config-alacritty.html
 
 [font]
 size = 16
@@ -8,12 +8,12 @@ family = "Menlo" # Alacritty default on macOS
 # family = "UbuntuMono Nerd Font"
 
 [window]
-decorations = "None"
-startup_mode = "Windowed"
+# decorations = "Full" | "None" | "Transparent" | "Buttonless"
+decorations = "Buttonless"
+startup_mode = "Maximized"
+dynamic_title = true
 
 [window.padding]
-x = 5
-y = 5
-
-
+x = 10
+y = 10
 
