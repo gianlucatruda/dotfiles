@@ -20,6 +20,7 @@ ca-certificates
 cairo
 cifer
 cjson
+cmake
 coreutils
 curl
 dav1d
