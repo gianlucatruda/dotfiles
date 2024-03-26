@@ -37,6 +37,7 @@ Heavily modified adaptation of [Mathias's dotfiles](https://github.com/mathiasby
 - [ ] Neovim tweaks (see [this video](https://youtu.be/w7i4amO_zaE)):
   - [ ] Harpoon for moving between marks rapidly
   - [ ] Undo tree for undo history 
+  - [ ] Neo-tree for file tree
 - [-] Write `backsync.sh`, the inverse of `bootstrap.sh`, to rsync dotfiles changes back to repo
 - [-] Document structure, supported tools, and "philosophy"
 - [ ] Have a look at [dotfiles.github.io](https://dotfiles.github.io/) for more ideas
