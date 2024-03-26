@@ -37,6 +37,7 @@ freetds
 freetype
 frei0r
 fribidi
+fzf
 gcc
 gd
 gettext
@@ -143,6 +144,7 @@ m4
 make
 mbedtls
 modular
+monolith
 moreutils
 mpdecimal
 mpfr
@@ -247,6 +249,7 @@ zeromq
 zimg
 zlib
 zopfli
+zoxide
 zstd
 alacritty
 background-music
