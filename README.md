@@ -64,6 +64,7 @@ Heavily modified adaptation of [Mathias's dotfiles](https://github.com/mathiasby
   - Mason: Plugin for managing language servers (via LSP)
   - Telescope
   - Treesitter
+  - Centerpad
 
 
 ### Structure 

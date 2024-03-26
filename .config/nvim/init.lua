@@ -54,6 +54,8 @@ vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv")
 vim.keymap.set('n', '<leader>id', function()
   vim.cmd("r!date +\\%F")
 end, { desc = '[I]nsert current [D]ate' })
+-- Centerpad the buffer
+vim.keymap.set('n', '<leader>z', '<cmd>Centerpad<cr>')
 
 
 -- [[ Install `lazy.nvim` plugin manager ]]
@@ -281,6 +283,11 @@ require('lazy').setup({
     },
     build = ':TSUpdate',
   },
+
+  -- Centerpad a single buffer
+  {
+    'smithbm2316/centerpad.nvim',
+  }
 
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
