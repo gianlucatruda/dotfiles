@@ -27,6 +27,7 @@ dav1d
 dex2jar
 dns2tcp
 dsh
+dust
 fcrackzip
 ffmpeg
 findutils
