@@ -18,6 +18,7 @@ bottom
 brotli
 ca-certificates
 cairo
+certifi
 cifer
 cjson
 cmake
@@ -135,6 +136,7 @@ libxrender
 libyaml
 libzip
 little-cms2
+llm
 lua
 luajit
 luv
