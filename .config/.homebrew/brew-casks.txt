@@ -3,6 +3,7 @@ background-music
 blackhole-16ch
 chromedriver
 dash
+eloston-chromium
 jupyter-notebook-viewer
 kap
 macfuse
