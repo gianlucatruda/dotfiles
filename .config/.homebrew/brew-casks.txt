@@ -4,6 +4,7 @@ blackhole-16ch
 chromedriver
 dash
 eloston-chromium
+ferdium
 jupyter-notebook-viewer
 kap
 macfuse
