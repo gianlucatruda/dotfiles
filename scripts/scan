@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# nmap network scanner
+# Version 4.5
+# Gianluca Truda, 10 March 2017
+
+MYIP="`ipconfig getifaddr en0`"
+echo "My IP: "$MYIP
+nmap -sP -A $MYIP/24

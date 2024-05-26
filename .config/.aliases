@@ -54,17 +54,6 @@ alias pf='sudo ping -f -s 56500 -t 60'
 alias nm='nmap -sP -A 10.0.0.0/24'
 alias hostthis='python -m SimpleHTTPServer 8000'
 
-# Runs a script to scan local network with nmap
-alias scan='bash ~/Scripts/network-scan/network-scan.sh'
-# Run backupper script
-alias backupper='python3 ~/Scripts/backupper/backupper.py'
-# Calls telebot script
-alias telebot='/Library/Frameworks/Python.framework/Versions/3.6/bin/python3 ~/Scripts/telegram_bot/gt_telegram_bot.py'
-# Bluetooth reset script
-alias btooth='sudo bash ~/Scripts/bluetoothSound/btSound.sh'
-# Speeds up iTerm launch by clearing system logs
-alias faster='sudo rm /private/var/log/asl/*.asl'
-
 # Enhanced tree view with `exa`
 alias exatree="exa --tree --git-ignore --git -h"
 
