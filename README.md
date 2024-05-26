@@ -85,7 +85,7 @@ tree -a -L 3 --gitignore -I .git/ -I .gitignore -I README.md
 │   ├── .bash_prompt
 │   ├── .exports
 │   ├── .functions
-│   ├── .homebrew
+│   ├── homebrew
 │   │   ├── brew-casks.txt
 │   │   ├── brew-packages.txt
 │   │   └── brew.sh
@@ -160,7 +160,7 @@ source ~/.config/.macos
 
 ### Backsync (in progress)
 
-Currently this just dumps homebrew package and cask lists to text files in `.config/.homebrew/`
+Currently this just dumps homebrew package and cask lists to text files in `.config/homebrew/`
 
 ```bash
 source backsync.sh
