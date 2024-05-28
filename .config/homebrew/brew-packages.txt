@@ -256,6 +256,7 @@ zopfli
 zoxide
 zstd
 alacritty
+apparency
 background-music
 blackhole-16ch
 chromedriver
@@ -274,3 +275,4 @@ qlstephen
 qlvideo
 quicklook-csv
 quicklook-json
+syntax-highlight
