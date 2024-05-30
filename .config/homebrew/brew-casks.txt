@@ -19,3 +19,4 @@ qlvideo
 quicklook-csv
 quicklook-json
 syntax-highlight
+vscodium
