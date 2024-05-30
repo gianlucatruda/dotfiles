@@ -76,6 +76,7 @@ krb5
 lame
 ldns
 leptonica
+lf
 libarchive
 libass
 libassuan
