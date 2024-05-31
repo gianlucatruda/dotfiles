@@ -1,5 +1,8 @@
 # https://alacritty.org/config-alacritty.html
 
+[env]
+term = "xterm-256color"
+
 [font]
 size = 16
 
