@@ -4,11 +4,11 @@
 term = "xterm-256color"
 
 [font]
-size = 16
+size = 18
 
 [font.normal]
-family = "Menlo" # Alacritty default on macOS
-# family = "UbuntuMono Nerd Font"
+# family = "Menlo" # Alacritty default on macOS
+family = "UbuntuMono Nerd Font"
 
 [window]
 # decorations = "Full" | "None" | "Transparent" | "Buttonless"
