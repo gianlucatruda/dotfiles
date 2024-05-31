@@ -48,8 +48,8 @@ fi;
 # You could just use `-g` instead, but I like being explicit
 complete -W "NSGlobalDomain" defaults;
 
-# Set git editor to vim
-git config --global core.editor "vim"
+# Set git editor to value of EDITOR set in .exports
+git config --global core.editor "$EDITOR"
 
 # Use vim keybindings to edit lines in bash (with 'readline' library)
 set -o vi

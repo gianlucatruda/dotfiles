@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-# Make vim the default editor.
-export EDITOR='vim';
+# Make neovim the default editor.
+export EDITOR='nvim';
 
 # Set INPUTRC so Readline knows where to look for .inputrc
 export INPUTRC="${XDG_CONFIG_HOME}/.inputrc"
