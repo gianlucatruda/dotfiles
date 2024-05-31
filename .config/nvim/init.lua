@@ -215,16 +215,14 @@ require('lazy').setup({
   },
 
   {
-    -- Theme inspired by Atom
-    'navarasu/onedark.nvim',
+    'EdenEast/nightfox.nvim',
     priority = 1000,
     lazy = false,
     config = function()
-      require('onedark').setup {
-        -- Set a style preset. 'dark' is default.
-        style = 'dark', -- dark, darker, cool, deep, warm, warmer, light
+      require('nightfox').setup {
+        -- Options
       }
-      require('onedark').load()
+      require('nightfox').load()
     end,
   },
 
@@ -308,6 +306,9 @@ require('lazy').setup({
 -- See `:help vim.o`
 -- NOTE: You can change these options as you wish!
 
+-- Set colorscheme: nightfox, dayfox, nordfox, carbonfox, etc.
+vim.cmd("colorscheme nightfox")
+
 -- Set highlight on search
 vim.o.hlsearch = false
 
@@ -342,7 +343,7 @@ vim.o.timeoutlen = 300
 -- Set completeopt to have a better completion experience
 vim.o.completeopt = 'menuone,noselect'
 
--- NOTE: You should make sure your terminal supports this
+-- NOTE: You should make sure your terminal supports true-color
 vim.o.termguicolors = true
 
 -- [[ Basic Keymaps ]]
@@ -460,7 +461,7 @@ vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, { desc = 
 vim.defer_fn(function()
   require('nvim-treesitter.configs').setup {
     -- Add languages to be installed here that you want installed for treesitter
-    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash', 'bash', 'html', 'latex', 'yaml', 'toml' },
+    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash', 'bash', 'html', 'latex', 'yaml', 'toml' },
 
     -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
     auto_install = false,
