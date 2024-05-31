@@ -1,4 +1,8 @@
-set nocompatible              " be iMproved, required
+" vi-Mproved, required
+set nocompatible              
+
+" Set colorscheme to default to be safe
+colorscheme default
 
 " Enable syntax highlighting
 syntax on
@@ -52,17 +56,6 @@ set autoindent    " align the new line indent with the previous line
 
 " Override some settings when using specific filetypes
 autocmd FileType javascript,javascript.jsx,javascriptreact,typescript,typscript.tsx,typescriptreact,json setlocal shiftwidth=2 tabstop=2 expandtab smarttab softtabstop=2
-
-" Custom ANSI colour scheme : http://vimdoc.sourceforge.net/htmldoc/syntax.html#{group-name}
-highlight Normal ctermfg=White
-highlight Comment ctermfg=DarkGray
-highlight Constant ctermfg=DarkGray
-highlight Identifier ctermfg=Green
-highlight Statement ctermfg=DarkBlue
-highlight PreProc ctermfg=DarkBlue
-highlight Type ctermfg=DarkRed
-highlight Special ctermfg=DarkMagenta
-highlight LineNr ctermfg=DarkGray
 
 " No annoying sound on errors
 set noerrorbells
