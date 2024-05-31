@@ -37,6 +37,11 @@ Heavily modified adaptation of [Mathias's dotfiles](https://github.com/mathiasby
   - Treesitter
   - Centerpad
 
+### Font and colour
+
+- [Nightfox](https://github.com/EdenEast/nightfox.nvim/tree/main) colorscheme (both alacritty and nvim).
+- [UbuntuMono](https://www.programmingfonts.org/#ubuntu) with [Nerd font icons](https://www.nerdfonts.com).
+
 
 ### Structure 
 
