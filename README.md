@@ -4,7 +4,7 @@ Heavily modified adaptation of [Mathias's dotfiles](https://github.com/mathiasby
 
 ---
 
-## Refactor TODOs
+## TODOs
 - [ ] Neovim tweaks (see [this video](https://youtu.be/w7i4amO_zaE)):
   - [ ] Harpoon for moving between marks rapidly
   - [ ] Undo tree for undo history 
@@ -14,6 +14,7 @@ Heavily modified adaptation of [Mathias's dotfiles](https://github.com/mathiasby
 - [ ] Look into [mackup](https://github.com/lra/mackup) for keeping application settings in sync.
 - [ ] Test on Linux (and another mac)
 - [ ] Publish repo publicly (and document at [gianluca.ai](http://gianluca.ai))
+- [ ] Incorporate [lf-gadgets](https://github.com/slavistan/lf-gadgets)
 
 ---
 
@@ -28,7 +29,7 @@ Heavily modified adaptation of [Mathias's dotfiles](https://github.com/mathiasby
 - Homebrew
 - Alacritty
 - htop
-- neoVim
+- neoVim (as primary editor)
   - Packer: Plugin/package management for Neovim.
   - Lazy.nvim : How does this compare or build atop Packer?
   - Mason: Plugin for managing language servers (via LSP)
@@ -46,6 +47,7 @@ tree -a -L 3 --gitignore -I .git/ -I .gitignore -I README.md
 ```
 
 ```
+
 .
 ├── .bash_profile
 ├── .bashrc
@@ -69,6 +71,10 @@ tree -a -L 3 --gitignore -I .git/ -I .gitignore -I README.md
 │   ├── karabiner
 │   │   ├── complex_modifications
 │   │   └── karabiner.json
+│   ├── lf
+│   │   ├── colors
+│   │   ├── icons
+│   │   └── lfrc
 │   ├── nvim
 │   │   └── init.lua
 │   └── tmux
@@ -77,9 +83,12 @@ tree -a -L 3 --gitignore -I .git/ -I .gitignore -I README.md
 ├── backsync.sh
 ├── bootstrap.sh
 └── scripts
+    ├── btooth
     ├── cheat
+    ├── scan
     ├── stt
     └── tts
+
 ```
 
 
