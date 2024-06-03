@@ -6,6 +6,7 @@ chromedriver
 dash
 eloston-chromium
 ferdium
+font-ubuntu-mono-nerd-font
 jupyter-notebook-viewer
 kap
 macfuse
