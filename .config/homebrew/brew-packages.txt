@@ -71,6 +71,7 @@ jbig2dec
 john
 jpeg-turbo
 jpeg-xl
+json-c
 knock
 krb5
 lame
@@ -160,6 +161,7 @@ ncurses
 neovim
 netpbm
 nettle
+newsboat
 nmap
 npth
 numpy
