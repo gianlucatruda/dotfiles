@@ -1,5 +1,9 @@
 https://feeds.bbci.co.uk/news/england/london/rss.xml "~BBC London"
 https://reddit.com/r/worldnews.rss "~r/WorldNews"
+https://reddit.com/r/worldnews/top.rss "~r/WorldNews top"
+https://reddit.com/r/worldnews/top.rss?t=day "~r/WorldNews top day"
+https://reddit.com/r/worldnews/top.rss?t=week "~r/WorldNews top week"
+https://reddit.com/r/worldnews/top.rss?t=month "~r/WorldNews top month"
 
 https://feeds.bloomberg.com/economics/news.rss
 https://feeds.bloomberg.com/green/news.rss
