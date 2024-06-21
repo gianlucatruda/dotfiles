@@ -63,10 +63,11 @@ reset-cursor() {
 export PS1="$(reset-cursor)$PS1"
 
 # iTerm shell integration
-test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
+#test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
 
 # Set up fzf key bindings and fuzzy completion
 eval "$(fzf --bash)"
 
 # Zoxide integration with Bash
 eval "$(zoxide init bash)"
+
