@@ -158,6 +158,7 @@ mpg123
 msgpack
 mysql-client
 ncurses
+neofetch
 neovim
 netpbm
 nettle
@@ -210,6 +211,7 @@ rtmpdump
 rubberband
 ruby-build
 screen
+screenresolution
 sdl2
 sfnt2woff
 sfnt2woff-zopfli
