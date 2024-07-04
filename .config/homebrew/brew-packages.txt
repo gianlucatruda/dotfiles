@@ -26,6 +26,7 @@ coreutils
 curl
 dav1d
 dex2jar
+diff-pdf
 dns2tcp
 dsh
 dust
@@ -53,6 +54,7 @@ glib
 gmp
 gnupg
 gnutls
+gpgme
 graphite2
 grep
 harfbuzz
@@ -165,6 +167,8 @@ nettle
 newsboat
 nmap
 npth
+nspr
+nss
 numpy
 oniguruma
 openblas
@@ -191,6 +195,7 @@ pinentry
 pixman
 pkg-config
 pngcheck
+poppler
 pugixml
 pv
 pyenv
@@ -221,6 +226,7 @@ snappy
 socat
 speedtest-cli
 speex
+spotify_player
 sqlite
 sqlmap
 srt
@@ -248,6 +254,7 @@ vbindiff
 webp
 wget
 woff2
+wxwidgets
 x264
 x265
 xorgproto
