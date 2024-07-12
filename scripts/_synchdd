@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+echo "Checking for GT-Media..."
+if ! [ "$(diskutil list | grep 'GT-Media')" == "" ]; then 
+	echo "Syncing GT-Media..."
+	echo "1-Projects..."
+	rsync -avh --exclude '.DS_Store' /Users/gianluca/1-Projects/ //Volumes/GT-Media/1-Projects/
+	echo "2-Areas..."
+	rsync -avh --exclude '.DS_Store' /Users/gianluca/2-Areas/ //Volumes/GT-Media/2-Areas/
+	echo "3-Resources..."
+	rsync -avh --exclude '.DS_Store' /Users/gianluca/3-Resources/ //Volumes/GT-Media/3-Resources/
+	echo "4-Archives..."
+	rsync -avh --exclude '.DS_Store' /Users/gianluca/4-Archives/ //Volumes/GT-Media/4-Archives/
+	echo ""
+	echo "Finished syncing to GT-Media"
+fi
+
+echo "Checking for Media..."
+if ! [ "$(diskutil list | grep 'Media')" == "" ]; then 
+	echo "Syncing Media..."
+	echo "1-Projects..."
+	rsync -avh --exclude '.DS_Store' /Users/gianluca/1-Projects/ //Volumes/Media/1-Projects/
+	echo "2-Areas..."
+	rsync -avh --exclude '.DS_Store' /Users/gianluca/2-Areas/ //Volumes/Media/2-Areas/
+	echo "3-Resources..."
+	rsync -avh --exclude '.DS_Store' /Users/gianluca/3-Resources/ //Volumes/Media/3-Resources/
+	echo "4-Archives..."
+	rsync -avh --exclude '.DS_Store' /Users/gianluca/4-Archives/ //Volumes/Media/4-Archives/
+	echo ""
+	echo "Finished syncing to Media"
+fi
+
