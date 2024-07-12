@@ -57,6 +57,10 @@ end, { desc = '[I]nsert current [D]ate' })
 -- Centerpad the buffer
 vim.keymap.set('n', '<leader>z', '<cmd>Centerpad<cr>')
 
+-- Gianluca's custom tab settings (vim-sleuth will override in some contexts?) -----
+-- Note: these are similar to my defaults in .vimrc for vanilla vim (good baseline)
+vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
 
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    https://github.com/folke/lazy.nvim
