@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+HOMEDIR="/Users/gianluca"
+MAIN_VAULT="$HOMEDIR/Library/Mobile Documents/iCloud~md~obsidian/Documents/TheVault/"
+GIT_VAULT="$HOMEDIR/3-Resources/Obsidian-vaults/TheVault/"
+TRASH="$HOMEDIR/.Trash"
+TRASHDIR="$TRASH/$(date +%Y-%m-%d_%H-%M-%S)"
+
+echo "Creating new directory: $TRASHDIR"
+mkdir "$TRASHDIR"
+
+echo "Clearing '$GIT_VAULT'..."
+for item in "$GIT_VAULT"/*; do
+	if [[ "$item" == ".git" || "$item" == ".gitignore" ]]; then
+		echo "Ignoring $item"
+		continue
+	fi
+	echo "Trashing $item"
+	mv -- "$item" "$TRASHDIR"
+done
+
+echo "Clearing .obsidian/ and .trash/"
+mv -- "$GIT_VAULT/.obsidian/" "$TRASHDIR"
+mv -- "$GIT_VAULT/.trash/" "$TRASHDIR"
+
+echo "Resyncing from '$MAIN_VAULT'..."
+rsync -ah --exclude '.DS_Store' "$MAIN_VAULT" "$GIT_VAULT" 
+
