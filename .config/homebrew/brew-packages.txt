@@ -75,6 +75,7 @@ john
 jpeg-turbo
 jpeg-xl
 json-c
+json-glib
 knock
 krb5
 lame
@@ -214,6 +215,7 @@ readline
 rename
 ripgrep
 rlwrap
+rmlint
 rtmpdump
 rubberband
 ruby-build
