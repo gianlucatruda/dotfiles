@@ -19,10 +19,10 @@ function sf() {
 	local dir=""
 	# Find all "regular" files with rg, and open list in fzf
 	if [[ -n "$1" && $1 == "-a" ]]; then
-		dir=$(rg -L --files-with-matches --no-messages --hidden --glob '!.git' --max-depth 5 . | fzf)
+		dir=$(rg -L --files-with-matches --no-messages --hidden --glob '!.git' --max-depth 5 . | fzf --query "$2")
 		# sf -a includes all hidden files that aren't .git
 	else 
-		dir=$(rg -L --files-with-matches --no-messages --max-depth 5 . | fzf)
+		dir=$(rg -L --files-with-matches --no-messages --max-depth 5 . | fzf --query "$1")
 		# hidden files excluded by default
 	fi
 	# Runs if result non-empty and regular file
@@ -33,7 +33,7 @@ function sf() {
 
 # [s]earch [d]irectory with fzf fuzzy finding, cd there
 function sd() {
-	local dir=$(find -L . -type d \( ! -path '*.git*' \) -mindepth 1 -maxdepth 4 | fzf)
+	local dir=$(find -L . -type d \( ! -path '*.git*' \) -mindepth 1 -maxdepth 4 | fzf --query "$1")
     [[ -n "$dir" && -d "$dir" ]] && builtin cd "$dir"
 }
 
