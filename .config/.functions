@@ -1,5 +1,43 @@
 #!/usr/bin/env bash
 
+# Open directory in [v]im (neovim, else vi(m))
+function v() {
+	# open current directory if no valid argument given
+	local dir="."
+	[[ -n "$1" && -e "$1" ]] && dir=$1
+	if command -v nvim >/dev/null 2>&1; then
+		nvim "$dir" 
+	else
+		vi "$dir" 
+	fi
+
+}
+
+# [s]earch [f]iles (text-readable, unhidden) with fzf fuzzy finding, open in (neo)vim
+# sf -a includes all hidden files that aren't .git
+function sf() {
+	local dir=""
+	# Find all "regular" files with rg, and open list in fzf
+	if [[ -n "$1" && $1 == "-a" ]]; then
+		dir=$(rg --files-with-matches --no-messages --hidden --glob '!.git' . | fzf)
+		# sf -a includes all hidden files that aren't .git
+	else 
+		dir=$(rg --files-with-matches --no-messages . | fzf)
+		# hidden files excluded by default
+	fi
+	# Runs if result non-empty and regular file
+	if [[ -n "$dir" && -f "$dir" ]]; then
+		v "$dir" # Makes use of v()
+	fi
+}
+
+# [s]earch [d]irectory with fzf fuzzy finding, cd there
+function sd() {
+	local dir=$(find . -type d \( ! -path '*.git*' \) | fzf)
+    [[ -n "$dir" && -d "$dir" ]] && builtin cd "$dir"
+}
+
+
 # Update environment variables in tmux (used in .bash_profile)
 function update_environment_from_tmux() {
   if [ -n "${TMUX}" ]; then
