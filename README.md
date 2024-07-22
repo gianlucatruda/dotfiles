@@ -109,6 +109,37 @@ tree -a -L 3 --gitignore -I .git/ -I .gitignore -I README.md
 - **`o()`**: Opens the current directory or a specified file/directory with the default system application.
 - **`tre()`**: Runs the `tree` command showing hidden files and colorizing the output (ignoring `.git`, `node_modules`, and `bower_components` directories) and pipes the results to `less` with options to keep colors and line numbers.
 
+## Migrating apps to homebrew
+
+Things I have installed and use, but which aren't managed by Homebrew (yet).
+
+- [ ] anki
+- [ ] blender
+- [ ] brave-browser
+- [ ] docker
+- [ ] firefox
+- [ ] handbrake
+- [ ] hex-fiend
+- [ ] iina
+- [ ] imageoptim
+- [ ] karabiner-elements
+- [ ] libreoffice
+- [ ] obs
+- [ ] obsidian
+- [ ] shottr
+- [ ] spectacle
+- [ ] spotify
+- [ ] tad
+- [ ] todoist
+- [ ] toothfairy
+- [ ] transmission
+- [ ] vcv-rack
+- [x] alacritty
+- [x] ferdium
+- [x] kap
+- [x] qlmarkdown
+- [x] syntax-highlight
+- [x] vscodium
 
 
 ## Installation
