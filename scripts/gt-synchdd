@@ -1,32 +1,39 @@
 #!/usr/bin/env bash
 
-echo "Checking for GT-Media..."
-if ! [ "$(diskutil list | grep 'GT-Media')" == "" ]; then 
-	echo "Syncing GT-Media..."
+DRIVE1="//Volumes/GT-Media"
+DRIVE2="//Volumes/Media"
+
+echo ""
+
+echo "Checking for '$DRIVE1'..."
+if [[ -n "$DRIVE1" && -d "$DRIVE1" ]]; then 
+	echo "Syncing '$DRIVE1'..."
 	echo "1-Projects..."
-	rsync -avh --exclude '.DS_Store' /Users/gianluca/1-Projects/ //Volumes/GT-Media/1-Projects/
+	rsync -avh --exclude '.DS_Store' /Users/gianluca/1-Projects/ "$DRIVE1"/1-Projects/
 	echo "2-Areas..."
-	rsync -avh --exclude '.DS_Store' /Users/gianluca/2-Areas/ //Volumes/GT-Media/2-Areas/
+	rsync -avh --exclude '.DS_Store' /Users/gianluca/2-Areas/ "$DRIVE1"/2-Areas/
 	echo "3-Resources..."
-	rsync -avh --exclude '.DS_Store' /Users/gianluca/3-Resources/ //Volumes/GT-Media/3-Resources/
+	rsync -avh --exclude '.DS_Store' /Users/gianluca/3-Resources/ "$DRIVE1"/3-Resources/
 	echo "4-Archives..."
-	rsync -avh --exclude '.DS_Store' /Users/gianluca/4-Archives/ //Volumes/GT-Media/4-Archives/
+	rsync -avh --exclude '.DS_Store' /Users/gianluca/4-Archives/ "$DRIVE1"/4-Archives/
 	echo ""
-	echo "Finished syncing to GT-Media"
+	echo "Finished syncing to '$DRIVE1'"
 fi
 
-echo "Checking for Media..."
-if ! [ "$(diskutil list | grep 'Media')" == "" ]; then 
-	echo "Syncing Media..."
+echo ""
+
+echo "Checking for '$DRIVE2'..."
+if [[ -n "$DRIVE2" && -d "$DRIVE2" ]]; then 
+	echo "Syncing '$DRIVE2'..."
 	echo "1-Projects..."
-	rsync -avh --exclude '.DS_Store' /Users/gianluca/1-Projects/ //Volumes/Media/1-Projects/
+	rsync -avh --exclude '.DS_Store' /Users/gianluca/1-Projects/ "$DRIVE2"/1-Projects/
 	echo "2-Areas..."
-	rsync -avh --exclude '.DS_Store' /Users/gianluca/2-Areas/ //Volumes/Media/2-Areas/
+	rsync -avh --exclude '.DS_Store' /Users/gianluca/2-Areas/ "$DRIVE2"/2-Areas/
 	echo "3-Resources..."
-	rsync -avh --exclude '.DS_Store' /Users/gianluca/3-Resources/ //Volumes/Media/3-Resources/
+	rsync -avh --exclude '.DS_Store' /Users/gianluca/3-Resources/ "$DRIVE2"/3-Resources/
 	echo "4-Archives..."
-	rsync -avh --exclude '.DS_Store' /Users/gianluca/4-Archives/ //Volumes/Media/4-Archives/
+	rsync -avh --exclude '.DS_Store' /Users/gianluca/4-Archives/ "$DRIVE2"/4-Archives/
 	echo ""
-	echo "Finished syncing to Media"
+	echo "Finished syncing to '$DRIVE2'"
 fi
 
