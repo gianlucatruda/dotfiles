@@ -1,5 +1,5 @@
 theme = "dracula"
-client_id = "REDACTED"
+client_id = "65b708073fc0480ea92a077233ca87bd"
 client_port = 8080
 playback_format = """
 {track} • {artists}
