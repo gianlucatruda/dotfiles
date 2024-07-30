@@ -95,7 +95,7 @@ libdshconfig
 libevent
 libfido2
 libgcrypt
-libgit2
+libgit2@1.7
 libgpg-error
 libheif
 libidn
@@ -121,7 +121,6 @@ libsoxr
 libssh
 libssh2
 libtasn1
-libtermkey
 libtiff
 libtool
 libunibreak
@@ -143,6 +142,7 @@ libyaml
 libzip
 little-cms2
 llm
+lpeg
 lua
 luajit
 luv
@@ -273,8 +273,6 @@ zoxide
 zstd
 alacritty
 apparency
-background-music
-blackhole-16ch
 chromedriver
 dash
 eloston-chromium

@@ -1,7 +1,5 @@
 alacritty
 apparency
-background-music
-blackhole-16ch
 chromedriver
 dash
 eloston-chromium
