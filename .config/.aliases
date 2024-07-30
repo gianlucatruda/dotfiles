@@ -21,6 +21,9 @@ alias p='ping 8.8.8.8'
 alias py='python3'
 alias python='python3'
 alias sfa='sf -a' # based on sf() function of mine
+alias ecd="echo -n $(date +'%Y-%m-%d')" # [e]cho [c]urrent [d]ate
+alias ect="echo -n $(date +'%H-%M-%S')" # [e]cho [c]urrent [t]ime
+alias ecdt="echo -n $(date +'%Y-%m-%d_%H-%M')" # [e]cho [c]urrent [d]ate[t]ime
 
 # Git
 alias gitlog='git log --pretty=oneline -n 20 --graph --abbrev-commit'
