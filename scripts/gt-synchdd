@@ -1,39 +1,21 @@
 #!/usr/bin/env bash
 
-DRIVE1="//Volumes/GT-Media"
-DRIVE2="//Volumes/Media"
+echo "TODO: currently in --dry-run. You need to test it!"
 
-echo ""
-
-echo "Checking for '$DRIVE1'..."
-if [[ -n "$DRIVE1" && -d "$DRIVE1" ]]; then 
-	echo "Syncing '$DRIVE1'..."
-	echo "1-Projects..."
-	rsync -avh --exclude '.DS_Store' /Users/gianluca/1-Projects/ "$DRIVE1"/1-Projects/
-	echo "2-Areas..."
-	rsync -avh --exclude '.DS_Store' /Users/gianluca/2-Areas/ "$DRIVE1"/2-Areas/
-	echo "3-Resources..."
-	rsync -avh --exclude '.DS_Store' /Users/gianluca/3-Resources/ "$DRIVE1"/3-Resources/
-	echo "4-Archives..."
-	rsync -avh --exclude '.DS_Store' /Users/gianluca/4-Archives/ "$DRIVE1"/4-Archives/
-	echo ""
-	echo "Finished syncing to '$DRIVE1'"
-fi
-
-echo ""
-
-echo "Checking for '$DRIVE2'..."
-if [[ -n "$DRIVE2" && -d "$DRIVE2" ]]; then 
-	echo "Syncing '$DRIVE2'..."
-	echo "1-Projects..."
-	rsync -avh --exclude '.DS_Store' /Users/gianluca/1-Projects/ "$DRIVE2"/1-Projects/
-	echo "2-Areas..."
-	rsync -avh --exclude '.DS_Store' /Users/gianluca/2-Areas/ "$DRIVE2"/2-Areas/
-	echo "3-Resources..."
-	rsync -avh --exclude '.DS_Store' /Users/gianluca/3-Resources/ "$DRIVE2"/3-Resources/
-	echo "4-Archives..."
-	rsync -avh --exclude '.DS_Store' /Users/gianluca/4-Archives/ "$DRIVE2"/4-Archives/
-	echo ""
-	echo "Finished syncing to '$DRIVE2'"
-fi
-
+source ~/.config/.extra # Get drive paths
+for DRIVE in $BACKUP_HDD_01 $BACKUP_HDD_02; do
+	if ! [[ -n $DRIVE ]]; then
+		echo "Backup drives not properly specified in ~/.config/.extra"
+		exit 0
+	fi
+	if ! [[ -e "$DRIVE" && -d "$DRIVE" ]]; then
+		echo "$DRIVE not found, skipping."
+		continue
+	fi
+	echo -e "\nSyncing '$DRIVE'...\n"
+	(set -x; rsync -avh --exclude '.DS_Store' $HOME/1-Projects/ "$DRIVE"/1-Projects/ --dry-run)
+	(set -x; rsync -avh --exclude '.DS_Store' $HOME/2-Areas/ "$DRIVE"/2-Areas/ --dry-run)
+	(set -x; rsync -avh --exclude '.DS_Store' $HOME/3-Resources/ "$DRIVE"/3-Resources/ --dry-run)
+	(set -x; rsync -avh --exclude '.DS_Store' $HOME/4-Archives/ "$DRIVE"/4-Archives/ --dry-run)
+	echo -e "\nFinished syncing to '$DRIVE'\n"
+done
