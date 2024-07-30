@@ -225,6 +225,7 @@ sdl2
 sfnt2woff
 sfnt2woff-zopfli
 shared-mime-info
+shellcheck
 six
 snappy
 socat
