@@ -20,9 +20,9 @@ for item in "$GIT_VAULT"/*; do
 done
 
 echo "Clearing .obsidian/ and .trash/"
-mv -- "$GIT_VAULT/.obsidian/" "$TRASHDIR"
-mv -- "$GIT_VAULT/.trash/" "$TRASHDIR"
+(set -x; mv -- "$GIT_VAULT/.obsidian/" "$TRASHDIR")
+(set -x; mv -- "$GIT_VAULT/.trash/" "$TRASHDIR")
 
 echo "Resyncing from '$MAIN_VAULT'..."
-rsync -ah --exclude '.DS_Store' "$MAIN_VAULT" "$GIT_VAULT" 
+(set -x; rsync -ah --exclude '.DS_Store' "$MAIN_VAULT" "$GIT_VAULT")
 
