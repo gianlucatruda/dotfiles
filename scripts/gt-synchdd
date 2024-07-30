@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-echo "TODO: currently in --dry-run. You need to test it!"
-
 source ~/.config/.extra # Get drive paths
 for DRIVE in $BACKUP_HDD_01 $BACKUP_HDD_02; do
 	if ! [[ -n $DRIVE ]]; then
@@ -13,9 +11,9 @@ for DRIVE in $BACKUP_HDD_01 $BACKUP_HDD_02; do
 		continue
 	fi
 	echo -e "\nSyncing '$DRIVE'...\n"
-	(set -x; rsync -avh --exclude '.DS_Store' $HOME/1-Projects/ "$DRIVE"/1-Projects/ --dry-run)
-	(set -x; rsync -avh --exclude '.DS_Store' $HOME/2-Areas/ "$DRIVE"/2-Areas/ --dry-run)
-	(set -x; rsync -avh --exclude '.DS_Store' $HOME/3-Resources/ "$DRIVE"/3-Resources/ --dry-run)
-	(set -x; rsync -avh --exclude '.DS_Store' $HOME/4-Archives/ "$DRIVE"/4-Archives/ --dry-run)
+	(set -x; rsync -avh --exclude '.DS_Store' $HOME/1-Projects/ "$DRIVE"/1-Projects/)
+	(set -x; rsync -avh --exclude '.DS_Store' $HOME/2-Areas/ "$DRIVE"/2-Areas/)
+	(set -x; rsync -avh --exclude '.DS_Store' $HOME/3-Resources/ "$DRIVE"/3-Resources/)
+	(set -x; rsync -avh --exclude '.DS_Store' $HOME/4-Archives/ "$DRIVE"/4-Archives/)
 	echo -e "\nFinished syncing to '$DRIVE'\n"
 done
