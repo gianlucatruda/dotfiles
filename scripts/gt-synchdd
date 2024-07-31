@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source ~/.config/.extra # Get drive paths
+# source ~/.config/.extra # Get drive paths
 for DRIVE in $BACKUP_HDD_01 $BACKUP_HDD_02; do
 	if ! [[ -n $DRIVE ]]; then
 		echo "Backup drives not properly specified in ~/.config/.extra"
