@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-# source ~/.config/.extra # Pull in the value of MAIN_OBSIDIAN_VAULT
 if ! [[ -n $MAIN_OBSIDIAN_VAULT && -e "$MAIN_OBSIDIAN_VAULT" ]]; then
 	echo "MAIN_OBSIDIAN_VAULT not defined in ~/.config/.extra or path is invalid."
 	exit 0
