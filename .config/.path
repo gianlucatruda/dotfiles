@@ -21,5 +21,8 @@ export PATH="$HOME/.modular/pkg/packages.modular.com_mojo/bin:$PATH"
 # GNU make (gmake) as make
 export PATH="/opt/homebrew/opt/make/libexec/gnubin:$PATH"
 
+# Add Rust stuff to path
+export PATH="$HOME/.cargo/bin:$PATH"
+
 # Add my ~/scripts/ to path
-export PATH="~/scripts:$PATH"
+export PATH="$HOME/scripts:$PATH"
