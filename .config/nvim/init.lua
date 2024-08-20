@@ -289,7 +289,7 @@ require('lazy').setup({
   -- Centerpad a single buffer
   {
     'smithbm2316/centerpad.nvim',
-  }
+  },
 
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
@@ -612,10 +612,9 @@ require('mason-lspconfig').setup()
 --  If you want to override the default filetypes that your language server will attach to you can
 --  define the property 'filetypes' to the map in question.
 local servers = {
-  -- clangd = {},
   -- gopls = {},
   -- pyright = {},
-  -- rust_analyzer = {},
+  rust_analyzer = { filetypes = { 'rust', 'rs' } },
   tsserver = { filetypes = { 'javascript', 'jsx', 'typescript' } },
   jsonls = { filetypes = { 'json' } },
   clangd = {},
