@@ -9,7 +9,6 @@ function doIt() {
 		--exclude "README.md" \
 		--exclude ".extra" \
 		--exclude ".gitignore" \
-		--exclude ".config/homebrew" \
 		-avh --no-perms . ~;
 	source ~/.bash_profile;
 }

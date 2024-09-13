@@ -202,12 +202,40 @@ exec $SHELL -l
 source ~/.config/.macos
 ```
 
-### Backsync (in progress)
-
-Currently this just dumps homebrew package and cask lists to text files in `.config/homebrew/`
+Install and upgrade all dependencies from the Brewfile using Homebrew:
 
 ```bash
-source backsync.sh
+brew bundle install --file ~/.config/homebrew/Brewfile
+```
+
+#### Keeping macOS packages in sync
+
+To update the dotfiles repo:
+
+```bash
+cd <your-dotfiles-get-repo>
+brew bundle dump --force --file .config/homebrew/Brewfile
+```
+
+To sync the system to the dotfiles repo:
+
+```bash
+cd <your-dotfiles-get-repo>
+source bootstrap.sh 
+```
+Install, cleanup, upgrade in steps:
+```bash
+brew bundle install --no-upgrade --file ~/.config/homebrew/Brewfile
+brew bundle cleanup --force --file ~/.config/homebrew/Brewfile
+brew bundle install --file ~/.config/homebrew/Brewfile
+```
+
+Or just do it all in one go:
+```bash
+brew bundle install --cleanup --force --file ~/.config/homebrew/Brewfile
+```
+
+
 ```
 
 ---
