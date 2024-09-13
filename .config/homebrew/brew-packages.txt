@@ -151,6 +151,7 @@ lz4
 lzo
 m-cli
 m4
+mactop
 make
 mbedtls
 modular
@@ -266,6 +267,8 @@ xorgproto
 xpdf
 xvid
 xz
+youtube-dl
+yt-dlp
 zeromq
 zimg
 zlib
