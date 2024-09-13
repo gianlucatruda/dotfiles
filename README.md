@@ -46,7 +46,6 @@ tree -a -L 3 --gitignore -I .git/ -I .gitignore -I README.md
 ```
 
 ```
-
 .
 ├── .bash_profile
 ├── .bashrc
@@ -62,32 +61,37 @@ tree -a -L 3 --gitignore -I .git/ -I .gitignore -I README.md
 │   ├── git
 │   │   └── config
 │   ├── homebrew
-│   │   ├── brew-casks.txt
-│   │   ├── brew-packages.txt
-│   │   └── brew.sh
+│   │   └── Brewfile
 │   ├── htop
 │   │   └── htoprc
 │   ├── karabiner
+│   │   ├── assets
 │   │   ├── complex_modifications
 │   │   └── karabiner.json
 │   ├── lf
 │   │   ├── colors
 │   │   ├── icons
 │   │   └── lfrc
+│   ├── newsboat
+│   │   └── config
 │   ├── nvim
 │   │   └── init.lua
+│   ├── spotify-player
+│   │   └── app.toml
 │   └── tmux
 │       └── tmux.conf
 ├── .vimrc
-├── backsync.sh
 ├── bootstrap.sh
 └── scripts
-    ├── btooth
-    ├── cheat
-    ├── scan
-    ├── stt
-    └── tts
+    ├── gt-btooth
+    ├── gt-cheat
+    ├── gt-scan
+    ├── gt-stt
+    ├── gt-sync-obsidian
+    ├── gt-synchdd
+    └── gt-tts
 
+14 directories, 30 files
 ```
 
 ## NeoVim setup
@@ -234,35 +238,3 @@ Or just do it all in one go:
 ```bash
 brew bundle install --cleanup --force --file ~/.config/homebrew/Brewfile
 ```
-
-
-```
-
----
-
-## Notes
-
-From `h: mason-quickstart`:
-> Although many packages are perfectly usable out of the box through Neovim
-builtins, it is recommended to use other 3rd party plugins to further
-integrate these. The following plugins are recommended:
-  -   LSP: `lspconfig` & `mason-lspconfig.nvim`
-  -   DAP: `nvim-dap` & `nvim-dap-ui`
-  -   Linters: `null-ls.nvim` or `nvim-lint`
-  -   Formatters: `null-ls.nvim` or `formatter.nvim`
-
-  formatter.nvim        https://github.com/mhartington/formatter.nvim
-  lspconfig             https://github.com/neovim/nvim-lspconfig
-  mason-lspconfig.nvim  https://github.com/williamboman/mason-lspconfig.nvim
-  null-ls.nvim          https://github.com/jose-elias-alvarez/null-ls.nvim
-  nvim-dap              https://github.com/mfussenegger/nvim-dap
-  nvim-dap-ui           https://github.com/rcarriga/nvim-dap-ui
-  nvim-lint             https://github.com/mfussenegger/nvim-lint
-
-
-Helpful trick to list all lazy-installed plugins in a readible format (uses `jq`):
-
-```bash
-cat ~/.config/nvim/lazy-lock.json | jq 'keys'
-```
-
