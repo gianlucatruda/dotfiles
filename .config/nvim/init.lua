@@ -465,10 +465,10 @@ vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, { desc = 
 vim.defer_fn(function()
   require('nvim-treesitter.configs').setup {
     -- Add languages to be installed here that you want installed for treesitter
-    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash', 'bash', 'html', 'latex', 'yaml', 'toml' },
+    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash', 'bash', 'html', 'latex', 'yaml', 'toml', 'markdown', 'latex', 'svelte' },
 
     -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
-    auto_install = false,
+    auto_install = true,
     -- Install languages synchronously (only applied to `ensure_installed`)
     sync_install = false,
     -- List of parsers to ignore installing
@@ -606,14 +606,14 @@ require('mason-lspconfig').setup()
 --  If you want to override the default filetypes that your language server will attach to you can
 --  define the property 'filetypes' to the map in question.
 local servers = {
-  -- gopls = {},
-  -- pyright = {},
   rust_analyzer = { filetypes = { 'rust', 'rs' } },
-  tsserver = { filetypes = { 'javascript', 'jsx', 'typescript' } },
+  tsserver = { filetypes = { 'javascript', 'jsx', 'typescript', 'svelte' } },
   jsonls = { filetypes = { 'json' } },
   clangd = {},
   pylsp = {},
+  -- pyright = {},
   html = { filetypes = { 'html', 'twig', 'hbs' } },
+  vale_ls = { filetypes = { 'markdown', 'txt', 'latex', 'tex' } },
   lua_ls = {
     Lua = {
       workspace = { checkThirdParty = false },
