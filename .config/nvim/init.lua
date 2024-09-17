@@ -613,7 +613,6 @@ local servers = {
   pylsp = {},
   -- pyright = {},
   html = { filetypes = { 'html', 'twig', 'hbs' } },
-  vale_ls = { filetypes = { 'markdown', 'txt', 'latex', 'tex' } },
   lua_ls = {
     Lua = {
       workspace = { checkThirdParty = false },
@@ -621,6 +620,10 @@ local servers = {
       -- NOTE: toggle below to ignore Lua_LS's noisy `missing-fields` warnings
       diagnostics = { disable = { 'missing-fields' } },
     },
+  },
+  vale_ls = {
+    filetypes = { 'markdown', 'txt', 'latex', 'tex' },
+    autostart = false,
   },
 }
 
