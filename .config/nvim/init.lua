@@ -1,4 +1,19 @@
 --[[
+          -- config = "<path_to_custom_ruff_toml>", -- Custom config for ruff to use
+          -- extendSelect = { "I" },              -- Rules that are additionally used by ruff
+          -- extendIgnore = { "C90" },            -- Rules that are additionally ignored by ruff
+          -- format = { "I" },                    -- Rules that are marked as fixable by ruff that should be fixed when running textDocument/formatting
+          -- severities = { ["D212"] = "I" },     -- Optional table of rules where a custom severity is desired
+          -- unsafeFixes = false,                 -- Whether or not to offer unsafe fixes as code actions. Ignored with the "Fix All" action
+          --
+          -- -- Rules that are ignored when a pyproject.toml or ruff.toml is present:
+          -- lineLength = 88,                               -- Line length to pass to ruff checking and formatting
+          -- exclude = { "__about__.py" },                  -- Files to be excluded by ruff checking
+          -- select = { "F" },                              -- Rules to be enabled by ruff
+          -- ignore = { "D210" },                           -- Rules to be ignored by ruff
+          -- perFileIgnores = { ["__init__.py"] = "CPY001" }, -- Rules that should be ignored for specific files
+          -- preview = false,                               -- Whether to enable the preview style linting and formatting.
+          -- targetVersion = "py310",                       -- The minimum python version to target (applies for both linting and formatting).
 
 =====================================================================
 ==================== READ THIS BEFORE CONTINUING ====================
@@ -610,8 +625,38 @@ local servers = {
   tsserver = { filetypes = { 'javascript', 'jsx', 'typescript', 'svelte' } },
   jsonls = { filetypes = { 'json' } },
   clangd = {},
-  pylsp = {},
-  -- pyright = {},
+  pylsp = { -- https://vi.stackexchange.com/questions/39765/how-to-configure-pylsp-when-using-mason-and-mason-lspconfig-in-neovim
+    pylsp = {
+      plugins = {
+        -- formatter options
+        black = { enabled = false },
+        autopep8 = { enabled = false },
+        yapf = { enabled = false },
+        ruff = {                -- https://github.com/python-lsp/python-lsp-ruff
+          enabled = true,       -- Enable the plugin
+          formatEnabled = true, -- Enable formatting using ruffs formatter
+          executable = "ruff",  -- Custom path to ruff
+        },
+        -- linter options
+        pylint = { enabled = false },
+        pyflakes = { enabled = true },
+        pycodestyle = { enabled = true },
+        pydocstyle = { enabled = false },
+        maccabe = { enabled = true }, -- complexity checker
+        -- type checker
+        pylsp_mypy = { enabled = true, live_mode = true, strict = false },
+        -- error checker
+        flake8 = { enabled = true },
+        -- auto-completion options
+        jedi_completion = { fuzzy = true },
+        -- import sorting
+        pyls_isort = { enabled = true },
+        -- completions and renaming
+        pylsp_rope = { enabled = true, rename = true },
+        rope_completion = { enabled = true },
+      },
+    },
+  },
   html = { filetypes = { 'html', 'twig', 'hbs' } },
   lua_ls = {
     Lua = {
