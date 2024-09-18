@@ -9,11 +9,6 @@ export PATH="/usr/local/bin:$PATH"
 # Add node_modules to PATH so that they can be run from CLI
 export PATH="~/node_modules/.bin:$PATH"
 
-# Pyenv setup https://github.com/pyenv/pyenv?tab=readme-ov-file#set-up-your-shell-environment-for-pyenv
-export PYENV_ROOT="$HOME/.pyenv"
-[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
-
 # Modular / Mojo
 export MODULAR_HOME="$HOME/.modular"
 export PATH="$HOME/.modular/pkg/packages.modular.com_mojo/bin:$PATH"
@@ -26,3 +21,7 @@ export PATH="$HOME/.cargo/bin:$PATH"
 
 # Add my ~/scripts/ to path
 export PATH="$HOME/scripts:$PATH"
+
+# Pyenv setup https://github.com/pyenv/pyenv?tab=readme-ov-file#set-up-your-shell-environment-for-pyenv
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"

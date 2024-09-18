@@ -71,3 +71,5 @@ eval "$(fzf --bash)"
 # Zoxide integration with Bash
 eval "$(zoxide init bash)"
 
+# Pyenv integration with Bash
+eval "$(pyenv init -)"
