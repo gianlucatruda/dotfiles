@@ -8,6 +8,13 @@ sudo -v
 # Keep-alive: update existing `sudo` time stamp until `.macos` has finished
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done &
 
+# Switch to using brew-installed bash as default shell
+BREW_PREFIX=$(brew --prefix)
+if ! fgrep -q "${BREW_PREFIX}/bin/bash" /etc/shells; then
+  echo "${BREW_PREFIX}/bin/bash" | sudo tee -a /etc/shells;
+  chsh -s "${BREW_PREFIX}/bin/bash";
+fi;
+
 ###############################################################################
 # General UI/UX                                                               #
 ###############################################################################

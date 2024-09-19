@@ -55,7 +55,6 @@ tree -a -L 3 --gitignore -I .git/ -I .gitignore -I README.md
 │   ├── .exports
 │   ├── .functions
 │   ├── .inputrc
-│   ├── .macos
 │   ├── .path
 │   ├── alacritty.toml
 │   ├── git
@@ -80,8 +79,12 @@ tree -a -L 3 --gitignore -I .git/ -I .gitignore -I README.md
 │   │   └── app.toml
 │   └── tmux
 │       └── tmux.conf
+├── .hammerspoon
+│   └── init.lua
 ├── .vimrc
 ├── bootstrap.sh
+├── brew.sh
+├── macos.sh
 └── scripts
     ├── gt-btooth
     ├── gt-cheat
@@ -91,7 +94,7 @@ tree -a -L 3 --gitignore -I .git/ -I .gitignore -I README.md
     ├── gt-synchdd
     └── gt-tts
 
-14 directories, 30 files
+15 directories, 32 files
 ```
 
 ## NeoVim setup
@@ -169,11 +172,13 @@ Things I have installed and use, but which aren't managed by Homebrew (yet).
 
 ## Installation
 
-```
+With Git:
+```bash
 git clone git@github.com:gianlucatruda/dotfiles.git
+cd dotfiles
 ```
 
-## Setup / update 
+### System agnostic bootstrap
 
 ```bash
 cd dotfiles
@@ -181,7 +186,11 @@ source bootstrap.sh
 ```
 
 Create the `~/.config/.extra` file:
+```bash
+echo "" >> ~/.config/.extra
+```
 
+Add the following details (and any other system-wide variables):
 ```bash
 # Git credentials
 GIT_AUTHOR_NAME="Your Name"
@@ -202,39 +211,34 @@ exec $SHELL -l
 
 ### Mac-specific setup
 
+Configure some macOS preferences:
 ```bash
-source ~/.config/.macos
+./macos.sh
 ```
 
-Install and upgrade all dependencies from the Brewfile using Homebrew:
-
+Install macOS packages with Homebrew:
 ```bash
-brew bundle install --file ~/.config/homebrew/Brewfile
+./brew.sh
 ```
 
-#### Keeping macOS packages in sync
+#### Keeping homebrew synced with dotfiles
 
-To update the dotfiles repo:
-
+Update the dotfiles repo from the system:
 ```bash
-cd <your-dotfiles-get-repo>
+cd <your-dotfiles-repo>
 brew bundle dump --all --describe --force --file .config/homebrew/Brewfile
 ```
 
-To sync the system to the dotfiles repo:
-
+Update the system from the dotfiles repo:
 ```bash
-cd <your-dotfiles-get-repo>
+cd <your-dotfiles-repo>
 source bootstrap.sh 
+brew bundle install --cleanup --force --file ~/.config/homebrew/Brewfile
 ```
-Install, cleanup, upgrade in steps:
+
+Note: you can also install, cleanup, upgrade in steps:
 ```bash
 brew bundle install --no-upgrade --file ~/.config/homebrew/Brewfile
 brew bundle cleanup --force --file ~/.config/homebrew/Brewfile
 brew bundle install --file ~/.config/homebrew/Brewfile
-```
-
-Or just do it all in one go:
-```bash
-brew bundle install --cleanup --force --file ~/.config/homebrew/Brewfile
 ```
