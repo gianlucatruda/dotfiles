@@ -4,154 +4,304 @@ tap "homebrew/bundle"
 tap "jesseduffield/lazygit"
 tap "modularml/packages"
 tap "vladkens/tap"
+# Search tool like grep, but optimized for programmers
 brew "ack"
+# Command-line interface for SQLite
 brew "sqlite"
+# Next-generation aircrack with lots of new features
 brew "aircrack-ng"
+# General-purpose data compression with high compression ratio
 brew "xz"
+# New file format for still image compression
 brew "jpeg-xl"
+# Codec library for encoding and decoding AV1 video streams
 brew "aom"
+# Automatic configure script builder
 brew "autoconf"
+# Tool for generating GNU Standards-compliant Makefiles
 brew "automake"
+# Bourne-Again SHell, a UNIX command interpreter
 brew "bash"
+# Programmable completion for Bash 4.2+
 brew "bash-completion@2"
+# Clone of cat(1) with syntax highlighting and Git integration
 brew "bat"
+# Interpreted, interactive, object-oriented programming language
 brew "python@3.12"
+# Core application library for C
 brew "glib"
+# Vector graphics library with cross-device output support
 brew "cairo"
+# Development kit for the Java programming language
 brew "openjdk"
+# Remove large files or passwords from Git history like git-filter-branch
 brew "bfg"
+# GNU binary tools for native development
 brew "binutils"
+# GNU multiple precision arithmetic library
 brew "gmp"
+# Optimized BLAS library
 brew "openblas"
+# Package for scientific computing with Python
 brew "numpy"
+# Library for JPEG-2000 image manipulation
 brew "openjpeg"
+# 7-Zip (high compression file archiver) implementation
 brew "p7zip"
+# Friendly PIL fork (Python Imaging Library)
 brew "pillow"
+# Interpreted, interactive, object-oriented programming language
 brew "python@3.11"
+# Searches a binary image for embedded files and executable code
 brew "binwalk"
+# Yet another cross-platform graphical process/system monitor
 brew "bottom"
+# Work on automating classical cipher cracking in C
 brew "cifer"
+# Cross-platform make
 brew "cmake"
+# GNU File, Shell, and Text utilities
 brew "coreutils"
+# Get a file from an HTTP, HTTPS or FTP server
 brew "curl"
+# Tools to work with Android .dex and Java .class files
 brew "dex2jar"
+# Validating, recursive, caching DNS resolver
 brew "unbound"
+# GNU Transport Layer Security (TLS) Library
 brew "gnutls"
+# GNU Pretty Good Privacy (PGP) package
 brew "gnupg"
+# Library access to GnuPG
 brew "gpgme"
+# Visually compare two PDF files
 brew "diff-pdf"
+# TCP over DNS tunnel
 brew "dns2tcp"
+# Dancer's shell, or distributed shell
 brew "dsh"
+# More intuitive version of du in rust
 brew "dust"
+# Zip password cracker
 brew "fcrackzip"
+# Identify or delete duplicate files
 brew "fdupes"
+# Subtitle renderer for the ASS/SSA subtitle format
 brew "libass"
+# Light HTTP/1.1 server library
 brew "libmicrohttpd"
+# Reliable Internet Stream Transport (RIST)
 brew "librist"
+# Framework for layout and rendering of i18n text
 brew "pango"
+# OCR (Optical Character Recognition) engine
 brew "tesseract"
+# Play, record, convert, and stream audio and video
 brew "ffmpeg"
+# Collection of GNU find, xargs, and locate
 brew "findutils"
+# Console program to recover files based on their headers and footers
 brew "foremost"
+# Generic library support script
 brew "libtool"
+# Command-line fuzzy finder written in Go
 brew "fzf"
+# Library for encoding and decoding .avif files
 brew "libavif"
+# Interpreter for PostScript and PDF
 brew "ghostscript"
+# Distributed revision control system
 brew "git"
+# Git extension for versioning large files
 brew "git-lfs"
+# Prevents you from committing sensitive information to a git repo
 brew "git-secrets"
+# Audit git repos for secrets
 brew "gitleaks"
+# Render markdown on the CLI
 brew "glow"
+# GNU grep, egrep and fgrep
 brew "grep"
+# Tool to exploit hash length extension attack
 brew "hashpump"
+# Improved top (interactive process viewer)
 brew "htop"
+# Configurable static site generator
 brew "hugo"
+# Provides library functionality for FIDO U2F & FIDO 2.0, including USB
 brew "libfido2"
+# Open source relational database management system
 brew "mysql-client"
+# Network logon cracker which supports many services
 brew "hydra"
+# ISO/IEC 23008-12:2017 HEIF file format decoder and encoder
 brew "libheif"
+# Library for reading RAW files from digital photo cameras
 brew "libraw"
+# Tools and libraries to manipulate images in many formats
 brew "imagemagick"
+# Featureful UNIX password cracker
 brew "john"
+# Port-knock server
 brew "knock"
+# Terminal file manager
 brew "lf"
+# Access large language models from the command-line
 brew "llm"
+# Powerful, lightweight programming language
 brew "lua"
+# Text-based web browser
 brew "lynx"
+# Swiss Army Knife for macOS
 brew "m-cli"
+# Utility for directing compilation
 brew "make"
+# CLI tool for saving complete web pages as a single HTML file
 brew "monolith"
+# Collection of tools that nobody wrote when UNIX was young
 brew "moreutils"
+# Fast, highly customisable system info script
 brew "neofetch"
+# Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
+# Image manipulation
 brew "netpbm"
+# RSS/Atom feed reader for text terminals
 brew "newsboat"
+# Port scanning utility for large networks
 brew "nmap"
+# OpenBSD freely-licensed SSH connectivity tools
 brew "openssh"
+# Cryptography and SSL/TLS Toolkit
 brew "openssl@3.0"
+# Open Visual Inference And Optimization toolkit for AI inference
 brew "openvino"
+# Swiss-army knife of markup format conversion
 brew "pandoc"
+# General-purpose scripting language
 brew "php"
+# New zlib (gzip, deflate) compatible compressor
 brew "zopfli"
+# Parallel gzip
 brew "pigz"
+# Print info and check PNG, JNG, and MNG files
 brew "pngcheck"
+# Monitor data's progress through a pipe
 brew "pv"
+# Python version management
 brew "pyenv"
+# Cross-platform application and UI framework
 brew "qt@5"
+# Ruby version manager
 brew "rbenv"
+# Find duplicate files based on content (NOT file names)
 brew "rdfind"
+# Perl-powered file rename script with many helpful built-ins
 brew "rename"
+# Search tool like grep and The Silver Searcher
 brew "ripgrep"
+# Readline wrapper: adds readline support to tools that lack it
 brew "rlwrap"
+# Extremely fast tool to remove dupes and other lint from your filesystem
 brew "rmlint"
+# Extremely fast Python linter, written in Rust
 brew "ruff"
+# Terminal multiplexer with VT100/ANSI terminal emulation
 brew "screen"
+# Static analysis and lint tool, for (ba)sh scripts
 brew "shellcheck"
+# SOcket CAT: netcat on steroids
 brew "socat"
+# Command-line interface for https://speedtest.net bandwidth tests
 brew "speedtest-cli"
+# Command driven spotify player
 brew "spotify_player"
+# Penetration testing for SQL injection and database servers
 brew "sqlmap"
+# Add a public key to a remote machine's authorized_keys file
 brew "ssh-copy-id"
+# TCP/IP packet demultiplexer
 brew "tcpflow"
+# Replay saved tcpdump files at arbitrary speeds
 brew "tcpreplay"
+# Analyze tcpdump output
 brew "tcptrace"
+# Simplified and community-driven man pages
 brew "tldr"
+# Terminal multiplexer
 brew "tmux"
+# Display directories as trees (with optional color/HTML output)
 brew "tree"
+# Tools for building TCP client-server applications
 brew "ucspi-tcp"
+# Extremely fast Python package installer and resolver, written in Rust
 brew "uv"
+# Syntax-aware linter for prose
 brew "vale"
+# Visual Binary Diff
 brew "vbindiff"
+# Internet file retriever
 brew "wget"
+# Utilities to create and convert Web Open Font File (WOFF) files
 brew "woff2"
+# PDF viewer
 brew "xpdf"
+# Download YouTube videos from the command-line
 brew "youtube-dl"
+# Feature-rich command-line audio/video downloader
 brew "yt-dlp"
+# Shell extension to navigate your filesystem faster
 brew "zoxide"
+# Convert existing TrueType/OpenType fonts to WOFF format
 brew "bramstein/webfonttools/sfnt2woff"
+# WOFF utilities with Zopfli compression
 brew "bramstein/webfonttools/sfnt2woff-zopfli"
+# A simple terminal UI for git commands, written in Go
 brew "jesseduffield/lazygit/lazygit"
+# Modular developer CLI tool
 brew "modularml/packages/modular"
+# Sudoless performance monitoring CLI tool for Apple Silicon processors
 brew "vladkens/tap/macmon"
+# GPU-accelerated terminal emulator
 cask "alacritty"
+# Inspect application bundles
 cask "apparency"
+# Automated testing of webapps for Google Chrome
 cask "chromedriver"
+# API documentation browser and code snippet manager
 cask "dash"
+# Google Chromium, sans integration with Google
 cask "eloston-chromium"
+# Multi-platform multi-messaging app
 cask "ferdium"
 cask "font-ubuntu-mono-nerd-font"
+# Desktop automation application
 cask "hammerspoon"
+# Utility to render Jupyter notebooks
 cask "jupyter-notebook-viewer"
+# Open-source screen recorder built with web technology
 cask "kap"
+# File system integration
 cask "macfuse"
+# Smart card libraries and utilities
 cask "opensc"
+# Quick Look plug-in that renders source code with syntax highlighting
 cask "qlcolorcode"
+# Display image info and preview unsupported formats in QuickLook
 cask "qlimagesize"
+# Quick Look generator for Markdown files
 cask "qlmarkdown"
+# Quick Look plugin for Kindle ebook formats
 cask "qlmobi"
+# Quick Look plugin for plaintext files without an extension
 cask "qlstephen"
+# Thumbnails, static previews, cover art and metadata for video files
 cask "qlvideo"
+# Quick Look plugin for CSV files
 cask "quicklook-csv"
+# Quick Look plugin for JSON files
 cask "quicklook-json"
+# Quicklook extension for source files
 cask "syntax-highlight"
+# Binary releases of VS Code without MS branding/telemetry/licensing
 cask "vscodium"

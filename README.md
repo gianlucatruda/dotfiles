@@ -218,7 +218,7 @@ To update the dotfiles repo:
 
 ```bash
 cd <your-dotfiles-get-repo>
-brew bundle dump --force --file .config/homebrew/Brewfile
+brew bundle dump --all --describe --force --file .config/homebrew/Brewfile
 ```
 
 To sync the system to the dotfiles repo:
