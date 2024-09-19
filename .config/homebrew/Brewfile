@@ -6,10 +6,6 @@ tap "modularml/packages"
 tap "vladkens/tap"
 # Search tool like grep, but optimized for programmers
 brew "ack"
-# Command-line interface for SQLite
-brew "sqlite"
-# Next-generation aircrack with lots of new features
-brew "aircrack-ng"
 # General-purpose data compression with high compression ratio
 brew "xz"
 # New file format for still image compression
@@ -26,6 +22,8 @@ brew "bash"
 brew "bash-completion@2"
 # Clone of cat(1) with syntax highlighting and Git integration
 brew "bat"
+# Command-line interface for SQLite
+brew "sqlite"
 # Interpreted, interactive, object-oriented programming language
 brew "python@3.12"
 # Core application library for C
