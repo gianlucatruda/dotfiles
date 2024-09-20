@@ -233,7 +233,7 @@ Update the system from the dotfiles repo:
 ```bash
 cd <your-dotfiles-repo>
 source bootstrap.sh 
-brew bundle install --cleanup --force --file ~/.config/homebrew/Brewfile
+brew bundle install -v --cleanup --force --file ~/.config/homebrew/Brewfile
 ```
 
 Note: you can also install, cleanup, upgrade in steps:

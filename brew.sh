@@ -5,9 +5,9 @@
 
 read -p "This will (un)install packages on your system. Are you sure? (y/n) " -n 1;
 echo "";
-if ![[ $REPLY =~ ^[Yy]$ ]]; then
+if ! [[ $REPLY =~ ^[Yy]$ ]]; then
   exit 1
-fi;
+fi
 # # Ask for the administrator password upfront
 # sudo -v
 # # Keep-alive: update existing `sudo` time stamp until `.macos` has finished
@@ -43,7 +43,7 @@ brew install wget --with-iri
 brew install gnupg
 
 # Install more recent versions of some macOS tools.
-brew install vim --with-override-system-vi
+brew install vim
 brew install grep
 brew install openssh
 brew install screen
@@ -59,5 +59,5 @@ if ! [[ -n $BREWPATH && -e "$BREWPATH" ]]; then
 	exit 1
 fi
 echo "Installing / upgrading from $BREWPATH ..."
-brew bundle install --cleanup --force --file $BREWPATH
+brew bundle install -v --cleanup --force --file $BREWPATH
 exit 0
