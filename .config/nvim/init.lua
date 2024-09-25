@@ -292,14 +292,11 @@ require('lazy').setup({
   },
   {
     "supermaven-inc/supermaven-nvim",
-    config = function()
-      require("supermaven-nvim").setup({
-        -- Hack to prevent autostart (but still loads, so TODO improve)
-        condition = function()
-          return true
-        end,
-      })
-    end,
+    cmd = {
+      -- Prevent autostart: https://github.com/supermaven-inc/supermaven-nvim/issues/81#issuecomment-2308891882
+      "SupermavenStart",
+    },
+    opts = {},
   },
 
 
