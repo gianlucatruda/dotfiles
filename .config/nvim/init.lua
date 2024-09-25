@@ -83,6 +83,7 @@ vim.opt.rtp:prepend(lazypath)
 --
 --  You can also configure plugins after the setup call,
 --    as they will be available in your neovim runtime.
+
 require('lazy').setup({
   -- NOTE: First, some plugins that don't require any configuration
 
@@ -289,6 +290,18 @@ require('lazy').setup({
   {
     'smithbm2316/centerpad.nvim',
   },
+  {
+    "supermaven-inc/supermaven-nvim",
+    config = function()
+      require("supermaven-nvim").setup({
+        -- Hack to prevent autostart (but still loads, so TODO improve)
+        condition = function()
+          return true
+        end,
+      })
+    end,
+  },
+
 
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
