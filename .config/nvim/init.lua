@@ -648,7 +648,7 @@ local util = require 'lspconfig.util'
 --  define the property 'filetypes' to the map in question.
 local servers = {
   rust_analyzer = { filetypes = { 'rust', 'rs' } },
-  tsserver = { filetypes = { 'javascript', 'jsx', 'typescript', 'svelte' } },
+  ts_ls = { filetypes = { 'javascript', 'jsx', 'typescript', 'svelte' } },
   jsonls = { filetypes = { 'json' } },
   clangd = {},
   pylsp = { -- https://vi.stackexchange.com/questions/39765/how-to-configure-pylsp-when-using-mason-and-mason-lspconfig-in-neovim
