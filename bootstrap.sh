@@ -6,7 +6,8 @@ function doIt() {
 	rsync --exclude ".git/" \
 		--exclude ".DS_Store" \
 		--exclude "*.sh" \
-		--exclude "README.md" \
+		--exclude "*.md" \
+		--exclude "*.txt" \
 		--exclude ".extra" \
 		--exclude ".gitignore" \
 		-avh --no-perms . ~;
