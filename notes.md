@@ -1,44 +1,44 @@
-- [ ] **Git Integration**
-  - [x] `tpope/vim-fugitive`
-  - [x] `tpope/vim-rhubarb`
+- **Git Integration**
+  - [ ] `tpope/vim-fugitive`
+  - [ ] `tpope/vim-rhubarb`
 
-- [ ] **Automatic Indentation Detection**
-  - [x] `tpope/vim-sleuth`
+- **Automatic Indentation Detection**
+  - [ ] `tpope/vim-sleuth`
 
-- [ ] **Language Server Protocol (LSP) Integration**
-  - [x] `neovim/nvim-lspconfig`
-  - [x] `williamboman/mason.nvim`
-  - [x] `williamboman/mason-lspconfig.nvim`
-  - [x] `j-hui/fidget.nvim`
-  - [x] `folke/neodev.nvim`
+- **Language Server Protocol (LSP) Integration**
+  - [ ] `neovim/nvim-lspconfig`
+  - [ ] `williamboman/mason.nvim`
+  - [ ] `williamboman/mason-lspconfig.nvim`
+  - [ ] `j-hui/fidget.nvim`
+  - [ ] `folke/neodev.nvim`
 
-- [ ] **Autocompletion**
-  - [x] `hrsh7th/nvim-cmp`
-  - [x] `L3MON4D3/LuaSnip`
-  - [x] `saadparwaiz1/cmp_luasnip`
-  - [x] `hrsh7th/cmp-nvim-lsp`
-  - [x] `hrsh7th/cmp-path`
-  - [x] `rafamadriz/friendly-snippets`
+- **Autocompletion**
+  - [ ] `hrsh7th/nvim-cmp`
+  - [ ] `L3MON4D3/LuaSnip`
+  - [ ] `saadparwaiz1/cmp_luasnip`
+  - [ ] `hrsh7th/cmp-nvim-lsp`
+  - [ ] `hrsh7th/cmp-path`
+  - [ ] `rafamadriz/friendly-snippets`
 
-- [ ] **Utility Tools**
-  - [x] `folke/which-key.nvim`
-  - [x] `lewis6991/gitsigns.nvim`
-  - [x] `numToStr/Comment.nvim`
-  - [x] `lukas-reineke/indent-blankline.nvim`
-  - [x] `smithbm2316/centerpad.nvim`
-  - [x] `supermaven-inc/supermaven-nvim`
-  - [x] `yacineMTB/dingllm.nvim`
+- **Utility Tools**
+  - [ ] `folke/which-key.nvim`
+  - [ ] `lewis6991/gitsigns.nvim`
+  - [ ] `numToStr/Comment.nvim`
+  - [ ] `lukas-reineke/indent-blankline.nvim`
+  - [ ] `smithbm2316/centerpad.nvim`
+  - [ ] `supermaven-inc/supermaven-nvim`
+  - [ ] `yacineMTB/dingllm.nvim`
 
-- [ ] **Visual Presentation and User Interface**
-  - [x] `EdenEast/nightfox.nvim`
-  - [x] `nvim-lualine/lualine.nvim`
+- **Visual Presentation and User Interface**
+  - [ ] `EdenEast/nightfox.nvim`
+  - [ ] `nvim-laaline/lualine.nvim`
 
-- [ ] **Editor Enhancements**
-  - [x] `nvim-telescope/telescope.nvim`
-  - [x] `nvim-telescope/telescope-fzf-native.nvim`
-  - [x] `nvim-lua/plenary.nvim`
-  - [x] `nvim-treesitter/nvim-treesitter`
-  - [x] `nvim-treesitter/nvim-treesitter-textobjects`
+- **Editor Enhancements**
+  - [ ] `nvim-telescope/telescope.nvim`
+  - [ ] `nvim-telescope/telescope-fzf-native.nvim`
+  - [ ] `nvim-lua/plenary.nvim`
+  - [ ] `nvim-treesitter/nvim-treesitter`
+  - [ ] `nvim-treesitter/nvim-treesitter-textobjects`
 
 ```lua
 -- Gianluca's custom keymaps --------------------------------------------------------
