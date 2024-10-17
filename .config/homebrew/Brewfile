@@ -24,12 +24,14 @@ brew "bash-completion@2"
 brew "bat"
 # Command-line interface for SQLite
 brew "sqlite"
-# Interpreted, interactive, object-oriented programming language
-brew "python@3.12"
 # Core application library for C
 brew "glib"
+# Interpreted, interactive, object-oriented programming language
+brew "python@3.12"
 # Vector graphics library with cross-device output support
 brew "cairo"
+# OpenType text shaping engine
+brew "harfbuzz"
 # Development kit for the Java programming language
 brew "openjdk"
 # Remove large files or passwords from Git history like git-filter-branch
@@ -48,8 +50,6 @@ brew "openjpeg"
 brew "p7zip"
 # Friendly PIL fork (Python Imaging Library)
 brew "pillow"
-# Interpreted, interactive, object-oriented programming language
-brew "python@3.11"
 # Searches a binary image for embedded files and executable code
 brew "binwalk"
 # Yet another cross-platform graphical process/system monitor
@@ -72,6 +72,8 @@ brew "gnutls"
 brew "gnupg"
 # Library access to GnuPG
 brew "gpgme"
+# PDF rendering library (based on the xpdf-3.0 code base)
+brew "poppler", link: false
 # Visually compare two PDF files
 brew "diff-pdf"
 # TCP over DNS tunnel
@@ -120,6 +122,8 @@ brew "gitleaks"
 brew "glow"
 # GNU grep, egrep and fgrep
 brew "grep"
+# Interpreted, interactive, object-oriented programming language
+brew "python@3.11"
 # Tool to exploit hash length extension attack
 brew "hashpump"
 # Improved top (interactive process viewer)
