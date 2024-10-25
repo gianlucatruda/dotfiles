@@ -1,77 +1,45 @@
 " vi-Mproved, required
 set nocompatible              
 
-" Set colorscheme to default to be safe
-colorscheme default
+" Set dark background
+set background=dark  " or light
+
+" Set colorscheme (my favourites)
+colorscheme habamax
+" colorscheme default
+" colorscheme darkblue
+" colorscheme desert
+" colorscheme slate
 
 " Enable syntax highlighting
 syntax on
 
-" Enable spellchecking for Markdown and text files
-setglobal spell spelllang=en_gb
-autocmd FileType markdown setlocal spell spelllang=en_gb
-autocmd FileType text setlocal spell spelllang=en_gb
+" Use system clipboard as default 
+set clipboard=unnamed
 
-" Enable automatic line breaks (textwrapping) ONLY on markdown and text files
-setglobal textwidth=0
-autocmd FileType markdown setlocal textwidth=90
-autocmd FileType text setlocal textwidth=90
-
-" Change cursor shape in different modes
-"  1 -> blinking block
-"  2 -> solid block 
-"  3 -> blinking underscore
-"  4 -> solid underscore
-"  5 -> blinking vertical bar
-"  6 -> solid vertical bar
-let &t_SI.="\e[5 q" "SI = INSERT mode
-let &t_SR.="\e[4 q" "SR = REPLACE mode
-let &t_EI.="\e[1 q" "EI = NORMAL mode (ELSE)
+set autoindent    " align the new line indent with the previous line
 
 " Always show status line
 set laststatus=2
 " Format the status line
-" set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l\ \ Column:\ %c
-set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ Line:\ %l\ \ Column:\ %c\ \ \ CWD:\ %r%{getcwd()}%h
-
-" Ensure filetypes are properly recognised
-autocmd BufNewFile,BufRead *.js setfiletype javascript
-autocmd BufNewFile,BufRead *.jsx setfiletype javascript.jsx
-autocmd BufNewFile,BufRead *.ts setfiletype typescript
-autocmd BufNewFile,BufRead *.tsx setfiletype typescript.tsx
-
-" Verical ruler / column to track line width
-set colorcolumn=80
-highlight ColorColumn ctermbg=darkgrey guibg=darkgrey
-
-" Python-specific tweaks suggested by https://docs.python-guide.org/dev/env/#text-editors
-" set textwidth=79  " lines longer than 79 columns will be broken
-set shiftwidth=4  " operation >> indents 4 columns; << unindents 4 columns
-set tabstop=4     " a hard TAB displays as 4 columns
-set expandtab     " insert spaces when hitting TABs
-set smarttab      " Be smart when using tabs ;)
-set softtabstop=4 " insert/delete 4 spaces when hitting a TAB/BACKSPACE
-set shiftround    " round indent to multiple of 'shiftwidth'
-set autoindent    " align the new line indent with the previous line
-
-" Override some settings when using specific filetypes
-autocmd FileType javascript,javascript.jsx,javascriptreact,typescript,typscript.tsx,typescriptreact,json setlocal shiftwidth=2 tabstop=2 expandtab smarttab softtabstop=2
-
-" No annoying sound on errors
-set noerrorbells
-set novisualbell
-set t_vb=
-set tm=500
-" Properly disable sound on errors on MacVim
-if has("gui_macvim")
-    autocmd GUIEnter * set vb t_vb=
-endif
+set statusline=
+set statusline+=\ %{mode()}\ 
+set statusline+=%#LineNr#
+set statusline+=\ %{fnamemodify(getcwd(),':t')}/ 
+set statusline+=\%f
+set statusline+=%m
+set statusline+=%=
+set statusline+=%#CursorColumn#
+set statusline+=\ %y
+set statusline+=\ %{&fileencoding?&fileencoding:&encoding}
+set statusline+=\[%{&fileformat}\]
+"set statusline+=\ %p%%
+set statusline+=\ %l:%c
 
 filetype on           " Enable filetype detection
 filetype indent on    " Enable filetype-specific indenting
 filetype plugin on    " Enable filetype-specific plugins
-" not compatible with the old-fashion vi mode
-set nocompatible
+
 " Set to auto read when a file is changed from the outside
 set autoread
 au FocusGained,BufEnter * checktime
@@ -85,25 +53,16 @@ set esckeys
 set backspace=indent,eol,start
 " Optimize for fast terminal connections
 set ttyfast
-" Centralize backups, swapfiles and undo history
-set backupdir=~/.vim/backups
-set directory=~/.vim/swaps
-if exists("&undodir")
-	set undodir=~/.vim/undo
-endif
-
-" Don’t create backups when editing files in certain directories
-set backupskip=/tmp/*,/private/tmp/*
 " Enable line numbers
 set number
 " Enable relative line numbers
-set relativenumber
+" set relativenumber
 " Highlight searches
 set hlsearch
 " Highlight dynamically as pattern is typed
 set incsearch
 " Enable mouse in all modes
-" set mouse=a
+set mouse=a
 " Don’t reset cursor to start of line when moving around.
 set nostartofline
 " Show the cursor position
@@ -118,9 +77,27 @@ set title
 set showcmd
 " Start scrolling three lines before the horizontal window border
 set scrolloff=3
+
+" Change cursor shape in different modes
+"  1 -> blinking block
+"  2 -> solid block 
+"  3 -> blinking underscore
+"  4 -> solid underscore
+"  5 -> blinking vertical bar
+"  6 -> solid vertical bar
+let &t_SI.="\e[5 q" "SI = INSERT mode
+let &t_SR.="\e[4 q" "SR = REPLACE mode
+let &t_EI.="\e[1 q" "EI = NORMAL mode (ELSE)
+
 " Word and Line wrapping
 set lbr "word wrap
 set wrap "Wrap lines
+
+" No annoying sound on errors
+set noerrorbells
+set novisualbell
+set t_vb=
+set tm=500
 
 " => Turn persistent undo on
 "    means that you can undo even when you close a buffer/VIM
@@ -149,4 +126,46 @@ function! HasPaste()
     endif
     return ''
 endfunction
+
+" Python-specific tweaks suggested by https://docs.python-guide.org/dev/env/#text-editors
+" set textwidth=79  " lines longer than 79 columns will be broken
+" set shiftwidth=4  " operation >> indents 4 columns; << unindents 4 columns
+" set tabstop=4     " a hard TAB displays as 4 columns
+" set expandtab     " insert spaces when hitting TABs
+" set smarttab      " Be smart when using tabs ;)
+" set softtabstop=4 " insert/delete 4 spaces when hitting a TAB/BACKSPACE
+" set shiftround    " round indent to multiple of 'shiftwidth'
+
+" Ensure filetypes are properly recognised
+" autocmd BufNewFile,BufRead *.js setfiletype javascript
+" autocmd BufNewFile,BufRead *.jsx setfiletype javascript.jsx
+" autocmd BufNewFile,BufRead *.ts setfiletype typescript
+" autocmd BufNewFile,BufRead *.tsx setfiletype typescript.tsx
+
+" Verical ruler / column to track line width
+"set colorcolumn=80
+"highlight ColorColumn ctermbg=darkgrey guibg=darkgrey
+
+" Override some settings when using specific filetypes
+" autocmd FileType javascript,javascript.jsx,javascriptreact,typescript,typscript.tsx,typescriptreact,json setlocal shiftwidth=2 tabstop=2 expandtab smarttab softtabstop=2
+
+" Centralize backups, swapfiles and undo history
+" set backupdir=~/.vim/backups
+" set directory=~/.vim/swaps
+" if exists("&undodir")
+" 	set undodir=~/.vim/undo
+" endif
+
+" Don’t create backups when editing files in certain directories
+" set backupskip=/tmp/*,/private/tmp/*
+
+" Enable spellchecking for Markdown and text files
+" setglobal spell spelllang=en_gb
+" autocmd FileType markdown setlocal spell spelllang=en_gb
+" autocmd FileType text setlocal spell spelllang=en_gb
+
+" Enable automatic line breaks (textwrapping) ONLY on markdown and text files
+" setglobal textwidth=0
+" autocmd FileType markdown setlocal textwidth=90
+" autocmd FileType text setlocal textwidth=90
 
