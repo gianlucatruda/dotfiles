@@ -38,18 +38,8 @@ brew "openjdk"
 brew "bfg"
 # GNU binary tools for native development
 brew "binutils"
-# GNU multiple precision arithmetic library
-brew "gmp"
-# Optimized BLAS library
-brew "openblas"
-# Package for scientific computing with Python
-brew "numpy"
-# Library for JPEG-2000 image manipulation
-brew "openjpeg"
 # 7-Zip (high compression file archiver) implementation
 brew "p7zip"
-# Friendly PIL fork (Python Imaging Library)
-brew "pillow"
 # Searches a binary image for embedded files and executable code
 brew "binwalk"
 # Yet another cross-platform graphical process/system monitor
@@ -58,6 +48,8 @@ brew "bottom"
 brew "cifer"
 # Cross-platform make
 brew "cmake"
+# GNU multiple precision arithmetic library
+brew "gmp"
 # GNU File, Shell, and Text utilities
 brew "coreutils"
 # Get a file from an HTTP, HTTPS or FTP server
@@ -74,6 +66,8 @@ brew "gnutls"
 brew "gnupg"
 # Library access to GnuPG
 brew "gpgme"
+# Library for JPEG-2000 image manipulation
+brew "openjpeg"
 # PDF rendering library (based on the xpdf-3.0 code base)
 brew "poppler", link: false
 # Visually compare two PDF files
@@ -174,6 +168,10 @@ brew "netpbm"
 brew "newsboat"
 # Port scanning utility for large networks
 brew "nmap"
+# Optimized BLAS library
+brew "openblas"
+# Package for scientific computing with Python
+brew "numpy"
 # OpenBSD freely-licensed SSH connectivity tools
 brew "openssh"
 # Cryptography and SSL/TLS Toolkit
@@ -188,6 +186,8 @@ brew "php"
 brew "zopfli"
 # Parallel gzip
 brew "pigz"
+# Friendly PIL fork (Python Imaging Library)
+brew "pillow"
 # Print info and check PNG, JNG, and MNG files
 brew "pngcheck"
 # Monitor data's progress through a pipe
