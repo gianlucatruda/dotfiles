@@ -62,6 +62,8 @@ brew "cmake"
 brew "coreutils"
 # Get a file from an HTTP, HTTPS or FTP server
 brew "curl"
+# Open source multi-tool for exploring and publishing data
+brew "datasette"
 # Tools to work with Android .dex and Java .class files
 brew "dex2jar"
 # Validating, recursive, caching DNS resolver
@@ -194,6 +196,8 @@ brew "pv"
 brew "pyenv"
 # Cross-platform application and UI framework
 brew "qt@5"
+# File browser
+brew "ranger"
 # Ruby version manager
 brew "rbenv"
 # Find duplicate files based on content (NOT file names)
@@ -222,6 +226,8 @@ brew "spotify_player"
 brew "sqlmap"
 # Add a public key to a remote machine's authorized_keys file
 brew "ssh-copy-id"
+# Stress test a computer system in various selectable ways
+brew "stress-ng"
 # TCP/IP packet demultiplexer
 brew "tcpflow"
 # Replay saved tcpdump files at arbitrary speeds
@@ -272,6 +278,8 @@ cask "apparency"
 cask "chromedriver"
 # API documentation browser and code snippet manager
 cask "dash"
+# Virtual monitor for screen sharing
+cask "deskpad"
 # Google Chromium, sans integration with Google
 cask "eloston-chromium"
 # Multi-platform multi-messaging app
