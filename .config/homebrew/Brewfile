@@ -44,6 +44,8 @@ brew "p7zip"
 brew "binwalk"
 # Yet another cross-platform graphical process/system monitor
 brew "bottom"
+# Watches over your Cargo project's source
+brew "cargo-watch"
 # Work on automating classical cipher cracking in C
 brew "cifer"
 # Cross-platform make
