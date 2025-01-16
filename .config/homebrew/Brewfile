@@ -169,7 +169,7 @@ brew "nmap"
 # Optimized BLAS library
 brew "openblas"
 # Package for scientific computing with Python
-brew "numpy"
+brew "numpy", link: false
 # OpenBSD freely-licensed SSH connectivity tools
 brew "openssh"
 # Cryptography and SSL/TLS Toolkit
@@ -232,6 +232,8 @@ brew "tcpflow"
 brew "tcpreplay"
 # Analyze tcpdump output
 brew "tcptrace"
+# General purpose fuzzy finder TUI
+brew "television"
 # Simplified and community-driven man pages
 brew "tldr"
 # Terminal multiplexer
