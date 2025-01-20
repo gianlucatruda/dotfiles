@@ -2,6 +2,9 @@
 local hyper = { "cmd", "shift", "alt", "ctrl" }
 
 -- Quick switch to favourite apps with Hyper+<N>
+hs.hotkey.bind(hyper, "0", function()
+	hs.application.launchOrFocus("Finder")
+end)
 hs.hotkey.bind(hyper, "1", function()
 	hs.application.launchOrFocus("Firefox")
 end)
@@ -12,8 +15,11 @@ hs.hotkey.bind(hyper, "3", function()
 	hs.application.launchOrFocus("Obsidian")
 end)
 hs.hotkey.bind(hyper, "4", function()
-	hs.application.launchOrFocus("Calendar")
+	hs.application.launchOrFocus("Todoist")
 end)
 hs.hotkey.bind(hyper, "5", function()
+	hs.application.launchOrFocus("Calendar")
+end)
+hs.hotkey.bind(hyper, "6", function()
 	hs.application.launchOrFocus("Spotify")
 end)
