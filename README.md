@@ -11,6 +11,7 @@ My stack:
 - Neovim as primary editor, based off [Kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim/)
 - Karabiner and Hammerspoon for key modifiers and custom keybindings
 - Vim (with lean .vimrc, no plugins) as fallback editor
+- [Aerospace](https://github.com/nikitabobko/AeroSpace) as (tiling) window manager
 
 ---
 
@@ -96,9 +97,6 @@ brew bundle install --file ~/.config/homebrew/Brewfile
 - [ ] Test on another Mac (in progress)
 - [ ] Test on Linux
 - [ ] Migrate apps to be installed with Homebrew
-  - [ ] anki
-  - [ ] blender
-  - [ ] brave-browser
   - [ ] docker
   - [ ] firefox
   - [ ] handbrake
@@ -106,24 +104,26 @@ brew bundle install --file ~/.config/homebrew/Brewfile
   - [ ] iina
   - [ ] imageoptim
   - [ ] karabiner-elements
-  - [ ] libreoffice
   - [ ] obs
   - [ ] obsidian
   - [ ] shottr
-  - [ ] spectacle
-  - [ ] spotify
-  - [ ] tad
-  - [ ] todoist
-  - [ ] toothfairy
-  - [ ] transmission
-  - [ ] vcv-rack
+  - [ ] tad (looking for nice TUI alt.)
   - [x] vscodium
   - [x] alacritty
   - [x] ferdium
   - [x] kap
   - [x] qlmarkdown
   - [x] syntax-highlight
-
+- [ ] Make a list of favoured "manual install" apps
+  - [ ] anki
+  - [ ] blender
+  - [ ] brave-browser
+  - [ ] libreoffice
+  - [ ] spotify
+  - [ ] todoist
+  - [ ] toothfairy
+  - [ ] transmission
+  - [ ] vcv-rack
 
 ---
 
@@ -154,6 +154,8 @@ tree -a -L 3 --gitignore -I .git/ -I .gitignore -I README.md
 │   ├── .functions
 │   ├── .inputrc
 │   ├── .path
+│   ├── aerospace
+│   │   └── aerospace.toml
 │   ├── alacritty.toml
 │   ├── git
 │   │   └── config
@@ -193,7 +195,7 @@ tree -a -L 3 --gitignore -I .git/ -I .gitignore -I README.md
     ├── gt-synchdd
     └── gt-tts
 
-15 directories, 33 files
+16 directories, 34 files
 ```
 
 ### NeoVim setup
