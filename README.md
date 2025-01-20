@@ -11,7 +11,7 @@ My stack:
 - Neovim as primary editor, based off [Kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim/)
 - Karabiner and Hammerspoon for key modifiers and custom keybindings
 - Vim (with lean .vimrc, no plugins) as fallback editor
-- [Aerospace](https://github.com/nikitabobko/AeroSpace) as (tiling) window manager
+- [Aerospace](https://github.com/nikitabobko/AeroSpace) as (tiling) window manager (with [tweaks](https://youtu.be/-FoWClVHG5g)
 
 ---
 
