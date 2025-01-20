@@ -4,13 +4,13 @@ Heavily modified adaptation of [Mathias's dotfiles](https://github.com/mathiasby
 
 My stack:
 
-- Bash
-- Alacritty
-- Tmux 
-- Homebrew
-- neoVim (as primary editor), based off [Kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim/)
-- Karabiner (and some Hammerspoon)
-- Vim (with lean .vimrc, no plugins) as fallback
+- Homebrew as package manager
+- Alacritty as terminal
+- Bash as shell
+- Tmux for multiplexing
+- Neovim as primary editor, based off [Kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim/)
+- Karabiner and Hammerspoon for key modifiers and custom keybindings
+- Vim (with lean .vimrc, no plugins) as fallback editor
 
 ---
 
