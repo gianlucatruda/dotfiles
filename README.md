@@ -177,6 +177,7 @@ tree -a -L 3 --gitignore -I .git/ -I .gitignore -I README.md
 │   │   └── app.toml
 │   └── tmux
 │       └── tmux.conf
+├── .gitignore_global
 ├── .hammerspoon
 │   └── init.lua
 ├── .vimrc
@@ -192,7 +193,7 @@ tree -a -L 3 --gitignore -I .git/ -I .gitignore -I README.md
     ├── gt-synchdd
     └── gt-tts
 
-15 directories, 32 files
+15 directories, 33 files
 ```
 
 ### NeoVim setup
