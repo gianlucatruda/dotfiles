@@ -9,7 +9,7 @@ My stack:
 - Bash as shell
 - Tmux for multiplexing
 - Neovim as primary editor, based off [Kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim/)
-- Karabiner and Hammerspoon for key modifiers and custom keybindings
+- Karabiner for key modifiers and custom keybindings
 - Vim (with lean .vimrc, no plugins) as fallback editor
 - [Aerospace](https://github.com/nikitabobko/AeroSpace) as (tiling) window manager (with [tweaks](https://youtu.be/-FoWClVHG5g)
 
@@ -180,8 +180,6 @@ tree -a -L 3 --gitignore -I .git/ -I .gitignore -I README.md
 │   └── tmux
 │       └── tmux.conf
 ├── .gitignore_global
-├── .hammerspoon
-│   └── init.lua
 ├── .vimrc
 ├── bootstrap.sh
 ├── brew.sh
@@ -195,7 +193,7 @@ tree -a -L 3 --gitignore -I .git/ -I .gitignore -I README.md
     ├── gt-synchdd
     └── gt-tts
 
-16 directories, 34 files
+15 directories, 33 files
 ```
 
 ### NeoVim setup

@@ -288,8 +288,6 @@ cask "eloston-chromium"
 # Multi-platform multi-messaging app
 cask "ferdium"
 cask "font-ubuntu-mono-nerd-font"
-# Desktop automation application
-cask "hammerspoon"
 # Utility to render Jupyter notebooks
 cask "jupyter-notebook-viewer"
 # Open-source screen recorder built with web technology
