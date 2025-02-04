@@ -141,6 +141,8 @@ brew "knock"
 brew "lf"
 # Provides library functionality for FIDO U2F & FIDO 2.0, including USB
 brew "libfido2"
+# LLM inference in C/C++
+brew "llama.cpp"
 # Access large language models from the command-line
 brew "llm"
 # Powerful, lightweight programming language
@@ -203,6 +205,8 @@ brew "rbenv"
 brew "rdfind"
 # Perl-powered file rename script with many helpful built-ins
 brew "rename"
+# Command-line toolbox for fancy output in the terminal
+brew "rich-cli"
 # Search tool like grep and The Silver Searcher
 brew "ripgrep"
 # Readline wrapper: adds readline support to tools that lack it
