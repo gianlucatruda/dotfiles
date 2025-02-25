@@ -136,6 +136,12 @@
 	# Detect copies as well as renames
 	renames = copies
 
+	# https://blog.gitbutler.com/how-git-core-devs-configure-git/
+	# 4 built in diff algorithms it can use: myers, minimal, patience, histogram
+	algorithm = histogram # Objectively better diffs than default
+	colorMoved = plain # Colour moves differently to adds/deletes
+	mnemonicPrefix = true
+
 [diff "bin"]
 
 	# Use `hexdump` to diff binary files
@@ -144,7 +150,7 @@
 [help]
 
 	# Automatically correct and execute mistyped commands
-	autocorrect = 1
+	autocorrect = prompt
 
 [merge]
 
@@ -153,12 +159,31 @@
 
 [push]
 
-	# Use the Git 1.x.x default to avoid errors on machines with old Git
-	# installations. To use `simple` instead, add this to your `~/.extra` file:
-	# `git config --global push.default simple`. See http://git.io/mMah-w.
-	default = matching
+	default = simple # Push to remote branch with same name by default
 	# Make `git push` push relevant annotated tags when pushing branches out.
 	followTags = true
+	autoSetupRemote = true
+
+# https://blog.gitbutler.com/how-git-core-devs-configure-git/
+[column]
+	ui = auto # Use columns
+[branch]
+	sort = -committerdate # Sort branches by committer date, not alpha
+[tag]
+	sort = version:refname # Sort tags by refname, not alpha
+[init]
+    defaultBranch = master # Just pick a default and use it, could be `main`
+[fetch]
+	# prune branches and tags that are deleted on remote
+	prune = true
+	pruneTags = true
+	all = true
+[commit]
+	verbose = true # Diff shown in commit editor
+[rebase]
+	autoSquash = true
+	autoStash = true
+	updateRefs = true
 
 # URL shorthands
 
