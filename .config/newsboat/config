@@ -4,7 +4,7 @@
 ## https://github.com/BrodieRobertson/dotfiles
 
 text-width 70
-browser "open -a firefox %u"
+browser "open -a Zen %u"
 auto-reload yes
 #max-items 500
 
