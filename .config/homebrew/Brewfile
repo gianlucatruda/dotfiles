@@ -157,6 +157,10 @@ brew "make"
 brew "monolith"
 # Collection of tools that nobody wrote when UNIX was young
 brew "moreutils"
+# Feature-rich command-line audio/video downloader
+brew "yt-dlp"
+# Media player based on MPlayer and mplayer2
+brew "mpv"
 # Open source relational database management system
 brew "mysql-client"
 # Fast, highly customisable system info script
@@ -261,8 +265,6 @@ brew "woff2"
 brew "xpdf"
 # Download YouTube videos from the command-line
 brew "youtube-dl"
-# Feature-rich command-line audio/video downloader
-brew "yt-dlp"
 # Shell extension to navigate your filesystem faster
 brew "zoxide"
 # Convert existing TrueType/OpenType fonts to WOFF format
