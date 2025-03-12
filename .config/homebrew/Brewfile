@@ -25,8 +25,6 @@ brew "bash-completion@2"
 brew "bat"
 # Core application library for C
 brew "glib"
-# Interpreted, interactive, object-oriented programming language
-brew "python@3.12"
 # Vector graphics library with cross-device output support
 brew "cairo"
 # OpenType text shaping engine
@@ -55,6 +53,8 @@ brew "gmp"
 brew "coreutils"
 # Open source multi-tool for exploring and publishing data
 brew "datasette"
+# Interpreted, interactive, object-oriented programming language
+brew "python@3.12"
 # Tools to work with Android .dex and Java .class files
 brew "dex2jar"
 # Validating, recursive, caching DNS resolver
