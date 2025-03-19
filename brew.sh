@@ -17,6 +17,8 @@ fi
 brew update
 # Upgrade any already-installed formulae.
 brew upgrade
+# Disable analytics
+brew analytics off
 # Install a modern version of Bash.
 brew install bash
 brew install bash-completion2
