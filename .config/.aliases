@@ -92,6 +92,19 @@ alias lsd="ls -lF ${colorflag} | grep --color=never '^d'"
 # Always use color output for `ls`
 alias ls="command ls ${colorflag}"
 
+alias aider-custom="uv tool run \
+--from aider-chat aider \
+--chat-mode architect \
+--model o3-mini \
+--editor-model sonnet \
+--api-key anthropic=$ANTHROPIC_API_KEY \
+--api-key openai=$OPENAI_API_KEY \
+--dark-mode \
+--show-diffs \
+--no-attribute-author \
+--no-attribute-committer \
+--attribute-commit-message-author \
+--vim"
 
 # -------------------------------------------------------------------------------------------------
 # Interesting matthias stuff I don't ever use but might modify someday
