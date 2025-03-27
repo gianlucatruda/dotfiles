@@ -79,6 +79,8 @@ brew "dsh"
 brew "dust"
 # Zip password cracker
 brew "fcrackzip"
+# Simple, fast and user-friendly alternative to find
+brew "fd"
 # Identify or delete duplicate files
 brew "fdupes"
 # Subtitle renderer for the ASS/SSA subtitle format
@@ -294,6 +296,8 @@ cask "eloston-chromium"
 # Multi-platform multi-messaging app
 cask "ferdium"
 cask "font-ubuntu-mono-nerd-font"
+# Free and open-source image editor
+cask "gimp"
 # Utility to render Jupyter notebooks
 cask "jupyter-notebook-viewer"
 # Open-source screen recorder built with web technology
@@ -322,3 +326,5 @@ cask "quicklook-json"
 cask "syntax-highlight"
 # Binary releases of VS Code without MS branding/telemetry/licensing
 cask "vscodium"
+vscode "ms-python.debugpy"
+vscode "ms-python.python"
