@@ -4,8 +4,8 @@ set nocompatible
 " Set dark background
 set background=dark  " or light
 
-" Set colorscheme (my favourites)
-colorscheme habamax
+" Manually set colorscheme (my favourites)
+" colorscheme habamax
 " colorscheme default
 " colorscheme darkblue
 " colorscheme desert
