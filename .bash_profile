@@ -10,11 +10,14 @@ for file in "${XDG_CONFIG_HOME}"/.{path,bash_prompt,exports,aliases,functions,ex
 done;
 unset file;
 
-# Make sure homebrew is happy
-eval "$(/opt/homebrew/bin/brew shellenv)"
+if [[ "$(uname)" == "Darwin" ]] && [[ -x /opt/homebrew/bin/brew ]]; then
+  # Make sure homebrew is happy
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
 
-# Update environment variables for tmux
-update_environment_from_tmux
+if [[ "$(uname)" == "Darwin" ]] && declare -f update_environment_from_tmux >/dev/null; then
+  update_environment_from_tmux
+fi
 # Case-insensitive globbing (used in pathname expansion)
 shopt -s nocaseglob;
 # Append to the Bash history file, rather than overwriting it
@@ -66,10 +69,16 @@ export PS1="$(reset-cursor)$PS1"
 #test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
 
 # Set up fzf key bindings and fuzzy completion
-eval "$(fzf --bash)"
+if command -v fzf >/dev/null 2>&1; then
+  eval "$(fzf --bash)"
+fi
 
 # Zoxide integration with Bash
-eval "$(zoxide init bash)"
+if command -v zoxide >/dev/null 2>&1; then
+  eval "$(zoxide init bash)"
+fi
 
 # Pyenv integration with Bash
-eval "$(pyenv init -)"
+if command -v pyenv >/dev/null 2>&1; then
+  eval "$(pyenv init -)"
+fi
