@@ -92,27 +92,23 @@ brew bundle install --file ~/.config/homebrew/Brewfile
 
 ## TODOs
 
-- [ ] Test on another Mac
-- [ ] Test on Linux
 - [ ] Migrate apps to be installed with Homebrew
-  - [ ] handbrake
-  - [ ] hex-fiend
-  - [ ] iina
-  - [ ] imageoptim
   - [ ] karabiner-elements
 - [ ] Make a list of favoured "manual install" apps
-  - [ ] obsidian
-  - [ ] shottr
-  - [ ] obs
   - [ ] anki
   - [ ] blender
   - [ ] brave-browser
+  - [ ] handbrake
+  - [ ] hex-fiend
+  - [ ] iina
   - [ ] libreoffice
-  - [ ] toothfairy
-  - [ ] transmission
+  - [ ] obs
+  - [ ] obsidian
+  - [ ] shottr
   - [ ] spotify
-  - [ ] todoist
   - [ ] tad (looking for nice TUI alt.)
+  - [ ] todoist
+  - [ ] toothfairy
 
 ---
 
@@ -184,6 +180,7 @@ tree -a -L 3 --gitignore -I .git/ -I .gitignore -I README.md
 
 15 directories, 33 files
 ```
+
 
 ### Bash functions
 
