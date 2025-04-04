@@ -10,6 +10,7 @@ function doIt() {
 		--exclude "*.txt" \
 		--exclude ".extra" \
 		--exclude ".gitignore" \
+		--exclude ".aider*" \
 		-avh --no-perms . ~;
 	source ~/.bash_profile;
 }
