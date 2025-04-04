@@ -13,6 +13,12 @@ My stack:
 - Vim (with lean .vimrc, no plugins) as fallback editor
 - [Aerospace](https://github.com/nikitabobko/AeroSpace) as (tiling) window manager (with [tweaks](https://youtu.be/-FoWClVHG5g))
 
+<img width="1840" alt="SCR-20250404-pesw" src="https://github.com/user-attachments/assets/2120218b-0845-46c8-91de-7d778d8e871e" />
+
+<img width="1840" alt="SCR-20250404-pfzx" src="https://github.com/user-attachments/assets/a50332f4-aaa4-47d6-9051-c02832264693" />
+
+<img width="1840" alt="SCR-20250404-pfxu" src="https://github.com/user-attachments/assets/eae9e7c9-a009-427f-ab7c-b5f41f82cbae" />
+
 ---
 
 ## Installation
