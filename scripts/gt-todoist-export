@@ -20,7 +20,7 @@ if [ ! -f "$input_file" ]; then
 fi
 
 # Process the CSV file
-awk -F',' 'BEGIN { }
+gawk 'BEGIN { FPAT = "([^,]+)|(\"[^\"]+\")" }
 
 # Skip header row, meta rows, and empty rows
 NR > 1 && $1 != "meta" && NF > 1 {
@@ -39,17 +39,7 @@ NR > 1 && $1 != "meta" && NF > 1 {
             # Split description into lines
             split(description, desc_lines, "\\n")
             for (line in desc_lines) {
-                # Check if line looks like code (has common command patterns)
-                if (desc_lines[line] ~ /^[a-zA-Z0-9_.\/\-]+ .*[;`\$]/ || 
-                    desc_lines[line] ~ /^[a-zA-Z0-9_.\/\-]+ --/ || 
-                    desc_lines[line] ~ /^docker/ || 
-                    desc_lines[line] ~ /^git / || 
-                    desc_lines[line] ~ /^npm / || 
-                    desc_lines[line] ~ /^python /) {
-                    print "    - `" desc_lines[line] "`"
-                } else {
-                    print "    - " desc_lines[line]
-                }
+                print "    - " desc_lines[line]
             }
         }
     }
