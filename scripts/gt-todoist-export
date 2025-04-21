@@ -19,28 +19,33 @@ if [ ! -f "$input_file" ]; then
     exit 1
 fi
 
-# Process the CSV file
-gawk 'BEGIN { FPAT = "([^,]+)|(\"[^\"]+\")" }
+# Process the CSV file using Python's csv module (no need for gawk)
+python3 << 'EOF'
+import sys, csv
 
-# Skip header row, meta rows, and empty rows
-NR > 1 && $1 != "meta" && NF > 1 {
-    content = $2
-    description = $3
-    
-    gsub(/^"|"$/, "", content)
-    gsub(/^"|"$/, "", description)
-    
-    # Print as markdown bullet
-    if (content != "") {
-        print "- " content
-        
-        # Process description if it exists
-        if (description != "") {
-            # Split description into lines
-            split(description, desc_lines, "\\n")
-            for (line in desc_lines) {
-                print "    - " desc_lines[line]
-            }
-        }
-    }
-}' "$input_file"
+if len(sys.argv) != 2:
+    sys.exit("Usage: {} <todoist_export.csv>".format(sys.argv[0]))
+
+with open(sys.argv[1], newline='', encoding="utf-8") as csvfile:
+    reader = csv.reader(csvfile)
+    # Skip header row
+    next(reader, None)
+
+    for row in reader:
+        # Skip meta rows and incomplete rows
+        if not row or (row[0] == "meta"):
+            continue
+        # Ensure we have at least two columns
+        if len(row) < 2:
+            continue
+
+        content = row[1].strip('"')
+        description = (row[2].strip('"') if len(row) > 2 else "")
+
+        if content:
+            print("- " + content)
+            if description:
+                # Split description on literal "\n" characters
+                for line in description.split("\\n"):
+                    print("    - " + line)
+EOF "$input_file"
