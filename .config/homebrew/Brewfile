@@ -2,6 +2,7 @@ tap "bramstein/webfonttools"
 tap "ferdium/ferdium"
 tap "homebrew/bundle"
 tap "jesseduffield/lazygit"
+tap "lusingander/tap"
 tap "modularml/packages"
 tap "nikitabobko/tap"
 tap "vladkens/tap"
@@ -275,6 +276,8 @@ brew "bramstein/webfonttools/sfnt2woff"
 brew "bramstein/webfonttools/sfnt2woff-zopfli"
 # A simple terminal UI for git commands, written in Go
 brew "jesseduffield/lazygit/lazygit"
+# A rich git commit graph in your terminal, like magic
+brew "lusingander/tap/serie"
 # Modular developer CLI tool
 brew "modularml/packages/modular"
 # Sudoless performance monitoring CLI tool for Apple Silicon processors
