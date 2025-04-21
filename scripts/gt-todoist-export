@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Convert Todoist CSV exports to Markdown bullets
+# Convert Todoist CSV exports to Markdown bullets with 4-space indentation
 # Usage: ./<script_name> input.csv > output.md
 
 set -euo pipefail
@@ -103,9 +103,9 @@ NR > 1 && $1 != "meta" && NF > 1 {
                     desc_lines[line] ~ /^git / || 
                     desc_lines[line] ~ /^npm / || 
                     desc_lines[line] ~ /^python /) {
-                    print "\t- `" desc_lines[line] "`"
+                    print "    - `" desc_lines[line] "`"
                 } else {
-                    print "\t- " desc_lines[line]
+                    print "    - " desc_lines[line]
                 }
             }
         }
