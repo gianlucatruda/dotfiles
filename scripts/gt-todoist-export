@@ -20,72 +20,15 @@ if [ ! -f "$input_file" ]; then
 fi
 
 # Process the CSV file
-awk -F',' 'BEGIN {
-    in_quotes = 0
-    tasks_started = 0
-}
+awk -F',' 'BEGIN { }
 
 # Skip header row, meta rows, and empty rows
 NR > 1 && $1 != "meta" && NF > 1 {
-    tasks_started = 1
+    content = $2
+    description = $3
     
-    # Extract the content field (handle quoted fields correctly)
-    content = ""
-    description = ""
-    
-    # Process the content (field 2)
-    for (i = 2; i <= NF; i++) {
-        field = $i
-        
-        # Handle quoted content spanning multiple fields
-        if (in_quotes) {
-            content = content "," field
-            if (field ~ /"$/) {
-                in_quotes = 0
-                content = substr(content, 1, length(content) - 1)  # Remove closing quote
-                break
-            }
-        } else if (field ~ /^"/) {
-            in_quotes = 1
-            content = substr(field, 2)  # Remove opening quote
-            if (field ~ /"$/) {
-                in_quotes = 0
-                content = substr(content, 1, length(content) - 1)  # Remove closing quote
-                break
-            }
-        } else {
-            content = field
-            break
-        }
-    }
-    
-    # Reset for description field
-    in_quotes = 0
-    
-    # Process the description (field 3)
-    for (i = 3; i <= NF; i++) {
-        field = $i
-        
-        if (in_quotes) {
-            description = description "," field
-            if (field ~ /"$/) {
-                in_quotes = 0
-                description = substr(description, 1, length(description) - 1)  # Remove closing quote
-                break
-            }
-        } else if (field ~ /^"/) {
-            in_quotes = 1
-            description = substr(field, 2)  # Remove opening quote
-            if (field ~ /"$/) {
-                in_quotes = 0
-                description = substr(description, 1, length(description) - 1)  # Remove closing quote
-                break
-            }
-        } else {
-            description = field
-            break
-        }
-    }
+    gsub(/^"|"$/, "", content)
+    gsub(/^"|"$/, "", description)
     
     # Print as markdown bullet
     if (content != "") {
