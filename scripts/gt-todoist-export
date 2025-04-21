@@ -1,0 +1,113 @@
+#!/usr/bin/env bash
+
+# Convert Todoist CSV exports to Markdown bullets
+# Usage: ./<script_name> input.csv > output.md
+
+set -euo pipefail
+
+# Check if file argument is provided
+if [ $# -ne 1 ]; then
+    echo "Usage: $0 <todoist_export.csv>"
+    exit 1
+fi
+
+input_file="$1"
+
+# Check if file exists
+if [ ! -f "$input_file" ]; then
+    echo "Error: File '$input_file' not found."
+    exit 1
+fi
+
+# Process the CSV file
+awk -F',' 'BEGIN {
+    in_quotes = 0
+    tasks_started = 0
+}
+
+# Skip header row, meta rows, and empty rows
+NR > 1 && $1 != "meta" && NF > 1 {
+    tasks_started = 1
+    
+    # Extract the content field (handle quoted fields correctly)
+    content = ""
+    description = ""
+    
+    # Process the content (field 2)
+    for (i = 2; i <= NF; i++) {
+        field = $i
+        
+        # Handle quoted content spanning multiple fields
+        if (in_quotes) {
+            content = content "," field
+            if (field ~ /"$/) {
+                in_quotes = 0
+                content = substr(content, 1, length(content) - 1)  # Remove closing quote
+                break
+            }
+        } else if (field ~ /^"/) {
+            in_quotes = 1
+            content = substr(field, 2)  # Remove opening quote
+            if (field ~ /"$/) {
+                in_quotes = 0
+                content = substr(content, 1, length(content) - 1)  # Remove closing quote
+                break
+            }
+        } else {
+            content = field
+            break
+        }
+    }
+    
+    # Reset for description field
+    in_quotes = 0
+    
+    # Process the description (field 3)
+    for (i = 3; i <= NF; i++) {
+        field = $i
+        
+        if (in_quotes) {
+            description = description "," field
+            if (field ~ /"$/) {
+                in_quotes = 0
+                description = substr(description, 1, length(description) - 1)  # Remove closing quote
+                break
+            }
+        } else if (field ~ /^"/) {
+            in_quotes = 1
+            description = substr(field, 2)  # Remove opening quote
+            if (field ~ /"$/) {
+                in_quotes = 0
+                description = substr(description, 1, length(description) - 1)  # Remove closing quote
+                break
+            }
+        } else {
+            description = field
+            break
+        }
+    }
+    
+    # Print as markdown bullet
+    if (content != "") {
+        print "- " content
+        
+        # Process description if it exists
+        if (description != "") {
+            # Split description into lines
+            split(description, desc_lines, "\\n")
+            for (line in desc_lines) {
+                # Check if line looks like code (has common command patterns)
+                if (desc_lines[line] ~ /^[a-zA-Z0-9_.\/\-]+ .*[;`\$]/ || 
+                    desc_lines[line] ~ /^[a-zA-Z0-9_.\/\-]+ --/ || 
+                    desc_lines[line] ~ /^docker/ || 
+                    desc_lines[line] ~ /^git / || 
+                    desc_lines[line] ~ /^npm / || 
+                    desc_lines[line] ~ /^python /) {
+                    print "\t- `" desc_lines[line] "`"
+                } else {
+                    print "\t- " desc_lines[line]
+                }
+            }
+        }
+    }
+}' "$input_file"
