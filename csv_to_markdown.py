@@ -12,11 +12,14 @@ def convert_csv_to_markdown(csv_file_path):
             for row in reader:
                 # Skip empty rows or non-task rows
                 if row.get("TYPE", "").strip().lower() == "task":
-                    # Extract the content field
+                    # Extract the content and description fields
                     content = row.get("CONTENT", "").strip()
+                    description = row.get("DESCRIPTION", "").strip()
                     if content:
                         # Add as a markdown list item
                         markdown_lines.append(f"- {content}")
+                        if description:
+                            markdown_lines.append(f"    - {description}")
             
             return "\n".join(markdown_lines)
     except Exception as e:
