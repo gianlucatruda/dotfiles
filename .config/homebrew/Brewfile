@@ -69,7 +69,7 @@ brew "gpgme"
 # Library for JPEG-2000 image manipulation
 brew "openjpeg"
 # PDF rendering library (based on the xpdf-3.0 code base)
-brew "poppler", link: false
+brew "poppler"
 # Visually compare two PDF files
 brew "diff-pdf"
 # TCP over DNS tunnel
@@ -265,7 +265,7 @@ brew "wget"
 # Utilities to create and convert Web Open Font File (WOFF) files
 brew "woff2"
 # PDF viewer
-brew "xpdf"
+brew "xpdf", link: false
 # Download YouTube videos from the command-line
 brew "youtube-dl"
 # Shell extension to navigate your filesystem faster
