@@ -2,13 +2,10 @@
 
 # Open directory in [v]im (neovim, else vi(m))
 function v() {
-	# open current directory if no valid argument given
-	local dir="."
-	[[ -n "$1" && -e "$1" ]] && dir=$1
 	if command -v nvim >/dev/null 2>&1; then
-		nvim "$dir" 
+		nvim "$1" 
 	else
-		vi "$dir" 
+		vi "$1" 
 	fi
 
 }
