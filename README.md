@@ -25,9 +25,9 @@ My stack:
 
 With Git:
 ```bash
-git clone git@github.com:gianlucatruda/dotfiles.git
-cd dotfiles
+git clone --depth 5 git@github.com:gianlucatruda/dotfiles.git <your/dotfiles/path/>
 ```
+(I suggest `~/dotfiles` for the path)
 
 ### System agnostic bootstrap
 
