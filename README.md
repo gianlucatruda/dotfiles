@@ -4,13 +4,13 @@ Heavily modified adaptation of [Mathias's dotfiles](https://github.com/mathiasby
 
 My stack:
 
-- Homebrew as package manager
-- Alacritty as terminal
 - Bash as shell
 - Tmux for multiplexing
 - Neovim as primary editor, based off [Kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim/)
-- Karabiner for key modifiers and custom keybindings
 - Vim (with lean .vimrc, no plugins) as fallback editor
+- Alacritty as terminal
+- Homebrew as package manager
+- Karabiner for key modifiers and custom keybindings
 - [Aerospace](https://github.com/nikitabobko/AeroSpace) as (tiling) window manager (with [tweaks](https://youtu.be/-FoWClVHG5g))
 
 <img width="1840" alt="SCR-20250404-pesw" src="https://github.com/user-attachments/assets/2120218b-0845-46c8-91de-7d778d8e871e" />
@@ -105,23 +105,19 @@ brew bundle install --file ~/.config/homebrew/Brewfile
 
 ---
 
-## TODOs
+### Apps to manually install for my workflows
 
-- [ ] Make a list of favoured "manual install" apps
-  - [ ] anki
-  - [ ] blender
-  - [ ] brave-browser
-  - [ ] handbrake
-  - [ ] hex-fiend
-  - [ ] iina
-  - [ ] libreoffice
-  - [ ] obs
-  - [ ] obsidian
-  - [ ] shottr
-  - [ ] spotify
-  - [ ] tad (looking for nice TUI alt.)
-  - [ ] todoist
-  - [ ] toothfairy
+- shottr
+- toothfairy
+- brave-browser
+- handbrake
+- iina
+- obs
+- anki
+- obsidian
+- spotify
+- tad (looking for nice TUI alt.)
+- todoist
 
 ---
 
@@ -169,12 +165,8 @@ tree -a -L 3 --gitignore -I .git/ -I .gitignore -I README.md
 │   │   ├── colors
 │   │   ├── icons
 │   │   └── lfrc
-│   ├── newsboat
-│   │   └── config
 │   ├── nvim
 │   │   └── init.lua
-│   ├── spotify-player
-│   │   └── app.toml
 │   └── tmux
 │       └── tmux.conf
 ├── .gitignore_global
@@ -189,9 +181,10 @@ tree -a -L 3 --gitignore -I .git/ -I .gitignore -I README.md
     ├── gt-stt
     ├── gt-sync-obsidian
     ├── gt-synchdd
+    ├── gt-todoist-export
     └── gt-tts
 
-15 directories, 33 files
+13 directories, 32 files
 ```
 
 
@@ -231,3 +224,4 @@ tree -a -L 3 --gitignore -I .git/ -I .gitignore -I README.md
 - **Leader Key**: The space ( `' '` ) key is configured as the leader key, pivotal for many custom shortcuts.
 - **Colorscheme**: `nightfox.nvim` is set as the default theme, indicating an emphasis on visual aesthetics.
 - **Clipboard**: Synchronized with the system clipboard, promoting easy copy-paste operations between Neovim and other applications.
+
