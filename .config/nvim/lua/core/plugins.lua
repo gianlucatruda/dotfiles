@@ -13,12 +13,12 @@ require('lazy').setup({
   'rafamadriz/friendly-snippets',      -- Various language snippets
   'neovim/nvim-lspconfig',             -- Configures nvim's LSP client
   'williamboman/mason-lspconfig.nvim', -- mason x nvim-lspconfig bridge
-  'j-hui/fidget.nvim',                 -- LSP status notification UI
   'folke/neodev.nvim',                 -- Adds nvim API support to Lua
   'numToStr/Comment.nvim',             -- Toggle comments
   'nvim-lua/plenary.nvim',             -- Lua funcs used by plugins
   'smithbm2316/centerpad.nvim',        -- Centerpad a buffer
   'williamboman/mason.nvim',           -- Package manager for LSP servers
+  { 'j-hui/fidget.nvim', opts = {} },  -- LSP status notification UI
   {
     'EdenEast/nightfox.nvim',          -- Nightfox colourscheme
     priority = 1000,
