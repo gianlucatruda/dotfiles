@@ -1,4 +1,5 @@
 require('lazy').setup({
+  'nvim-lua/plenary.nvim',             -- Lua funcs used by plugins
   'nvim-lualine/lualine.nvim',         -- Customisable statusline
   'tpope/vim-sleuth',                  -- Auto tabstop and shiftwidth
   'tpope/vim-fugitive',                -- Git integration
@@ -12,12 +13,12 @@ require('lazy').setup({
   'hrsh7th/cmp-path',                  -- nvim-cmp source for filepaths
   'rafamadriz/friendly-snippets',      -- Various language snippets
   'neovim/nvim-lspconfig',             -- Configures nvim's LSP client
-  'williamboman/mason-lspconfig.nvim', -- mason x nvim-lspconfig bridge
+  'mason-org/mason-lspconfig.nvim', -- mason x nvim-lspconfig bridge
   'folke/lazydev.nvim',                 -- Adds nvim API support to Lua
   'numToStr/Comment.nvim',             -- Toggle comments
-  'nvim-lua/plenary.nvim',             -- Lua funcs used by plugins
   'smithbm2316/centerpad.nvim',        -- Centerpad a buffer
-  'williamboman/mason.nvim',           -- Package manager for LSP servers
+  'mason-org/mason.nvim',           -- Package manager for LSP servers
+'WhoIsSethDaniel/mason-tool-installer.nvim',
   { 'j-hui/fidget.nvim', opts = {} },  -- LSP status notification UI
   {
     'EdenEast/nightfox.nvim',          -- Nightfox colourscheme
@@ -42,4 +43,5 @@ require('lazy').setup({
     'nvim-treesitter/nvim-treesitter',           -- Highlight, edit, navigate code
     build = ':TSUpdate',
   },
+
 }, {})
