@@ -172,8 +172,6 @@ brew "neofetch"
 brew "neovim"
 # Image manipulation
 brew "netpbm"
-# RSS/Atom feed reader for text terminals
-brew "newsboat"
 # Port scanning utility for large networks
 brew "nmap"
 # Optimized BLAS library
@@ -230,8 +228,6 @@ brew "shellcheck"
 brew "socat"
 # Command-line interface for https://speedtest.net bandwidth tests
 brew "speedtest-cli"
-# Command driven spotify player
-brew "spotify_player"
 # Penetration testing for SQL injection and database servers
 brew "sqlmap"
 # Add a public key to a remote machine's authorized_keys file
@@ -244,8 +240,6 @@ brew "tcpflow"
 brew "tcpreplay"
 # Analyze tcpdump output
 brew "tcptrace"
-# General purpose fuzzy finder TUI
-brew "television"
 # Simplified and community-driven man pages
 brew "tldr"
 # Terminal multiplexer
