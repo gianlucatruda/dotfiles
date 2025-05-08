@@ -1,5 +1,3 @@
--- Mirror basic settings of .vimrc here ---------------------------------------
-
 -- Set good default colours and inherit (overridden if plugins load)
 vim.opt.termguicolors = false
 vim.g.colors_name = "default"
@@ -74,8 +72,6 @@ vim.opt.wrap = true      -- Wrap lines
 vim.opt.errorbells = false
 vim.opt.visualbell = false
 
--------------------------------------------------------------------------------
-
 -- Gianluca's custom tab settings (vim-sleuth will override in some contexts?) -----
 -- Note: these are similar to my defaults in .vimrc for vanilla vim (good baseline)
 vim.opt.tabstop = 4
@@ -97,8 +93,7 @@ vim.opt.timeoutlen = 300
 -- Set completeopt to have a better completion experience
 vim.opt.completeopt = 'menuone,noselect'
 
--- [[ Highlight on yank ]]
--- See `:help vim.highlight.on_yank()`
+-- Highlight on yank
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
 vim.api.nvim_create_autocmd('TextYankPost', {
   callback = function()
@@ -107,4 +102,3 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   group = highlight_group,
   pattern = '*',
 })
-print("Debug: Options loaded")

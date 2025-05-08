@@ -194,5 +194,3 @@ cmp.setup {
     { name = 'path' },
   },
 }
-
-print("Debug: LSP, Mason, and completions configured")
