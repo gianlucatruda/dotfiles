@@ -18,19 +18,15 @@ require('lazy').setup({
   'numToStr/Comment.nvim',             -- Toggle comments
   'nvim-lua/plenary.nvim',             -- Lua funcs used by plugins
   'smithbm2316/centerpad.nvim',        -- Centerpad a buffer
+  'williamboman/mason.nvim',           -- Package manager for LSP servers
   {
-    'williamboman/mason.nvim',         -- Package manager for LSP servers
-    config = true
-  },
-  {
-    'EdenEast/nightfox.nvim', -- Nightfox colourscheme
+    'EdenEast/nightfox.nvim',          -- Nightfox colourscheme
     priority = 1000,
     lazy = false,
   },
   {
     'lukas-reineke/indent-blankline.nvim', -- Indentation guides
     main = 'ibl',
-    opts = {},
   },
   {
     'nvim-telescope/telescope.nvim', -- Fuzzy-finder, navigator

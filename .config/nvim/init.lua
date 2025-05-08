@@ -19,6 +19,5 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- Load and then configure plugins
 require("core.plugins")  -- Goes to lua/core/plugins.lua
 require("plugin_config") -- Goes to lua/plugin_config/init.lua
