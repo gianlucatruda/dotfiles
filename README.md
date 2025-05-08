@@ -1,6 +1,6 @@
 # Gianluca's dotfiles
 
-Heavily modified adaptation of [Mathias's dotfiles](https://github.com/mathiasbynens/dotfiles) that I've personalised since 2017.
+I forked [Mathias's dotfiles](https://github.com/mathiasbynens/dotfiles) in 2017 and I've been heavily tuning and personalising mine since then.
 
 My stack:
 
