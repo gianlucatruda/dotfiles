@@ -13,7 +13,7 @@ require('lazy').setup({
   'rafamadriz/friendly-snippets',      -- Various language snippets
   'neovim/nvim-lspconfig',             -- Configures nvim's LSP client
   'williamboman/mason-lspconfig.nvim', -- mason x nvim-lspconfig bridge
-  'folke/neodev.nvim',                 -- Adds nvim API support to Lua
+  'folke/lazydev.nvim',                 -- Adds nvim API support to Lua
   'numToStr/Comment.nvim',             -- Toggle comments
   'nvim-lua/plenary.nvim',             -- Lua funcs used by plugins
   'smithbm2316/centerpad.nvim',        -- Centerpad a buffer
