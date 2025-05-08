@@ -107,8 +107,6 @@ brew bundle install --file ~/.config/homebrew/Brewfile
 
 ## TODOs
 
-- [ ] Migrate apps to be installed with Homebrew
-  - [ ] karabiner-elements
 - [ ] Make a list of favoured "manual install" apps
   - [ ] anki
   - [ ] blender

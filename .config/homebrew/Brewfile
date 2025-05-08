@@ -299,6 +299,8 @@ cask "gimp"
 cask "jupyter-notebook-viewer"
 # Open-source screen recorder built with web technology
 cask "kap"
+# Keyboard customiser
+cask "karabiner-elements"
 # File system integration
 cask "macfuse"
 # Smart card libraries and utilities
