@@ -29,10 +29,19 @@ git clone --depth 5 git@github.com:gianlucatruda/dotfiles.git <your/dotfiles/pat
 ```
 (I suggest `~/dotfiles` for the path)
 
+Or with curl:
+
+```
+curl -L -o dotfiles-master.zip https://github.com/gianlucatruda/dotfiles/archive/master.zip
+unzip dotfiles-master.zip
+cd dotfiles-master
+```
+
 ### System agnostic bootstrap
 
+From within the dotfiles directory:
+
 ```bash
-cd dotfiles
 source bootstrap.sh
 ```
 
@@ -67,7 +76,7 @@ Configure some macOS preferences:
 ./macos.sh
 ```
 
-Install macOS packages with Homebrew:
+Install packages with Homebrew:
 ```bash
 ./brew.sh
 ```
