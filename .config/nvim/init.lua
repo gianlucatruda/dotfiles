@@ -78,11 +78,6 @@ vim.o.completeopt = 'menuone,noselect'
 -- NOTE: You should make sure your terminal supports true-color
 vim.o.termguicolors = true
 
-
--- TODO nightfox plugin must be running first
--- Set colorscheme: nightfox, dayfox, nordfox, carbonfox, etc.
-vim.cmd("colorscheme nightfox")
-
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
@@ -262,6 +257,7 @@ require('lazy').setup({
     config = function()
       require('nightfox').setup {
         -- Options
+        vim.cmd("colorscheme nightfox")
       }
       require('nightfox').load()
     end,
