@@ -1,4 +1,5 @@
 tap "bramstein/webfonttools"
+tap "felixkratz/formulae"
 tap "ferdium/ferdium"
 tap "homebrew/bundle"
 tap "jesseduffield/lazygit"
@@ -268,6 +269,8 @@ brew "zoxide"
 brew "bramstein/webfonttools/sfnt2woff"
 # WOFF utilities with Zopfli compression
 brew "bramstein/webfonttools/sfnt2woff-zopfli"
+# A window border system for macOS
+brew "felixkratz/formulae/borders"
 # A simple terminal UI for git commands, written in Go
 brew "jesseduffield/lazygit/lazygit"
 # A rich git commit graph in your terminal, like magic
