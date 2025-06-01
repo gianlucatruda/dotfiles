@@ -298,6 +298,8 @@ cask "ferdium"
 cask "font-ubuntu-mono-nerd-font"
 # Free and open-source image editor
 cask "gimp"
+# Utility to hide menu bar items
+cask "hiddenbar"
 # Utility to render Jupyter notebooks
 cask "jupyter-notebook-viewer"
 # Open-source screen recorder built with web technology
