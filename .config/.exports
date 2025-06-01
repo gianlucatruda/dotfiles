@@ -33,9 +33,6 @@ export LC_ALL='en_GB.UTF-8';
 # Highlight section titles in manual pages.
 export LESS_TERMCAP_md="${yellow}";
 
-# Don’t clear the screen after quitting a manual page.
-export MANPAGER='less -X';
-
 # Avoid issues with `gpg` as installed via Homebrew.
 # https://stackoverflow.com/a/42265848/96656
 export GPG_TTY=$(tty);
@@ -43,9 +40,9 @@ export GPG_TTY=$(tty);
 # Hide the “default interactive shell is now zsh” warning on macOS.
 export BASH_SILENCE_DEPRECATION_WARNING=1;
 
-# Use Less for (man) pages etc.
-export PAGER="less -R"
-export MANPAGER="less -R"
+# Use Less for (man) pages etc (-X so don’t clear the screen after quitting a manual page.)
+export MANPAGER="less -RX --use-color -Dd+b -Du+g"
+export PAGER="$MANPAGER"
 
 # Specify colouring for less (for man pages etc.)
 export LESS_TERMCAP_mb=$'\E[1;31m'     # begin bold
