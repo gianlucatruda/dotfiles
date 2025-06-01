@@ -285,6 +285,8 @@ cask "aerospace"
 cask "alacritty"
 # Inspect application bundles
 cask "apparency"
+# Tool to flash OS images to SD cards & USB drives
+cask "balenaetcher"
 # Automated testing of webapps for Google Chrome
 cask "chromedriver"
 # API documentation browser and code snippet manager
