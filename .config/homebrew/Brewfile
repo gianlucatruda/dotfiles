@@ -255,6 +255,8 @@ brew "uv"
 brew "vale"
 # Visual Binary Diff
 brew "vbindiff"
+# Executes a program periodically, showing output fullscreen
+brew "watch"
 # Internet file retriever
 brew "wget"
 # Utilities to create and convert Web Open Font File (WOFF) files
