@@ -79,6 +79,8 @@ brew "dns2tcp"
 brew "dsh"
 # More intuitive version of du in rust
 brew "dust"
+# Like neofetch, but much faster because written mostly in C
+brew "fastfetch"
 # Zip password cracker
 brew "fcrackzip"
 # Simple, fast and user-friendly alternative to find
@@ -167,8 +169,6 @@ brew "yt-dlp"
 brew "mpv"
 # Open source relational database management system
 brew "mysql-client"
-# Fast, highly customisable system info script
-brew "neofetch"
 # Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
 # Image manipulation
