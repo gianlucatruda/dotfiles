@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Version 2.1
+# Version 2.2
 
 if ! [[ -n $LOGDIR ]]; then
 	LOGDIR="$HOME/3-Resources/Logs"
@@ -49,6 +49,6 @@ for DRIVE in $BACKUP_HDD_01 $BACKUP_HDD_02; do
 		)
 	done
 	echo -e "\nFinished syncing to '$DRIVE'\n"
+	echo -e "\nLogs written to '$LOGFILE'\n"
 done
 
-echo -e "\nLogs written to '$LOGFILE'\n"
