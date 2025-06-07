@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-# Version 2.0
+# Version 2.1
 
 if ! [[ -n $LOGDIR ]]; then
 	LOGDIR="$HOME/3-Resources/Logs"
-	echo "LOGDIR not set. Creating at '$LOGDIR'"
+	echo -e "LOGDIR not set. Creating at '$LOGDIR'"
 fi
 mkdir -p "$LOGDIR"
 LOGFILE="$LOGDIR/$(date +%Y-%m-%d_%H-%M-%S)_gt-synchdd.log"
@@ -21,11 +21,11 @@ SUBDIRS_TO_SYNC=(
 # for DRIVE in $TEST_PATH_01 $TEST_PATH_02; do
 for DRIVE in $BACKUP_HDD_01 $BACKUP_HDD_02; do
 	if ! [[ -n $DRIVE ]]; then
-		echo "Backup drives not properly specified. Check ~/.config/.extra"
+		echo -e "Backup drives not properly specified. Check ~/.config/.extra"
 		exit 1 # Exit code 1 for error
 	fi
 	if ! [[ -e "$DRIVE" && -d "$DRIVE" ]]; then
-		echo "\n$DRIVE not found, skipping.\n"
+		echo -e "\n$DRIVE not found, skipping.\n"
 		continue
 	fi
 	echo -e "\n\nSyncing '$DRIVE'...\n"
@@ -33,7 +33,7 @@ for DRIVE in $BACKUP_HDD_01 $BACKUP_HDD_02; do
 		(set -x; rsync -avh \
 			--backup \
 			--backup-dir="$DRIVE/Deleted/$(date +%Y-%m-%d_%H-%M-%S)" \
-			--delete-before \
+			--delete-after \
 			--stats \
 			--progress \
 			--log-file="$LOGFILE" \
