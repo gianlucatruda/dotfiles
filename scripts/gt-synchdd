@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Version 2.8
+# Version 3.0
 
 if ! [[ -n $LOGDIR ]]; then
 	LOGDIR="$HOME/3-Resources/Logs"
@@ -22,7 +22,7 @@ SUBDIRS_TO_SYNC=(
 # TEST_PATH_01="$HOME/Desktop/test01"
 # TEST_PATH_02="$HOME/Desktop/test02"
 # for DRIVE in $TEST_PATH_01 $TEST_PATH_02; do
-for DRIVE in $BACKUP_SSD_01 $BACKUP_HDD_01 $BACKUP_HDD_02; do
+for DRIVE in $BACKUP_DIR_01 $BACKUP_DIR_02 $BACKUP_DIR_03; do # v3 schema
 	if ! [[ -n $DRIVE ]]; then
 		echo -e "Backup drives not properly specified. Check ~/.config/.extra"
 		exit 1 # Exit code 1 for error
@@ -37,7 +37,6 @@ for DRIVE in $BACKUP_SSD_01 $BACKUP_HDD_01 $BACKUP_HDD_02; do
 			--backup \
 			--backup-dir="$DRIVE/Deleted/$DATETIME/$SUBDIR/" \
 			--delete \
-			--inplace \
 			--stats \
 			--log-file="$LOGFILE" \
 			--exclude='.DS_Store' \
