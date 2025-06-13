@@ -6,6 +6,7 @@ tap "jesseduffield/lazygit"
 tap "lusingander/tap"
 tap "modularml/packages"
 tap "nikitabobko/tap"
+tap "philocalyst/tap"
 tap "vladkens/tap"
 # Search tool like grep, but optimized for programmers
 brew "ack"
@@ -279,6 +280,8 @@ brew "jesseduffield/lazygit/lazygit"
 brew "lusingander/tap/serie"
 # Modular developer CLI tool
 brew "modularml/packages/modular"
+# User-friendly, lightweight TUI for disk imaging
+brew "philocalyst/tap/caligula"
 # Sudoless performance monitoring CLI tool for Apple Silicon processors
 brew "vladkens/tap/macmon"
 # AeroSpace is an i3-like tiling window manager for macOS
@@ -287,8 +290,6 @@ cask "aerospace"
 cask "alacritty"
 # Inspect application bundles
 cask "apparency"
-# Tool to flash OS images to SD cards & USB drives
-cask "balenaetcher"
 # Automated testing of webapps for Google Chrome
 cask "chromedriver"
 # API documentation browser and code snippet manager
