@@ -93,6 +93,7 @@ alias lsd="ls -lF ${colorflag} | grep --color=never '^d'"
 alias ls="command ls ${colorflag}"
 
 alias aider-custom="uv tool run \
+--with playwright \
 --from aider-chat aider \
 --chat-mode architect \
 --model o3-mini \
