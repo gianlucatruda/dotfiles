@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+# Version 0.1
+
+if ! [[ -n $LOGDIR ]]; then
+	LOGDIR="$HOME/3-Resources/Logs"
+	echo -e "LOGDIR not set. Creating at '$LOGDIR'"
+fi
+mkdir -p "$LOGDIR"
+DATETIME="$(date +%Y-%m-%d_%H-%M-%S)"
+echo $DATETIME
+LOGFILE="$LOGDIR/${DATETIME}_gt-sync-homelab.log"
+echo $LOGFILE
+
+# HOMELAB_HOME_DIR of format user@server.local:/home/user
+if ! [[ -n $HOMELAB_HOME_DIR ]]; then
+	echo -e "HOMELAB_HOME_DIR not set. Check ~/.config/.extra"
+	exit 1 # Exit code 1 for error
+fi
+
+# TODO swaps scripts for media/media
+SUBDIRS_TO_SYNC=(
+	"homelab" \
+	"media/media" \
+)
+
+for DRIVE in "$HOMELAB_BACKUP_DIR_01"; do
+	if ! [[ -n $DRIVE ]]; then
+		echo -e "Backup path not properly specified. Check ~/.config/.extra"
+		exit 1 # Exit code 1 for error
+	fi
+	if ! [[ -e "$DRIVE" && -d "$DRIVE" ]]; then
+		echo -e "\n$DRIVE not found, skipping.\n"
+		continue
+	fi
+	echo -e "\n\nSyncing to '$DRIVE'...\n"
+	for SUBDIR in "${SUBDIRS_TO_SYNC[@]}"; do
+		(set -x; rsync -avhz \
+			--backup \
+			--backup-dir="$DRIVE/Deleted/$DATETIME/$SUBDIR/" \
+			--delete \
+			--stats \
+			--log-file="$LOGFILE" \
+			--exclude='.DS_Store' \
+			--exclude='.DocumentRevisions-V100' \
+			--exclude='.Spotlight-V100' \
+			--exclude='.TemporaryItems' \
+			--exclude='.Trashes' \
+			--exclude='._*' \
+			--exclude='.fseventsd' \
+			--exclude='.timemachine' \
+			"$HOMELAB_HOME_DIR/$SUBDIR/" "$DRIVE/$SUBDIR/" \
+		)
+	done
+	echo -e "\nFinished syncing from '$HOMELAB_HOME_DIR' to '$DRIVE'\n"
+	echo -e "\nLogs written to '$LOGFILE'\n"
+done
+
