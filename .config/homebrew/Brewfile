@@ -208,6 +208,8 @@ brew "qt@5"
 brew "ranger"
 # Ruby version manager
 brew "rbenv"
+# Rsync for cloud storage
+brew "rclone"
 # Find duplicate files based on content (NOT file names)
 brew "rdfind"
 # Perl-powered file rename script with many helpful built-ins
@@ -296,8 +298,6 @@ cask "chromedriver"
 cask "dash"
 # Virtual monitor for screen sharing
 cask "deskpad"
-# Google Chromium, sans integration with Google
-cask "eloston-chromium"
 # Multi-platform multi-messaging app
 cask "ferdium"
 cask "font-ubuntu-mono-nerd-font"
@@ -314,7 +314,7 @@ cask "karabiner-elements"
 # File system integration
 cask "macfuse"
 # Smart card libraries and utilities
-cask "opensc"
+cask "opensc-app"
 # Quick Look plug-in that renders source code with syntax highlighting
 cask "qlcolorcode"
 # Display image info and preview unsupported formats in QuickLook
@@ -333,6 +333,8 @@ cask "quicklook-csv"
 cask "quicklook-json"
 # Quicklook extension for source files
 cask "syntax-highlight"
+# Google Chromium, sans integration with Google
+cask "ungoogled-chromium"
 # Binary releases of VS Code without MS branding/telemetry/licensing
 cask "vscodium"
 vscode "ms-python.debugpy"
