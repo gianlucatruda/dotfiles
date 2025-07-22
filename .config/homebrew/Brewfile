@@ -1,7 +1,6 @@
 tap "bramstein/webfonttools"
 tap "felixkratz/formulae"
 tap "ferdium/ferdium"
-tap "homebrew/bundle"
 tap "jesseduffield/lazygit"
 tap "lusingander/tap"
 tap "modularml/packages"
@@ -44,8 +43,6 @@ brew "p7zip"
 brew "binwalk"
 # Yet another cross-platform graphical process/system monitor
 brew "bottom"
-# Watches over your Cargo project's source
-brew "cargo-watch"
 # Work on automating classical cipher cracking in C
 brew "cifer"
 # Cross-platform make
@@ -124,10 +121,6 @@ brew "gitleaks"
 brew "glow"
 # GNU grep, egrep and fgrep
 brew "grep"
-# Interpreted, interactive, object-oriented programming language
-brew "python@3.11"
-# Tool to exploit hash length extension attack
-brew "hashpump"
 # Improved top (interactive process viewer)
 brew "htop"
 # Configurable static site generator
@@ -158,6 +151,8 @@ brew "lua"
 brew "lynx"
 # Swiss Army Knife for macOS
 brew "m-cli"
+# Sudoless performance monitoring for Apple Silicon processors
+brew "macmon"
 # Utility for directing compilation
 brew "make"
 # CLI tool for saving complete web pages as a single HTML file
@@ -179,7 +174,7 @@ brew "nmap"
 # Optimized BLAS library
 brew "openblas"
 # Package for scientific computing with Python
-brew "numpy", link: false
+brew "numpy"
 # OpenBSD freely-licensed SSH connectivity tools
 brew "openssh"
 # Cryptography and SSL/TLS Toolkit
@@ -202,6 +197,8 @@ brew "pngcheck"
 brew "pv"
 # Python version management
 brew "pyenv"
+# Interpreted, interactive, object-oriented programming language
+brew "python@3.11"
 # Cross-platform application and UI framework
 brew "qt@5"
 # File browser
@@ -242,8 +239,6 @@ brew "stress-ng"
 brew "tcpflow"
 # Replay saved tcpdump files at arbitrary speeds
 brew "tcpreplay"
-# Analyze tcpdump output
-brew "tcptrace"
 # Official tldr client written in Rust
 brew "tlrc"
 # Terminal multiplexer
@@ -260,14 +255,14 @@ brew "vale"
 brew "vbindiff"
 # Executes a program periodically, showing output fullscreen
 brew "watch"
+# Execute commands when watched files change
+brew "watchexec"
 # Internet file retriever
 brew "wget"
 # Utilities to create and convert Web Open Font File (WOFF) files
 brew "woff2"
 # PDF viewer
-brew "xpdf", link: false
-# Download YouTube videos from the command-line
-brew "youtube-dl"
+brew "xpdf"
 # Shell extension to navigate your filesystem faster
 brew "zoxide"
 # Convert existing TrueType/OpenType fonts to WOFF format
@@ -284,8 +279,6 @@ brew "lusingander/tap/serie"
 brew "modularml/packages/modular"
 # User-friendly, lightweight TUI for disk imaging
 brew "philocalyst/tap/caligula"
-# Sudoless performance monitoring CLI tool for Apple Silicon processors
-brew "vladkens/tap/macmon"
 # AeroSpace is an i3-like tiling window manager for macOS
 cask "aerospace"
 # GPU-accelerated terminal emulator
@@ -317,8 +310,6 @@ cask "macfuse"
 cask "opensc-app"
 # Quick Look plug-in that renders source code with syntax highlighting
 cask "qlcolorcode"
-# Display image info and preview unsupported formats in QuickLook
-cask "qlimagesize"
 # Quick Look generator for Markdown files
 cask "qlmarkdown"
 # Quick Look plugin for Kindle ebook formats
