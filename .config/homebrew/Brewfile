@@ -1,12 +1,9 @@
 tap "bramstein/webfonttools"
 tap "felixkratz/formulae"
 tap "ferdium/ferdium"
-tap "jesseduffield/lazygit"
-tap "lusingander/tap"
 tap "modularml/packages"
 tap "nikitabobko/tap"
 tap "philocalyst/tap"
-tap "vladkens/tap"
 # Search tool like grep, but optimized for programmers
 brew "ack"
 # General-purpose data compression with high compression ratio
@@ -137,6 +134,8 @@ brew "imagemagick"
 brew "john"
 # Port-knock server
 brew "knock"
+# Simple terminal UI for git commands
+brew "lazygit"
 # Terminal file manager
 brew "lf"
 # Provides library functionality for FIDO U2F & FIDO 2.0, including USB
@@ -223,6 +222,8 @@ brew "rmlint"
 brew "ruff"
 # Terminal multiplexer with VT100/ANSI terminal emulation
 brew "screen"
+# Rich git commit graph in your terminal
+brew "serie"
 # Static analysis and lint tool, for (ba)sh scripts
 brew "shellcheck"
 # SOcket CAT: netcat on steroids
@@ -271,12 +272,6 @@ brew "bramstein/webfonttools/sfnt2woff"
 brew "bramstein/webfonttools/sfnt2woff-zopfli"
 # A window border system for macOS
 brew "felixkratz/formulae/borders"
-# A simple terminal UI for git commands, written in Go
-brew "jesseduffield/lazygit/lazygit"
-# A rich git commit graph in your terminal, like magic
-brew "lusingander/tap/serie"
-# Modular developer CLI tool
-brew "modularml/packages/modular"
 # User-friendly, lightweight TUI for disk imaging
 brew "philocalyst/tap/caligula"
 # AeroSpace is an i3-like tiling window manager for macOS
@@ -287,8 +282,6 @@ cask "alacritty"
 cask "apparency"
 # Automated testing of webapps for Google Chrome
 cask "chromedriver"
-# API documentation browser and code snippet manager
-cask "dash"
 # Virtual monitor for screen sharing
 cask "deskpad"
 # Multi-platform multi-messaging app
@@ -312,8 +305,6 @@ cask "opensc-app"
 cask "qlcolorcode"
 # Quick Look generator for Markdown files
 cask "qlmarkdown"
-# Quick Look plugin for Kindle ebook formats
-cask "qlmobi"
 # Quick Look plugin for plaintext files without an extension
 cask "qlstephen"
 # Thumbnails, static previews, cover art and metadata for video files
