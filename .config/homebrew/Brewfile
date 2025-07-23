@@ -124,6 +124,8 @@ brew "htop"
 brew "hugo"
 # Network logon cracker which supports many services
 brew "hydra"
+# Command-line editor
+brew "id3v2"
 # ISO/IEC 23008-12:2017 HEIF file format decoder and encoder
 brew "libheif"
 # Library for reading RAW files from digital photo cameras
