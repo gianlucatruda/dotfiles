@@ -1,97 +1,64 @@
+-- BASICS
+vim.opt.clipboard = 'unnamedplus' -- Sync clipboard between OS and Neovim.
+vim.wo.number = true              -- Make line numbers default
+-- vim.opt.relativenumber = true    -- Enable relative line numbers
+vim.opt.cursorline = true         -- Highlight current line
+vim.opt.wildmenu = true           -- Enhance command-line completion
+vim.opt.scrolloff = 10            -- Keep 10 lines above/below cursor
+vim.opt.sidescrolloff = 8         -- Keep 8 columns left/right of cursor
+vim.opt.linebreak = true          -- word wrap
+vim.opt.wrap = true               -- line wrap
+
 -- Set good default colours and inherit (overridden if plugins load)
-vim.opt.termguicolors = false
+vim.opt.termguicolors = false -- 24-bit colors
 vim.g.colors_name = "default"
-vim.opt.background = "dark" -- or light
+vim.opt.background = "dark"   -- or light
+vim.opt.syntax = "on"         -- Enable syntax highlighting
 
--- Enable syntax highlighting
-vim.opt.syntax = "on"
-
--- Sync clipboard between OS and Neovim.
---  Remove this option if you want your OS clipboard to remain independent.
---  See `:help 'clipboard'`
-vim.opt.clipboard = 'unnamedplus'
-
--- Align the new line indent with the previous line
-vim.opt.autoindent = true
-
--- Set to auto read when a file is changed from the outside
-vim.opt.autoread = true
-vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter" }, {
-  pattern = "*",
-  command = "checktime"
-})
-
--- Case-insensitive searching UNLESS \C or capital in search
-vim.opt.ignorecase = true
-vim.opt.smartcase = true
-
--- Enhance command-line completion
-vim.opt.wildmenu = true
-
--- Allow backspace in insert mode
-vim.opt.backspace = "indent,eol,start"
-
--- Make line numbers default
-vim.wo.number = true
-
--- Enable relative line numbers
--- vim.opt.relativenumber = true
-
--- Highlight searches
-vim.opt.hlsearch = true
-
--- Highlight dynamically as pattern is typed
-vim.opt.incsearch = true
-
--- Enable mouse in all modes
-vim.opt.mouse = "a"
-
--- Don't reset cursor to start of line when moving around
-vim.opt.startofline = false
-
--- Don't show the intro message when starting Vim
-vim.opt.shortmess:append("atI")
-
--- Show the current mode
-vim.opt.showmode = true
-
--- Show the filename in the window titlebar
-vim.opt.title = true
-
--- Show the (partial) command as it's being typed
-vim.opt.showcmd = true
-
--- Start scrolling three lines before the horizontal window border
-vim.opt.scrolloff = 3
-
--- Word and Line wrapping
-vim.opt.linebreak = true -- word wrap
-vim.opt.wrap = true      -- Wrap lines
-
--- No annoying sound on errors
-vim.opt.errorbells = false
-vim.opt.visualbell = false
-
+-- INDENTATION
+vim.opt.autoindent = true  -- Align the new line indent with the previous line
+vim.opt.breakindent = true -- Enable break indent
+vim.opt.smartindent = true -- Smart auto-indenting
 -- Gianluca's custom tab settings (vim-sleuth will override in some contexts?) -----
 -- Note: these are similar to my defaults in .vimrc for vanilla vim (good baseline)
 vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
 
--- Enable break indent
-vim.opt.breakindent = true
+-- SEARCHING
+vim.opt.ignorecase = true -- Case-insensitive searching
+vim.opt.smartcase = true  -- Case sensitive if uppercase in search
+vim.opt.incsearch = true  -- Highlight dynamically as pattern is typed
+vim.opt.hlsearch = true   -- Highlight searches
 
--- Save undo history
-vim.opt.undofile = true
+-- BEHAVIOUR
+vim.opt.mouse = "a"                      -- Enable mouse in all modes
+vim.opt.backspace = "indent,eol,start"   -- Allow backspace in insert mode
+vim.opt.startofline = false              -- Don't reset cursor to start of line when moving around
+vim.opt.shortmess:append("atI")          -- Don't show the intro message when starting Vim
+vim.opt.errorbells = false               -- No annoyances on errors
+vim.opt.visualbell = false               -- No annoyances on errors
+vim.wo.signcolumn = 'yes'                -- Keep signcolumn on by default
+vim.opt.completeopt = 'menuone,noselect' -- Set completeopt to have a better completion experience
 
--- Keep signcolumn on by default
-vim.wo.signcolumn = 'yes'
+-- DISPLAY
+vim.opt.title = true    -- Show the filename in the window titlebar
+vim.opt.showmode = true -- Show the current mode
+vim.opt.showcmd = true  -- Show the (partial) command as it's being typed
 
--- Decrease update time
-vim.opt.updatetime = 250
-vim.opt.timeoutlen = 300
+-- PERFORMANCE
+vim.opt.updatetime = 250      -- Reduce update time on completions
+vim.opt.timeoutlen = 300      -- Reduce key timeout duration
+vim.opt.redrawtime = 10000    -- Increase max redraw time
+vim.opt.maxmempattern = 20000 -- Increase max syntax highlight memory
 
--- Set completeopt to have a better completion experience
-vim.opt.completeopt = 'menuone,noselect'
+-- FILES
+vim.opt.undofile = true       -- Save undo history
+vim.opt.autoread = true       -- Auto read when a file is changed externally
+-- Check if file is modified and prompt to reload
+vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter" }, {
+  pattern = "*",
+  command = "checktime"
+})
 
 -- Highlight on yank
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
