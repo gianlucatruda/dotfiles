@@ -176,6 +176,8 @@ brew "nmap"
 brew "openblas"
 # Package for scientific computing with Python
 brew "numpy"
+# Create, run, and share large language models (LLMs)
+brew "ollama"
 # OpenBSD freely-licensed SSH connectivity tools
 brew "openssh"
 # Cryptography and SSL/TLS Toolkit
