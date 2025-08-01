@@ -115,25 +115,11 @@ local servers = {
 }
 
 
----@type MasonLspconfigSettings
----@diagnostic disable-next-line: missing-fields
+-- Ensure the servers and tools above are installed
 require('mason-lspconfig').setup {
   automatic_enable = vim.tbl_keys(servers or {}),
 }
 
--- Ensure the servers and tools above are installed
---
--- To check the current status of installed tools and/or manually install
--- other tools, you can run
---    :Mason
---
--- You can press `g?` for help in this menu.
---
--- `mason` had to be setup earlier: to configure its options see the
--- `dependencies` table for `nvim-lspconfig` above.
---
--- You can add other tools here that you want Mason to install
--- for you, so that they are available from within Neovim.
 local ensure_installed = vim.tbl_keys(servers or {})
 vim.list_extend(ensure_installed, {
   'stylua', -- Used to format Lua code
@@ -149,7 +135,6 @@ end
 -- NOTE: Some servers may require an old setup until they are updated. For the full list refer here: https://github.com/neovim/nvim-lspconfig/issues/3705
 -- These servers will have to be manually set up with require("lspconfig").server_name.setup{}
 
--- TODO
 -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
