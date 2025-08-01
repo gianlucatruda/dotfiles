@@ -114,28 +114,42 @@ local servers = {
   },
 }
 
+
+---@type MasonLspconfigSettings
+---@diagnostic disable-next-line: missing-fields
+require('mason-lspconfig').setup {
+  automatic_enable = vim.tbl_keys(servers or {}),
+}
+
+-- Ensure the servers and tools above are installed
+--
+-- To check the current status of installed tools and/or manually install
+-- other tools, you can run
+--    :Mason
+--
+-- You can press `g?` for help in this menu.
+--
+-- `mason` had to be setup earlier: to configure its options see the
+-- `dependencies` table for `nvim-lspconfig` above.
+--
+-- You can add other tools here that you want Mason to install
+-- for you, so that they are available from within Neovim.
 local ensure_installed = vim.tbl_keys(servers or {})
 vim.list_extend(ensure_installed, {
   'stylua', -- Used to format Lua code
 })
 require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
+-- Installed LSPs are configured and enabled automatically with mason-lspconfig
+-- The loop below is for overriding the default configuration of LSPs with the ones in the servers table
+for server_name, config in pairs(servers) do
+  vim.lsp.config(server_name, config)
+end
+
+-- NOTE: Some servers may require an old setup until they are updated. For the full list refer here: https://github.com/neovim/nvim-lspconfig/issues/3705
+-- These servers will have to be manually set up with require("lspconfig").server_name.setup{}
+
+-- TODO
 -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
-
-require('mason-lspconfig').setup {
-  automatic_enable = true,
-  ensure_installed = {}, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
-  automatic_installation = false,
-  handlers = {
-    function(server_name)
-      local server = servers[server_name] or {}
-      -- This handles overriding only values explicitly passed
-      -- by the server configuration above. Useful when disabling
-      -- certain features of an LSP (for example, turning off formatting for ts_ls)
-      server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-      require('lspconfig')[server_name].setup(server)
-    end,
-  },
-}
