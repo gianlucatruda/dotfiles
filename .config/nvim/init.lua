@@ -5,9 +5,12 @@
 require("core.options") -- Goes to lua/core/options.lua
 require("core.keymaps") -- Goes to lua/core/keymaps.lua
 
+-- This saves up to 400ms on startup when opening python files
+vim.g.python3_host_prog = '~/.pyenv/shims/python3'
+
 -- Install `lazy.nvim` plugin manager
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
-if not vim.loop.fs_stat(lazypath) then
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
   vim.fn.system {
     'git',
     'clone',
