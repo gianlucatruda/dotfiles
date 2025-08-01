@@ -26,6 +26,8 @@ brew "bat"
 brew "glib"
 # Vector graphics library with cross-device output support
 brew "cairo"
+# C/C++ and Java libraries for Unicode and globalization
+brew "icu4c@77"
 # OpenType text shaping engine
 brew "harfbuzz"
 # Development kit for the Java programming language
@@ -266,8 +268,6 @@ brew "watchexec"
 brew "wget"
 # Utilities to create and convert Web Open Font File (WOFF) files
 brew "woff2"
-# PDF viewer
-brew "xpdf"
 # Shell extension to navigate your filesystem faster
 brew "zoxide"
 # Convert existing TrueType/OpenType fonts to WOFF format
@@ -284,8 +284,6 @@ cask "aerospace"
 cask "alacritty"
 # Inspect application bundles
 cask "apparency"
-# Automated testing of webapps for Google Chrome
-cask "chromedriver"
 # Virtual monitor for screen sharing
 cask "deskpad"
 # Multi-platform multi-messaging app
