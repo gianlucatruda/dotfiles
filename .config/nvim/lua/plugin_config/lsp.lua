@@ -71,29 +71,36 @@ local servers = {
   ts_ls = { filetypes = { 'javascript', 'jsx', 'typescript', 'svelte' } },
   jsonls = { filetypes = { 'json' } },
   clangd = {},
-  pylsp = { -- https://vi.stackexchange.com/questions/39765/how-to-configure-pylsp-when-using-mason-and-mason-lspconfig-in-neovim
+  ruff = {
+    filetypes = { 'python', 'py', 'ipy' },
+    init_options = {
+      settings = {
+        -- Ruff language server settings go here
+        lineLength = 100,
+        lint = { enable = true, preview = true },
+        format = { enable = true, preview = true },
+      }
+    }
+  },
+  pylsp = { -- https://github.com/nvim-lua/kickstart.nvim/issues/629
+    filetypes = { 'python', 'py', 'ipy' },
     settings = {
       pylsp = {
         plugins = {
-          -- formatter options
+          -- formatter options (disabled for ruff)
           black = { enabled = false },
           autopep8 = { enabled = false },
           yapf = { enabled = false },
-          ruff = {              -- https://github.com/python-lsp/python-lsp-ruff
-            enabled = true,     -- Enable the plugin
-            formatEnabled = true, -- Enable formatting using ruffs formatter
-            -- executable = "ruff",  -- Custom path to ruff
-          },
           -- linter options
           pylint = { enabled = false },
           pyflakes = { enabled = false },
-          pycodestyle = { enabled = true },
+          pycodestyle = { enabled = false },
           pydocstyle = { enabled = false },
-          maccabe = { enabled = false }, -- complexity checker
+          mccabe = { enabled = false }, -- complexity checker
           -- type checker
-          pylsp_mypy = { enabled = false, live_mode = true, strict = false },
+          pylsp_mypy = { enabled = true, live_mode = true, strict = false },
           -- error checker
-          flake8 = { enabled = true },
+          flake8 = { enabled = false },
           -- auto-completion options
           jedi_completion = { fuzzy = true },
           -- import sorting
@@ -117,6 +124,7 @@ local servers = {
 }
 
 
+-- Updated Mason setup from https://github.com/nvim-lua/kickstart.nvim/pull/1475/files
 -- Ensure the servers and tools above are installed
 require('mason-lspconfig').setup {
   automatic_enable = vim.tbl_keys(servers or {}),
