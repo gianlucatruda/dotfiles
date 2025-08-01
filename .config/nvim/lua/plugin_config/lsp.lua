@@ -72,34 +72,36 @@ local servers = {
   jsonls = { filetypes = { 'json' } },
   clangd = {},
   pylsp = { -- https://vi.stackexchange.com/questions/39765/how-to-configure-pylsp-when-using-mason-and-mason-lspconfig-in-neovim
-    pylsp = {
-      plugins = {
-        -- formatter options
-        black = { enabled = false },
-        autopep8 = { enabled = false },
-        yapf = { enabled = false },
-        ruff = {                -- https://github.com/python-lsp/python-lsp-ruff
-          enabled = true,       -- Enable the plugin
-          formatEnabled = true, -- Enable formatting using ruffs formatter
-          executable = "ruff",  -- Custom path to ruff
+    settings = {
+      pylsp = {
+        plugins = {
+          -- formatter options
+          black = { enabled = false },
+          autopep8 = { enabled = false },
+          yapf = { enabled = false },
+          ruff = {              -- https://github.com/python-lsp/python-lsp-ruff
+            enabled = true,     -- Enable the plugin
+            formatEnabled = true, -- Enable formatting using ruffs formatter
+            -- executable = "ruff",  -- Custom path to ruff
+          },
+          -- linter options
+          pylint = { enabled = false },
+          pyflakes = { enabled = false },
+          pycodestyle = { enabled = true },
+          pydocstyle = { enabled = false },
+          maccabe = { enabled = false }, -- complexity checker
+          -- type checker
+          pylsp_mypy = { enabled = false, live_mode = true, strict = false },
+          -- error checker
+          flake8 = { enabled = true },
+          -- auto-completion options
+          jedi_completion = { fuzzy = true },
+          -- import sorting
+          pyls_isort = { enabled = true },
+          -- completions and renaming
+          pylsp_rope = { enabled = true, rename = true },
+          rope_completion = { enabled = true },
         },
-        -- linter options
-        pylint = { enabled = false },
-        pyflakes = { enabled = true },
-        pycodestyle = { enabled = true },
-        pydocstyle = { enabled = false },
-        maccabe = { enabled = true }, -- complexity checker
-        -- type checker
-        pylsp_mypy = { enabled = true, live_mode = true, strict = false },
-        -- error checker
-        flake8 = { enabled = true },
-        -- auto-completion options
-        jedi_completion = { fuzzy = true },
-        -- import sorting
-        pyls_isort = { enabled = true },
-        -- completions and renaming
-        pylsp_rope = { enabled = true, rename = true },
-        rope_completion = { enabled = true },
       },
     },
   },
