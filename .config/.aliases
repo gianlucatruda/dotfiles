@@ -24,6 +24,7 @@ alias ecd='echo -n $(date +"%Y-%m-%d")' # [e]cho [c]urrent [d]ate
 alias ect='echo -n $(date +"%H-%M-%S")' # [e]cho [c]urrent [t]ime
 alias ecdt='echo -n $(date +"%Y-%m-%d_%H-%M")' # [e]cho [c]urrent [d]ate[t]ime
 alias clc='history -p \!\! | pbcopy' # Copy last command to clipboard
+alias notify='echo -e "\a"; echo "Done at $(date)"'
 
 # Git
 alias gitlog='git log --pretty=oneline -n 20 --graph --abbrev-commit'
