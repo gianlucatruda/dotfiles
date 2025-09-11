@@ -12,6 +12,7 @@ alias ~="cd ~" # `cd` is probably faster to type though
 alias -- -="cd -"
 
 # My Shortcuts
+alias r="ranger"
 alias dt="cd ~/Desktop"
 alias g="git"
 alias h="history"
