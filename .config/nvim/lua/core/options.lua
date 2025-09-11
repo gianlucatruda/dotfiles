@@ -41,7 +41,10 @@ vim.wo.signcolumn = 'yes'                -- Keep signcolumn on by default
 vim.opt.completeopt = 'menuone,noselect' -- Set completeopt to have a better completion experience
 
 -- DISPLAY
-vim.opt.title = true    -- Show the filename in the window titlebar
+vim.opt.title = true -- Show the titlestring in the window titlebar
+vim.opt.titlelen = 25
+-- according to h: titlestring uses same syntax as statusline with filename-modifiers
+vim.opt.titlestring = '%{fnamemodify(getcwd(), ":t")}:%t'
 vim.opt.showmode = true -- Show the current mode
 vim.opt.showcmd = true  -- Show the (partial) command as it's being typed
 
@@ -52,8 +55,8 @@ vim.opt.redrawtime = 10000    -- Increase max redraw time
 vim.opt.maxmempattern = 20000 -- Increase max syntax highlight memory
 
 -- FILES
-vim.opt.undofile = true       -- Save undo history
-vim.opt.autoread = true       -- Auto read when a file is changed externally
+vim.opt.undofile = true -- Save undo history
+vim.opt.autoread = true -- Auto read when a file is changed externally
 -- Check if file is modified and prompt to reload
 vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter" }, {
   pattern = "*",
