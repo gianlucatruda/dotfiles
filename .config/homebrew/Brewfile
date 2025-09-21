@@ -284,13 +284,13 @@ cask "aerospace"
 cask "alacritty"
 # Inspect application bundles
 cask "apparency"
+# Multi-track audio editor and recorder
+cask "audacity"
 # Virtual monitor for screen sharing
 cask "deskpad"
 # Multi-platform multi-messaging app
 cask "ferdium"
 cask "font-ubuntu-mono-nerd-font"
-# Free and open-source image editor
-cask "gimp"
 # Utility to hide menu bar items
 cask "hiddenbar"
 # Utility to render Jupyter notebooks
@@ -305,8 +305,6 @@ cask "macfuse"
 cask "opensc-app"
 # Quick Look plug-in that renders source code with syntax highlighting
 cask "qlcolorcode"
-# Quick Look generator for Markdown files
-cask "qlmarkdown"
 # Quick Look plugin for plaintext files without an extension
 cask "qlstephen"
 # Thumbnails, static previews, cover art and metadata for video files
