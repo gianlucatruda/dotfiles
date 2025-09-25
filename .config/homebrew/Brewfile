@@ -22,18 +22,6 @@ brew "bash"
 brew "bash-completion@2"
 # Clone of cat(1) with syntax highlighting and Git integration
 brew "bat"
-# Core application library for C
-brew "glib"
-# Vector graphics library with cross-device output support
-brew "cairo"
-# C/C++ and Java libraries for Unicode and globalization
-brew "icu4c@77"
-# OpenType text shaping engine
-brew "harfbuzz"
-# Development kit for the Java programming language
-brew "openjdk"
-# Remove large files or passwords from Git history like git-filter-branch
-brew "bfg"
 # GNU binary tools for native development
 brew "binutils"
 # 7-Zip (high compression file archiver) implementation
@@ -42,6 +30,10 @@ brew "p7zip"
 brew "binwalk"
 # Yet another cross-platform graphical process/system monitor
 brew "bottom"
+# Core application library for C
+brew "glib"
+# Vector graphics library with cross-device output support
+brew "cairo"
 # Work on automating classical cipher cracking in C
 brew "cifer"
 # Cross-platform make
@@ -52,6 +44,12 @@ brew "gmp"
 brew "coreutils"
 # Open source multi-tool for exploring and publishing data
 brew "datasette"
+# C/C++ and Java libraries for Unicode and globalization
+brew "icu4c@77"
+# OpenType text shaping engine
+brew "harfbuzz"
+# Development kit for the Java programming language
+brew "openjdk"
 # Interpreted, interactive, object-oriented programming language
 brew "python@3.12"
 # Tools to work with Android .dex and Java .class files
@@ -303,16 +301,6 @@ cask "karabiner-elements"
 cask "macfuse"
 # Smart card libraries and utilities
 cask "opensc-app"
-# Quick Look plug-in that renders source code with syntax highlighting
-cask "qlcolorcode"
-# Quick Look plugin for plaintext files without an extension
-cask "qlstephen"
-# Thumbnails, static previews, cover art and metadata for video files
-cask "qlvideo"
-# Quick Look plugin for CSV files
-cask "quicklook-csv"
-# Quick Look plugin for JSON files
-cask "quicklook-json"
 # Quicklook extension for source files
 cask "syntax-highlight"
 # Google Chromium, sans integration with Google
