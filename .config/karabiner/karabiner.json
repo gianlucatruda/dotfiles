@@ -237,6 +237,33 @@
                         ]
                     },
                     {
+                        "description": "Change right_command+d to page down, right_command+u to page up",
+                        "manipulators": [
+                            {
+                                "from": {
+                                    "key_code": "d",
+                                    "modifiers": {
+                                        "mandatory": ["right_command"],
+                                        "optional": ["any"]
+                                    }
+                                },
+                                "to": [{ "key_code": "page_down" }],
+                                "type": "basic"
+                            },
+                            {
+                                "from": {
+                                    "key_code": "u",
+                                    "modifiers": {
+                                        "mandatory": ["right_command"],
+                                        "optional": ["any"]
+                                    }
+                                },
+                                "to": [{ "key_code": "page_up" }],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
                         "description": "Change caps_lock to control if pressed with other keys, but grave/tilde if pressed alone.",
                         "manipulators": [
                             {
