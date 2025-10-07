@@ -38,6 +38,10 @@ brew "cairo"
 brew "cifer"
 # Cross-platform make
 brew "cmake"
+# Search tool like grep and The Silver Searcher
+brew "ripgrep"
+# OpenAI's coding agent that runs in your terminal
+brew "codex"
 # GNU multiple precision arithmetic library
 brew "gmp"
 # GNU File, Shell, and Text utilities
@@ -154,6 +158,8 @@ brew "lynx"
 brew "m-cli"
 # Sudoless performance monitoring for Apple Silicon processors
 brew "macmon"
+# Securely transfers data between computers
+brew "magic-wormhole"
 # Utility for directing compilation
 brew "make"
 # CLI tool for saving complete web pages as a single HTML file
@@ -216,8 +222,6 @@ brew "rdfind"
 brew "rename"
 # Command-line toolbox for fancy output in the terminal
 brew "rich-cli"
-# Search tool like grep and The Silver Searcher
-brew "ripgrep"
 # Readline wrapper: adds readline support to tools that lack it
 brew "rlwrap"
 # Extremely fast tool to remove dupes and other lint from your filesystem
@@ -286,8 +290,6 @@ cask "apparency"
 cask "audacity"
 # Virtual monitor for screen sharing
 cask "deskpad"
-# Multi-platform multi-messaging app
-cask "ferdium"
 cask "font-ubuntu-mono-nerd-font"
 # Utility to hide menu bar items
 cask "hiddenbar"
