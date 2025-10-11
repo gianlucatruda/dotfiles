@@ -374,7 +374,8 @@
                         "product_id": 49291,
                         "vendor_id": 1133
                     },
-                    "ignore": false
+                    "ignore": false,
+                    "ignore_vendor_events": true
                 },
                 {
                     "identifiers": {
@@ -388,6 +389,31 @@
                             "to": [{ "key_code": "escape" }]
                         }
                     ]
+                },
+                {
+                    "identifiers": {
+                        "is_keyboard": true,
+                        "product_id": 49291,
+                        "vendor_id": 1133
+                    },
+                    "ignore_vendor_events": true
+                },
+                {
+                    "identifiers": {
+                        "is_keyboard": true,
+                        "product_id": 53297,
+                        "vendor_id": 13364
+                    },
+                    "ignore_vendor_events": true
+                },
+                {
+                    "identifiers": {
+                        "is_pointing_device": true,
+                        "product_id": 53297,
+                        "vendor_id": 13364
+                    },
+                    "ignore": false,
+                    "ignore_vendor_events": true
                 }
             ],
             "fn_function_keys": [
