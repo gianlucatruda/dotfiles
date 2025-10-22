@@ -30,6 +30,8 @@ brew "p7zip"
 brew "binwalk"
 # Yet another cross-platform graphical process/system monitor
 brew "bottom"
+# Resource monitor. C++ version and continuation of bashtop and bpytop
+brew "btop"
 # Core application library for C
 brew "glib"
 # Vector graphics library with cross-device output support
