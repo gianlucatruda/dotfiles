@@ -15,35 +15,49 @@ prompt_git() {
 	local s='';
 	local branchName='';
 
-	# Check if the current directory is in a Git repository.
-	if [ $(git rev-parse --is-inside-work-tree &>/dev/null; echo "${?}") == '0' ]; then
-
-		# check if the current directory is in .git before running git checks
-		if [ "$(git rev-parse --is-inside-git-dir 2> /dev/null)" == 'false' ]; then
-
-			# Ensure the index is up to date.
-			git update-index --really-refresh -q &>/dev/null;
-
-			# Check for uncommitted changes in the index.
-			if ! $(git diff --quiet --ignore-submodules --cached); then
-				s+='+';
+	if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+		if [ "$(git rev-parse --is-inside-git-dir 2>/dev/null)" = 'false' ]; then
+			local status_output='';
+			if ! status_output="$(git status --porcelain --branch 2>/dev/null)"; then
+				return;
 			fi;
 
-			# Check for unstaged changes.
-			if ! $(git diff-files --quiet --ignore-submodules --); then
-				s+='*';
+			local staged=0;
+			local unstaged=0;
+			local untracked=0;
+			local stashed=0;
+			local line='';
+
+			while IFS= read -r line; do
+				case "${line:0:2}" in
+					'??')
+						untracked=1;
+						;;
+					'##')
+						;;
+					*)
+						if [[ "${line:0:1}" != ' ' ]]; then
+							staged=1;
+						fi;
+						if [[ "${line:1:1}" != ' ' ]]; then
+							unstaged=1;
+						fi;
+						;;
+				esac;
+
+				if (( staged && unstaged && untracked )); then
+					break;
+				fi;
+			done <<< "${status_output}";
+
+			if git rev-parse --verify refs/stash >/dev/null 2>&1; then
+				stashed=1;
 			fi;
 
-			# Check for untracked files.
-			if [ -n "$(git ls-files --others --exclude-standard)" ]; then
-				s+='u';
-			fi;
-
-			# Check for stashed files.
-			if $(git rev-parse --verify refs/stash &>/dev/null); then
-				s+='s';
-			fi;
-
+			(( staged )) && s+='+';
+			(( unstaged )) && s+='*';
+			(( untracked )) && s+='u';
+			(( stashed )) && s+='s';
 		fi;
 
 		# Get the short symbolic ref.
