@@ -31,7 +31,7 @@ git clone --depth 5 git@github.com:gianlucatruda/dotfiles.git <your/dotfiles/pat
 
 Or with curl:
 
-```
+```bash
 curl -L -o dotfiles-master.zip https://github.com/gianlucatruda/dotfiles/archive/master.zip
 unzip dotfiles-master.zip
 cd dotfiles-master
@@ -203,7 +203,6 @@ tree -a -L 3 --gitignore -I .git/ -I .gitignore -I README.md
 - **`mkd()`**: Creates a new directory (and any necessary parent directories) then changes into it.
 - **`fs()`**: Displays the size of a file or total size of a directory using `du`, presenting results in human-readable form.
 - **Built-in Overridden `diff()`**: Uses Git’s colored diff functionality when Git is installed, otherwise falls back to standard behavior.
-- **`unidecode()`**: Decodes Unicode escape sequences in the format `\x{ABCD}` and outputs them.
 - **`o()`**: Opens the current directory or a specified file/directory with the default system application.
 - **`tre()`**: Runs the `tree` command showing hidden files and colorizing the output (ignoring `.git`, `node_modules`, and `bower_components` directories) and pipes the results to `less` with options to keep colors and line numbers.
 
