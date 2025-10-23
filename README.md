@@ -107,17 +107,22 @@ brew bundle install --file ~/.config/homebrew/Brewfile
 
 ### Apps to manually install for my workflows
 
-- shottr
-- toothfairy
-- brave-browser
-- handbrake
-- iina
-- obs
-- anki
-- obsidian
-- spotify
-- tad (looking for nice TUI alt.)
-- todoist
+Productivity essentials:
+- Zen browser for primary minimalist browsing
+- Obsidian for notes and knowledge management
+- Shottr for screenshots (macOS only, one-time licence for all features)
+- Helium browser for messaging/email web apps
+- tad (switching to [visidata](https://github.com/saulpw/visidata) and [csvlens](https://github.com/YS-L/csvlens))
+
+Often helpful:
+- spotify for tunes
+- todoist for quick capture inbox and basic recurring tasks across devices
+- brave-browser for distraction-free YouTube isolated from other browsing
+- handbrake for video transcoding
+- iina for longer video playback (nicer than VLC on Macs, more GUI than `mpv`)
+- obs for screen captures
+- anki for making / studying flashcards
+- toothfairy for managing bluetooth audio devices
 
 ---
 

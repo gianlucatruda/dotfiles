@@ -44,6 +44,8 @@ brew "cmake"
 brew "gmp"
 # GNU File, Shell, and Text utilities
 brew "coreutils"
+# Command-line csv viewer
+brew "csvlens"
 # Open source multi-tool for exploring and publishing data
 brew "datasette"
 # C/C++ and Java libraries for Unicode and globalization
