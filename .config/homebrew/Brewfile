@@ -2,6 +2,7 @@ tap "bramstein/webfonttools"
 tap "felixkratz/formulae"
 tap "ferdium/ferdium"
 tap "jordond/tap"
+tap "infisical/get-cli"
 tap "modularml/packages"
 tap "nikitabobko/tap"
 tap "philocalyst/tap"
@@ -16,6 +17,10 @@ brew "jpeg-xl"
 brew "aom"
 # Automatic configure script builder
 brew "autoconf"
+# Distributed revision control system
+brew "git"
+# Extendable version manager with support for Ruby, Node.js, Erlang & more
+brew "asdf"
 # Tool for generating GNU Standards-compliant Makefiles
 brew "automake"
 # Bourne-Again SHell, a UNIX command interpreter
@@ -106,8 +111,6 @@ brew "pango"
 brew "tesseract"
 # Interpreter for PostScript and PDF
 brew "ghostscript"
-# Distributed revision control system
-brew "git"
 # Git extension for versioning large files
 brew "git-lfs"
 # Prevents you from committing sensitive information to a git repo
@@ -136,6 +139,8 @@ brew "imagemagick"
 brew "john"
 # Port-knock server
 brew "knock"
+# Lazier way to manage everything docker
+brew "lazydocker"
 # Simple terminal UI for git commands
 brew "lazygit"
 # Terminal file manager
@@ -168,6 +173,8 @@ brew "magic-wormhole"
 brew "make"
 # Deep clean and optimize your Mac
 brew "mole"
+# Simple tool to make locally trusted development certificates
+brew "mkcert"
 # CLI tool for saving complete web pages as a single HTML file
 brew "monolith"
 # Collection of tools that nobody wrote when UNIX was young
@@ -184,6 +191,8 @@ brew "neovim"
 brew "netpbm"
 # Port scanning utility for large networks
 brew "nmap"
+# Open-source, cross-platform JavaScript runtime environment
+brew "node"
 # Optimized BLAS library
 brew "openblas"
 # Package for scientific computing with Python
@@ -210,12 +219,16 @@ brew "pigz"
 brew "pillow"
 # Print info and check PNG, JNG, and MNG files
 brew "pngcheck"
+# Fast, disk space efficient package manager
+brew "pnpm"
 # Monitor data's progress through a pipe
 brew "pv"
 # Python version management
 brew "pyenv"
 # Interpreted, interactive, object-oriented programming language
 brew "python@3.11"
+# Interpreted, interactive, object-oriented programming language
+brew "python@3.12"
 # Tools for and transforming and inspecting PDF files
 brew "qpdf"
 # Cross-platform application and UI framework
@@ -288,6 +301,8 @@ brew "bramstein/webfonttools/sfnt2woff-zopfli"
 brew "felixkratz/formulae/borders"
 # Terminal-based battery and energy monitor for macos and linux
 brew "jordond/tap/jolt"
+# The official Infisical CLI
+brew "infisical/get-cli/infisical"
 # User-friendly, lightweight TUI for disk imaging
 brew "philocalyst/tap/caligula"
 # a powerfull extended cat command, to cat all the things you couldn't before
