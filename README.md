@@ -117,6 +117,7 @@ Productivity essentials:
 Often helpful:
 - spotify for tunes
 - todoist for quick capture inbox and basic recurring tasks across devices
+- menubar stats (App store) 
 - brave-browser for distraction-free YouTube isolated from other browsing
 - handbrake for video transcoding
 - iina for longer video playback (nicer than VLC on Macs, more GUI than `mpv`)
