@@ -117,7 +117,7 @@ Sync browser from dotfiles:
 cp .config/zen/zen-keyboard-shortcuts.json ~/Library/Application\ Support/zen/Profiles/3a6fjfgv.Default\ \(release\)/zen-keyboard-shortcuts.json 
 ```
 
-Zen always seems to re-format (and randomly re-order?), so it's a messy and manual backup more than a reliable config.
+Note: Zen always re-formats the file, so it's a messy and manual backup more than a reliable config.
 
 ---
 

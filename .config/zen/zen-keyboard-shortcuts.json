@@ -92,14 +92,14 @@
 		},
 		{
 			"id": "key_wrToggleCaptureSequenceCmd",
-			"key": "6",
-			"keycode": null,
+			"key": "",
+			"keycode": "",
 			"group": "other",
 			"l10nId": null,
 			"modifiers": {
-				"control": true,
+				"control": false,
 				"alt": false,
-				"shift": true,
+				"shift": false,
 				"meta": false,
 				"accel": false
 			},
@@ -110,14 +110,14 @@
 		},
 		{
 			"id": "key_wrCaptureCmd",
-			"key": "3",
-			"keycode": null,
+			"key": "",
+			"keycode": "",
 			"group": "other",
 			"l10nId": null,
 			"modifiers": {
-				"control": true,
+				"control": false,
 				"alt": false,
-				"shift": true,
+				"shift": false,
 				"meta": false,
 				"accel": false
 			},
@@ -344,15 +344,16 @@
 		},
 		{
 			"id": "key_sanitize_mac",
-			"keycode": "VK_BACK",
+			"key": "",
+			"keycode": "",
 			"group": "other",
 			"l10nId": null,
 			"modifiers": {
 				"control": false,
 				"alt": false,
-				"shift": true,
+				"shift": false,
 				"meta": false,
-				"accel": true
+				"accel": false
 			},
 			"action": "Tools:Sanitize",
 			"disabled": false,
@@ -361,15 +362,16 @@
 		},
 		{
 			"id": "key_sanitize",
-			"keycode": "VK_DELETE",
+			"key": "",
+			"keycode": "",
 			"group": "other",
 			"l10nId": null,
 			"modifiers": {
 				"control": false,
 				"alt": false,
-				"shift": true,
+				"shift": false,
 				"meta": false,
-				"accel": true
+				"accel": false
 			},
 			"action": "Tools:Sanitize",
 			"disabled": false,
@@ -414,16 +416,16 @@
 		},
 		{
 			"id": "key_switchTextDirection",
-			"key": "x",
-			"keycode": null,
+			"key": "",
+			"keycode": "",
 			"group": "mediaAndDisplay",
 			"l10nId": "zen-bidi-switch-direction-shortcut",
 			"modifiers": {
 				"control": false,
 				"alt": false,
-				"shift": true,
+				"shift": false,
 				"meta": false,
-				"accel": true
+				"accel": false
 			},
 			"action": "cmd_switchTextDirection",
 			"disabled": false,
@@ -432,13 +434,14 @@
 		},
 		{
 			"id": "key_showAllTabs",
-			"keycode": "VK_TAB",
+			"key": "",
+			"keycode": "",
 			"group": "other",
 			"l10nId": null,
 			"modifiers": {
-				"control": true,
+				"control": false,
 				"alt": false,
-				"shift": true,
+				"shift": false,
 				"meta": false,
 				"accel": false
 			},
@@ -593,16 +596,16 @@
 		},
 		{
 			"id": "key_gotoHistory",
-			"key": "h",
-			"keycode": null,
+			"key": "",
+			"keycode": "",
 			"group": "navigation",
 			"l10nId": "zen-history-sidebar-shortcut",
 			"modifiers": {
 				"control": false,
 				"alt": false,
-				"shift": true,
+				"shift": false,
 				"meta": false,
-				"accel": true
+				"accel": false
 			},
 			"action": null,
 			"disabled": false,
@@ -611,12 +614,12 @@
 		},
 		{
 			"id": "toggleSidebarKb",
-			"key": "z",
-			"keycode": null,
+			"key": "",
+			"keycode": "",
 			"group": "other",
 			"l10nId": "zen-toggle-sidebar-shortcut",
 			"modifiers": {
-				"control": true,
+				"control": false,
 				"alt": false,
 				"shift": false,
 				"meta": false,
@@ -629,12 +632,12 @@
 		},
 		{
 			"id": "viewGenaiChatSidebarKb",
-			"key": "x",
-			"keycode": null,
+			"key": "",
+			"keycode": "",
 			"group": "other",
 			"l10nId": "zen-ai-chatbot-sidebar-shortcut",
 			"modifiers": {
-				"control": true,
+				"control": false,
 				"alt": false,
 				"shift": false,
 				"meta": false,
@@ -647,8 +650,8 @@
 		},
 		{
 			"id": "key_stop_mac",
-			"key": ".",
-			"keycode": null,
+			"key": "",
+			"keycode": "",
 			"group": "other",
 			"l10nId": "zen-nav-stop-shortcut",
 			"modifiers": {
@@ -656,7 +659,7 @@
 				"alt": false,
 				"shift": false,
 				"meta": false,
-				"accel": true
+				"accel": false
 			},
 			"action": "Browser:Stop",
 			"disabled": false,
@@ -719,16 +722,16 @@
 		},
 		{
 			"id": "manBookmarkKb",
-			"key": "o",
-			"keycode": null,
+			"key": "",
+			"keycode": "",
 			"group": "historyAndBookmarks",
 			"l10nId": "zen-bookmark-show-library-shortcut",
 			"modifiers": {
 				"control": false,
 				"alt": false,
-				"shift": true,
+				"shift": false,
 				"meta": false,
-				"accel": true
+				"accel": false
 			},
 			"action": "Browser:ShowAllBookmarks",
 			"disabled": false,
@@ -807,8 +810,8 @@
 		},
 		{
 			"id": "key_findSelection",
-			"key": "e",
-			"keycode": null,
+			"key": "",
+			"keycode": "",
 			"group": "other",
 			"l10nId": "zen-search-find-selection-shortcut",
 			"modifiers": {
@@ -816,7 +819,7 @@
 				"alt": false,
 				"shift": false,
 				"meta": false,
-				"accel": true
+				"accel": false
 			},
 			"action": "cmd_findSelection",
 			"disabled": false,
@@ -897,16 +900,16 @@
 		},
 		{
 			"id": "key_viewSourceSafari",
-			"key": "u",
-			"keycode": null,
+			"key": "",
+			"keycode": "",
 			"group": "other",
 			"l10nId": "zen-page-source-shortcut-safari",
 			"modifiers": {
 				"control": false,
-				"alt": true,
+				"alt": false,
 				"shift": false,
 				"meta": false,
-				"accel": true
+				"accel": false
 			},
 			"action": "View:PageSource",
 			"disabled": false,
@@ -933,13 +936,14 @@
 		},
 		{
 			"id": "key_aboutProcesses",
-			"keycode": "VK_ESCAPE",
+			"key": "",
+			"keycode": "",
 			"group": "other",
 			"l10nId": null,
 			"modifiers": {
 				"control": false,
 				"alt": false,
-				"shift": true,
+				"shift": false,
 				"meta": false,
 				"accel": false
 			},
@@ -1004,16 +1008,16 @@
 		},
 		{
 			"id": "key_togglePictureInPicture",
-			"key": "]",
-			"keycode": null,
+			"key": "",
+			"keycode": "",
 			"group": "other",
 			"l10nId": "zen-picture-in-picture-toggle-shortcut-mac",
 			"modifiers": {
 				"control": false,
-				"alt": true,
-				"shift": true,
+				"alt": false,
+				"shift": false,
 				"meta": false,
-				"accel": true
+				"accel": false
 			},
 			"action": "View:PictureInPicture",
 			"disabled": false,
@@ -1057,16 +1061,16 @@
 		},
 		{
 			"id": "key_exitFullScreen_old",
-			"key": "f",
-			"keycode": null,
+			"key": "",
+			"keycode": "",
 			"group": "other",
 			"l10nId": "zen-full-screen-shortcut",
 			"modifiers": {
 				"control": false,
 				"alt": false,
-				"shift": true,
+				"shift": false,
 				"meta": false,
-				"accel": true
+				"accel": false
 			},
 			"action": "View:FullScreen",
 			"disabled": true,
@@ -1075,16 +1079,16 @@
 		},
 		{
 			"id": "key_exitFullScreen",
-			"key": "f",
-			"keycode": null,
+			"key": "",
+			"keycode": "",
 			"group": "other",
 			"l10nId": "zen-full-screen-shortcut",
 			"modifiers": {
-				"control": true,
+				"control": false,
 				"alt": false,
 				"shift": false,
 				"meta": false,
-				"accel": true
+				"accel": false
 			},
 			"action": "View:FullScreen",
 			"disabled": true,
@@ -1128,16 +1132,16 @@
 		},
 		{
 			"id": "key_enterFullScreen",
-			"key": "f",
-			"keycode": null,
+			"key": "",
+			"keycode": "",
 			"group": "other",
 			"l10nId": "zen-full-screen-shortcut",
 			"modifiers": {
-				"control": true,
+				"control": false,
 				"alt": false,
 				"shift": false,
 				"meta": false,
-				"accel": true
+				"accel": false
 			},
 			"action": "View:FullScreen",
 			"disabled": false,
@@ -1146,8 +1150,8 @@
 		},
 		{
 			"id": "showAllHistoryKb",
-			"key": "y",
-			"keycode": null,
+			"key": "",
+			"keycode": "",
 			"group": "other",
 			"l10nId": "zen-history-show-all-shortcut-mac",
 			"modifiers": {
@@ -1155,7 +1159,7 @@
 				"alt": false,
 				"shift": false,
 				"meta": false,
-				"accel": true
+				"accel": false
 			},
 			"action": "Browser:ShowAllHistory",
 			"disabled": false,
@@ -1427,12 +1431,12 @@
 		},
 		{
 			"id": "key_toggleMute",
-			"key": "m",
-			"keycode": null,
+			"key": "",
+			"keycode": "",
 			"group": "mediaAndDisplay",
 			"l10nId": "zen-mute-toggle-shortcut",
 			"modifiers": {
-				"control": true,
+				"control": false,
 				"alt": false,
 				"shift": false,
 				"meta": false,
@@ -1445,15 +1449,15 @@
 		},
 		{
 			"id": "key_closeWindow",
-			"key": "",
+			"key": "w",
 			"keycode": "",
 			"group": "windowAndTabManagement",
 			"l10nId": "zen-close-shortcut",
 			"modifiers": {
 				"control": false,
 				"alt": false,
-				"shift": false,
-				"meta": false,
+				"shift": true,
+				"meta": true,
 				"accel": false
 			},
 			"action": "cmd_closeWindow",
@@ -1481,8 +1485,8 @@
 		},
 		{
 			"id": "printKb",
-			"key": "p",
-			"keycode": null,
+			"key": "",
+			"keycode": "",
 			"group": "pageOperations",
 			"l10nId": "zen-print-shortcut",
 			"modifiers": {
@@ -1490,7 +1494,7 @@
 				"alt": false,
 				"shift": false,
 				"meta": false,
-				"accel": true
+				"accel": false
 			},
 			"action": "cmd_print",
 			"disabled": false,
@@ -1535,16 +1539,16 @@
 		},
 		{
 			"id": "key_openAddons",
-			"key": "a",
-			"keycode": null,
+			"key": "",
+			"keycode": "",
 			"group": "other",
 			"l10nId": "zen-addons-shortcut",
 			"modifiers": {
 				"control": false,
 				"alt": false,
-				"shift": true,
+				"shift": false,
 				"meta": false,
-				"accel": true
+				"accel": false
 			},
 			"action": "Tools:Addons",
 			"disabled": false,
@@ -1553,8 +1557,8 @@
 		},
 		{
 			"id": "key_openDownloads",
-			"key": "j",
-			"keycode": null,
+			"key": "",
+			"keycode": "",
 			"group": "other",
 			"l10nId": "zen-downloads-shortcut",
 			"modifiers": {
@@ -1562,7 +1566,7 @@
 				"alt": false,
 				"shift": false,
 				"meta": false,
-				"accel": true
+				"accel": false
 			},
 			"action": "Tools:Downloads",
 			"disabled": false,
@@ -1571,7 +1575,7 @@
 		},
 		{
 			"id": "key_search2",
-			"key": "/",
+			"key": "",
 			"keycode": "",
 			"group": "searchAndFind",
 			"l10nId": "zen-find-shortcut",
@@ -1579,7 +1583,7 @@
 				"control": false,
 				"alt": false,
 				"shift": false,
-				"meta": true,
+				"meta": false,
 				"accel": false
 			},
 			"action": "Tools:Search",
@@ -1589,8 +1593,8 @@
 		},
 		{
 			"id": "key_search",
-			"key": "k",
-			"keycode": null,
+			"key": "",
+			"keycode": "",
 			"group": "searchAndFind",
 			"l10nId": "zen-search-focus-shortcut",
 			"modifiers": {
@@ -1598,7 +1602,7 @@
 				"alt": false,
 				"shift": false,
 				"meta": false,
-				"accel": true
+				"accel": false
 			},
 			"action": "Tools:Search",
 			"disabled": false,
@@ -1913,16 +1917,16 @@
 		},
 		{
 			"id": "zen-split-view-grid",
-			"key": "g",
+			"key": "",
 			"keycode": "",
 			"group": "zen-split-view",
 			"l10nId": "zen-split-view-shortcut-grid",
 			"modifiers": {
 				"control": false,
-				"alt": true,
+				"alt": false,
 				"shift": false,
 				"meta": false,
-				"accel": true
+				"accel": false
 			},
 			"action": "cmd_zenSplitViewGrid",
 			"disabled": false,
@@ -1931,16 +1935,16 @@
 		},
 		{
 			"id": "zen-split-view-vertical",
-			"key": "v",
+			"key": "",
 			"keycode": "",
 			"group": "zen-split-view",
 			"l10nId": "zen-split-view-shortcut-vertical",
 			"modifiers": {
 				"control": false,
-				"alt": true,
+				"alt": false,
 				"shift": false,
 				"meta": false,
-				"accel": true
+				"accel": false
 			},
 			"action": "cmd_zenSplitViewVertical",
 			"disabled": false,
@@ -1949,16 +1953,16 @@
 		},
 		{
 			"id": "zen-split-view-horizontal",
-			"key": "h",
+			"key": "",
 			"keycode": "",
 			"group": "zen-split-view",
 			"l10nId": "zen-split-view-shortcut-horizontal",
 			"modifiers": {
 				"control": false,
-				"alt": true,
+				"alt": false,
 				"shift": false,
 				"meta": false,
-				"accel": true
+				"accel": false
 			},
 			"action": "cmd_zenSplitViewHorizontal",
 			"disabled": false,
@@ -1967,16 +1971,16 @@
 		},
 		{
 			"id": "zen-split-view-unsplit",
-			"key": "u",
+			"key": "",
 			"keycode": "",
 			"group": "zen-split-view",
 			"l10nId": "zen-split-view-shortcut-unsplit",
 			"modifiers": {
 				"control": false,
-				"alt": true,
+				"alt": false,
 				"shift": false,
 				"meta": false,
-				"accel": true
+				"accel": false
 			},
 			"action": "cmd_zenSplitViewUnsplit",
 			"disabled": false,
@@ -2327,7 +2331,7 @@
 		},
 		{
 			"id": "zen-glance-expand",
-			"key": "o",
+			"key": "",
 			"keycode": "",
 			"group": "zen-other",
 			"l10nId": "",
@@ -2336,7 +2340,7 @@
 				"alt": false,
 				"shift": false,
 				"meta": false,
-				"accel": true
+				"accel": false
 			},
 			"action": "cmd_zenGlanceExpand",
 			"disabled": false,
@@ -2345,16 +2349,16 @@
 		},
 		{
 			"id": "zen-new-empty-split-view",
-			"key": "+",
+			"key": "",
 			"keycode": "",
 			"group": "zen-split-view",
 			"l10nId": "zen-new-empty-split-view-shortcut",
 			"modifiers": {
 				"control": false,
 				"alt": false,
-				"shift": true,
+				"shift": false,
 				"meta": false,
-				"accel": true
+				"accel": false
 			},
 			"action": "cmd_zenNewEmptySplit",
 			"disabled": false,
@@ -2363,16 +2367,16 @@
 		},
 		{
 			"id": "zen-close-all-unpinned-tabs",
-			"key": "k",
+			"key": "",
 			"keycode": "",
 			"group": "zen-workspace",
 			"l10nId": "zen-close-all-unpinned-tabs-shortcut",
 			"modifiers": {
 				"control": false,
 				"alt": false,
-				"shift": true,
+				"shift": false,
 				"meta": false,
-				"accel": true
+				"accel": false
 			},
 			"action": "cmd_zenCloseUnpinnedTabs",
 			"disabled": false,
