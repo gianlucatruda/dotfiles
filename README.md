@@ -114,7 +114,7 @@ cp ~/Library/Application\ Support/zen/Profiles/<profile_code>.Default\ \(release
 
 Sync browser from dotfiles:
 ```bash
-cp .config/zen/zen-keyboard-shortcuts.json ~/Library/Application\ Support/zen/Profiles/<profiles>.Default\ \(release\)/zen-keyboard-shortcuts.json 
+cp .config/zen/zen-keyboard-shortcuts.json ~/Library/Application\ Support/zen/Profiles/<profile_code>.Default\ \(release\)/zen-keyboard-shortcuts.json 
 ```
 
 Note: Zen always re-formats the file, so it's a messy and manual backup more than a reliable config.
