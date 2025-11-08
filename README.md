@@ -103,6 +103,22 @@ brew bundle cleanup --force --file ~/.config/homebrew/Brewfile
 brew bundle install --file ~/.config/homebrew/Brewfile
 ```
 
+#### Manually syncing zen browser config files
+
+Manually check the local path (even on macOS), as this path may change (which is why I just do it manually. It's more of a backup than a true config).
+
+Sync browser to dotfiles (from within local `dotfiles` repo):
+```bash
+cp ~/Library/Application\ Support/zen/Profiles/3a6fjfgv.Default\ \(release\)/zen-keyboard-shortcuts.json .config/zen/zen-keyboard-shortcuts.json
+```
+
+Sync browser from dotfiles:
+```
+cp .config/zen/zen-keyboard-shortcuts.json ~/Library/Application\ Support/zen/Profiles/3a6fjfgv.Default\ \(release\)/zen-keyboard-shortcuts.json 
+```
+
+Zen always seems to re-format (and randomly re-order?), so it's a messy and manual backup more than a reliable config.
+
 ---
 
 ### Apps to manually install for my workflows

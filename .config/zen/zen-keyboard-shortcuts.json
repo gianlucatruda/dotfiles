@@ -55,6 +55,24 @@
 			"internal": true
 		},
 		{
+			"id": "key_openHelpMac",
+			"key": "?",
+			"keycode": null,
+			"group": "other",
+			"l10nId": "zen-help-shortcut",
+			"modifiers": {
+				"control": false,
+				"alt": false,
+				"shift": false,
+				"meta": false,
+				"accel": true
+			},
+			"action": null,
+			"disabled": false,
+			"reserved": false,
+			"internal": true
+		},
+		{
 			"id": "key_minimizeWindow",
 			"key": "m",
 			"keycode": null,
@@ -701,16 +719,16 @@
 		},
 		{
 			"id": "manBookmarkKb",
-			"key": "",
-			"keycode": "",
+			"key": "o",
+			"keycode": null,
 			"group": "historyAndBookmarks",
 			"l10nId": "zen-bookmark-show-library-shortcut",
 			"modifiers": {
 				"control": false,
 				"alt": false,
-				"shift": false,
+				"shift": true,
 				"meta": false,
-				"accel": false
+				"accel": true
 			},
 			"action": "Browser:ShowAllBookmarks",
 			"disabled": false,
@@ -807,16 +825,16 @@
 		},
 		{
 			"id": "key_findPrevious",
-			"key": "g",
-			"keycode": null,
+			"key": "",
+			"keycode": "",
 			"group": "searchAndFind",
 			"l10nId": "zen-search-find-again-shortcut-prev",
 			"modifiers": {
 				"control": false,
 				"alt": false,
-				"shift": true,
+				"shift": false,
 				"meta": false,
-				"accel": true
+				"accel": false
 			},
 			"action": "cmd_findPrevious",
 			"disabled": false,
@@ -825,8 +843,8 @@
 		},
 		{
 			"id": "key_findAgain",
-			"key": "g",
-			"keycode": null,
+			"key": "",
+			"keycode": "",
 			"group": "searchAndFind",
 			"l10nId": "zen-search-find-again-shortcut",
 			"modifiers": {
@@ -834,7 +852,7 @@
 				"alt": false,
 				"shift": false,
 				"meta": false,
-				"accel": true
+				"accel": false
 			},
 			"action": "cmd_findAgain",
 			"disabled": false,
@@ -861,8 +879,8 @@
 		},
 		{
 			"id": "key_viewInfo",
-			"key": "i",
-			"keycode": null,
+			"key": "",
+			"keycode": "",
 			"group": "pageOperations",
 			"l10nId": "zen-page-info-shortcut",
 			"modifiers": {
@@ -870,7 +888,7 @@
 				"alt": false,
 				"shift": false,
 				"meta": false,
-				"accel": true
+				"accel": false
 			},
 			"action": "View:PageInfo",
 			"disabled": false,
@@ -897,8 +915,8 @@
 		},
 		{
 			"id": "key_viewSource",
-			"key": "u",
-			"keycode": null,
+			"key": "",
+			"keycode": "",
 			"group": "pageOperations",
 			"l10nId": "zen-page-source-shortcut",
 			"modifiers": {
@@ -906,7 +924,7 @@
 				"alt": false,
 				"shift": false,
 				"meta": false,
-				"accel": true
+				"accel": false
 			},
 			"action": "View:PageSource",
 			"disabled": false,
@@ -1004,16 +1022,16 @@
 		},
 		{
 			"id": "key_toggleReaderMode",
-			"key": "r",
-			"keycode": null,
+			"key": "",
+			"keycode": "",
 			"group": "pageOperations",
 			"l10nId": "zen-reader-mode-toggle-shortcut-other",
 			"modifiers": {
 				"control": false,
-				"alt": true,
+				"alt": false,
 				"shift": false,
 				"meta": false,
-				"accel": true
+				"accel": false
 			},
 			"action": "View:ReaderView",
 			"disabled": true,
@@ -1427,16 +1445,16 @@
 		},
 		{
 			"id": "key_closeWindow",
-			"key": "w",
-			"keycode": null,
+			"key": "",
+			"keycode": "",
 			"group": "windowAndTabManagement",
 			"l10nId": "zen-close-shortcut",
 			"modifiers": {
 				"control": false,
 				"alt": false,
-				"shift": true,
+				"shift": false,
 				"meta": false,
-				"accel": true
+				"accel": false
 			},
 			"action": "cmd_closeWindow",
 			"disabled": false,
@@ -1481,16 +1499,16 @@
 		},
 		{
 			"id": "key_savePage",
-			"key": "s",
-			"keycode": null,
+			"key": "",
+			"keycode": "",
 			"group": "pageOperations",
 			"l10nId": "zen-save-page-shortcut",
 			"modifiers": {
 				"control": false,
-				"alt": true,
-				"shift": true,
+				"alt": false,
+				"shift": false,
 				"meta": false,
-				"accel": true
+				"accel": false
 			},
 			"action": "Browser:SavePage",
 			"disabled": false,
@@ -1553,16 +1571,16 @@
 		},
 		{
 			"id": "key_search2",
-			"key": "f",
-			"keycode": null,
+			"key": "/",
+			"keycode": "",
 			"group": "searchAndFind",
 			"l10nId": "zen-find-shortcut",
 			"modifiers": {
 				"control": false,
-				"alt": true,
+				"alt": false,
 				"shift": false,
-				"meta": false,
-				"accel": true
+				"meta": true,
+				"accel": false
 			},
 			"action": "Tools:Search",
 			"disabled": false,
@@ -1661,16 +1679,16 @@
 		},
 		{
 			"id": "zen-compact-mode-show-sidebar",
-			"key": "s",
+			"key": "",
 			"keycode": "",
 			"group": "zen-compact-mode",
 			"l10nId": "zen-compact-mode-shortcut-show-sidebar",
 			"modifiers": {
 				"control": false,
-				"alt": true,
+				"alt": false,
 				"shift": false,
 				"meta": false,
-				"accel": true
+				"accel": false
 			},
 			"action": "cmd_zenCompactModeShowSidebar",
 			"disabled": false,
@@ -1860,15 +1878,15 @@
 		{
 			"id": "zen-workspace-forward",
 			"key": "",
-			"keycode": "VK_RIGHT",
+			"keycode": "",
 			"group": "zen-workspace",
 			"l10nId": "zen-workspace-shortcut-forward",
 			"modifiers": {
 				"control": false,
-				"alt": true,
+				"alt": false,
 				"shift": false,
 				"meta": false,
-				"accel": true
+				"accel": false
 			},
 			"action": "cmd_zenWorkspaceForward",
 			"disabled": false,
@@ -1878,15 +1896,15 @@
 		{
 			"id": "zen-workspace-backward",
 			"key": "",
-			"keycode": "VK_LEFT",
+			"keycode": "",
 			"group": "zen-workspace",
 			"l10nId": "zen-workspace-shortcut-backward",
 			"modifiers": {
 				"control": false,
-				"alt": true,
+				"alt": false,
 				"shift": false,
 				"meta": false,
-				"accel": true
+				"accel": false
 			},
 			"action": "cmd_zenWorkspaceBackward",
 			"disabled": false,
@@ -2038,6 +2056,258 @@
 			"internal": false
 		},
 		{
+			"id": "key_inspectorMac",
+			"key": "",
+			"keycode": "",
+			"group": "devTools",
+			"l10nId": null,
+			"modifiers": {
+				"control": false,
+				"alt": false,
+				"shift": false,
+				"meta": false,
+				"accel": false
+			},
+			"action": null,
+			"disabled": false,
+			"reserved": false,
+			"internal": false
+		},
+		{
+			"id": "key_accessibility",
+			"key": "",
+			"keycode": "",
+			"group": "devTools",
+			"l10nId": null,
+			"modifiers": {
+				"control": false,
+				"alt": false,
+				"shift": false,
+				"meta": false,
+				"accel": false
+			},
+			"action": null,
+			"disabled": false,
+			"reserved": false,
+			"internal": false
+		},
+		{
+			"id": "key_dom",
+			"key": "",
+			"keycode": "",
+			"group": "devTools",
+			"l10nId": null,
+			"modifiers": {
+				"control": false,
+				"alt": false,
+				"shift": false,
+				"meta": false,
+				"accel": false
+			},
+			"action": null,
+			"disabled": false,
+			"reserved": false,
+			"internal": false
+		},
+		{
+			"id": "key_storage",
+			"key": "",
+			"keycode": "",
+			"group": "devTools",
+			"l10nId": null,
+			"modifiers": {
+				"control": false,
+				"alt": false,
+				"shift": false,
+				"meta": false,
+				"accel": false
+			},
+			"action": null,
+			"disabled": false,
+			"reserved": false,
+			"internal": false
+		},
+		{
+			"id": "key_performance",
+			"key": "",
+			"keycode": "",
+			"group": "devTools",
+			"l10nId": null,
+			"modifiers": {
+				"control": false,
+				"alt": false,
+				"shift": false,
+				"meta": false,
+				"accel": false
+			},
+			"action": null,
+			"disabled": false,
+			"reserved": false,
+			"internal": false
+		},
+		{
+			"id": "key_styleeditor",
+			"key": "",
+			"keycode": "",
+			"group": "devTools",
+			"l10nId": null,
+			"modifiers": {
+				"control": false,
+				"alt": false,
+				"shift": false,
+				"meta": false,
+				"accel": false
+			},
+			"action": null,
+			"disabled": false,
+			"reserved": false,
+			"internal": false
+		},
+		{
+			"id": "key_netmonitor",
+			"key": "",
+			"keycode": "",
+			"group": "devTools",
+			"l10nId": null,
+			"modifiers": {
+				"control": false,
+				"alt": false,
+				"shift": false,
+				"meta": false,
+				"accel": false
+			},
+			"action": null,
+			"disabled": false,
+			"reserved": false,
+			"internal": false
+		},
+		{
+			"id": "key_jsdebugger",
+			"key": "",
+			"keycode": "",
+			"group": "devTools",
+			"l10nId": null,
+			"modifiers": {
+				"control": false,
+				"alt": false,
+				"shift": false,
+				"meta": false,
+				"accel": false
+			},
+			"action": null,
+			"disabled": false,
+			"reserved": false,
+			"internal": false
+		},
+		{
+			"id": "key_webconsole",
+			"key": "",
+			"keycode": "",
+			"group": "devTools",
+			"l10nId": null,
+			"modifiers": {
+				"control": false,
+				"alt": false,
+				"shift": false,
+				"meta": false,
+				"accel": false
+			},
+			"action": null,
+			"disabled": false,
+			"reserved": false,
+			"internal": false
+		},
+		{
+			"id": "key_inspector",
+			"key": "",
+			"keycode": "",
+			"group": "devTools",
+			"l10nId": null,
+			"modifiers": {
+				"control": false,
+				"alt": false,
+				"shift": false,
+				"meta": false,
+				"accel": false
+			},
+			"action": null,
+			"disabled": false,
+			"reserved": false,
+			"internal": false
+		},
+		{
+			"id": "key_responsiveDesignMode",
+			"key": "",
+			"keycode": "",
+			"group": "devTools",
+			"l10nId": null,
+			"modifiers": {
+				"control": false,
+				"alt": false,
+				"shift": false,
+				"meta": false,
+				"accel": false
+			},
+			"action": null,
+			"disabled": false,
+			"reserved": false,
+			"internal": false
+		},
+		{
+			"id": "key_browserConsole",
+			"key": "",
+			"keycode": "",
+			"group": "devTools",
+			"l10nId": null,
+			"modifiers": {
+				"control": false,
+				"alt": false,
+				"shift": false,
+				"meta": false,
+				"accel": false
+			},
+			"action": null,
+			"disabled": false,
+			"reserved": false,
+			"internal": false
+		},
+		{
+			"id": "key_browserToolbox",
+			"key": "",
+			"keycode": "",
+			"group": "devTools",
+			"l10nId": null,
+			"modifiers": {
+				"control": false,
+				"alt": false,
+				"shift": false,
+				"meta": false,
+				"accel": false
+			},
+			"action": null,
+			"disabled": false,
+			"reserved": false,
+			"internal": false
+		},
+		{
+			"id": "key_toggleToolbox",
+			"key": "i",
+			"keycode": null,
+			"group": "devTools",
+			"l10nId": null,
+			"modifiers": {
+				"control": false,
+				"alt": true,
+				"shift": false,
+				"meta": false,
+				"accel": true
+			},
+			"action": null,
+			"disabled": false,
+			"reserved": false,
+			"internal": false
+		},
+		{
 			"id": "zen-toggle-pin-tab",
 			"key": "p",
 			"keycode": "",
@@ -2087,254 +2357,6 @@
 				"accel": true
 			},
 			"action": "cmd_zenNewEmptySplit",
-			"disabled": false,
-			"reserved": false,
-			"internal": false
-		},
-		{
-			"id": "key_inspectorMac",
-			"key": "",
-			"keycode": "",
-			"group": "devTools",
-			"l10nId": null,
-			"modifiers": {
-				"control": false,
-				"alt": false,
-				"shift": false,
-				"meta": false,
-				"accel": false
-			},
-			"action": null,
-			"disabled": false,
-			"reserved": false,
-			"internal": false
-		},
-		{
-			"id": "key_accessibility",
-			"keycode": "VK_F12",
-			"group": "devTools",
-			"l10nId": null,
-			"modifiers": {
-				"control": false,
-				"alt": false,
-				"shift": true,
-				"meta": false,
-				"accel": false
-			},
-			"action": null,
-			"disabled": false,
-			"reserved": false,
-			"internal": false
-		},
-		{
-			"id": "key_dom",
-			"key": "w",
-			"keycode": null,
-			"group": "devTools",
-			"l10nId": null,
-			"modifiers": {
-				"control": false,
-				"alt": true,
-				"shift": false,
-				"meta": false,
-				"accel": true
-			},
-			"action": null,
-			"disabled": false,
-			"reserved": false,
-			"internal": false
-		},
-		{
-			"id": "key_storage",
-			"keycode": "VK_F9",
-			"group": "devTools",
-			"l10nId": null,
-			"modifiers": {
-				"control": false,
-				"alt": false,
-				"shift": true,
-				"meta": false,
-				"accel": false
-			},
-			"action": null,
-			"disabled": false,
-			"reserved": false,
-			"internal": false
-		},
-		{
-			"id": "key_performance",
-			"keycode": "VK_F5",
-			"group": "devTools",
-			"l10nId": null,
-			"modifiers": {
-				"control": false,
-				"alt": false,
-				"shift": true,
-				"meta": false,
-				"accel": false
-			},
-			"action": null,
-			"disabled": false,
-			"reserved": false,
-			"internal": false
-		},
-		{
-			"id": "key_styleeditor",
-			"keycode": "VK_F7",
-			"group": "devTools",
-			"l10nId": null,
-			"modifiers": {
-				"control": false,
-				"alt": false,
-				"shift": true,
-				"meta": false,
-				"accel": false
-			},
-			"action": null,
-			"disabled": false,
-			"reserved": false,
-			"internal": false
-		},
-		{
-			"id": "key_netmonitor",
-			"key": "e",
-			"keycode": null,
-			"group": "devTools",
-			"l10nId": null,
-			"modifiers": {
-				"control": false,
-				"alt": true,
-				"shift": false,
-				"meta": false,
-				"accel": true
-			},
-			"action": null,
-			"disabled": false,
-			"reserved": false,
-			"internal": false
-		},
-		{
-			"id": "key_jsdebugger",
-			"key": "z",
-			"keycode": null,
-			"group": "devTools",
-			"l10nId": null,
-			"modifiers": {
-				"control": false,
-				"alt": true,
-				"shift": false,
-				"meta": false,
-				"accel": true
-			},
-			"action": null,
-			"disabled": false,
-			"reserved": false,
-			"internal": false
-		},
-		{
-			"id": "key_webconsole",
-			"key": "k",
-			"keycode": null,
-			"group": "devTools",
-			"l10nId": null,
-			"modifiers": {
-				"control": false,
-				"alt": true,
-				"shift": false,
-				"meta": false,
-				"accel": true
-			},
-			"action": null,
-			"disabled": false,
-			"reserved": false,
-			"internal": false
-		},
-		{
-			"id": "key_inspector",
-			"key": "l",
-			"keycode": null,
-			"group": "devTools",
-			"l10nId": null,
-			"modifiers": {
-				"control": false,
-				"alt": true,
-				"shift": false,
-				"meta": false,
-				"accel": true
-			},
-			"action": null,
-			"disabled": false,
-			"reserved": false,
-			"internal": false
-		},
-		{
-			"id": "key_responsiveDesignMode",
-			"key": "m",
-			"keycode": null,
-			"group": "devTools",
-			"l10nId": null,
-			"modifiers": {
-				"control": false,
-				"alt": true,
-				"shift": false,
-				"meta": false,
-				"accel": true
-			},
-			"action": null,
-			"disabled": false,
-			"reserved": false,
-			"internal": false
-		},
-		{
-			"id": "key_browserConsole",
-			"key": "j",
-			"keycode": null,
-			"group": "devTools",
-			"l10nId": null,
-			"modifiers": {
-				"control": false,
-				"alt": false,
-				"shift": true,
-				"meta": false,
-				"accel": true
-			},
-			"action": null,
-			"disabled": false,
-			"reserved": false,
-			"internal": false
-		},
-		{
-			"id": "key_browserToolbox",
-			"key": "i",
-			"keycode": null,
-			"group": "devTools",
-			"l10nId": null,
-			"modifiers": {
-				"control": false,
-				"alt": true,
-				"shift": true,
-				"meta": false,
-				"accel": true
-			},
-			"action": null,
-			"disabled": false,
-			"reserved": false,
-			"internal": false
-		},
-		{
-			"id": "key_toggleToolbox",
-			"key": "i",
-			"keycode": null,
-			"group": "devTools",
-			"l10nId": null,
-			"modifiers": {
-				"control": false,
-				"alt": true,
-				"shift": false,
-				"meta": false,
-				"accel": true
-			},
-			"action": null,
 			"disabled": false,
 			"reserved": false,
 			"internal": false
