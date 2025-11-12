@@ -20,7 +20,8 @@ vim.api.nvim_create_autocmd('LspAttach', {
       vim.lsp.buf.code_action { context = { only = { 'quickfix', 'refactor', 'source' } } }
     end, '[C]ode [A]ction')
 
-    map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
+    -- map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition') -- Uses deprecated LSP API
+    map('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
     map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
     map('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
     map('<leader>D', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
