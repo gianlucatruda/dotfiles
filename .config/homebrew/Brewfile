@@ -9,14 +9,6 @@ tap "philocalyst/tap"
 tap "skardyy/mcat"
 # Search tool like grep, but optimized for programmers
 brew "ack"
-# General-purpose data compression with high compression ratio
-brew "xz"
-# New file format for still image compression
-brew "jpeg-xl"
-# Codec library for encoding and decoding AV1 video streams
-brew "aom"
-# Automatic configure script builder
-brew "autoconf"
 # Distributed revision control system
 brew "git"
 # Extendable version manager with support for Ruby, Node.js, Erlang & more
@@ -59,8 +51,6 @@ brew "datasette"
 brew "harfbuzz"
 # Development kit for the Java programming language
 brew "openjdk"
-# Interpreted, interactive, object-oriented programming language
-brew "python@3.12"
 # Tools to work with Android .dex and Java .class files
 brew "dex2jar"
 # Validating, recursive, caching DNS resolver
@@ -97,8 +87,6 @@ brew "ffmpeg"
 brew "findutils"
 # Console program to recover files based on their headers and footers
 brew "foremost"
-# Generic library support script
-brew "libtool"
 # Command-line fuzzy finder written in Go
 brew "fzf"
 # Library for encoding and decoding .avif files
@@ -217,6 +205,8 @@ brew "php"
 brew "pigz"
 # Friendly PIL fork (Python Imaging Library)
 brew "pillow"
+# Execute binaries from Python packages in isolated environments
+brew "pipx"
 # Print info and check PNG, JNG, and MNG files
 brew "pngcheck"
 # Fast, disk space efficient package manager
