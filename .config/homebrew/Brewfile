@@ -265,8 +265,6 @@ brew "tmux"
 brew "tree"
 # Tools for building TCP client-server applications
 brew "ucspi-tcp"
-# Extremely fast Python package installer and resolver, written in Rust
-brew "uv"
 # Syntax-aware linter for prose
 brew "vale"
 # Visual Binary Diff
