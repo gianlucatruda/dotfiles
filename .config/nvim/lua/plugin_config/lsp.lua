@@ -22,7 +22,14 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
     -- map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition') -- Uses deprecated LSP API
     map('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
-    map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
+    map('gr', function()
+      require('telescope.builtin').lsp_references {
+        -- Ruff occasionally reports references capability; skip it to avoid errors
+        use_lsp_with = function(client, _method)
+          return client.name ~= 'ruff'
+        end,
+      }
+    end, '[G]oto [R]eferences')
     map('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
     map('<leader>D', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
     map('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
@@ -64,6 +71,78 @@ require('which-key').add {
 require('mason').setup()
 require('mason-lspconfig').setup()
 local util = require 'lspconfig.util'
+
+local function exists(path)
+  return path and vim.uv.fs_stat(path) ~= nil
+end
+
+local function find_venv(startpath)
+  local function scan(path)
+    if not path then
+      return nil, nil
+    end
+
+    for _, name in ipairs { '.venv', 'venv' } do
+      local venv = util.path.join(path, name)
+      local python = util.path.join(venv, 'bin', 'python')
+      if exists(python) then
+        return python, venv
+      end
+    end
+
+    local parent = util.path.dirname(path)
+    if not parent or parent == path then
+      return nil, nil
+    end
+    return scan(parent)
+  end
+
+  return scan(startpath)
+end
+
+-- Prefer a project-local Python if available so imports/completions match the workspace
+local function get_python(root_dir)
+  local python, venv = find_venv(root_dir or vim.fn.getcwd())
+  if python then
+    return python, venv
+  end
+
+  -- If Neovim is already running inside a venv, prefer it
+  if vim.env.VIRTUAL_ENV then
+    local venv_python = util.path.join(vim.env.VIRTUAL_ENV, 'bin', 'python')
+    if exists(venv_python) then
+      return venv_python, vim.env.VIRTUAL_ENV
+    end
+  end
+
+  local system = vim.fn.exepath 'python3'
+  if system == '' then
+    system = vim.fn.exepath 'python'
+  end
+  return system or 'python3', nil
+end
+
+local function setup_python_env(new_config, root_dir)
+  local python, venv = get_python(root_dir)
+
+  new_config.settings = new_config.settings or {}
+  new_config.settings.python = new_config.settings.python or {}
+  new_config.settings.python.pythonPath = python
+
+  new_config.settings.pylsp = new_config.settings.pylsp or {}
+  new_config.settings.pylsp.plugins = new_config.settings.pylsp.plugins or {}
+  new_config.settings.pylsp.plugins.jedi = vim.tbl_deep_extend('force', new_config.settings.pylsp.plugins.jedi or {}, {
+    environment = python,
+  })
+
+  if venv then
+    new_config.cmd_env = new_config.cmd_env or {}
+    new_config.cmd_env.VIRTUAL_ENV = venv
+    local venv_bin = util.path.join(venv, 'bin')
+    new_config.cmd_env.PATH = venv_bin .. ':' .. (vim.env.PATH or '')
+  end
+end
+
 -- Enable the following language servers
 --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
 --
@@ -113,6 +192,10 @@ local servers = {
         },
       },
     },
+    before_init = function(_, config)
+      setup_python_env(config, config.root_dir)
+    end,
+    on_new_config = setup_python_env,
   },
   html = { filetypes = { 'html', 'twig', 'hbs' } },
   lua_ls = {
@@ -138,15 +221,39 @@ vim.list_extend(ensure_installed, {
 })
 require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
+-- nvim-cmp supports additional completion capabilities, so broadcast that to servers
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+capabilities.offsetEncoding = { 'utf-16' }
+
 -- Installed LSPs are configured and enabled automatically with mason-lspconfig
 -- The loop below is for overriding the default configuration of LSPs with the ones in the servers table
 for server_name, config in pairs(servers) do
+  config.capabilities = vim.tbl_deep_extend('force', {}, capabilities, config.capabilities or {})
+
+  if server_name == 'ruff' then
+    config.capabilities.offsetEncoding = { 'utf-16' }
+
+    local on_init = config.on_init
+    config.on_init = function(client, ...)
+      if on_init then
+        on_init(client, ...)
+      end
+      client.offset_encoding = 'utf-16'
+      client.server_capabilities.referencesProvider = false
+    end
+
+    local on_attach = config.on_attach
+    config.on_attach = function(client, ...)
+      if on_attach then
+        on_attach(client, ...)
+      end
+      client.server_capabilities.referencesProvider = false
+    end
+  end
+
   vim.lsp.config(server_name, config)
 end
 
 -- NOTE: Some servers may require an old setup until they are updated. For the full list refer here: https://github.com/neovim/nvim-lspconfig/issues/3705
 -- These servers will have to be manually set up with require("lspconfig").server_name.setup{}
-
--- nvim-cmp supports additional completion capabilities, so broadcast that to servers
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
