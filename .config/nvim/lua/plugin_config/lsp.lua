@@ -90,6 +90,7 @@ local servers = {
         plugins = {
           -- formatter options (disabled for ruff)
           black = { enabled = false },
+          pylsp_black = { enabled = false },
           autopep8 = { enabled = false },
           yapf = { enabled = false },
           -- linter options
@@ -99,13 +100,13 @@ local servers = {
           pydocstyle = { enabled = false },
           mccabe = { enabled = false }, -- complexity checker
           -- type checker
-          pylsp_mypy = { enabled = true, live_mode = true, strict = false },
+          pylsp_mypy = { enabled = false, live_mode = true, strict = false }, -- ???
           -- error checker
           flake8 = { enabled = false },
           -- auto-completion options
           jedi_completion = { fuzzy = true },
           -- import sorting
-          pyls_isort = { enabled = true },
+          pyls_isort = { enabled = false }, -- handled by ruff
           -- completions and renaming
           pylsp_rope = { enabled = true, rename = true },
           rope_completion = { enabled = true },
