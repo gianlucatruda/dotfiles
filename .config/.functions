@@ -85,3 +85,22 @@ function o() {
 function tre() {
 	tree -aC -I '.git|node_modules|bower_components' --dirsfirst "$@" | less -FRNX;
 }
+
+# Write an LLM query in a visual editor, then send it to llm and pipe through richify.py
+function llmq() {
+	local editor prompt_file prompt
+	editor=${VISUAL:-${VISUALEDITOR:-${EDITOR:-vi}}}
+	prompt_file=$(mktemp "/tmp/llmq.XXXXXX") || return 1
+
+	"$editor" "$prompt_file"
+
+	prompt="$(cat "$prompt_file")"
+	rm -f "$prompt_file"
+
+	if [[ -z "${prompt//[[:space:]]/}" ]]; then
+		echo "llmq: prompt empty, aborting." >&2
+		return 1
+	fi
+
+	llm --model gpt-5-mini -s "Answer clearly, concisely, correctly. The user is smart, technical, and knows you're an LLM." "$prompt" | richify.py
+}
