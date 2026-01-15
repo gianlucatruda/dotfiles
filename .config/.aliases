@@ -33,7 +33,7 @@ alias gitlog='git log --pretty=oneline -n 20 --graph --abbrev-commit'
 alias gitlogall='git log --oneline --decorate --all --graph'
 alias gl='gitlog'
 alias gla='gitlogall'
-alias gs='git status'
+alias gs='git status --short'
 alias gd='git diff'
 alias gds='git diff --staged'
 
