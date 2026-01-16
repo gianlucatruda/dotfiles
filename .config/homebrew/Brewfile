@@ -4,6 +4,7 @@ tap "ferdium/ferdium"
 tap "modularml/packages"
 tap "nikitabobko/tap"
 tap "philocalyst/tap"
+tap "skardyy/mcat"
 # Search tool like grep, but optimized for programmers
 brew "ack"
 # General-purpose data compression with high compression ratio
@@ -48,8 +49,6 @@ brew "coreutils"
 brew "csvlens"
 # Open source multi-tool for exploring and publishing data
 brew "datasette"
-# C/C++ and Java libraries for Unicode and globalization
-brew "icu4c@77"
 # OpenType text shaping engine
 brew "harfbuzz"
 # Development kit for the Java programming language
@@ -62,7 +61,7 @@ brew "dex2jar"
 brew "unbound"
 # GNU Transport Layer Security (TLS) Library
 brew "gnutls"
-# GNU Pretty Good Privacy (PGP) package
+# GNU Privacy Guard (OpenPGP)
 brew "gnupg"
 # Library access to GnuPG
 brew "gpgme"
@@ -86,16 +85,6 @@ brew "fcrackzip"
 brew "fd"
 # Identify or delete duplicate files
 brew "fdupes"
-# Subtitle renderer for the ASS/SSA subtitle format
-brew "libass"
-# Light HTTP/1.1 server library
-brew "libmicrohttpd"
-# Reliable Internet Stream Transport (RIST)
-brew "librist"
-# Framework for layout and rendering of i18n text
-brew "pango"
-# OCR (Optical Character Recognition) engine
-brew "tesseract"
 # Play, record, convert, and stream audio and video
 brew "ffmpeg"
 # Collection of GNU find, xargs, and locate
@@ -108,6 +97,8 @@ brew "libtool"
 brew "fzf"
 # Library for encoding and decoding .avif files
 brew "libavif"
+# GitHub command-line tool
+brew "gh"
 # Interpreter for PostScript and PDF
 brew "ghostscript"
 # Distributed revision control system
@@ -194,8 +185,6 @@ brew "openvino"
 brew "pandoc"
 # General-purpose scripting language
 brew "php"
-# New zlib (gzip, deflate) compatible compressor
-brew "zopfli"
 # Parallel gzip
 brew "pigz"
 # Friendly PIL fork (Python Imaging Library)
@@ -284,6 +273,8 @@ brew "bramstein/webfonttools/sfnt2woff-zopfli"
 brew "felixkratz/formulae/borders"
 # User-friendly, lightweight TUI for disk imaging
 brew "philocalyst/tap/caligula"
+# a powerfull extended cat command, to cat all the things you couldn't before
+brew "skardyy/mcat/mcat"
 # AeroSpace is an i3-like tiling window manager for macOS
 cask "aerospace"
 # GPU-accelerated terminal emulator
@@ -313,7 +304,16 @@ cask "opensc-app"
 cask "syntax-highlight"
 # Google Chromium, sans integration with Google
 cask "ungoogled-chromium"
+# AI image upscaler
+cask "upscayl"
 # Binary releases of VS Code without MS branding/telemetry/licensing
 cask "vscodium"
 vscode "ms-python.debugpy"
 vscode "ms-python.python"
+vscode "vscodevim.vim"
+cargo "cargo-generate"
+cargo "clap"
+cargo "flamegraph"
+cargo "rustlings"
+cargo "wasm-bindgen-cli"
+cargo "wasm-pack"
