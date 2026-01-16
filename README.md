@@ -103,6 +103,14 @@ brew bundle cleanup --force --file ~/.config/homebrew/Brewfile
 brew bundle install --file ~/.config/homebrew/Brewfile
 ```
 
+#### Additional tooling / packages
+
+`llm` plugins re-installed with update:
+
+```bash
+brew update && brew upgrade llm && llm install -U llm-anthropic llm-ollama
+```
+
 #### Manually syncing zen browser config files
 
 Manually check the local path (even on macOS) and use your `<profile_code>`, as this path may change (which is why I just do it manually. It's more of a backup than a true config).
