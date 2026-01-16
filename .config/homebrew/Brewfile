@@ -99,6 +99,12 @@ brew "fzf"
 brew "libavif"
 # GitHub command-line tool
 brew "gh"
+# C/C++ and Java libraries for Unicode and globalization
+brew "icu4c@77"
+# Framework for layout and rendering of i18n text
+brew "pango"
+# OCR (Optical Character Recognition) engine
+brew "tesseract"
 # Interpreter for PostScript and PDF
 brew "ghostscript"
 # Distributed revision control system
@@ -135,8 +141,14 @@ brew "knock"
 brew "lazygit"
 # Terminal file manager
 brew "lf"
+# Subtitle renderer for the ASS/SSA subtitle format
+brew "libass"
 # Provides library functionality for FIDO U2F & FIDO 2.0, including USB
 brew "libfido2"
+# Light HTTP/1.1 server library
+brew "libmicrohttpd"
+# Reliable Internet Stream Transport (RIST)
+brew "librist"
 # LLM inference in C/C++
 brew "llama.cpp"
 # Access large language models from the command-line
