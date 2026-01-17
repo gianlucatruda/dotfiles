@@ -29,13 +29,16 @@ alias clc='history -p \!\! | pbcopy' # Copy last command to clipboard
 alias notify='echo -e "\a"; echo "Done at $(date)"'
 
 # Git
-alias gitlog='git log --pretty=oneline -n 20 --graph --abbrev-commit'
-alias gitlogall='git log --oneline --decorate --all --graph'
+alias gitlog='git log --pretty=oneline -n 10 --graph --abbrev-commit'
 alias gl='gitlog'
+alias gitlogall='git log --oneline --decorate --all --graph --stat'
 alias gla='gitlogall'
 alias gs='git status --short'
 alias gd='git diff'
 alias gds='git diff --staged'
+alias ga='git add -u && git status --short'
+alias gc='git commit'
+alias lg='lazygit'
 
 # Reload the shell (i.e. invoke as a login shell)
 alias reload="exec $SHELL -l"
