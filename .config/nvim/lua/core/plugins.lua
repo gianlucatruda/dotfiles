@@ -5,6 +5,7 @@ require('lazy').setup({
   'tpope/vim-fugitive',             -- Git integration
   'lewis6991/gitsigns.nvim',        -- Git decorations
   'tpope/vim-rhubarb',              -- Github integration
+  'kdheepak/lazygit.nvim',          -- Lazygit integration
   'folke/which-key.nvim',           -- Shows available keybinds
   'hrsh7th/nvim-cmp',               -- Autocomplete engine
   'L3MON4D3/LuaSnip',               -- Snippet engine
