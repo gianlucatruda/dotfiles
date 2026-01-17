@@ -37,17 +37,30 @@ local function find_git_root()
   return git_root
 end
 
--- Custom live_grep function to search in git root
+-- Custom live_grep function to search tracked files in git root (including hidden, excluding .git/)
 local function live_grep_git_root()
   local git_root = find_git_root()
   if git_root then
     require('telescope.builtin').live_grep {
       search_dirs = { git_root },
+      additional_args = function() return { "--hidden", "--glob", "!.git/" } end
+    }
+  end
+end
+
+-- Custom live_grep function to search ALL files in git root (including hidden, except .git/)
+local function live_grep_git_root_all()
+  local git_root = find_git_root()
+  if git_root then
+    require('telescope.builtin').live_grep {
+      search_dirs = { git_root },
+      additional_args = function() return { "--hidden", "--no-ignore", "--glob", "!.git/" } end
     }
   end
 end
 
 vim.api.nvim_create_user_command('LiveGrepGitRoot', live_grep_git_root, {})
+vim.api.nvim_create_user_command('LiveGrepGitRootAll', live_grep_git_root_all, {})
 
 -- See `:help telescope.builtin`
 vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
@@ -69,13 +82,25 @@ end
 vim.keymap.set('n', '<leader>s/', telescope_live_grep_open_files, { desc = '[S]earch [/] in Open Files' })
 vim.keymap.set('n', '<leader>ss', require('telescope.builtin').builtin, { desc = '[S]earch [S]elect Telescope' })
 vim.keymap.set('n', '<leader>gf', require('telescope.builtin').git_files, { desc = 'Search [G]it [F]iles' })
-vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
-vim.keymap.set('n', '<leader>sa',
-  function() require('telescope.builtin').find_files({ hidden = true, no_ignore = true }) end,
-  { desc = '[S]earch [A]ll files (including hidden, ignored)' })
+vim.keymap.set('n', '<leader>sf',
+  function()
+    local git_root = find_git_root()
+    if git_root then
+      require('telescope.builtin').git_files({ cwd = git_root, show_untracked = false, recurse_submodules = false })
+    end
+  end,
+  { desc = '[S]earch [F]iles (tracked, git root)' })
+vim.keymap.set('n', '<leader>sF',
+  function()
+    local git_root = find_git_root()
+    if git_root then
+      require('telescope.builtin').find_files({ cwd = git_root, hidden = true, no_ignore = true, file_ignore_patterns = { ".git/" } })
+    end
+  end,
+  { desc = '[S]earch [F]iles (all, git root, except .git/)' })
 vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
 vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
-vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
-vim.keymap.set('n', '<leader>sG', ':LiveGrepGitRoot<cr>', { desc = '[S]earch by [G]rep on Git Root' })
+vim.keymap.set('n', '<leader>sg', ':LiveGrepGitRoot<cr>', { desc = '[S]earch by [G]rep (tracked, git root)' })
+vim.keymap.set('n', '<leader>sG', ':LiveGrepGitRootAll<cr>', { desc = '[S]earch by [G]rep (all, git root, except .git/)' })
 vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
 vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, { desc = '[S]earch [R]esume' })
