@@ -86,10 +86,10 @@ vim.keymap.set('n', '<leader>sf',
   function()
     local git_root = find_git_root()
     if git_root then
-      require('telescope.builtin').git_files({ cwd = git_root, show_untracked = false, recurse_submodules = false })
+      require('telescope.builtin').git_files({ cwd = git_root, show_untracked = true, recurse_submodules = false })
     end
   end,
-  { desc = '[S]earch [F]iles (tracked, git root)' })
+  { desc = '[S]earch [F]iles (tracked + untracked, git root)' })
 vim.keymap.set('n', '<leader>sF',
   function()
     local git_root = find_git_root()
