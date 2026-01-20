@@ -19,10 +19,10 @@ vim.defer_fn(function()
     incremental_selection = {
       enable = true,
       keymaps = {
-        init_selection = '<c-space>',
-        node_incremental = '<c-space>',
+        init_selection = '<leader>v',
+        node_incremental = '<leader>v',
         scope_incremental = '<c-s>',
-        node_decremental = '<M-space>',
+        node_decremental = '<leader>V',
       },
     },
     textobjects = {
@@ -70,4 +70,10 @@ vim.defer_fn(function()
       },
     },
   }
+
+  -- Override incremental selection mappings so which-key shows labels.
+  local ts_select = require('nvim-treesitter.incremental_selection')
+  vim.keymap.set('n', '<leader>v', ts_select.init_selection, { desc = '[V]isual select init' })
+  vim.keymap.set('v', '<leader>v', ts_select.node_incremental, { desc = '[V]isual select expand' })
+  vim.keymap.set('v', '<leader>V', ts_select.node_decremental, { desc = '[V]isual select shrink' })
 end, 0)
