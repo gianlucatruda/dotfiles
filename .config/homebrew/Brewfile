@@ -6,7 +6,6 @@ tap "infisical/get-cli"
 tap "modularml/packages"
 tap "nikitabobko/tap"
 tap "philocalyst/tap"
-tap "skardyy/mcat"
 # Search tool like grep, but optimized for programmers
 brew "ack"
 # Distributed revision control system
@@ -53,10 +52,6 @@ brew "harfbuzz"
 brew "openjdk"
 # Tools to work with Android .dex and Java .class files
 brew "dex2jar"
-# Validating, recursive, caching DNS resolver
-brew "unbound"
-# GNU Transport Layer Security (TLS) Library
-brew "gnutls"
 # GNU Privacy Guard (OpenPGP)
 brew "gnupg"
 # Library access to GnuPG
@@ -83,14 +78,24 @@ brew "fd"
 brew "fdupes"
 # Play, record, convert, and stream select audio and video codecs
 brew "ffmpeg"
+# Subtitle renderer for the ASS/SSA subtitle format
+brew "libass"
+# Light HTTP/1.1 server library
+brew "libmicrohttpd"
+# Reliable Internet Stream Transport (RIST)
+brew "librist"
+# LLM inference in C/C++
+brew "llama.cpp"
+# Framework for layout and rendering of i18n text
+brew "pango"
+# OCR (Optical Character Recognition) engine
+brew "tesseract"
 # Collection of GNU find, xargs, and locate
 brew "findutils"
 # Console program to recover files based on their headers and footers
 brew "foremost"
 # Command-line fuzzy finder written in Go
 brew "fzf"
-# Library for encoding and decoding .avif files
-brew "libavif"
 # GitHub command-line tool
 brew "gh"
 # Framework for layout and rendering of i18n text
@@ -145,6 +150,8 @@ brew "libraw"
 brew "librist"
 # LLM inference in C/C++
 brew "llama.cpp"
+# Library for reading RAW files from digital photo cameras
+brew "libraw"
 # Access large language models from the command-line
 brew "llm"
 # Powerful, lightweight programming language
@@ -291,8 +298,6 @@ brew "jordond/tap/jolt"
 brew "infisical/get-cli/infisical"
 # User-friendly, lightweight TUI for disk imaging
 brew "philocalyst/tap/caligula"
-# a powerfull extended cat command, to cat all the things you couldn't before
-brew "skardyy/mcat/mcat"
 # AeroSpace is an i3-like tiling window manager for macOS
 cask "nikitabobko/tap/aerospace"
 # GPU-accelerated terminal emulator
@@ -320,16 +325,8 @@ cask "macfuse"
 cask "syntax-highlight"
 # Google Chromium, sans integration with Google
 cask "ungoogled-chromium"
-# AI image upscaler
-cask "upscayl"
 # Binary releases of VS Code without MS branding/telemetry/licensing
 cask "vscodium"
 vscode "ms-python.debugpy"
 vscode "ms-python.python"
-vscode "vscodevim.vim"
-cargo "cargo-generate"
-cargo "clap"
-cargo "flamegraph"
-cargo "rustlings"
-cargo "wasm-bindgen-cli"
-cargo "wasm-pack"
+cargo "tree-sitter-cli"
