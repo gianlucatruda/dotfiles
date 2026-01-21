@@ -96,9 +96,9 @@
 [init]
     defaultBranch = master # Just pick a default and use it, could be `main`
 [fetch]
-	# prune branches and tags that are deleted on remote
+	# prune branches (but not tags) that are deleted on remote
 	prune = true
-	pruneTags = true
+	pruneTags = false # Treat tags as on-demand
 	all = true
 [commit]
 	verbose = true # Diff shown in commit editor
