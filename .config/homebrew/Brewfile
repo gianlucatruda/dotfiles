@@ -130,8 +130,6 @@ brew "hydra"
 brew "id3v2"
 # ISO/IEC 23008-12:2017 HEIF file format decoder and encoder
 brew "libheif"
-# Library for reading RAW files from digital photo cameras
-brew "libraw"
 # Tools and libraries to manipulate images in select formats
 brew "imagemagick"
 # Featureful UNIX password cracker
@@ -148,6 +146,8 @@ brew "libass"
 brew "libfido2"
 # Light HTTP/1.1 server library
 brew "libmicrohttpd"
+# Library for reading RAW files from digital photo cameras
+brew "libraw"
 # Reliable Internet Stream Transport (RIST)
 brew "librist"
 # LLM inference in C/C++
