@@ -34,6 +34,19 @@ function sd() {
     [[ -n "$dir" && -d "$dir" ]] && builtin cd "$dir"
 }
 
+function cd() {
+	if [[ $# -gt 0 && $1 == -* ]]; then
+		builtin cd "$@"
+		return
+	fi
+
+	if declare -F __zoxide_z >/dev/null 2>&1; then
+		__zoxide_z "$@"
+	else
+		builtin cd "$@"
+	fi
+}
+
 
 # Update environment variables in tmux (used in .bash_profile)
 function update_environment_from_tmux() {
