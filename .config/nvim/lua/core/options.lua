@@ -49,7 +49,7 @@ vim.opt.showmode = true -- Show the current mode
 vim.opt.showcmd = true  -- Show the (partial) command as it's being typed
 
 -- PERFORMANCE
-vim.opt.updatetime = 250      -- Reduce update time on completions
+vim.opt.updatetime = 1000     -- Reduce idle time for CursorHold/checktime
 vim.opt.timeoutlen = 300      -- Reduce key timeout duration
 vim.opt.redrawtime = 10000    -- Increase max redraw time
 vim.opt.maxmempattern = 20000 -- Increase max syntax highlight memory
@@ -58,7 +58,7 @@ vim.opt.maxmempattern = 20000 -- Increase max syntax highlight memory
 vim.opt.undofile = true -- Save undo history
 vim.opt.autoread = true -- Auto read when a file is changed externally
 -- Check if file is modified and prompt to reload
-vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter" }, {
+vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold", "CursorHoldI" }, {
   pattern = "*",
   command = "checktime"
 })

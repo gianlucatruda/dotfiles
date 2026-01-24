@@ -42,7 +42,8 @@ filetype plugin on    " Enable filetype-specific plugins
 
 " Set to auto read when a file is changed from the outside
 set autoread
-au FocusGained,BufEnter * checktime
+au FocusGained,BufEnter,CursorHold,CursorHoldI * checktime
+set updatetime=1000
 " Ignore case when searching
 set ignorecase
 " Enhance command-line completion
@@ -170,4 +171,3 @@ endfunction
 " setglobal textwidth=0
 " autocmd FileType markdown setlocal textwidth=90
 " autocmd FileType text setlocal textwidth=90
-
