@@ -1,8 +1,8 @@
 tap "bramstein/webfonttools"
 tap "felixkratz/formulae"
 tap "ferdium/ferdium"
-tap "jordond/tap"
 tap "infisical/get-cli"
+tap "jordond/tap"
 tap "modularml/packages"
 tap "nikitabobko/tap"
 tap "philocalyst/tap"
@@ -138,18 +138,8 @@ brew "lazydocker"
 brew "lazygit"
 # Terminal file manager
 brew "lf"
-# Subtitle renderer for the ASS/SSA subtitle format
-brew "libass"
 # Provides library functionality for FIDO U2F & FIDO 2.0, including USB
 brew "libfido2"
-# Light HTTP/1.1 server library
-brew "libmicrohttpd"
-# Library for reading RAW files from digital photo cameras
-brew "libraw"
-# Reliable Internet Stream Transport (RIST)
-brew "librist"
-# LLM inference in C/C++
-brew "llama.cpp"
 # Library for reading RAW files from digital photo cameras
 brew "libraw"
 # Access large language models from the command-line
@@ -166,10 +156,10 @@ brew "macmon"
 brew "magic-wormhole"
 # Utility for directing compilation
 brew "make"
-# Deep clean and optimize your Mac
-brew "mole"
 # Simple tool to make locally trusted development certificates
 brew "mkcert"
+# Deep clean and optimize your Mac
+brew "mole"
 # CLI tool for saving complete web pages as a single HTML file
 brew "monolith"
 # Collection of tools that nobody wrote when UNIX was young
@@ -292,10 +282,10 @@ brew "bramstein/webfonttools/sfnt2woff"
 brew "bramstein/webfonttools/sfnt2woff-zopfli"
 # A window border system for macOS
 brew "felixkratz/formulae/borders"
-# Terminal-based battery and energy monitor for macos and linux
-brew "jordond/tap/jolt"
 # The official Infisical CLI
 brew "infisical/get-cli/infisical"
+# Terminal-based battery and energy monitor for macos and linux
+brew "jordond/tap/jolt"
 # User-friendly, lightweight TUI for disk imaging
 brew "philocalyst/tap/caligula"
 # AeroSpace is an i3-like tiling window manager for macOS
