@@ -115,5 +115,5 @@ function llmq() {
 		return 1
 	fi
 
-	llm --model gpt-5-mini -s "Answer clearly, concisely, correctly. The user is smart, technical, and knows you're an LLM." "$prompt" | richify.py
+	llm --model gpt-5-nano -s "Clear, Concise, Correct. User is smart, technical, knows you're an LLM. Give extremely concise, short, fast answer. Maximally helpful in the shortest time and length. Assume CLI, macOS, homebrew, Python (via uv), bash. Reply in Markdown and code snippets." "$prompt" | batmd
 }
