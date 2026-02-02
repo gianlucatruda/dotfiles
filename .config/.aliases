@@ -27,6 +27,8 @@ alias ecdt='echo -n $(date +"%Y-%m-%d_%H-%M")' # [e]cho [c]urrent [d]ate[t]ime
 alias ecw='echo -n $(date +"%Y-W%V")' # [e]cho [c]urrent [w]eek
 alias clc='history -p \!\! | pbcopy' # Copy last command to clipboard
 alias notify='echo -e "\a"; echo "Done at $(date)"'
+# Stream markdown (e.g. from llm) with MD styling. via https://github.com/simonw/llm/issues/1112#issuecomment-3122319609 
+alias batmd='bat --paging=never --style=plain --language=markdown'
 
 # Git
 alias gitlog='git log --pretty=oneline -n 10 --graph --abbrev-commit'
