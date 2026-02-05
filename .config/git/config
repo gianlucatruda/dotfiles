@@ -94,7 +94,7 @@
 [tag]
 	sort = version:refname # Sort tags by refname, not alpha
 [init]
-    defaultBranch = master # Just pick a default and use it, could be `main`
+    defaultBranch = main # Just pick a default and use it, could be `main`
 [fetch]
 	# prune branches (but not tags) that are deleted on remote
 	prune = true
