@@ -100,8 +100,6 @@ brew "fzf"
 brew "libavif"
 # GitHub command-line tool
 brew "gh"
-# C/C++ and Java libraries for Unicode and globalization
-brew "icu4c@77"
 # Framework for layout and rendering of i18n text
 brew "pango"
 # OCR (Optical Character Recognition) engine
@@ -126,6 +124,8 @@ brew "htop"
 brew "hugo"
 # Network logon cracker which supports many services
 brew "hydra"
+# C/C++ and Java libraries for Unicode and globalization
+brew "icu4c@77"
 # Command-line editor
 brew "id3v2"
 # ISO/IEC 23008-12:2017 HEIF file format decoder and encoder
@@ -190,6 +190,10 @@ brew "openblas"
 brew "numpy"
 # Create, run, and share large language models (LLMs)
 brew "ollama"
+# Search tool like grep and The Silver Searcher
+brew "ripgrep"
+# AI coding agent, built for the terminal
+brew "opencode"
 # OpenBSD freely-licensed SSH connectivity tools
 brew "openssh"
 # Cryptography and SSL/TLS Toolkit
@@ -228,8 +232,6 @@ brew "rdfind"
 brew "rename"
 # Command-line toolbox for fancy output in the terminal
 brew "rich-cli"
-# Search tool like grep and The Silver Searcher
-brew "ripgrep"
 # Readline wrapper: adds readline support to tools that lack it
 brew "rlwrap"
 # Extremely fast tool to remove dupes and other lint from your filesystem
