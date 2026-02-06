@@ -156,7 +156,7 @@ local servers = {
     init_options = {
       settings = {
         -- Ruff language server settings go here
-        lineLength = 100,
+        lineLength = 88, -- same as black (for work)
         lint = { enable = true, preview = true },
         format = { enable = true, preview = true },
       }
