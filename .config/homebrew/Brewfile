@@ -1,3 +1,4 @@
+tap "anomalyco/tap"
 tap "bramstein/webfonttools"
 tap "felixkratz/formulae"
 tap "ferdium/ferdium"
@@ -78,18 +79,6 @@ brew "fd"
 brew "fdupes"
 # Play, record, convert, and stream select audio and video codecs
 brew "ffmpeg"
-# Subtitle renderer for the ASS/SSA subtitle format
-brew "libass"
-# Light HTTP/1.1 server library
-brew "libmicrohttpd"
-# Reliable Internet Stream Transport (RIST)
-brew "librist"
-# LLM inference in C/C++
-brew "llama.cpp"
-# Framework for layout and rendering of i18n text
-brew "pango"
-# OCR (Optical Character Recognition) engine
-brew "tesseract"
 # Collection of GNU find, xargs, and locate
 brew "findutils"
 # Console program to recover files based on their headers and footers
@@ -128,6 +117,8 @@ brew "id3v2"
 brew "libheif"
 # Tools and libraries to manipulate images in select formats
 brew "imagemagick"
+# Feature-rich interactive Jira CLI
+brew "jira-cli"
 # Featureful UNIX password cracker
 brew "john"
 # Port-knock server
@@ -138,10 +129,18 @@ brew "lazydocker"
 brew "lazygit"
 # Terminal file manager
 brew "lf"
+# Subtitle renderer for the ASS/SSA subtitle format
+brew "libass"
 # Provides library functionality for FIDO U2F & FIDO 2.0, including USB
 brew "libfido2"
+# Light HTTP/1.1 server library
+brew "libmicrohttpd"
 # Library for reading RAW files from digital photo cameras
 brew "libraw"
+# Reliable Internet Stream Transport (RIST)
+brew "librist"
+# LLM inference in C/C++
+brew "llama.cpp"
 # Access large language models from the command-line
 brew "llm"
 # Powerful, lightweight programming language
@@ -276,6 +275,8 @@ brew "wget"
 brew "woff2"
 # Shell extension to navigate your filesystem faster
 brew "zoxide"
+# The AI coding agent built for the terminal.
+brew "anomalyco/tap/opencode"
 # Convert existing TrueType/OpenType fonts to WOFF format
 brew "bramstein/webfonttools/sfnt2woff"
 # WOFF utilities with Zopfli compression
