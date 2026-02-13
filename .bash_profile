@@ -12,7 +12,9 @@ unset file;
 
 if [[ "$(uname)" == "Darwin" ]] && [[ -x /opt/homebrew/bin/brew ]]; then
   # Make sure homebrew is happy
-  eval "$(/opt/homebrew/bin/brew shellenv)"
+  if [[ -z "${HOMEBREW_PREFIX:-}" ]] || [[ ":$PATH:" != *":/opt/homebrew/bin:"* ]]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+  fi
 fi
 
 if [[ "$(uname)" == "Darwin" ]] && declare -f update_environment_from_tmux >/dev/null; then
@@ -46,9 +48,6 @@ fi;
 # You could just use `-g` instead, but I like being explicit
 complete -W "NSGlobalDomain" defaults;
 
-# Set git editor to value of EDITOR set in .exports
-git config --global core.editor "$EDITOR"
-
 # Use vim keybindings to edit lines in bash (with 'readline' library)
 set -o vi
 
@@ -75,5 +74,5 @@ fi
 
 # Pyenv integration with Bash
 if command -v pyenv >/dev/null 2>&1; then
-  eval "$(pyenv init -)"
+  eval "$(pyenv init - --no-rehash)"
 fi

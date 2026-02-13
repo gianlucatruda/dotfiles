@@ -11,8 +11,24 @@ function doIt() {
 		--exclude ".extra" \
 		--exclude ".gitignore" \
 		--exclude ".aider*" \
-		-avh --no-perms . ~;
+	-avh --no-perms . ~;
 	source ~/.bash_profile;
+	if command -v pyenv >/dev/null 2>&1 && [[ -d "$HOME/.pyenv/shims" ]]; then
+		pyenv rehash
+	fi
+	if command -v git >/dev/null 2>&1; then
+		if [[ -n "$EDITOR" ]]; then
+			git config --global core.editor "$EDITOR"
+		fi
+		if [[ -n "$GIT_USER_EMAIL" ]]; then
+			git config --global user.email "$GIT_USER_EMAIL"
+		fi
+		if [[ -n "$GIT_SIGNING_KEY" ]]; then
+			git config --global user.signingkey "$GIT_SIGNING_KEY"
+		elif [[ -n "$GI_SIGNING_KEY" ]]; then
+			git config --global user.signingkey "$GI_SIGNING_KEY"
+		fi
+	fi
 }
 
 # If --force or -f argument, skip the y/n confirmation

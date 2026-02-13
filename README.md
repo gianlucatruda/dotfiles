@@ -52,16 +52,12 @@ echo "" >> ~/.config/.extra
 
 Add the following details (and any other system-wide variables):
 ```bash
-# Git credentials
-GIT_AUTHOR_NAME="Your Name"
-GIT_COMMITTER_NAME="$GIT_AUTHOR_NAME"
-GIT_AUTHOR_EMAIL="name@email.com"
-GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"
-git config --global user.name "$GIT_AUTHOR_NAME"
-git config --global user.email "$GIT_AUTHOR_EMAIL"
-git config --global commit.gpgsign true
-git config --global user.signingkey <signing key>
+# Git identity (used by bootstrap.sh)
+GIT_USER_EMAIL="name@email.com"
+GIT_SIGNING_KEY="<signing_key>"
 ```
+
+`bootstrap.sh` will apply `git config --global core.editor`, `user.email`, and `user.signingkey` if the variables above are set. Re-run `bootstrap.sh` after changing them.
 
 ### Mac-specific setup
 
@@ -148,6 +144,8 @@ Then load up by running `reload`, which is an alias for:
 exec $SHELL -l
 ```
 
+Note: pyenv is initialized with `--no-rehash` for faster shell startup. Run `pyenv rehash` manually after installing new Python versions or global CLI tools.
+
 ---
 
 ### Apps to manually install for my workflows
@@ -229,6 +227,7 @@ tree -a -L 3 --gitignore -I .git/ -I .gitignore -I README.md
 └── scripts
     ├── gt-btooth
     ├── gt-cheat
+    ├── gt-perfprofile
     ├── gt-scan
     ├── gt-stt
     ├── gt-sync-obsidian
@@ -236,7 +235,7 @@ tree -a -L 3 --gitignore -I .git/ -I .gitignore -I README.md
     ├── gt-todoist-export
     └── gt-tts
 
-14 directories, 32 files
+14 directories, 33 files
 ```
 
 
