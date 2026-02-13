@@ -13,13 +13,17 @@ function doIt() {
 		--exclude ".aider*" \
 	-avh --no-perms . ~;
 	source ~/.bash_profile;
+	# Rebuild pyenv shims once after bootstrapping (skip if pyenv isn't installed)
 	if command -v pyenv >/dev/null 2>&1 && [[ -d "$HOME/.pyenv/shims" ]]; then
 		pyenv rehash
 	fi
+	# Apply git defaults from ~/.config/.extra without running git on every shell startup
 	if command -v git >/dev/null 2>&1; then
+		# Prefer EDITOR from .exports; only set if defined
 		if [[ -n "$EDITOR" ]]; then
 			git config --global core.editor "$EDITOR"
 		fi
+		# Set identity and signing only when variables are present
 		if [[ -n "$GIT_USER_EMAIL" ]]; then
 			git config --global user.email "$GIT_USER_EMAIL"
 		fi
