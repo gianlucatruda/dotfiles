@@ -1,0 +1,553 @@
+#!/usr/bin/env -S uv run --script
+# /// script
+# requires-python = ">=3.9"
+# ///
+
+from __future__ import annotations
+
+import argparse
+import json
+import os
+import platform
+import re
+import shutil
+import subprocess
+import time
+from collections import Counter
+from datetime import datetime
+from typing import Dict, Iterable, List, Optional, Tuple
+
+
+def run_cmd(
+    cmd: List[str],
+    *,
+    capture: bool = True,
+    text: bool = True,
+    check: bool = False,
+    use_sudo: bool = False,
+    cwd: Optional[str] = None,
+    env: Optional[Dict[str, str]] = None,
+) -> subprocess.CompletedProcess:
+    if use_sudo:
+        cmd = ["sudo"] + cmd
+    try:
+        return subprocess.run(
+            cmd,
+            stdout=subprocess.PIPE if capture else None,
+            stderr=subprocess.PIPE if capture else None,
+            text=text,
+            check=check,
+            cwd=cwd,
+            env=env,
+        )
+    except FileNotFoundError:
+        return subprocess.CompletedProcess(cmd, 127, "", f"command not found: {cmd[0]}")
+
+
+def format_duration(seconds: Optional[float]) -> str:
+    if seconds is None:
+        return "n/a"
+    if seconds < 1:
+        return f"{seconds * 1000:.1f} ms"
+    return f"{seconds:.3f} s"
+
+
+def print_section(title: str) -> None:
+    print("\n== " + title + " ==")
+
+
+def print_table(headers: List[str], rows: List[List[str]]) -> None:
+    if not rows:
+        print("(no data)")
+        return
+    widths = [len(h) for h in headers]
+    for row in rows:
+        for i, cell in enumerate(row):
+            widths[i] = max(widths[i], len(cell))
+    fmt = "  ".join(["{:<" + str(w) + "}" for w in widths])
+    print(fmt.format(*headers))
+    print(fmt.format(*["-" * w for w in widths]))
+    for row in rows:
+        print(fmt.format(*row))
+
+
+def get_boot_time() -> Optional[datetime]:
+    if not shutil.which("sysctl"):
+        return None
+    proc = run_cmd(["sysctl", "-n", "kern.boottime"], capture=True)
+    if proc.returncode != 0:
+        return None
+    match = re.search(r"sec = (\d+)", proc.stdout)
+    if not match:
+        return None
+    sec = int(match.group(1))
+    return datetime.fromtimestamp(sec)
+
+
+def uptime_string(boot_time: Optional[datetime]) -> str:
+    if not boot_time:
+        return "n/a"
+    delta = datetime.now() - boot_time
+    days = delta.days
+    hours, rem = divmod(delta.seconds, 3600)
+    minutes, _ = divmod(rem, 60)
+    parts = []
+    if days:
+        parts.append(f"{days}d")
+    parts.append(f"{hours}h")
+    parts.append(f"{minutes}m")
+    return " ".join(parts)
+
+
+def list_launch_items(paths: List[str]) -> Dict[str, List[Tuple[str, float]]]:
+    results: Dict[str, List[Tuple[str, float]]] = {}
+    for path in paths:
+        if not os.path.isdir(path):
+            continue
+        items: List[Tuple[str, float]] = []
+        for name in os.listdir(path):
+            if not name.endswith(".plist"):
+                continue
+            full = os.path.join(path, name)
+            try:
+                mtime = os.path.getmtime(full)
+            except OSError:
+                mtime = 0.0
+            items.append((name, mtime))
+        items.sort(key=lambda x: x[0].lower())
+        results[path] = items
+    return results
+
+
+def filter_third_party(names: Iterable[str]) -> List[str]:
+    third_party = []
+    for name in names:
+        label = name.replace(".plist", "")
+        if label.startswith("com.apple."):
+            continue
+        third_party.append(label)
+    return third_party
+
+
+def get_login_items() -> Optional[List[str]]:
+    if not shutil.which("osascript"):
+        return None
+    proc = run_cmd(
+        [
+            "osascript",
+            "-e",
+            "tell application \"System Events\" to get the name of every login item",
+        ],
+        capture=True,
+    )
+    if proc.returncode != 0:
+        return None
+    out = proc.stdout.strip()
+    if not out:
+        return []
+    return [item.strip() for item in out.split(",") if item.strip()]
+
+
+def timed_run(cmd: List[str], *, cwd: Optional[str] = None, env: Optional[Dict[str, str]] = None) -> Tuple[Optional[float], int]:
+    start = time.perf_counter()
+    try:
+        proc = subprocess.run(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, cwd=cwd, env=env)
+    except FileNotFoundError:
+        return None, 127
+    elapsed = time.perf_counter() - start
+    if proc.returncode != 0:
+        return None, proc.returncode
+    return elapsed, 0
+
+
+def choose_bash() -> Tuple[str, Optional[int]]:
+    candidates = ["/opt/homebrew/bin/bash", "/usr/local/bin/bash", shutil.which("bash"), "/bin/bash"]
+    for path in candidates:
+        if not path or not os.path.exists(path):
+            continue
+        proc = run_cmd([path, "-lc", "echo $BASH_VERSION"], capture=True)
+        if proc.returncode != 0:
+            continue
+        version = proc.stdout.strip()
+        match = re.match(r"(\d+)", version)
+        if match:
+            return path, int(match.group(1))
+        return path, None
+    return "bash", None
+
+
+def bash_trace(bash_path: str) -> Tuple[Optional[List[Tuple[float, str]]], str]:
+    env = os.environ.copy()
+    env["PS4"] = "+${EPOCHREALTIME} ${BASH_SOURCE}:${LINENO}: "
+    proc = run_cmd([bash_path, "-lxic", "exit"], capture=True, env=env)
+    if proc.returncode != 0:
+        return None, "trace command failed"
+    lines = proc.stderr.splitlines()
+    samples: List[Tuple[float, str]] = []
+    ts_re = re.compile(r"^\+{1,2}(\d+\.\d+)\s+(.*)")
+    last_ts: Optional[float] = None
+    for line in lines:
+        match = ts_re.match(line)
+        if not match:
+            continue
+        ts = float(match.group(1))
+        if last_ts is not None:
+            delta = ts - last_ts
+            if delta > 0:
+                samples.append((delta, match.group(2)))
+        last_ts = ts
+    if not samples:
+        return None, "no high resolution timestamps detected"
+    samples.sort(key=lambda x: x[0], reverse=True)
+    return samples, ""
+
+
+def parse_blame_output(output: str) -> List[Tuple[str, float]]:
+    rows: List[Tuple[str, float]] = []
+    pattern = re.compile(r"^\s*([A-Za-z0-9_.-]+)\s*[:=]\s*([0-9.]+)\s*(ms|s)\b")
+    for line in output.splitlines():
+        match = pattern.search(line)
+        if not match:
+            continue
+        label = match.group(1)
+        value = float(match.group(2))
+        unit = match.group(3)
+        if unit == "ms":
+            value = value / 1000.0
+        rows.append((label, value))
+    rows.sort(key=lambda x: x[1], reverse=True)
+    return rows
+
+
+def launchctl_blame(target: str, use_sudo: bool) -> Tuple[Optional[str], Optional[str]]:
+    proc = run_cmd(["launchctl", "blame", target], capture=True, use_sudo=use_sudo)
+    if proc.returncode == 0:
+        return proc.stdout, None
+    output = (proc.stderr or "") + (proc.stdout or "")
+    if "Usage:" in output:
+        return None, "not supported on this macOS"
+    if output.strip():
+        return None, output.strip()
+    return None, "launchctl blame failed"
+
+
+def launchctl_summary(domain: str) -> Tuple[Optional[Dict[str, str]], Optional[str]]:
+    proc = run_cmd(["launchctl", "print", domain], capture=True)
+    if proc.returncode != 0:
+        return None, proc.stderr.strip() or proc.stdout.strip() or "launchctl print failed"
+    info: Dict[str, str] = {}
+    patterns = {
+        "active count": re.compile(r"^\s*active count = (\d+)"),
+        "service count": re.compile(r"^\s*service count = (\d+)"),
+        "active service count": re.compile(r"^\s*active service count = (\d+)"),
+        "bringup time": re.compile(r"^\s*bringup time = ([0-9.]+)\s*(ms|s)"),
+        "creator": re.compile(r"^\s*creator = (.+)$"),
+    }
+    for line in proc.stdout.splitlines():
+        for key, pattern in patterns.items():
+            if key in info:
+                continue
+            match = pattern.search(line)
+            if match:
+                if key == "bringup time":
+                    value = float(match.group(1))
+                    unit = match.group(2)
+                    if unit == "s":
+                        value = value * 1000
+                    info[key] = f"{value:.1f} ms"
+                else:
+                    info[key] = match.group(1).strip()
+        if len(info) == len(patterns):
+            break
+    return info, None
+
+
+def log_summary(boot_time: datetime, window_minutes: int, use_sudo: bool) -> Dict[str, object]:
+    start = boot_time
+    end = datetime.fromtimestamp(boot_time.timestamp() + window_minutes * 60)
+    start_str = start.strftime("%F %T")
+    end_str = end.strftime("%F %T")
+    predicate = (
+        'process == "launchd" OR process == "loginwindow" '
+        'OR process == "mds" OR process == "mdworker" '
+        'OR eventMessage CONTAINS[c] "timeout" '
+        'OR eventMessage CONTAINS[c] "fail" '
+        'OR eventMessage CONTAINS[c] "stall"'
+    )
+    cmd = [
+        "log",
+        "show",
+        "--style",
+        "json",
+        "--start",
+        start_str,
+        "--end",
+        end_str,
+        "--predicate",
+        predicate,
+    ]
+    proc = run_cmd(cmd, capture=True, use_sudo=use_sudo)
+    if proc.returncode != 0:
+        return {"error": proc.stderr.strip() or proc.stdout.strip() or "log show failed"}
+    process_counts: Counter[str] = Counter()
+    keyword_hits: Counter[str] = Counter()
+    samples: List[str] = []
+    for line in proc.stdout.splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            record = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        proc_name = record.get("process", "unknown")
+        msg = record.get("eventMessage", "") or ""
+        process_counts[proc_name] += 1
+        lower = msg.lower()
+        for key in ["timeout", "fail", "stall"]:
+            if key in lower:
+                keyword_hits[key] += 1
+        if ("timeout" in lower or "fail" in lower or "stall" in lower) and len(samples) < 5:
+            samples.append(f"{proc_name}: {msg}")
+    return {
+        "start": start_str,
+        "end": end_str,
+        "process_counts": process_counts,
+        "keyword_hits": keyword_hits,
+        "samples": samples,
+    }
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(
+        prog="gt-perfprofile",
+        description="Profile macOS boot/login signals and shell startup timing.",
+        formatter_class=argparse.RawTextHelpFormatter,
+        epilog=(
+            "Examples:\n"
+            "  gt-perfprofile\n"
+            "  gt-perfprofile --quick\n"
+            "  gt-perfprofile --log-window-min 5 --top 12\n"
+            "  gt-perfprofile --cwd $HOME/large-repo\n"
+        ),
+    )
+    parser.add_argument("--quick", action="store_true", help="Skip log analysis and detailed shell trace.")
+    parser.add_argument("--no-logs", action="store_true", help="Skip unified log summary.")
+    parser.add_argument("--no-shell", action="store_true", help="Skip shell startup profiling.")
+    parser.add_argument("--no-login-items", action="store_true", help="Skip login items listing.")
+    parser.add_argument("--no-launch-items", action="store_true", help="Skip LaunchAgents/Daemons listing.")
+    parser.add_argument("--no-launchctl", action="store_true", help="Skip launchctl summary section.")
+    parser.add_argument("--no-sudo", action="store_true", help="Do not attempt sudo for system log access.")
+    parser.add_argument("--log-window-min", type=int, default=10, help="Minutes after boot to scan logs (default: 10).")
+    parser.add_argument("--top", type=int, default=8, help="Top N entries to show in tables (default: 8).")
+    parser.add_argument("--cwd", default=os.getcwd(), help="Directory for git/prompt checks (default: current).")
+
+    args = parser.parse_args()
+
+    if platform.system() != "Darwin":
+        print("This tool is designed for macOS (Darwin).")
+        return 1
+
+    print("gt-perfprofile")
+    boot_time = get_boot_time()
+    uptime = uptime_string(boot_time)
+    mac_ver = platform.mac_ver()[0] or "unknown"
+    host = platform.node() or "unknown"
+    print(f"Host: {host}")
+    print(f"macOS: {mac_ver}")
+    if boot_time:
+        print(f"Boot: {boot_time.strftime('%F %T')}")
+    print(f"Uptime: {uptime}")
+
+    findings: List[str] = []
+
+    if not args.no_launchctl:
+        print_section("Launchctl Overview")
+        sudo_ok = not args.no_sudo
+        blame_out, blame_err = launchctl_blame("system", use_sudo=sudo_ok)
+        if blame_out:
+            rows = parse_blame_output(blame_out)
+            if rows:
+                print("System blame (top entries):")
+                blame_rows = [[label, format_duration(value)] for label, value in rows[: args.top]]
+                print_table(["Service", "Time"], blame_rows)
+            else:
+                print("System blame returned data but could not parse timings.")
+        elif blame_err:
+            print(f"System blame: {blame_err}")
+
+        gui_target = f"gui/{os.getuid()}"
+        blame_out, blame_err = launchctl_blame(gui_target, use_sudo=False)
+        if blame_out:
+            rows = parse_blame_output(blame_out)
+            if rows:
+                print("User session blame (top entries):")
+                blame_rows = [[label, format_duration(value)] for label, value in rows[: args.top]]
+                print_table(["Service", "Time"], blame_rows)
+            else:
+                print("User session blame returned data but could not parse timings.")
+        elif blame_err:
+            print(f"User session blame: {blame_err}")
+
+        system_summary, err = launchctl_summary("system")
+        if system_summary:
+            print("System domain summary:")
+            for key in ["bringup time", "service count", "active service count", "active count", "creator"]:
+                if key in system_summary:
+                    print(f"  - {key}: {system_summary[key]}")
+        elif err:
+            print(f"System domain summary unavailable: {err}")
+
+        user_summary, err = launchctl_summary(f"gui/{os.getuid()}")
+        if user_summary:
+            print("User domain summary:")
+            for key in ["bringup time", "service count", "active service count", "active count", "creator"]:
+                if key in user_summary:
+                    print(f"  - {key}: {user_summary[key]}")
+        elif err:
+            print(f"User domain summary unavailable: {err}")
+
+    if not args.no_launch_items:
+        print_section("LaunchAgents and LaunchDaemons")
+        paths = [
+            "/Library/LaunchAgents",
+            "/Library/LaunchDaemons",
+            os.path.expanduser("~/Library/LaunchAgents"),
+        ]
+        items = list_launch_items(paths)
+        for path, entries in items.items():
+            print(f"{path} ({len(entries)})")
+            names = [name for name, _ in entries]
+            third_party = filter_third_party(names)
+            if len(entries) <= 25:
+                for name in names:
+                    print(f"  - {name.replace('.plist', '')}")
+            else:
+                print("  (showing third-party only)")
+                for name in third_party:
+                    print(f"  - {name}")
+            if third_party:
+                findings.append(f"Third-party launch items in {path}: {', '.join(third_party[:args.top])}")
+
+    if not args.no_login_items:
+        print_section("Login Items")
+        login_items = get_login_items()
+        if login_items is None:
+            print("Login items unavailable (osascript not found or failed).")
+        elif not login_items:
+            print("(none)")
+        else:
+            for item in login_items:
+                print(f"  - {item}")
+            findings.append(f"Login items present: {', '.join(login_items[:args.top])}")
+
+    if not args.no_logs and not args.quick:
+        print_section(f"Unified Log Summary (first {args.log_window_min} min)")
+        if not boot_time:
+            print("Boot time unavailable; skipping log scan.")
+        else:
+            log_info = log_summary(boot_time, args.log_window_min, use_sudo=not args.no_sudo)
+            if "error" in log_info:
+                print(f"Log scan failed: {log_info['error']}")
+            else:
+                print(f"Window: {log_info['start']} -> {log_info['end']}")
+                process_counts: Counter[str] = log_info["process_counts"]  # type: ignore[assignment]
+                keyword_hits: Counter[str] = log_info["keyword_hits"]  # type: ignore[assignment]
+                top_processes = process_counts.most_common(args.top)
+                rows = [[name, str(count)] for name, count in top_processes]
+                print_table(["Process", "Count"], rows)
+                if keyword_hits:
+                    print("Keyword hits:")
+                    for key in ["timeout", "fail", "stall"]:
+                        if key in keyword_hits:
+                            print(f"  - {key}: {keyword_hits[key]}")
+                    if sum(keyword_hits.values()) > 0:
+                        findings.append("Boot log contains timeout/fail/stall messages")
+                samples = log_info["samples"]  # type: ignore[assignment]
+                if samples:
+                    print("Samples:")
+                    for line in samples:
+                        print(f"  - {line}")
+
+    if not args.no_shell:
+        print_section("Shell Startup Timing")
+        bash_path, bash_major = choose_bash()
+        print(f"Using bash: {bash_path}")
+
+        base_time, _ = timed_run([bash_path, "--noprofile", "--norc", "-ic", "exit"])
+        login_time, _ = timed_run([bash_path, "-lic", "exit"])
+        rows = [
+            ["bash --noprofile --norc", format_duration(base_time)],
+            ["bash -lic", format_duration(login_time)],
+        ]
+
+        cwd = os.path.expanduser(args.cwd)
+        repo_check = run_cmd(["git", "rev-parse", "--is-inside-work-tree"], capture=True, cwd=cwd)
+        if repo_check.returncode == 0:
+            git_time, _ = timed_run(["git", "status", "--porcelain", "--branch"], cwd=cwd)
+            rows.append(["git status --porcelain", format_duration(git_time)])
+            if git_time and git_time > 0.1:
+                findings.append("git status is slow in current directory; prompt_git may add delay")
+        else:
+            rows.append(["git status --porcelain", "n/a (not a repo)"])
+
+        print_table(["Check", "Time"], rows)
+
+        suspects: List[Tuple[str, Optional[float]]] = []
+        if shutil.which("brew"):
+            t, _ = timed_run(["brew", "shellenv"])
+            suspects.append(("brew shellenv", t))
+            t, _ = timed_run(["brew", "--prefix"])
+            suspects.append(("brew --prefix", t))
+        if shutil.which("fzf"):
+            t, _ = timed_run(["fzf", "--bash"])
+            suspects.append(("fzf --bash", t))
+        if shutil.which("zoxide"):
+            t, _ = timed_run(["zoxide", "init", "bash"])
+            suspects.append(("zoxide init bash", t))
+        if shutil.which("pyenv"):
+            t, _ = timed_run(["pyenv", "init", "-"])
+            suspects.append(("pyenv init -", t))
+        if os.environ.get("TMUX") and shutil.which("tmux"):
+            t, _ = timed_run(["tmux", "show-environment", "-s"])
+            suspects.append(("tmux show-environment -s", t))
+
+        suspects = [(name, t) for name, t in suspects if t is not None]
+        if suspects:
+            suspects.sort(key=lambda x: x[1], reverse=True)
+            print("Suspected startup cost:")
+            for name, t in suspects[: args.top]:
+                print(f"  - {name}: {format_duration(t)}")
+            for name, t in suspects:
+                if t and t > 0.05:
+                    findings.append(f"Slow startup command: {name} ({format_duration(t)})")
+
+        if bash_major and bash_major >= 5 and not args.quick:
+            trace, trace_error = bash_trace(bash_path)
+            if trace:
+                print("Top traced delays:")
+                for delta, cmd in trace[: args.top]:
+                    print(f"  - {format_duration(delta)}  {cmd}")
+            else:
+                print(f"Trace skipped: {trace_error}")
+        else:
+            if not args.quick:
+                print("Trace skipped: bash >= 5 required for high resolution timestamps")
+
+        if base_time and login_time and login_time - base_time > 0.15:
+            findings.append("Login shell is noticeably slower than baseline; startup files are likely the cause")
+
+    if findings:
+        print_section("Findings")
+        deduped = list(dict.fromkeys(findings))
+        for item in deduped[: args.top * 2]:
+            print(f"- {item}")
+    else:
+        print_section("Findings")
+        print("(no obvious outliers detected)")
+
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
