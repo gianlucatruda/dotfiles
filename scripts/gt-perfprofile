@@ -262,7 +262,7 @@ def launchctl_summary(domain: str) -> Tuple[Optional[Dict[str, str]], Optional[s
     return info, None
 
 
-def log_summary(boot_time: datetime, window_minutes: int, use_sudo: bool) -> Dict[str, object]:
+def log_summary(boot_time: datetime, window_minutes: int, log_level: str, use_sudo: bool) -> Dict[str, object]:
     start = boot_time
     end = datetime.fromtimestamp(boot_time.timestamp() + window_minutes * 60)
     start_str = start.strftime("%F %T")
@@ -274,11 +274,18 @@ def log_summary(boot_time: datetime, window_minutes: int, use_sudo: bool) -> Dic
         'OR eventMessage CONTAINS[c] "fail" '
         'OR eventMessage CONTAINS[c] "stall"'
     )
+    level_flags: List[str] = []
+    if log_level == "info":
+        level_flags = ["--info"]
+    elif log_level == "debug":
+        level_flags = ["--info", "--debug"]
+
     cmd = [
         "log",
         "show",
         "--style",
         "json",
+        *level_flags,
         "--start",
         start_str,
         "--end",
@@ -292,10 +299,12 @@ def log_summary(boot_time: datetime, window_minutes: int, use_sudo: bool) -> Dic
     process_counts: Counter[str] = Counter()
     keyword_hits: Counter[str] = Counter()
     samples: List[str] = []
+    raw_lines = 0
     for line in proc.stdout.splitlines():
         line = line.strip()
         if not line:
             continue
+        raw_lines += 1
         try:
             record = json.loads(line)
         except json.JSONDecodeError:
@@ -312,6 +321,7 @@ def log_summary(boot_time: datetime, window_minutes: int, use_sudo: bool) -> Dic
     return {
         "start": start_str,
         "end": end_str,
+        "raw_lines": raw_lines,
         "process_counts": process_counts,
         "keyword_hits": keyword_hits,
         "samples": samples,
@@ -338,6 +348,12 @@ def main() -> int:
     parser.add_argument("--no-launch-items", action="store_true", help="Skip LaunchAgents/Daemons listing.")
     parser.add_argument("--no-launchctl", action="store_true", help="Skip launchctl summary section.")
     parser.add_argument("--no-sudo", action="store_true", help="Do not attempt sudo for system log access.")
+    parser.add_argument(
+        "--log-level",
+        choices=["default", "info", "debug"],
+        default="info",
+        help="Log verbosity for scan (default: info).",
+    )
     parser.add_argument("--log-window-min", type=int, default=10, help="Minutes after boot to scan logs (default: 10).")
     parser.add_argument("--top", type=int, default=8, help="Top N entries to show in tables (default: 8).")
     parser.add_argument("--cwd", default=os.getcwd(), help="Directory for git/prompt checks (default: current).")
@@ -446,28 +462,31 @@ def main() -> int:
         if not boot_time:
             print("Boot time unavailable; skipping log scan.")
         else:
-            log_info = log_summary(boot_time, args.log_window_min, use_sudo=not args.no_sudo)
+            log_info = log_summary(boot_time, args.log_window_min, args.log_level, use_sudo=not args.no_sudo)
             if "error" in log_info:
                 print(f"Log scan failed: {log_info['error']}")
             else:
                 print(f"Window: {log_info['start']} -> {log_info['end']}")
-                process_counts: Counter[str] = log_info["process_counts"]  # type: ignore[assignment]
-                keyword_hits: Counter[str] = log_info["keyword_hits"]  # type: ignore[assignment]
-                top_processes = process_counts.most_common(args.top)
-                rows = [[name, str(count)] for name, count in top_processes]
-                print_table(["Process", "Count"], rows)
-                if keyword_hits:
-                    print("Keyword hits:")
-                    for key in ["timeout", "fail", "stall"]:
-                        if key in keyword_hits:
-                            print(f"  - {key}: {keyword_hits[key]}")
-                    if sum(keyword_hits.values()) > 0:
-                        findings.append("Boot log contains timeout/fail/stall messages")
-                samples = log_info["samples"]  # type: ignore[assignment]
-                if samples:
-                    print("Samples:")
-                    for line in samples:
-                        print(f"  - {line}")
+                if log_info.get("raw_lines", 0) == 0:
+                    print("(no log lines matched; try --log-level debug or increase --log-window-min)")
+                else:
+                    process_counts: Counter[str] = log_info["process_counts"]  # type: ignore[assignment]
+                    keyword_hits: Counter[str] = log_info["keyword_hits"]  # type: ignore[assignment]
+                    top_processes = process_counts.most_common(args.top)
+                    rows = [[name, str(count)] for name, count in top_processes]
+                    print_table(["Process", "Count"], rows)
+                    if keyword_hits:
+                        print("Keyword hits:")
+                        for key in ["timeout", "fail", "stall"]:
+                            if key in keyword_hits:
+                                print(f"  - {key}: {keyword_hits[key]}")
+                        if sum(keyword_hits.values()) > 0:
+                            findings.append("Boot log contains timeout/fail/stall messages")
+                    samples = log_info["samples"]  # type: ignore[assignment]
+                    if samples:
+                        print("Samples:")
+                        for line in samples:
+                            print(f"  - {line}")
 
     if not args.no_shell:
         print_section("Shell Startup Timing")
