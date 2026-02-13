@@ -63,36 +63,6 @@ git config --global commit.gpgsign true
 git config --global user.signingkey <signing key>
 ```
 
-### SSH + GPG agent cache (manual)
-
-Keep keys encrypted but avoid repeated prompts. No macOS Keychain.
-
-SSH key cache for 24h:
-```bash
-# (Optional) remove existing identity (clears prior TTL)
-ssh-add -d ~/.ssh/id_ed25519      
-# re-add key with 24h cache
-ssh-add -t 24h ~/.ssh/id_ed25519
-```
-
-GPG signing cache for 24h:
-
-Add these lines to `~/.gnupg/gpg-agent.conf`
-```bash
-default-cache-ttl 86400           # cache passphrase for 24h
-max-cache-ttl 86400               # cap max cache at 24h
-```
-Then restart the GPG agent:
-```bash
-gpgconf --kill gpg-agent && gpgconf --launch gpg-agent
-```
-
-Then load up by running `reload`, which is an alias for:
-
-```bash
-exec $SHELL -l
-```
-
 ### Mac-specific setup
 
 Configure some macOS preferences:
@@ -150,6 +120,33 @@ cp .config/zen/zen-keyboard-shortcuts.json ~/Library/Application\ Support/zen/Pr
 ```
 
 Note: Zen always re-formats the file, so it's a messy and manual backup more than a reliable config.
+
+### SSH + GPG agent cache (manual)
+
+Keep keys encrypted but avoid repeated prompts. No macOS Keychain.
+
+SSH key cache for 24h:
+```bash
+# (Optional) remove existing identity (clears prior TTL)
+ssh-add -d ~/.ssh/id_ed25519      
+# re-add key with 24h cache
+ssh-add -t 24h ~/.ssh/id_ed25519
+```
+GPG signing cache for 24h:
+Add these lines to `~/.gnupg/gpg-agent.conf`
+```bash
+default-cache-ttl 86400           # cache passphrase for 24h
+max-cache-ttl 86400               # cap max cache at 24h
+```
+Then restart the GPG agent:
+```bash
+gpgconf --kill gpg-agent && gpgconf --launch gpg-agent
+```
+
+Then load up by running `reload`, which is an alias for:
+```bash
+exec $SHELL -l
+```
 
 ---
 
