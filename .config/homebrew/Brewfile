@@ -315,8 +315,6 @@ cask "kap"
 cask "karabiner-elements"
 # File system integration
 cask "macfuse"
-# Smart card libraries and utilities
-cask "opensc-app"
 # Quicklook extension for source files
 cask "syntax-highlight"
 # Google Chromium, sans integration with Google
