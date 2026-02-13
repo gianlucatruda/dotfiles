@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# Add `/opt/homebrew/bin` to the `$PATH`
+export PATH="/opt/homebrew/bin:$PATH";
+
 # Add `~/bin` to the `$PATH`
 export PATH="$HOME/bin:$PATH";
 
