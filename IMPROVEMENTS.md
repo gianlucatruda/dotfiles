@@ -15,7 +15,7 @@ Things I'd like to improve about my dotfile setup:
     - [x] Audit keybinds for nonstandard or non-mnemonic patterns and normalize where it improves consistency.
     - [x] Statusline: show a smartly truncated path (outermost + innermost segments).
     - [x] Statusline: add an optional diagnostics summary (counts only).
-    - [ ] Winbar: add an optional full relative path for extra context.
+    - [x] Winbar: add an optional full relative path for extra context.
     - [ ] Telescope: larger layout, better preview split, and consistent smart path truncation.
     - [ ] Telescope: add a preview toggle mapping for faster scanning.
     - [ ] Decide on native Neovim LSP vs Mason (pros/cons) and document the choice.
