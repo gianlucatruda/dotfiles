@@ -1,11 +1,21 @@
 Things I'd like to improve about my dotfile setup:
 
+- Workflow
+    - [ ] Add a helper/alias to run Neovim healthchecks with isolated XDG paths (no live config impact).
+
 - Neovim
-    - [ ] Look into oil.nvim as a supplement (not replacement) to netrw in neovim, with convenient keymapping.
-    - [ ] Rework Python LSP setup: ruff for formatting, ty for (summonable, not automatic type checks), and pywright for everything else (particularly autocompletions and suggestions and inline docs, respecting .venvs)
-    - [ ] Keybinds for toggling LSP information (warnings, type checks, etc.) that bloats the screen and slows down neovim when working on quick scripts, but is nice to optionally enabled when making deeper changes to big, well-established codebases.
-    - [ ] blink for enhances neovim completions
-    - [ ] A better nvim status that allows me to see more than just the file name (to understand the path), but which truncates smartly when paths are very long so that I can still see the outermost and innermost levels.
-    - [ ] Better telescope setup so that long filepaths are readable (maybe using the same smart truncation as above). The split between the list of files and preview window is bad and I usually can't find what I'm looking for. Also the popup should make use of a bigger fraction of the screen real-estate to maximise what I can read.
-    - [ ] Look into native neovim LSP support vs Mason and understand the pros/cons.
-    - [ ] Handling for sub-project .venvs that break LSP completions and 'go-definition' / go-references' style lookups.
+    - [ ] Add oil.nvim as a supplement to netrw with a simple, mnemonic keymap.
+    - [ ] Replace nvim-cmp with blink.cmp and update LSP capabilities accordingly.
+    - [ ] Switch Python LSP stack to ruff + ty only (drop pyright).
+    - [ ] Configure ruff for lint/format only and ty for full language services (diagnostics, hover, defs, completions).
+    - [ ] Improve Python root/venv detection for subprojects and pass the resolved env to ty/ruff.
+    - [ ] Resolve ruff + ty capability overlaps (e.g., disable ruff references provider if needed).
+    - [ ] Add LSP UI toggles under `<leader>t` for diagnostics, virtual text, inlay hints, and ty workspace checks.
+    - [ ] Move gitsigns toggles under `<leader>tg*` and add which-key labels for toggle groups.
+    - [ ] Audit keybinds for nonstandard or non-mnemonic patterns and normalize where it improves consistency.
+    - [ ] Statusline: show a smartly truncated path (outermost + innermost segments).
+    - [ ] Statusline: add an optional diagnostics summary (counts only).
+    - [ ] Winbar: add an optional full relative path for extra context.
+    - [ ] Telescope: larger layout, better preview split, and consistent smart path truncation.
+    - [ ] Telescope: add a preview toggle mapping for faster scanning.
+    - [ ] Decide on native Neovim LSP vs Mason (pros/cons) and document the choice.
