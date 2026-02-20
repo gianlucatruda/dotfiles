@@ -1,4 +1,6 @@
 -- See `:help telescope` and `:help telescope.setup()`
+local actions = require('telescope.actions')
+local actions_layout = require('telescope.actions.layout')
 require('telescope').setup {
   defaults = {
     layout_strategy = 'horizontal',
@@ -14,6 +16,12 @@ require('telescope').setup {
       i = {
         ['<C-u>'] = false,
         ['<C-d>'] = false,
+        ['<M-p>'] = { actions_layout.toggle_preview, desc = 'Toggle preview' },
+        ['?'] = { actions.which_key, desc = 'Show keymaps' },
+      },
+      n = {
+        ['<M-p>'] = { actions_layout.toggle_preview, desc = 'Toggle preview' },
+        ['?'] = { actions.which_key, desc = 'Show keymaps' },
       },
     },
   },
