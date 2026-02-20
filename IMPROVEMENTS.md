@@ -6,8 +6,8 @@ Things I'd like to improve about my dotfile setup:
 - Neovim
     - [x] Add oil.nvim as a supplement to netrw with a simple, mnemonic keymap.
     - [x] Replace nvim-cmp with blink.cmp and update LSP capabilities accordingly.
-    - [ ] Switch Python LSP stack to ruff + ty only (drop pyright).
-    - [ ] Configure ruff for lint/format only and ty for full language services (diagnostics, hover, defs, completions).
+    - [x] Switch Python LSP stack to ruff + ty only (drop pyright).
+    - [x] Configure ruff for lint/format only and ty for full language services (diagnostics, hover, defs, completions).
     - [ ] Improve Python root/venv detection for subprojects and pass the resolved env to ty/ruff.
     - [ ] Resolve ruff + ty capability overlaps (e.g., disable ruff references provider if needed).
     - [ ] Add LSP UI toggles under `<leader>t` for diagnostics, virtual text, inlay hints, and ty workspace checks.

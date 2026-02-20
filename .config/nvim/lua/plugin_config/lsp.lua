@@ -100,47 +100,34 @@ local function find_venv(startpath)
   return scan(startpath)
 end
 
--- Prefer a project-local Python if available so imports/completions match the workspace
-local function get_python(root_dir)
-  local python, venv = find_venv(root_dir or vim.fn.getcwd())
-  if python then
-    return python, venv
+local function get_venv(root_dir)
+  local _, venv = find_venv(root_dir or vim.fn.getcwd())
+  if venv then
+    return venv
   end
 
-  -- If Neovim is already running inside a venv, prefer it
+  -- If Neovim is already running inside a venv, prefer it.
   if vim.env.VIRTUAL_ENV then
     local venv_python = util.path.join(vim.env.VIRTUAL_ENV, 'bin', 'python')
     if exists(venv_python) then
-      return venv_python, vim.env.VIRTUAL_ENV
+      return vim.env.VIRTUAL_ENV
     end
   end
 
-  local system = vim.fn.exepath 'python3'
-  if system == '' then
-    system = vim.fn.exepath 'python'
-  end
-  return system or 'python3', nil
+  return nil
 end
 
-local function setup_python_env(new_config, root_dir)
-  local python, venv = get_python(root_dir)
-
-  new_config.settings = new_config.settings or {}
-  new_config.settings.python = new_config.settings.python or {}
-  new_config.settings.python.pythonPath = python
-
-  new_config.settings.pylsp = new_config.settings.pylsp or {}
-  new_config.settings.pylsp.plugins = new_config.settings.pylsp.plugins or {}
-  new_config.settings.pylsp.plugins.jedi = vim.tbl_deep_extend('force', new_config.settings.pylsp.plugins.jedi or {}, {
-    environment = python,
-  })
-
-  if venv then
-    new_config.cmd_env = new_config.cmd_env or {}
-    new_config.cmd_env.VIRTUAL_ENV = venv
-    local venv_bin = util.path.join(venv, 'bin')
-    new_config.cmd_env.PATH = venv_bin .. ':' .. (vim.env.PATH or '')
+local function apply_python_env(new_config, root_dir)
+  local venv = get_venv(root_dir)
+  if not venv then
+    return
   end
+
+  -- Ensure language servers see the same environment as the active project.
+  new_config.cmd_env = new_config.cmd_env or {}
+  new_config.cmd_env.VIRTUAL_ENV = venv
+  local venv_bin = util.path.join(venv, 'bin')
+  new_config.cmd_env.PATH = venv_bin .. ':' .. (vim.env.PATH or '')
 end
 
 -- Enable the following language servers
@@ -162,40 +149,20 @@ local servers = {
       }
     }
   },
-  pylsp = { -- https://github.com/nvim-lua/kickstart.nvim/issues/629
+  ty = {
     filetypes = { 'python', 'py', 'ipy' },
     settings = {
-      pylsp = {
-        plugins = {
-          -- formatter options (disabled for ruff)
-          black = { enabled = false },
-          pylsp_black = { enabled = false },
-          autopep8 = { enabled = false },
-          yapf = { enabled = false },
-          -- linter options
-          pylint = { enabled = false },
-          pyflakes = { enabled = false },
-          pycodestyle = { enabled = false },
-          pydocstyle = { enabled = false },
-          mccabe = { enabled = false }, -- complexity checker
-          -- type checker
-          pylsp_mypy = { enabled = false, live_mode = true, strict = false }, -- ???
-          -- error checker
-          flake8 = { enabled = false },
-          -- auto-completion options
-          jedi_completion = { fuzzy = true },
-          -- import sorting
-          pyls_isort = { enabled = false }, -- handled by ruff
-          -- completions and renaming
-          pylsp_rope = { enabled = true, rename = true },
-          rope_completion = { enabled = true },
-        },
+      ty = {
+        -- Keep ty as the primary Python language server.
+        disableLanguageServices = false,
+        diagnosticMode = 'openFilesOnly',
+        completions = { autoImport = true },
       },
     },
     before_init = function(_, config)
-      setup_python_env(config, config.root_dir)
+      apply_python_env(config, config.root_dir)
     end,
-    on_new_config = setup_python_env,
+    on_new_config = apply_python_env,
   },
   html = { filetypes = { 'html', 'twig', 'hbs' } },
   lua_ls = {
