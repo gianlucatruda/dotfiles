@@ -71,11 +71,14 @@ brew bundle dump --force --file .config/homebrew/Brewfile
 - Keep it minimal - only add what's explicitly needed
 - Maintain modularity (right file for right purpose)
 - The code is the source of truth - read it to understand specifics
+- Keep README.md and other docs in sync with code changes
 
 ### Validation (Neovim)
 - When verifying Neovim changes, run with isolated XDG paths so installs and caches do not touch the user's live config; suggest this workflow to users.
+- Use `NVIM_DOTFILES_CHECKHEALTH=1` to skip plugin_config during headless checks; omit to validate the full setup.
 - Example:
 ```bash
+NVIM_DOTFILES_CHECKHEALTH=1 \
 XDG_CONFIG_HOME="$PWD/.config" \
 XDG_DATA_HOME="$(mktemp -d)" \
 XDG_STATE_HOME="$(mktemp -d)" \

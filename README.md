@@ -183,7 +183,7 @@ Often helpful:
 Generate with:
 
 ```bash
-tree -a -L 3 --gitignore -I .git/ -I .gitignore -I README.md
+tree -a -L 5 --gitignore -I .git/ -I .gitignore -I README.md
 ```
 
 ```
@@ -200,6 +200,8 @@ tree -a -L 3 --gitignore -I .git/ -I .gitignore -I README.md
 │   ├── aerospace
 │   │   └── aerospace.toml
 │   ├── alacritty.toml
+│   ├── btop
+│   │   └── btop.conf
 │   ├── git
 │   │   └── config
 │   ├── homebrew
@@ -208,7 +210,9 @@ tree -a -L 3 --gitignore -I .git/ -I .gitignore -I README.md
 │   │   └── htoprc
 │   ├── karabiner
 │   │   ├── assets
+│   │   │   └── complex_modifications
 │   │   ├── complex_modifications
+│   │   │   └── 1584620783.json
 │   │   └── karabiner.json
 │   ├── lf
 │   │   ├── colors
@@ -216,13 +220,37 @@ tree -a -L 3 --gitignore -I .git/ -I .gitignore -I README.md
 │   │   └── lfrc
 │   ├── nvim
 │   │   ├── init.lua
+│   │   ├── lazy-lock.json
 │   │   └── lua
-│   └── tmux
-│       └── tmux.conf
+│   │       ├── core
+│   │       │   ├── keymaps.lua
+│   │       │   ├── options.lua
+│   │       │   └── plugins.lua
+│   │       └── plugin_config
+│   │           ├── blink.lua
+│   │           ├── colourscheme.lua
+│   │           ├── gitsigns.lua
+│   │           ├── ibl.lua
+│   │           ├── init.lua
+│   │           ├── lazydev.lua
+│   │           ├── lazygit.lua
+│   │           ├── lsp.lua
+│   │           ├── lualine.lua
+│   │           ├── oil.lua
+│   │           ├── telescope.lua
+│   │           └── treesitter.lua
+│   ├── ranger
+│   │   └── rc.conf
+│   ├── tmux
+│   │   └── tmux.conf
+│   └── zen
+│       └── zen-keyboard-shortcuts.json
 ├── .gitignore_global
 ├── .vimrc
+├── AGENTS.md
 ├── bootstrap.sh
 ├── brew.sh
+├── IMPROVEMENTS.md
 ├── macos.sh
 └── scripts
     ├── gt-btooth
@@ -230,12 +258,13 @@ tree -a -L 3 --gitignore -I .git/ -I .gitignore -I README.md
     ├── gt-perfprofile
     ├── gt-scan
     ├── gt-stt
+    ├── gt-sync-homelab
     ├── gt-sync-obsidian
     ├── gt-synchdd
     ├── gt-todoist-export
     └── gt-tts
 
-14 directories, 33 files
+20 directories, 56 files
 ```
 
 
@@ -256,6 +285,7 @@ tree -a -L 3 --gitignore -I .git/ -I .gitignore -I README.md
 ```
 .config/nvim/
 ├── init.lua
+├── lazy-lock.json
 └── lua
     ├── core
     │   ├── keymaps.lua
@@ -267,11 +297,13 @@ tree -a -L 3 --gitignore -I .git/ -I .gitignore -I README.md
         ├── gitsigns.lua
         ├── ibl.lua
         ├── init.lua
+        ├── lazydev.lua
+        ├── lazygit.lua
         ├── lsp.lua
         ├── lualine.lua
-        ├── neodev.lua
+        ├── oil.lua
         ├── telescope.lua
         └── treesitter.lua
 
-4 directories, 14 files
+4 directories, 17 files
 ```

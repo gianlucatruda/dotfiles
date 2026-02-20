@@ -13,7 +13,7 @@ Things I'd like to improve about my dotfile setup:
     - [x] Add LSP UI toggles under `<leader>t` for diagnostics, virtual text, inlay hints, and ty workspace checks.
     - [x] Move gitsigns toggles under `<leader>tg*` and add which-key labels for toggle groups.
     - [x] Audit keybinds for nonstandard or non-mnemonic patterns and normalize where it improves consistency.
-    - [x] Statusline: show a smartly truncated path (outermost + innermost segments).
+    - [x] Statusline: show a smartly truncated relative path (lualine filename + shorting).
     - [x] Statusline: add an optional diagnostics summary (counts only).
     - [x] Winbar: add an optional full relative path for extra context.
     - [x] Telescope: larger layout, better preview split, and consistent smart path truncation.
