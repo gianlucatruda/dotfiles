@@ -72,6 +72,17 @@ brew bundle dump --force --file .config/homebrew/Brewfile
 - Maintain modularity (right file for right purpose)
 - The code is the source of truth - read it to understand specifics
 
+### Validation (Neovim)
+- When verifying Neovim changes, run with isolated XDG paths so installs and caches do not touch the user's live config; suggest this workflow to users.
+- Example:
+```bash
+XDG_CONFIG_HOME="$PWD/.config" \
+XDG_DATA_HOME="$(mktemp -d)" \
+XDG_STATE_HOME="$(mktemp -d)" \
+XDG_CACHE_HOME="$(mktemp -d)" \
+nvim --headless "+checkhealth" "+qall"
+```
+
 ### Never
 - Run tests (user will do this)
 - Change keybindings without explicit request
@@ -92,4 +103,4 @@ brew bundle dump --force --file .config/homebrew/Brewfile
 
 ---
 
-*Last updated: 2026-01-17*
+*Last updated: 2026-02-20*
