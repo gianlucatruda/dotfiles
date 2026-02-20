@@ -69,17 +69,22 @@ require('which-key').add {
 }
 
 -- LSP UI toggles keep noisy diagnostics optional for quick edits.
+-- Flip these defaults if you prefer a quieter startup.
 local diagnostics_enabled = true
+-- Preserve the initial virtual_text config so the toggle restores table settings.
 local virtual_text_config = vim.diagnostic.config().virtual_text
 local virtual_text_enabled = virtual_text_config ~= false
+-- Ty workspace checks are heavier; toggle on when you need full-project coverage.
 local ty_workspace_checks = false
 
+-- 'openFilesOnly' is faster; 'workspace' is slower but more complete.
 local function ty_diagnostic_mode()
   return ty_workspace_checks and 'workspace' or 'openFilesOnly'
 end
 
 local function set_virtual_text(enabled)
   if enabled then
+    -- Restore any custom virtual_text table when re-enabling.
     vim.diagnostic.config { virtual_text = virtual_text_config == false and true or virtual_text_config }
   else
     vim.diagnostic.config { virtual_text = false }
@@ -156,6 +161,7 @@ local function exists(path)
   return path and vim.uv.fs_stat(path) ~= nil
 end
 
+-- Scan upward for common venv names; add more if your projects differ.
 local function find_venv(startpath)
   local function scan(path)
     if not path then
@@ -194,9 +200,12 @@ local function get_venv(root_dir)
     end
   end
 
+  -- If you use conda, consider checking CONDA_PREFIX here.
+
   return nil
 end
 
+-- Ensure language servers see the same venv as the active project.
 local function apply_python_env(new_config, root_dir)
   local venv = get_venv(root_dir)
   if not venv then
@@ -210,6 +219,8 @@ local function apply_python_env(new_config, root_dir)
   new_config.cmd_env.PATH = venv_bin .. ':' .. (vim.env.PATH or '')
 end
 
+-- Root markers define where Python projects start; order matters (closest wins).
+-- Add/remove markers to match your own project layout.
 local python_root_markers = {
   'pyproject.toml',
   'setup.cfg',
@@ -230,6 +241,7 @@ end
 
 local function disable_ruff_language_services(client)
   -- Ruff stays lint/format-only; ty owns language services to avoid mixed results.
+  -- Remove this if you want Ruff for go-to/rename and disable ty language services.
   client.server_capabilities.hoverProvider = false
   client.server_capabilities.definitionProvider = false
   client.server_capabilities.declarationProvider = false
@@ -255,7 +267,9 @@ local servers = {
     init_options = {
       settings = {
         -- Ruff language server settings go here
+        -- Keep this aligned with your formatter (e.g., 88 for Black).
         lineLength = 100,
+        -- preview enables experimental rules; set false for stable behavior.
         lint = { enable = true, preview = true },
         format = { enable = true, preview = true },
       }
@@ -271,8 +285,11 @@ local servers = {
     settings = {
       ty = {
         -- Keep ty as the primary Python language server.
+        -- Set true if you want Ruff (or another server) to own language services.
         disableLanguageServices = false,
+        -- diagnosticMode options: 'openFilesOnly' (fast) or 'workspace' (full).
         diagnosticMode = ty_diagnostic_mode(),
+        -- autoImport = false if you want manual import control.
         completions = { autoImport = true },
       },
     },
@@ -302,8 +319,9 @@ local servers = {
 
 
 -- Updated Mason setup from https://github.com/nvim-lua/kickstart.nvim/pull/1475/files
--- Ensure the servers and tools above are installed
+-- Ensure the servers and tools above are installed.
 require('mason-lspconfig').setup {
+  -- Set to false if you prefer to enable servers manually.
   automatic_enable = vim.tbl_keys(servers or {}),
 }
 
@@ -311,19 +329,23 @@ local ensure_installed = vim.tbl_keys(servers or {})
 vim.list_extend(ensure_installed, {
   'stylua', -- Used to format Lua code
 })
+-- Add/remove tools here if you want Mason to keep them in sync.
 require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
--- blink.cmp supports additional completion capabilities, so broadcast that to servers
+-- blink.cmp supports additional completion capabilities, so broadcast that to servers.
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('blink.cmp').get_lsp_capabilities(capabilities)
+-- Ruff expects utf-16 offsets; scope this to Ruff if other servers complain.
 capabilities.offsetEncoding = { 'utf-16' }
 
--- Installed LSPs are configured and enabled automatically with mason-lspconfig
--- The loop below is for overriding the default configuration of LSPs with the ones in the servers table
+-- Installed LSPs are configured and enabled automatically with mason-lspconfig.
+-- The loop below overrides defaults with the configs in the servers table.
+-- Neovim 0.11+ uses vim.lsp.config; on older versions use lspconfig.setup().
 for server_name, config in pairs(servers) do
   config.capabilities = vim.tbl_deep_extend('force', {}, capabilities, config.capabilities or {})
 
   if server_name == 'ruff' then
+    -- Ruff expects utf-16 offsets; keep explicit to avoid position mismatches.
     config.capabilities.offsetEncoding = { 'utf-16' }
 
     local on_init = config.on_init

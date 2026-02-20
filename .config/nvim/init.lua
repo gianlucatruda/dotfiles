@@ -5,7 +5,8 @@
 require("core.options") -- Goes to lua/core/options.lua
 require("core.keymaps") -- Goes to lua/core/keymaps.lua
 
--- This saves up to 400ms on startup when opening python files
+-- This saves up to 400ms on startup when opening python files.
+-- Update the path if you use a different Python manager (asdf, brew, system).
 vim.g.python3_host_prog = '~/.pyenv/shims/python3'
 
 -- Install `lazy.nvim` plugin manager
@@ -26,6 +27,7 @@ require("core.plugins")  -- Goes to lua/core/plugins.lua
 
 -- Skip plugin configs during isolated headless healthchecks to avoid hard failures
 -- while plugins are still installing in the temporary XDG data path.
+-- Set NVIM_DOTFILES_CHECKHEALTH=1 to enable the skip; omit to load everything.
 if vim.env.NVIM_DOTFILES_CHECKHEALTH ~= '1' then
   require("plugin_config") -- Goes to lua/plugin_config/init.lua
 end

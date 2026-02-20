@@ -31,6 +31,7 @@ alias notify='echo -e "\a"; echo "Done at $(date)"'
 alias batmd='bat --paging=never --style=plain --language=markdown'
 
 # Run Neovim healthchecks in isolated XDG paths so plugins/config remain separate.
+# Swap the XDG paths for $(mktemp -d) if you want a pristine install each run.
 alias nvimhealth='NVIM_DOTFILES_CHECKHEALTH=1 XDG_CONFIG_HOME="$PWD/.config" XDG_DATA_HOME="$HOME/.local/share/nvim-dotfiles" XDG_STATE_HOME="$HOME/.local/state/nvim-dotfiles" XDG_CACHE_HOME="$HOME/.cache/nvim-dotfiles" nvim --headless "+checkhealth" "+qall"'
 
 # Git

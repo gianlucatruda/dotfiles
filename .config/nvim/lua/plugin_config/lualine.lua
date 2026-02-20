@@ -1,5 +1,8 @@
+-- Toggle these if you want a quieter UI or no winbar at all.
 local show_diagnostics = true
 local show_winbar = true
+-- Diagnostics summary shows counts only; swap symbols/source to taste.
+-- Use `nvim_lsp` if you only want LSP diagnostics.
 local diagnostics_summary = {
   'diagnostics',
   sources = { 'nvim_diagnostic' },
@@ -18,7 +21,9 @@ if show_winbar then
       {
         -- Winbar keeps full path context while the statusline stays compact.
         'filename',
+        -- path: 0 = filename, 1 = relative, 2 = absolute.
         path = 1,
+        -- shorting_target: 0 disables shortening (full path in winbar).
         shorting_target = 0,
         symbols = {
           modified = '[+]',
@@ -33,7 +38,9 @@ end
 
 require('lualine').setup {
   options = {
+    -- Enable icons if you add a devicons plugin.
     icons_enabled = false,
+    -- Swap to a named theme if you want to force one.
     theme = 'auto',
     component_separators = '|',
     section_separators = '',
@@ -44,7 +51,9 @@ require('lualine').setup {
     lualine_c = {
       {
         'filename',
+        -- path: 0 = filename, 1 = relative, 2 = absolute.
         path = 1,
+        -- shorting_target: increase for more path context.
         shorting_target = 40,
         symbols = {
           modified = '[+]',

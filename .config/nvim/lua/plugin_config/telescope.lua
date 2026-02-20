@@ -3,23 +3,32 @@ local actions = require('telescope.actions')
 local actions_layout = require('telescope.actions.layout')
 require('telescope').setup {
   defaults = {
+    -- Layout: keep the list wide with a generous preview.
+    -- Swap to 'vertical' or 'flex' if you prefer a taller layout.
     layout_strategy = 'horizontal',
     layout_config = {
+      -- width/height accept floats (0-1) or absolute columns/rows.
       width = 0.95,
       height = 0.9,
+      -- Adjust preview_width to balance list vs preview.
       preview_width = 0.45,
+      -- prompt_position can be 'top' or 'bottom'.
       prompt_position = 'top',
     },
+    -- 'ascending' keeps the prompt at the top; 'descending' flips it.
     sorting_strategy = 'ascending',
+    -- path_display options include 'truncate', 'smart', 'absolute', and 'tail'.
     path_display = { 'truncate' },
     mappings = {
       i = {
         ['<C-u>'] = false,
         ['<C-d>'] = false,
+        -- Remap if your terminal uses Alt for other shortcuts.
         ['<M-p>'] = { actions_layout.toggle_preview, desc = 'Toggle preview' },
         ['?'] = { actions.which_key, desc = 'Show keymaps' },
       },
       n = {
+        -- Remap if your terminal uses Alt for other shortcuts.
         ['<M-p>'] = { actions_layout.toggle_preview, desc = 'Toggle preview' },
         ['?'] = { actions.which_key, desc = 'Show keymaps' },
       },
@@ -60,6 +69,7 @@ local function live_grep_git_root()
   if git_root then
     require('telescope.builtin').live_grep {
       search_dirs = { git_root },
+      -- Drop --hidden if you want to respect default ripgrep ignores.
       additional_args = function() return { "--hidden", "--glob", "!.git/" } end
     }
   end
@@ -71,6 +81,7 @@ local function live_grep_git_root_all()
   if git_root then
     require('telescope.builtin').live_grep {
       search_dirs = { git_root },
+      -- Drop --no-ignore if you want to respect .gitignore.
       additional_args = function() return { "--hidden", "--no-ignore", "--glob", "!.git/" } end
     }
   end

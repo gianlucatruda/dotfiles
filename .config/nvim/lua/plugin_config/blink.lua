@@ -6,6 +6,7 @@ luasnip.config.setup {}
 
 require('blink.cmp').setup {
   keymap = {
+    -- Change preset to match your preferred completion flow (see blink.cmp docs).
     preset = 'enter',
     -- Preserve the Tab-based select/snippet flow from the previous completion setup.
     ['<Tab>'] = { 'select_next', 'snippet_forward', 'fallback' },
@@ -13,6 +14,7 @@ require('blink.cmp').setup {
   },
   snippets = { preset = 'luasnip' },
   sources = {
+    -- Add 'buffer' if you want word completion from open buffers.
     default = { 'lsp', 'path', 'snippets' },
   },
 }
