@@ -4,7 +4,7 @@ Things I'd like to improve about my dotfile setup:
     - [x] Add a helper/alias to run Neovim healthchecks with isolated XDG paths (no live config impact).
 
 - Neovim
-    - [ ] Add oil.nvim as a supplement to netrw with a simple, mnemonic keymap.
+    - [x] Add oil.nvim as a supplement to netrw with a simple, mnemonic keymap.
     - [ ] Replace nvim-cmp with blink.cmp and update LSP capabilities accordingly.
     - [ ] Switch Python LSP stack to ruff + ty only (drop pyright).
     - [ ] Configure ruff for lint/format only and ty for full language services (diagnostics, hover, defs, completions).

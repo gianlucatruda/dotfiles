@@ -7,6 +7,7 @@ require('lazy').setup({
   'tpope/vim-rhubarb',              -- Github integration
   'kdheepak/lazygit.nvim',          -- Lazygit integration
   'folke/which-key.nvim',           -- Shows available keybinds
+  'stevearc/oil.nvim',              -- File explorer (supplementary)
   'hrsh7th/nvim-cmp',               -- Autocomplete engine
   'L3MON4D3/LuaSnip',               -- Snippet engine
   'saadparwaiz1/cmp_luasnip',       -- nvim-cmp source for LuaSnip
