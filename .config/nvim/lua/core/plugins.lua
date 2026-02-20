@@ -19,7 +19,6 @@ require('lazy').setup({
   'mason-org/mason-lspconfig.nvim', -- mason x nvim-lspconfig bridge
   'folke/lazydev.nvim',             -- Adds nvim API support to Lua
   'numToStr/Comment.nvim',          -- Toggle comments
-  'smithbm2316/centerpad.nvim',     -- Centerpad a buffer
   {
     'mason-org/mason.nvim',         -- Package manager for LSP servers
     lazy = true,
