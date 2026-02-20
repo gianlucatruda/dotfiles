@@ -1,3 +1,15 @@
+local show_diagnostics = true
+local diagnostics_summary = {
+  'diagnostics',
+  sources = { 'nvim_diagnostic' },
+  symbols = { error = 'E:', warn = 'W:', info = 'I:', hint = 'H:' },
+}
+
+local lualine_b = { 'branch', 'diff' }
+if show_diagnostics then
+  table.insert(lualine_b, diagnostics_summary)
+end
+
 require('lualine').setup {
   options = {
     icons_enabled = false,
@@ -7,7 +19,7 @@ require('lualine').setup {
   },
   sections = {
     lualine_a = { 'mode' },
-    lualine_b = { 'branch', 'diff', 'diagnostics' },
+    lualine_b = lualine_b,
     lualine_c = {
       {
         'filename',
