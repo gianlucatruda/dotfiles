@@ -1,7 +1,7 @@
 Things I'd like to improve about my dotfile setup:
 
 - Workflow
-    - [ ] Add a helper/alias to run Neovim healthchecks with isolated XDG paths (no live config impact).
+    - [x] Add a helper/alias to run Neovim healthchecks with isolated XDG paths (no live config impact).
 
 - Neovim
     - [ ] Add oil.nvim as a supplement to netrw with a simple, mnemonic keymap.

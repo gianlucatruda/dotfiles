@@ -23,4 +23,9 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("core.plugins")  -- Goes to lua/core/plugins.lua
-require("plugin_config") -- Goes to lua/plugin_config/init.lua
+
+-- Skip plugin configs during isolated headless healthchecks to avoid hard failures
+-- while plugins are still installing in the temporary XDG data path.
+if vim.env.NVIM_DOTFILES_CHECKHEALTH ~= '1' then
+  require("plugin_config") -- Goes to lua/plugin_config/init.lua
+end

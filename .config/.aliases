@@ -30,6 +30,9 @@ alias notify='echo -e "\a"; echo "Done at $(date)"'
 # Stream markdown (e.g. from llm) with MD styling. via https://github.com/simonw/llm/issues/1112#issuecomment-3122319609 
 alias batmd='bat --paging=never --style=plain --language=markdown'
 
+# Run Neovim healthchecks in isolated XDG paths so plugins/config remain separate.
+alias nvimhealth='NVIM_DOTFILES_CHECKHEALTH=1 XDG_CONFIG_HOME="$PWD/.config" XDG_DATA_HOME="$HOME/.local/share/nvim-dotfiles" XDG_STATE_HOME="$HOME/.local/state/nvim-dotfiles" XDG_CACHE_HOME="$HOME/.cache/nvim-dotfiles" nvim --headless "+checkhealth" "+qall"'
+
 # Git
 alias gitlog='git log --pretty=oneline -n 10 --graph --abbrev-commit'
 alias gl='gitlog'
@@ -161,4 +164,3 @@ alias aider-custom="uv tool run \
 
 # Enhanced tree view with `exa`
 # alias exatree="exa --tree --git-ignore --git -h"
-
