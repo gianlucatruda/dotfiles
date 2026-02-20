@@ -148,6 +148,19 @@ local function python_root_dir(fname)
   return python_rooter(fname) or util.path.dirname(fname)
 end
 
+local function disable_ruff_language_services(client)
+  -- Ruff stays lint/format-only; ty owns language services to avoid mixed results.
+  client.server_capabilities.hoverProvider = false
+  client.server_capabilities.definitionProvider = false
+  client.server_capabilities.declarationProvider = false
+  client.server_capabilities.implementationProvider = false
+  client.server_capabilities.typeDefinitionProvider = false
+  client.server_capabilities.referencesProvider = false
+  client.server_capabilities.documentSymbolProvider = false
+  client.server_capabilities.workspaceSymbolProvider = false
+  client.server_capabilities.renameProvider = false
+end
+
 -- Enable the following language servers
 --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
 --
@@ -231,7 +244,7 @@ for server_name, config in pairs(servers) do
         on_init(client, ...)
       end
       client.offset_encoding = 'utf-16'
-      client.server_capabilities.referencesProvider = false
+      disable_ruff_language_services(client)
     end
 
     local on_attach = config.on_attach
@@ -239,7 +252,7 @@ for server_name, config in pairs(servers) do
       if on_attach then
         on_attach(client, ...)
       end
-      client.server_capabilities.referencesProvider = false
+      disable_ruff_language_services(client)
     end
   end
 
