@@ -221,9 +221,9 @@ vim.list_extend(ensure_installed, {
 })
 require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
--- nvim-cmp supports additional completion capabilities, so broadcast that to servers
+-- blink.cmp supports additional completion capabilities, so broadcast that to servers
 local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+capabilities = require('blink.cmp').get_lsp_capabilities(capabilities)
 capabilities.offsetEncoding = { 'utf-16' }
 
 -- Installed LSPs are configured and enabled automatically with mason-lspconfig

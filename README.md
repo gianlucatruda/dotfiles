@@ -262,7 +262,7 @@ tree -a -L 3 --gitignore -I .git/ -I .gitignore -I README.md
     │   ├── options.lua
     │   └── plugins.lua
     └── plugin_config
-        ├── cmp.lua
+        ├── blink.lua
         ├── colourscheme.lua
         ├── gitsigns.lua
         ├── ibl.lua

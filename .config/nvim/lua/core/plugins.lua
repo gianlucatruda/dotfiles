@@ -8,12 +8,13 @@ require('lazy').setup({
   'kdheepak/lazygit.nvim',          -- Lazygit integration
   'folke/which-key.nvim',           -- Shows available keybinds
   'stevearc/oil.nvim',              -- File explorer (supplementary)
-  'hrsh7th/nvim-cmp',               -- Autocomplete engine
   'L3MON4D3/LuaSnip',               -- Snippet engine
-  'saadparwaiz1/cmp_luasnip',       -- nvim-cmp source for LuaSnip
-  'hrsh7th/cmp-nvim-lsp',           -- nvim-cmp source for LSP
-  'hrsh7th/cmp-path',               -- nvim-cmp source for filepaths
   'rafamadriz/friendly-snippets',   -- Various language snippets
+  {
+    'saghen/blink.cmp',             -- Autocomplete engine
+    dependencies = { 'rafamadriz/friendly-snippets' },
+    version = '1.*',
+  },
   'neovim/nvim-lspconfig',          -- Configures nvim's LSP client
   'mason-org/mason-lspconfig.nvim', -- mason x nvim-lspconfig bridge
   'folke/lazydev.nvim',             -- Adds nvim API support to Lua
