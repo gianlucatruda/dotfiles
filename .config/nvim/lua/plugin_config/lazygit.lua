@@ -1,5 +1,5 @@
 -- Lazygit integration
-vim.keymap.set('n', '<leader>lg', '<cmd>LazyGit<cr>', { desc = 'Open [L]azy[G]it' })
+vim.keymap.set('n', '<leader>gg', '<cmd>LazyGit<cr>', { desc = 'Open [G]it UI (LazyGit)' })
 
 -- Auto-reload files after lazygit closes
 vim.api.nvim_create_autocmd("TermClose", {

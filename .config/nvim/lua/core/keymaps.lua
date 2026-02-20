@@ -15,7 +15,7 @@ vim.keymap.set('n', '<leader>id', function()
 end, { desc = '[I]nsert current [D]ate' })
 
 -- Centerpad the buffer
-vim.keymap.set('n', '<leader>z', '<cmd>Centerpad<cr>')
+vim.keymap.set('n', '<leader>z', '<cmd>Centerpad<cr>', { desc = '[Z]en Centerpad' })
 
 -- Remap j and k for dealing with line wrap
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
