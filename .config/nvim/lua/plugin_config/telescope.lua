@@ -1,6 +1,15 @@
 -- See `:help telescope` and `:help telescope.setup()`
 require('telescope').setup {
   defaults = {
+    layout_strategy = 'horizontal',
+    layout_config = {
+      width = 0.95,
+      height = 0.9,
+      preview_width = 0.45,
+      prompt_position = 'top',
+    },
+    sorting_strategy = 'ascending',
+    path_display = { 'truncate' },
     mappings = {
       i = {
         ['<C-u>'] = false,
