@@ -63,8 +63,87 @@ require('which-key').add {
   { '<leader>s', group = '[S]earch' },
   { '<leader>w', group = '[W]orkspace' },
   { '<leader>t', group = '[T]oggle' },
+  { '<leader>tg', group = '[T]oggle [G]it' },
   { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
 }
+
+-- LSP UI toggles keep noisy diagnostics optional for quick edits.
+local diagnostics_enabled = true
+local virtual_text_config = vim.diagnostic.config().virtual_text
+local virtual_text_enabled = virtual_text_config ~= false
+local ty_workspace_checks = false
+
+local function ty_diagnostic_mode()
+  return ty_workspace_checks and 'workspace' or 'openFilesOnly'
+end
+
+local function set_virtual_text(enabled)
+  if enabled then
+    vim.diagnostic.config { virtual_text = virtual_text_config == false and true or virtual_text_config }
+  else
+    vim.diagnostic.config { virtual_text = false }
+  end
+end
+
+local function set_inlay_hints(bufnr, enabled)
+  -- Handle Neovim API signature changes without breaking the toggle.
+  if not vim.lsp.inlay_hint then
+    return
+  end
+
+  local ok = pcall(vim.lsp.inlay_hint.enable, enabled, { bufnr = bufnr })
+  if ok then
+    return
+  end
+  pcall(vim.lsp.inlay_hint.enable, bufnr, enabled)
+end
+
+local function inlay_hints_enabled(bufnr)
+  if vim.lsp.inlay_hint and vim.lsp.inlay_hint.is_enabled then
+    local ok, enabled = pcall(vim.lsp.inlay_hint.is_enabled, { bufnr = bufnr })
+    if ok then
+      return enabled
+    end
+    ok, enabled = pcall(vim.lsp.inlay_hint.is_enabled, bufnr)
+    if ok then
+      return enabled
+    end
+  end
+
+  return vim.b.lsp_inlay_hints_enabled == true
+end
+
+vim.keymap.set('n', '<leader>td', function()
+  diagnostics_enabled = not diagnostics_enabled
+  if diagnostics_enabled then
+    vim.diagnostic.enable()
+  else
+    vim.diagnostic.disable()
+  end
+end, { desc = '[T]oggle [D]iagnostics' })
+
+vim.keymap.set('n', '<leader>tv', function()
+  virtual_text_enabled = not virtual_text_enabled
+  set_virtual_text(virtual_text_enabled)
+end, { desc = '[T]oggle [V]irtual text' })
+
+vim.keymap.set('n', '<leader>th', function()
+  local bufnr = vim.api.nvim_get_current_buf()
+  local enabled = inlay_hints_enabled(bufnr)
+  set_inlay_hints(bufnr, not enabled)
+  vim.b.lsp_inlay_hints_enabled = not enabled
+end, { desc = '[T]oggle Inlay [H]ints' })
+
+vim.keymap.set('n', '<leader>tt', function()
+  ty_workspace_checks = not ty_workspace_checks
+  local mode = ty_diagnostic_mode()
+  for _, client in ipairs(vim.lsp.get_clients { name = 'ty' }) do
+    client.config.settings = client.config.settings or {}
+    client.config.settings.ty = client.config.settings.ty or {}
+    client.config.settings.ty.diagnosticMode = mode
+    client.notify('workspace/didChangeConfiguration', { settings = client.config.settings })
+  end
+end, { desc = '[T]oggle [T]y workspace checks' })
 
 -- mason-lspconfig requires that these setup functions are called in this order
 -- before setting up the servers.
@@ -192,14 +271,22 @@ local servers = {
       ty = {
         -- Keep ty as the primary Python language server.
         disableLanguageServices = false,
-        diagnosticMode = 'openFilesOnly',
+        diagnosticMode = ty_diagnostic_mode(),
         completions = { autoImport = true },
       },
     },
     before_init = function(_, config)
       apply_python_env(config, config.root_dir)
+      config.settings = config.settings or {}
+      config.settings.ty = config.settings.ty or {}
+      config.settings.ty.diagnosticMode = ty_diagnostic_mode()
     end,
-    on_new_config = apply_python_env,
+    on_new_config = function(new_config, _)
+      apply_python_env(new_config, new_config.root_dir)
+      new_config.settings = new_config.settings or {}
+      new_config.settings.ty = new_config.settings.ty or {}
+      new_config.settings.ty.diagnosticMode = ty_diagnostic_mode()
+    end,
   },
   html = { filetypes = { 'html', 'twig', 'hbs' } },
   lua_ls = {

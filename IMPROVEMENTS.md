@@ -10,8 +10,8 @@ Things I'd like to improve about my dotfile setup:
     - [x] Configure ruff for lint/format only and ty for full language services (diagnostics, hover, defs, completions).
     - [x] Improve Python root/venv detection for subprojects and pass the resolved env to ty/ruff.
     - [x] Resolve ruff + ty capability overlaps (e.g., disable ruff references provider if needed).
-    - [ ] Add LSP UI toggles under `<leader>t` for diagnostics, virtual text, inlay hints, and ty workspace checks.
-    - [ ] Move gitsigns toggles under `<leader>tg*` and add which-key labels for toggle groups.
+    - [x] Add LSP UI toggles under `<leader>t` for diagnostics, virtual text, inlay hints, and ty workspace checks.
+    - [x] Move gitsigns toggles under `<leader>tg*` and add which-key labels for toggle groups.
     - [ ] Audit keybinds for nonstandard or non-mnemonic patterns and normalize where it improves consistency.
     - [ ] Statusline: show a smartly truncated path (outermost + innermost segments).
     - [ ] Statusline: add an optional diagnostics summary (counts only).
