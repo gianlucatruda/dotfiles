@@ -130,6 +130,24 @@ local function apply_python_env(new_config, root_dir)
   new_config.cmd_env.PATH = venv_bin .. ':' .. (vim.env.PATH or '')
 end
 
+local python_root_markers = {
+  'pyproject.toml',
+  'setup.cfg',
+  'setup.py',
+  'requirements.txt',
+  'Pipfile',
+  'ruff.toml',
+  '.venv',
+  'venv',
+}
+
+local python_rooter = util.root_pattern(unpack(python_root_markers))
+
+local function python_root_dir(fname)
+  -- Prefer the closest Python root so subprojects pick the right venv/config.
+  return python_rooter(fname) or util.path.dirname(fname)
+end
+
 -- Enable the following language servers
 --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
 --
@@ -140,6 +158,7 @@ local servers = {
   clangd = {},
   ruff = {
     filetypes = { 'python', 'py', 'ipy' },
+    root_dir = python_root_dir,
     init_options = {
       settings = {
         -- Ruff language server settings go here
@@ -147,10 +166,15 @@ local servers = {
         lint = { enable = true, preview = true },
         format = { enable = true, preview = true },
       }
-    }
+    },
+    before_init = function(_, config)
+      apply_python_env(config, config.root_dir)
+    end,
+    on_new_config = apply_python_env,
   },
   ty = {
     filetypes = { 'python', 'py', 'ipy' },
+    root_dir = python_root_dir,
     settings = {
       ty = {
         -- Keep ty as the primary Python language server.

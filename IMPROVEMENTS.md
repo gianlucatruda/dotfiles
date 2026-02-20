@@ -8,7 +8,7 @@ Things I'd like to improve about my dotfile setup:
     - [x] Replace nvim-cmp with blink.cmp and update LSP capabilities accordingly.
     - [x] Switch Python LSP stack to ruff + ty only (drop pyright).
     - [x] Configure ruff for lint/format only and ty for full language services (diagnostics, hover, defs, completions).
-    - [ ] Improve Python root/venv detection for subprojects and pass the resolved env to ty/ruff.
+    - [x] Improve Python root/venv detection for subprojects and pass the resolved env to ty/ruff.
     - [ ] Resolve ruff + ty capability overlaps (e.g., disable ruff references provider if needed).
     - [ ] Add LSP UI toggles under `<leader>t` for diagnostics, virtual text, inlay hints, and ty workspace checks.
     - [ ] Move gitsigns toggles under `<leader>tg*` and add which-key labels for toggle groups.
