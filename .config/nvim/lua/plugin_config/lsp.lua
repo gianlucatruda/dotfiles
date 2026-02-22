@@ -257,12 +257,12 @@ end
 --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
 --
 local servers = {
-  rust_analyzer = { filetypes = { 'rust', 'rs' } },
-  ts_ls = { filetypes = { 'javascript', 'jsx', 'typescript', 'svelte' } },
+  rust_analyzer = { filetypes = { 'rust' } },
+  ts_ls = { filetypes = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'svelte' } },
   jsonls = { filetypes = { 'json' } },
   clangd = {},
   ruff = {
-    filetypes = { 'python', 'py', 'ipy' },
+    filetypes = { 'python' },
     root_dir = python_root_dir,
     init_options = {
       settings = {
@@ -280,7 +280,7 @@ local servers = {
     on_new_config = apply_python_env,
   },
   ty = {
-    filetypes = { 'python', 'py', 'ipy' },
+    filetypes = { 'python' },
     root_dir = python_root_dir,
     settings = {
       ty = {
@@ -306,7 +306,7 @@ local servers = {
       new_config.settings.ty.diagnosticMode = ty_diagnostic_mode()
     end,
   },
-  html = { filetypes = { 'html', 'twig', 'hbs' } },
+  html = { filetypes = { 'html' } },
   lua_ls = {
     Lua = {
       workspace = { checkThirdParty = false },
