@@ -45,7 +45,7 @@ vim.opt.title = true -- Show the titlestring in the window titlebar
 vim.opt.titlelen = 25
 -- according to h: titlestring uses same syntax as statusline with filename-modifiers
 vim.opt.titlestring = '%{fnamemodify(getcwd(), ":t")}:%t'
-vim.opt.showmode = true -- Show the current mode
+vim.opt.showmode = false -- Show the current mode
 vim.opt.showcmd = true  -- Show the (partial) command as it's being typed
 
 -- PERFORMANCE
