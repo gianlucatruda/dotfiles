@@ -22,12 +22,8 @@ require('lualine').setup {
     section_separators = '',
   },
   sections = {
-    lualine_a = { 'mode' },
-    lualine_b = { 'branch', 'diff', 'diagnostics' },
-    lualine_c = { 'filename' },
     lualine_x = {},
     lualine_y = {},
-    lualine_z = { 'location' },
   },
   winbar = {
     lualine_c = { winbar_path },

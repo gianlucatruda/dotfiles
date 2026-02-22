@@ -22,6 +22,7 @@ require('telescope').setup {
       prompt_position = 'top',
     },
     sorting_strategy = 'ascending',
+    -- Keep head + tail visible; built-ins can't preserve both ends.
     path_display = display_path,
     mappings = {
       i = {

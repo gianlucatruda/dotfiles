@@ -22,12 +22,6 @@ require('blink.cmp').setup {
       auto_show = function()
         return vim.g.blink_auto_trigger
       end,
-      draw = {
-        columns = {
-          { 'kind_icon' },
-          { 'label', 'label_description', gap = 1 },
-        },
-      },
     },
     documentation = {
       auto_show = true,
@@ -36,7 +30,6 @@ require('blink.cmp').setup {
   },
   snippets = { preset = 'luasnip' },
   sources = {
-    default = { 'lsp', 'path', 'snippets', 'buffer' },
     providers = {
       -- Keep LSP results dominant to reduce noisy path/buffer matches.
       lsp = { fallbacks = {}, score_offset = 15 },

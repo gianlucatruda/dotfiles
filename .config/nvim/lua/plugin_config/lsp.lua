@@ -35,7 +35,7 @@ if not vim.lsp.util._wrapped_make_position_params then
     return clients[1] and clients[1].offset_encoding or nil
   end
 
-  -- Ty uses utf-16 offsets; default to the active client encoding when unset.
+  -- Prevent LSP position warnings when the encoding is omitted.
   vim.lsp.util.make_position_params = function(win, position_encoding)
     return make_position_params(win, position_encoding or default_position_encoding())
   end
