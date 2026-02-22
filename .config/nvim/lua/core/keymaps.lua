@@ -14,6 +14,9 @@ vim.keymap.set('n', '<leader>id', function()
 	vim.cmd("r!date +\\%F")
 end, { desc = '[I]nsert current [D]ate' })
 
+-- Jump to the most recent buffer
+vim.keymap.set('n', '<leader><tab>', '<cmd>b#<cr>', { desc = 'Toggle previous buffer' })
+
 -- Remap j and k for dealing with line wrap
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
