@@ -32,7 +32,7 @@ require('blink.cmp').setup {
   sources = {
     providers = {
       -- Keep LSP results dominant to reduce noisy path/buffer matches.
-      lsp = { fallbacks = {}, score_offset = 15 },
+      lsp = { score_offset = 15 },
       path = { score_offset = -5 },
       snippets = { score_offset = -8 },
       buffer = { score_offset = -12 },
