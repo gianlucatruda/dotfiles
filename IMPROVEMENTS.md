@@ -22,5 +22,9 @@ Things I'd like to improve about my dotfile setup:
     - [ ] Formatting for .md files, but not snippets / autocomplete (annoying)
 
 - Future
-    - [ ] Simplify and streamline neovim config and avoid excessive bespoke code for future proofing
+    - [ ] Simplify and streamline neovim config (particularly lsp.lua) and avoid excessive bespoke code for future proofing
     - [ ] Decide on native Neovim LSP vs Mason (pros/cons) and document the choice.
+    - [ ] Most of the info at the bottom right of my nvim statusline isn't very helpful, but it takes up a lot of screen space at the expense of the filename/path and branch. I probably can abbreviate the mode names too, as I never need to look at that text really.
+
+---
+

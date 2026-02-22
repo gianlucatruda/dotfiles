@@ -71,7 +71,7 @@ brew bundle dump --force --file .config/homebrew/Brewfile
 - Keep it minimal - only add what's explicitly needed
 - Maintain modularity (right file for right purpose)
 - The code is the source of truth - read it to understand specifics
-- Keep README.md and other docs in sync with code changes
+- Proactively keep README.md, AGENTS.md, and other docs in sync with code changes
 
 ### Validation (Neovim)
 - When verifying Neovim changes, run with isolated XDG paths so installs and caches do not touch the user's live config; suggest this workflow to users.
@@ -91,12 +91,12 @@ nvim --headless "+checkhealth" "+qall"
 - Change keybindings without explicit request
 - Add unnecessary plugins/dependencies
 - Create documentation files proactively
-- Over-comment self-evident code
+- Over-comment self-evident code (comments are WHY, names are WHAT, code is HOW)
 - Add error handling for impossible scenarios
 - Create helpers for single-use operations
 - Add TODO/FIXME comments (fix it or don't)
 - Over-engineer or add premature abstractions
-- Remove used code (if it's there, it's used)
+- Remove used code
 
 ### Be Careful With
 - `.bash_profile` load order
