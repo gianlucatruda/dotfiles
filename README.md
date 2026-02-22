@@ -285,6 +285,13 @@ tree -a -L 5 --gitignore -I .git/ -I .gitignore -I README.md
 Neovim prepends Mason's `bin` to PATH so LSP/tools use Mason-managed binaries
 inside Neovim without affecting your shell.
 
+Markdown formatting uses Prettier (via Mason) when you run `<leader>f` or `:Format`.
+
+Neovim highlights:
+- LSP UI toggles live under `<leader>tl` (diagnostics, virtual text, inlay hints, Ty workspace) with `<leader>tla` for all.
+- Completion auto-trigger toggle lives at `<leader>tc` (Markdown stays manual by default).
+- Winbar shows git-root-relative paths (fallback to CWD), and `<leader><tab>` jumps to the most recent buffer.
+
 ```
 .config/nvim/
 ├── init.lua
