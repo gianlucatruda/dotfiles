@@ -10,7 +10,6 @@ luasnip.config.setup {}
 
 require('blink.cmp').setup {
   keymap = {
-    -- Change preset to match your preferred completion flow (see blink.cmp docs).
     preset = 'enter',
     -- Preserve the Tab-based select/snippet flow from the previous completion setup.
     ['<Tab>'] = { 'select_next', 'snippet_forward', 'fallback' },
@@ -19,19 +18,9 @@ require('blink.cmp').setup {
     ['<C-p>'] = { 'insert_prev', 'fallback' },
   },
   completion = {
-    trigger = {
-      show_on_keyword = true,
-      show_on_trigger_character = true,
-      show_on_blocked_trigger_characters = function()
-        if vim.bo.filetype == 'python' then
-          return { '\n', '\t' }
-        end
-        return { ' ', '\n', '\t' }
-      end,
-    },
     menu = {
       auto_show = function()
-        return vim.g.blink_auto_trigger and vim.bo.filetype ~= 'markdown'
+        return vim.g.blink_auto_trigger
       end,
       draw = {
         columns = {
@@ -47,12 +36,9 @@ require('blink.cmp').setup {
   },
   snippets = { preset = 'luasnip' },
   sources = {
-    -- Add 'buffer' if you want word completion from open buffers.
     default = { 'lsp', 'path', 'snippets', 'buffer' },
-    per_filetype = {
-      markdown = { 'buffer', 'path' },
-    },
     providers = {
+      -- Keep LSP results dominant to reduce noisy path/buffer matches.
       lsp = { fallbacks = {}, score_offset = 15 },
       path = { score_offset = -5 },
       snippets = { score_offset = -8 },

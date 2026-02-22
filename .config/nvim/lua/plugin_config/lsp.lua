@@ -1,52 +1,50 @@
 local diagnostic_config = vim.diagnostic.config()
-local diagnostics_enabled = vim.diagnostic.is_enabled()
 local virtual_text_config = diagnostic_config.virtual_text
-local virtual_text_enabled = virtual_text_config ~= false
-local inlay_hints_enabled = true
-if vim.lsp.inlay_hint and vim.lsp.inlay_hint.is_enabled then
-  inlay_hints_enabled = vim.lsp.inlay_hint.is_enabled { bufnr = 0 }
-end
-local ty_diagnostic_mode = 'openFilesOnly'
-local lsp_ui_enabled = vim.diagnostic.is_enabled() and virtual_text_enabled and inlay_hints_enabled
+local has_inlay_hints = vim.lsp.inlay_hint and vim.lsp.inlay_hint.enable
 
-local function refresh_lsp_ui_state()
-  lsp_ui_enabled = vim.diagnostic.is_enabled() and virtual_text_enabled and inlay_hints_enabled
+local state = {
+  virtual_text = virtual_text_config ~= false,
+  inlay_hints = has_inlay_hints
+    and vim.lsp.inlay_hint.is_enabled
+    and vim.lsp.inlay_hint.is_enabled { bufnr = 0 }
+    or false,
+  ty_diagnostic_mode = 'openFilesOnly',
+}
+
+local function notify(message, command, level)
+  vim.notify(string.format('%s (%s)', message, command), level or vim.log.levels.INFO)
 end
 
 local function notify_toggle(label, enabled, command)
-  local state = enabled and 'on' or 'off'
-  vim.notify(string.format('%s: %s (%s)', label, state, command), vim.log.levels.INFO)
-end
-
-local function notify_info(message, command)
-  vim.notify(string.format('%s (%s)', message, command), vim.log.levels.INFO)
+  notify(string.format('%s: %s', label, enabled and 'on' or 'off'), command)
 end
 
 local function notify_warn(message, command)
-  vim.notify(string.format('%s (%s)', message, command), vim.log.levels.WARN)
+  notify(message, command, vim.log.levels.WARN)
 end
 
 if not vim.lsp.util._wrapped_make_position_params then
   local make_position_params = vim.lsp.util.make_position_params
-  vim.lsp.util.make_position_params = function(win, position_encoding)
-    if position_encoding == nil then
-      local ty_client = vim.lsp.get_clients { bufnr = 0, name = 'ty' }
-      if #ty_client > 0 then
-        position_encoding = ty_client[1].offset_encoding
-      else
-        local clients = vim.lsp.get_clients { bufnr = 0 }
-        if #clients > 0 then
-          position_encoding = clients[1].offset_encoding
-        end
-      end
+  local function default_position_encoding()
+    local ty_client = vim.lsp.get_clients { bufnr = 0, name = 'ty' }
+    if #ty_client > 0 then
+      return ty_client[1].offset_encoding
     end
-    return make_position_params(win, position_encoding)
+
+    local clients = vim.lsp.get_clients { bufnr = 0 }
+    return clients[1] and clients[1].offset_encoding or nil
+  end
+
+  -- Ty uses utf-16 offsets; default to the active client encoding when unset.
+  vim.lsp.util.make_position_params = function(win, position_encoding)
+    return make_position_params(win, position_encoding or default_position_encoding())
   end
   vim.lsp.util._wrapped_make_position_params = true
 end
 
 local function format_buffer(bufnr)
   if vim.bo[bufnr].filetype == 'markdown' then
+    -- Keep Markdown formatting driven by formatprg (Prettier).
     vim.api.nvim_buf_call(bufnr, function()
       vim.cmd('silent! keepjumps normal! gggqG')
     end)
@@ -56,122 +54,138 @@ local function format_buffer(bufnr)
   vim.lsp.buf.format { bufnr = bufnr }
 end
 
-local function apply_inlay_hints(bufnr)
-  if not vim.lsp.inlay_hint then
-    notify_warn('Inlay hints not supported', 'vim.lsp.inlay_hint.enable(...)')
-    return
+local function set_virtual_text(enabled)
+  state.virtual_text = enabled
+  if enabled then
+    vim.diagnostic.config { virtual_text = virtual_text_config ~= false and virtual_text_config or true }
+  else
+    vim.diagnostic.config { virtual_text = false }
+  end
+end
+
+local function set_inlay_hints(enabled, opts)
+  if not has_inlay_hints then
+    if not opts or opts.warn ~= false then
+      notify_warn('Inlay hints not supported', 'vim.lsp.inlay_hint.enable(...)')
+    end
+    return false
   end
 
-  vim.lsp.inlay_hint.enable(inlay_hints_enabled, { bufnr = bufnr })
+  state.inlay_hints = enabled
+  if opts and opts.bufnr then
+    if vim.api.nvim_buf_is_loaded(opts.bufnr) and not vim.tbl_isempty(vim.lsp.get_clients { bufnr = opts.bufnr }) then
+      vim.lsp.inlay_hint.enable(enabled, { bufnr = opts.bufnr })
+    end
+    return true
+  end
+
+  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+    if vim.api.nvim_buf_is_loaded(buf) and not vim.tbl_isempty(vim.lsp.get_clients { bufnr = buf }) then
+      vim.lsp.inlay_hint.enable(enabled, { bufnr = buf })
+    end
+  end
+  return true
 end
 
 local function apply_ty_settings(client)
   client.settings = client.settings or {}
   client.settings.ty = client.settings.ty or {}
-  client.settings.ty.diagnosticMode = ty_diagnostic_mode
+  client.settings.ty.diagnosticMode = state.ty_diagnostic_mode
   client.notify('workspace/didChangeConfiguration', { settings = client.settings })
 end
 
-local function toggle_diagnostics()
-  diagnostics_enabled = not vim.diagnostic.is_enabled()
-  vim.diagnostic.enable(diagnostics_enabled)
-  refresh_lsp_ui_state()
-  notify_toggle('LSP diagnostics', diagnostics_enabled, string.format('vim.diagnostic.enable(%s)', diagnostics_enabled))
-end
-
-local function toggle_virtual_text()
-  virtual_text_enabled = not virtual_text_enabled
-  if virtual_text_enabled then
-    vim.diagnostic.config { virtual_text = virtual_text_config ~= false and virtual_text_config or true }
-  else
-    vim.diagnostic.config { virtual_text = false }
-  end
-  refresh_lsp_ui_state()
-  notify_toggle('LSP virtual text', virtual_text_enabled, string.format('vim.diagnostic.config({ virtual_text = %s })', virtual_text_enabled))
-end
-
-local function toggle_inlay_hints()
-  if not vim.lsp.inlay_hint then
-    notify_warn('Inlay hints not supported', 'vim.lsp.inlay_hint.enable(...)')
-    return
-  end
-
-  inlay_hints_enabled = not inlay_hints_enabled
-  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-    if vim.api.nvim_buf_is_loaded(buf) and not vim.tbl_isempty(vim.lsp.get_clients { bufnr = buf }) then
-      vim.lsp.inlay_hint.enable(inlay_hints_enabled, { bufnr = buf })
-    end
-  end
-  refresh_lsp_ui_state()
-  notify_toggle('LSP inlay hints', inlay_hints_enabled, string.format('vim.lsp.inlay_hint.enable(%s)', inlay_hints_enabled))
-end
-
-local function toggle_ty_workspace_diagnostics()
+local function apply_ty_diagnostic_mode()
   local clients = vim.lsp.get_clients { name = 'ty' }
   if vim.tbl_isempty(clients) then
-    notify_warn('Ty LSP not attached', 'workspace/didChangeConfiguration')
-    return
+    return false
   end
 
-  ty_diagnostic_mode = ty_diagnostic_mode == 'workspace' and 'openFilesOnly' or 'workspace'
   for _, client in ipairs(clients) do
     apply_ty_settings(client)
   end
-  notify_info(string.format('Ty diagnostics: %s', ty_diagnostic_mode), string.format('ty.diagnosticMode=%s', ty_diagnostic_mode))
+  return true
+end
+
+local function lsp_ui_enabled()
+  local inlay_ok = has_inlay_hints and state.inlay_hints or not has_inlay_hints
+  return vim.diagnostic.is_enabled() and state.virtual_text and inlay_ok
+end
+
+local function toggle_diagnostics()
+  local enabled = not vim.diagnostic.is_enabled()
+  vim.diagnostic.enable(enabled)
+  notify_toggle('LSP diagnostics', enabled, string.format('vim.diagnostic.enable(%s)', enabled))
+end
+
+local function toggle_virtual_text()
+  set_virtual_text(not state.virtual_text)
+  notify_toggle(
+    'LSP virtual text',
+    state.virtual_text,
+    string.format('vim.diagnostic.config({ virtual_text = %s })', state.virtual_text)
+  )
+end
+
+local function toggle_inlay_hints()
+  local enabled = not state.inlay_hints
+  if set_inlay_hints(enabled) then
+    notify_toggle(
+      'LSP inlay hints',
+      state.inlay_hints,
+      string.format('vim.lsp.inlay_hint.enable(%s)', state.inlay_hints)
+    )
+  end
+end
+
+local function toggle_ty_workspace_diagnostics()
+  state.ty_diagnostic_mode = state.ty_diagnostic_mode == 'workspace' and 'openFilesOnly' or 'workspace'
+  if not apply_ty_diagnostic_mode() then
+    notify_warn('Ty LSP not attached', 'workspace/didChangeConfiguration')
+    return
+  end
+  notify(
+    string.format('Ty diagnostics: %s', state.ty_diagnostic_mode),
+    string.format('ty.diagnosticMode=%s', state.ty_diagnostic_mode)
+  )
 end
 
 local function toggle_all_lsp_ui()
-  local enable = not lsp_ui_enabled
+  local enable = not lsp_ui_enabled()
 
-  diagnostics_enabled = enable
   vim.diagnostic.enable(enable)
-
-  virtual_text_enabled = enable
-  if virtual_text_enabled then
-    vim.diagnostic.config { virtual_text = virtual_text_config ~= false and virtual_text_config or true }
+  set_virtual_text(enable)
+  if has_inlay_hints then
+    set_inlay_hints(enable, { warn = false })
   else
-    vim.diagnostic.config { virtual_text = false }
+    state.inlay_hints = enable
   end
 
-  if vim.lsp.inlay_hint then
-    inlay_hints_enabled = enable
-    for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-      if vim.api.nvim_buf_is_loaded(buf) and not vim.tbl_isempty(vim.lsp.get_clients { bufnr = buf }) then
-        vim.lsp.inlay_hint.enable(inlay_hints_enabled, { bufnr = buf })
-      end
-    end
-  end
-
-  local clients = vim.lsp.get_clients { name = 'ty' }
-  ty_diagnostic_mode = enable and 'workspace' or 'openFilesOnly'
-  if vim.tbl_isempty(clients) then
+  state.ty_diagnostic_mode = enable and 'workspace' or 'openFilesOnly'
+  if not apply_ty_diagnostic_mode() then
     notify_warn('Ty LSP not attached', 'workspace/didChangeConfiguration')
-  else
-    for _, client in ipairs(clients) do
-      apply_ty_settings(client)
-    end
   end
 
-  lsp_ui_enabled = enable
-
+  local inlay_state = has_inlay_hints and (state.inlay_hints and 'on' or 'off') or 'n/a'
+  local inlay_command = has_inlay_hints
+    and string.format('vim.lsp.inlay_hint.enable(%s)', state.inlay_hints)
+    or 'inlay hints unavailable'
   local summary = string.format(
     'LSP UI: diag=%s, vtext=%s, inlay=%s, ty=%s',
     enable and 'on' or 'off',
-    virtual_text_enabled and 'on' or 'off',
-    inlay_hints_enabled and 'on' or 'off',
-    ty_diagnostic_mode
+    state.virtual_text and 'on' or 'off',
+    inlay_state,
+    state.ty_diagnostic_mode
   )
   local command = string.format(
-    'vim.diagnostic.enable(%s); vim.diagnostic.config({ virtual_text = %s }); vim.lsp.inlay_hint.enable(%s); ty.diagnosticMode=%s',
+    'vim.diagnostic.enable(%s); vim.diagnostic.config({ virtual_text = %s }); %s; ty.diagnosticMode=%s',
     enable,
-    virtual_text_enabled,
-    inlay_hints_enabled,
-    ty_diagnostic_mode
+    state.virtual_text,
+    inlay_command,
+    state.ty_diagnostic_mode
   )
-  notify_info(summary, command)
+  notify(summary, command)
 end
 
--- LSP keymaps that attach per-buffer.
 vim.api.nvim_create_autocmd('LspAttach', {
   group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
   callback = function(event)
@@ -218,7 +232,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
     if client and client.name == 'ty' then
       apply_ty_settings(client)
     end
-    apply_inlay_hints(event.buf)
+    set_inlay_hints(state.inlay_hints, { bufnr = event.buf, warn = false })
   end,
 })
 
@@ -241,7 +255,7 @@ vim.keymap.set('n', '<leader>tli', toggle_inlay_hints, { desc = '[T]oggle [L]SP 
 vim.keymap.set('n', '<leader>tlw', toggle_ty_workspace_diagnostics, { desc = '[T]oggle [L]SP [W]orkspace diagnostics' })
 vim.keymap.set('n', '<leader>tla', toggle_all_lsp_ui, { desc = '[T]oggle [L]SP [A]ll' })
 
--- Prefer Mason binaries inside Neovim without replacing shell PATH.
+-- Prefer Mason-managed binaries inside Neovim for consistent tool versions.
 local mason_bin = vim.fn.stdpath('data') .. '/mason/bin'
 if vim.fn.isdirectory(mason_bin) == 1 then
   local sep = package.config:sub(1, 1) == '\\' and ';' or ':'
@@ -251,36 +265,25 @@ end
 require('mason').setup()
 
 local servers = {
-  clangd = {},
-  gopls = {},
-  rust_analyzer = {},
-  ts_ls = {},
-  html = {},
-  jsonls = {},
-  marksman = {},
-  lua_ls = {},
-  ruff = {},
-  ty = {},
+  'clangd',
+  'rust_analyzer',
+  'ts_ls',
+  'html',
+  'jsonls',
+  'marksman',
+  'lua_ls',
+  'ruff',
+  'ty',
 }
 
-local function without(list, value)
-  return vim.tbl_filter(function(item)
-    return item ~= value
-  end, list)
-end
-
-local lsp_servers = vim.tbl_keys(servers or {})
-if vim.fn.executable('go') == 0 then
-  lsp_servers = without(lsp_servers, 'gopls')
-end
-
 require('mason-lspconfig').setup {
-  ensure_installed = lsp_servers,
+  ensure_installed = servers,
   automatic_enable = false,
 }
 
-local tools = vim.list_extend(vim.deepcopy(lsp_servers), { 'stylua', 'prettier' })
-require('mason-tool-installer').setup { ensure_installed = tools }
+require('mason-tool-installer').setup {
+  ensure_installed = { 'stylua', 'prettier' },
+}
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('blink.cmp').get_lsp_capabilities(capabilities)
@@ -296,6 +299,7 @@ vim.lsp.config('lua_ls', {
   },
 })
 
+-- Align Python roots with tool configs so Ruff and Ty agree on scope.
 local python_root_markers = {
   'pyproject.toml',
   'setup.cfg',
@@ -310,6 +314,23 @@ local python_root_markers = {
   '.git',
 }
 
+local function disable_ruff_language_features(client)
+  -- Ruff stays lint/format-only so Ty owns language services.
+  client.server_capabilities.hoverProvider = false
+  client.server_capabilities.definitionProvider = false
+  client.server_capabilities.declarationProvider = false
+  client.server_capabilities.typeDefinitionProvider = false
+  client.server_capabilities.implementationProvider = false
+  client.server_capabilities.referencesProvider = false
+  client.server_capabilities.documentSymbolProvider = false
+  client.server_capabilities.workspaceSymbolProvider = false
+  client.server_capabilities.renameProvider = false
+  client.server_capabilities.completionProvider = nil
+  client.server_capabilities.signatureHelpProvider = nil
+  client.server_capabilities.documentHighlightProvider = false
+  client.server_capabilities.inlayHintProvider = false
+end
+
 vim.lsp.config('ruff', {
   cmd = { 'ruff', 'server' },
   filetypes = { 'python' },
@@ -322,21 +343,7 @@ vim.lsp.config('ruff', {
       showSyntaxErrors = false,
     },
   },
-  on_attach = function(client)
-    client.server_capabilities.hoverProvider = false
-    client.server_capabilities.definitionProvider = false
-    client.server_capabilities.declarationProvider = false
-    client.server_capabilities.typeDefinitionProvider = false
-    client.server_capabilities.implementationProvider = false
-    client.server_capabilities.referencesProvider = false
-    client.server_capabilities.documentSymbolProvider = false
-    client.server_capabilities.workspaceSymbolProvider = false
-    client.server_capabilities.renameProvider = false
-    client.server_capabilities.completionProvider = nil
-    client.server_capabilities.signatureHelpProvider = nil
-    client.server_capabilities.documentHighlightProvider = false
-    client.server_capabilities.inlayHintProvider = false
-  end,
+  on_attach = disable_ruff_language_features,
 })
 
 vim.lsp.config('ty', {
@@ -346,7 +353,7 @@ vim.lsp.config('ty', {
   single_file_support = true,
   settings = {
     ty = {
-      diagnosticMode = ty_diagnostic_mode,
+      diagnosticMode = state.ty_diagnostic_mode,
       completions = { autoImport = true },
       inlayHints = {
         variableTypes = true,
@@ -356,4 +363,4 @@ vim.lsp.config('ty', {
   },
 })
 
-vim.lsp.enable(vim.tbl_keys(servers or {}))
+vim.lsp.enable(servers)

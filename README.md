@@ -201,7 +201,8 @@ tree -a -L 5 --gitignore -I .git/ -I .gitignore -I README.md
 │   │   └── aerospace.toml
 │   ├── alacritty.toml
 │   ├── btop
-│   │   └── btop.conf
+│   │   ├── btop.conf
+│   │   └── themes
 │   ├── git
 │   │   └── config
 │   ├── homebrew
@@ -225,6 +226,7 @@ tree -a -L 5 --gitignore -I .git/ -I .gitignore -I README.md
 │   │       ├── core
 │   │       │   ├── keymaps.lua
 │   │       │   ├── options.lua
+│   │       │   ├── path.lua
 │   │       │   └── plugins.lua
 │   │       └── plugin_config
 │   │           ├── blink.lua
@@ -250,7 +252,6 @@ tree -a -L 5 --gitignore -I .git/ -I .gitignore -I README.md
 ├── AGENTS.md
 ├── bootstrap.sh
 ├── brew.sh
-├── IMPROVEMENTS.md
 ├── macos.sh
 └── scripts
     ├── gt-btooth
@@ -264,7 +265,7 @@ tree -a -L 5 --gitignore -I .git/ -I .gitignore -I README.md
     ├── gt-todoist-export
     └── gt-tts
 
-20 directories, 56 files
+21 directories, 56 files
 ```
 
 
@@ -289,7 +290,7 @@ Markdown formatting uses Prettier (via Mason) when you run `<leader>f` or `:Form
 
 Neovim highlights:
 - LSP UI toggles live under `<leader>tl` (diagnostics, virtual text, inlay hints, Ty workspace) with `<leader>tla` for all.
-- Completion auto-trigger toggle lives at `<leader>tc` (Markdown stays manual by default).
+- Completion auto-trigger toggle lives at `<leader>tc`.
 - Winbar shows git-root-relative paths (fallback to CWD), and `<leader><tab>` jumps to the most recent buffer.
 
 ```
@@ -300,6 +301,7 @@ Neovim highlights:
     ├── core
     │   ├── keymaps.lua
     │   ├── options.lua
+    │   ├── path.lua
     │   └── plugins.lua
     └── plugin_config
         ├── blink.lua
@@ -315,5 +317,5 @@ Neovim highlights:
         ├── telescope.lua
         └── treesitter.lua
 
-4 directories, 17 files
+4 directories, 18 files
 ```
