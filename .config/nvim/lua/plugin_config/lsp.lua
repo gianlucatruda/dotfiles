@@ -154,7 +154,6 @@ end, { desc = '[T]oggle [T]y workspace checks' })
 -- mason-lspconfig requires that these setup functions are called in this order
 -- before setting up the servers.
 require('mason').setup()
-require('mason-lspconfig').setup()
 local util = require 'lspconfig.util'
 
 local function exists(path)
@@ -319,6 +318,12 @@ local servers = {
 
 
 -- Updated Mason setup from https://github.com/nvim-lua/kickstart.nvim/pull/1475/files
+-- Prefer Mason-managed binaries in Neovim (CLI stays untouched).
+local mason_bin = vim.fn.stdpath('data') .. '/mason/bin'
+if vim.fn.isdirectory(mason_bin) == 1 then
+  vim.env.PATH = mason_bin .. ':' .. (vim.env.PATH or '')
+end
+
 -- Ensure the servers and tools above are installed.
 require('mason-lspconfig').setup {
   -- Set to false if you prefer to enable servers manually.

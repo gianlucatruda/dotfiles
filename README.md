@@ -282,6 +282,9 @@ tree -a -L 5 --gitignore -I .git/ -I .gitignore -I README.md
 
 ### Neovim setup
 
+Neovim prepends Mason's `bin` to PATH so LSP/tools use Mason-managed binaries
+inside Neovim without affecting your shell.
+
 ```
 .config/nvim/
 ├── init.lua
