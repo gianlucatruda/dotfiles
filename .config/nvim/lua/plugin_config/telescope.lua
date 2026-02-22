@@ -1,24 +1,72 @@
 -- See `:help telescope` and `:help telescope.setup()`
 local actions = require('telescope.actions')
 local actions_layout = require('telescope.actions.layout')
+
+local function compact_path(_, path)
+  local display = vim.fn.fnamemodify(path, ':~:.')
+  local max_width = vim.api.nvim_win_get_width(0) - 8
+  if max_width <= 0 then
+    max_width = vim.o.columns
+  end
+
+  if vim.fn.strdisplaywidth(display) <= max_width then
+    return display
+  end
+
+  local sep = package.config:sub(1, 1)
+  local parts = vim.split(display, sep, { plain = true, trimempty = true })
+  if #parts <= 4 then
+    return display
+  end
+
+  local function build(head, tail)
+    local result = {}
+    for i = 1, head do
+      table.insert(result, parts[i])
+    end
+    table.insert(result, '...')
+    for i = #parts - tail + 1, #parts do
+      table.insert(result, parts[i])
+    end
+    return table.concat(result, sep)
+  end
+
+  local candidate = build(2, 2)
+  if vim.fn.strdisplaywidth(candidate) <= max_width then
+    return candidate
+  end
+
+  candidate = build(1, 2)
+  if vim.fn.strdisplaywidth(candidate) <= max_width then
+    return candidate
+  end
+
+  candidate = build(1, 1)
+  if vim.fn.strdisplaywidth(candidate) <= max_width then
+    return candidate
+  end
+
+  return '...' .. sep .. parts[#parts]
+end
 require('telescope').setup {
   defaults = {
-    -- Layout: keep the list wide with a generous preview.
+    -- Layout: keep the list wide with a compact preview.
     -- Swap to 'vertical' or 'flex' if you prefer a taller layout.
     layout_strategy = 'horizontal',
     layout_config = {
       -- width/height accept floats (0-1) or absolute columns/rows.
-      width = 0.95,
+      width = 0.96,
       height = 0.9,
-      -- Adjust preview_width to balance list vs preview.
-      preview_width = 0.45,
+      -- Keep preview small and drop it on narrow screens.
+      preview_width = 0.25,
+      preview_cutoff = 140,
       -- prompt_position can be 'top' or 'bottom'.
       prompt_position = 'top',
     },
     -- 'ascending' keeps the prompt at the top; 'descending' flips it.
     sorting_strategy = 'ascending',
-    -- path_display options include 'truncate', 'smart', 'absolute', and 'tail'.
-    path_display = { 'truncate' },
+    -- path_display options include 'shorten', 'smart', 'absolute', and 'tail'.
+    path_display = compact_path,
     mappings = {
       i = {
         ['<C-u>'] = false,
