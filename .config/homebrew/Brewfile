@@ -315,8 +315,6 @@ cask "kap"
 cask "karabiner-elements"
 # File system integration
 cask "macfuse"
-# Quicklook extension for source files
-cask "syntax-highlight"
 # Google Chromium, sans integration with Google
 cask "ungoogled-chromium"
 # AI image upscaler
