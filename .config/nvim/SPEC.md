@@ -552,7 +552,7 @@ These are outside `~/.config/nvim`, but affect how Neovim is used:
 - Shell function `v()` opens Neovim if installed; fallback to `vi` (`~/.config/.functions`).
 - Shell function `sf()` uses `rg` + `fzf` to pick a file and opens it with `v()`.
 - Alacritty uses the Tokyo Night Moon terminal palette.
-- Tmux advertises `tmux-256color`, enables true color and undercurl support, and acts as the stable terminal contract for Neovim.
+- Tmux advertises `tmux-256color`, enables true color and undercurl support, uses Tokyo Night Moon accents, and keeps the status line on the terminal's default background.
 - Neovim uses a fixed Tokyo Night Moon theme instead of detecting the outer terminal.
 
 ## Installed but Inactive / Conditional

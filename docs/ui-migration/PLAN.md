@@ -18,6 +18,13 @@ This is a phased migration. The intended order is:
 3. Neovim cleanup and polish
 4. Ghostty fit-and-finish
 
+## Current Status
+
+- Phases 1-3 are complete in the current dotfiles state.
+- The active stack now uses fixed `Tokyo Night Moon` styling across Alacritty, tmux, and Neovim.
+- tmux now advertises `tmux-256color`, provides explicit truecolor and undercurl support, and keeps its top status line on the terminal's default background so it blends into the terminal instead of painting a separate strip.
+- Phase 4 remains future work while `Ghostty` is evaluated.
+
 ## Success Criteria
 
 The overhaul is successful when all of the following are true:
@@ -144,6 +151,7 @@ Success criteria for this phase:
 - Truecolor and undercurl support are explicit and stable.
 - Nested tmux sessions remain usable and visually correct.
 - The configuration no longer relies on inheriting the outer terminal identity as tmux's primary model.
+- The status line blends into the terminal background instead of introducing a separate full-width bar color.
 
 ## Phase 3 - Neovim Cleanup And Polish
 
@@ -210,7 +218,7 @@ Some of these may eventually get improved theme alignment, but they are not the 
 ## Additional Decisions
 
 - Neovim should use a fixed `Tokyo Night Moon` theme instead of auto-detecting and inheriting the outer terminal theme.
-- Tmux status styling should also use a fixed `Tokyo Night Moon` look instead of adapting to the terminal theme.
+- Tmux status styling should use fixed `Tokyo Night Moon` accents, but keep the status line background on the terminal default so it feels integrated with the outer terminal.
 - `btop`, `lazygit`, `fzf`, and `delta` should NOT be included in the early theme pass, as they should mostly inherit colour.
 - `UbuntuMono Nerd Font` should remain the font of choice.
 

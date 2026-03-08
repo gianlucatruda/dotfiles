@@ -5,10 +5,10 @@ I forked [Mathias's dotfiles](https://github.com/mathiasbynens/dotfiles) in 2017
 My stack:
 
 - Bash as shell
-- Tmux for multiplexing
+- Tmux for multiplexing and as the main terminal compatibility layer
 - Neovim as primary editor, based off [Kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim/)
 - Vim (with lean .vimrc, no plugins) as fallback editor
-- Alacritty as terminal
+- Alacritty as current terminal
 - Homebrew as package manager
 - Karabiner for key modifiers and custom keybindings
 - [Aerospace](https://github.com/nikitabobko/AeroSpace) as (tiling) window manager (with [tweaks](https://youtu.be/-FoWClVHG5g))
@@ -173,6 +173,7 @@ Often helpful:
 ### Font and colour
 
 - Fixed [Tokyo Night Moon](https://github.com/folke/tokyonight.nvim) across Alacritty, tmux, and Neovim.
+- tmux advertises `tmux-256color` and keeps its top status line on the terminal's default background so it blends into the outer terminal instead of painting a separate bar.
 - [UbuntuMono](https://www.programmingfonts.org/#ubuntu) with [Nerd font icons](https://www.nerdfonts.com).
 
 
