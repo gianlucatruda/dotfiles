@@ -176,6 +176,7 @@ Often helpful:
 - Ghostty is now the preferred terminal and uses its built-in `TokyoNight Moon` theme plus a small local config with a hidden macOS titlebar.
 - Alacritty keeps a matching local palette as a fallback terminal during transition.
 - Neovim uses `Tokyo Night Moon` only in Ghostty, with a single shared detection flag backed by a Ghostty-set `DOTFILES_TERM=ghostty` marker that tmux preserves; elsewhere it falls back to `colorscheme default` and terminal-owned colours.
+- Shells inside tmux also normalize `TERMINAL_EMULATOR=ghostty`, and when needed `TERM_PROGRAM=ghostty`, so scripts can still detect the outer terminal without changing tmux's actual runtime contract.
 - tmux advertises `tmux-256color` and keeps its top status line on the terminal's default background so it blends into the outer terminal instead of painting a separate bar.
 - [UbuntuMono](https://www.programmingfonts.org/#ubuntu) with [Nerd font icons](https://www.nerdfonts.com).
 
@@ -278,7 +279,7 @@ tree -a -L 5 --gitignore -I .git/ -I .gitignore -I README.md
 - **`v()`**: Opens the current directory or a specified directory in neovim if available, otherwise uses vi.
 - **`sf()`**: Searches for text-readable, non-hidden files (or all files including hidden with `-a` flag, excluding `.git`) in the current directory using `rg` and `fzf`, then opens the selected file in Vim.
 - **`sd()`**: Searches directories using `fzf` and changes to the selected directory, excluding paths containing `.git`.
-- **`update_environment_from_tmumx()`**: Updates the environment variables in tmux if running inside a tmux session.
+- **`update_environment_from_tmux()`**: Imports tmux-managed environment variables into the shell and normalizes terminal-identifying variables when Ghostty is the outer terminal.
 - **`mkd()`**: Creates a new directory (and any necessary parent directories) then changes into it.
 - **`fs()`**: Displays the size of a file or total size of a directory using `du`, presenting results in human-readable form.
 - **Built-in Overridden `diff()`**: Uses Git’s colored diff functionality when Git is installed, otherwise falls back to standard behavior.
