@@ -172,15 +172,14 @@ Often helpful:
 
 ### Font and colour
 
-- Fixed [Tokyo Night Moon](https://github.com/folke/tokyonight.nvim) across Ghostty and tmux.
-- Ghostty is now the preferred terminal and uses its built-in `TokyoNight Moon` theme plus a small local config with a hidden macOS titlebar.
-- Neovim uses `Tokyo Night Moon` only in Ghostty, with a single shared detection flag backed by a Ghostty-set `DOTFILES_TERM=ghostty` marker that tmux preserves; elsewhere it falls back to `colorscheme default` and terminal-owned colours.
-- Shells inside tmux also normalize `TERMINAL_EMULATOR=ghostty`, and when needed `TERM_PROGRAM=ghostty`, so scripts can still detect the outer terminal without changing tmux's actual runtime contract.
-- tmux advertises `tmux-256color` and keeps its top status line on the terminal's default background so it blends into the outer terminal instead of painting a separate bar.
+- Ghostty is the only terminal config in this repo now; Alacritty is fully deprecated.
+- Ghostty uses its built-in `TokyoNight Moon` theme and exports `DOTFILES_TERM=ghostty`.
+- tmux is the runtime contract: `tmux-256color`, explicit truecolor and undercurl support, and a status line that stays on the terminal's default background.
+- Neovim reads the shared terminal marker; in Ghostty it uses `Tokyo Night Moon`, elsewhere it falls back to `colorscheme default` and terminal-owned colours.
 - [Hack Nerd Font](https://www.nerdfonts.com/font-downloads) for terminal and editor use.
 
 
-### Structure 
+### Structure
 
 Generate with:
 
@@ -202,19 +201,17 @@ tree -a -L 5 --gitignore -I .git/ -I .gitignore -I README.md
 │   ├── aerospace
 │   │   └── aerospace.toml
 │   ├── btop
-│   │   ├── btop.conf
-│   │   └── themes
+│   │   └── btop.conf
 │   ├── git
 │   │   └── config
 │   ├── ghostty
 │   │   ├── config
+│   │   └── themes
 │   ├── homebrew
 │   │   └── Brewfile
 │   ├── htop
 │   │   └── htoprc
 │   ├── karabiner
-│   │   ├── assets
-│   │   │   └── complex_modifications
 │   │   ├── complex_modifications
 │   │   │   └── 1584620783.json
 │   │   └── karabiner.json
@@ -223,6 +220,7 @@ tree -a -L 5 --gitignore -I .git/ -I .gitignore -I README.md
 │   │   ├── icons
 │   │   └── lfrc
 │   ├── nvim
+│   │   ├── SPEC.md
 │   │   ├── init.lua
 │   │   ├── lazy-lock.json
 │   │   └── lua
@@ -255,6 +253,9 @@ tree -a -L 5 --gitignore -I .git/ -I .gitignore -I README.md
 ├── AGENTS.md
 ├── bootstrap.sh
 ├── brew.sh
+├── docs
+│   └── ui-migration
+│       └── PLAN.md
 ├── macos.sh
 └── scripts
     ├── gt-btooth
@@ -268,7 +269,7 @@ tree -a -L 5 --gitignore -I .git/ -I .gitignore -I README.md
     ├── gt-todoist-export
     └── gt-tts
 
-22 directories, 57 files
+22 directories, 58 files
 ```
 
 
@@ -277,7 +278,7 @@ tree -a -L 5 --gitignore -I .git/ -I .gitignore -I README.md
 - **`v()`**: Opens the current directory or a specified directory in neovim if available, otherwise uses vi.
 - **`sf()`**: Searches for text-readable, non-hidden files (or all files including hidden with `-a` flag, excluding `.git`) in the current directory using `rg` and `fzf`, then opens the selected file in Vim.
 - **`sd()`**: Searches directories using `fzf` and changes to the selected directory, excluding paths containing `.git`.
-- **`update_environment_from_tmux()`**: Imports tmux-managed environment variables into the shell and normalizes terminal-identifying variables when Ghostty is the outer terminal.
+- **`update_environment_from_tmux()`**: Refreshes tmux-managed environment variables when a shell is started or reloaded inside tmux.
 - **`mkd()`**: Creates a new directory (and any necessary parent directories) then changes into it.
 - **`fs()`**: Displays the size of a file or total size of a directory using `du`, presenting results in human-readable form.
 - **Built-in Overridden `diff()`**: Uses Git’s colored diff functionality when Git is installed, otherwise falls back to standard behavior.
@@ -291,13 +292,18 @@ inside Neovim without affecting your shell.
 
 Markdown formatting uses Prettier (via Mason) when you run `<leader>f` or `:Format`.
 
+Theme behavior stays intentionally simple: Neovim only enables `Tokyo Night Moon` in Ghostty; other terminals keep their own palette.
+
 Neovim highlights:
 - LSP UI toggles live under `<leader>tl` (diagnostics, virtual text, inlay hints, Ty workspace) with `<leader>tla` for all.
 - Completion auto-trigger toggle lives at `<leader>tc`.
 - Winbar shows git-root-relative paths (fallback to CWD), and `<leader><tab>` jumps to the most recent buffer.
 
+See `.config/nvim/SPEC.md` for the full behavior-level spec.
+
 ```
 .config/nvim/
+├── SPEC.md
 ├── init.lua
 ├── lazy-lock.json
 └── lua
@@ -320,5 +326,5 @@ Neovim highlights:
         ├── telescope.lua
         └── treesitter.lua
 
-4 directories, 18 files
+4 directories, 19 files
 ```
