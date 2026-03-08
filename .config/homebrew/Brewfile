@@ -315,6 +315,8 @@ cask "kap"
 cask "karabiner-elements"
 # File system integration
 cask "macfuse"
+# System monitor with temperature & fans plugins
+cask "menubar-stats"
 # Google Chromium, sans integration with Google
 cask "ungoogled-chromium"
 # AI image upscaler

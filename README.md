@@ -155,12 +155,10 @@ Productivity essentials:
 - Obsidian for notes and knowledge management
 - Shottr for screenshots (macOS only, one-time licence for all features)
 - Helium browser for messaging/email web apps
-- tad (switching to [visidata](https://github.com/saulpw/visidata) and [csvlens](https://github.com/YS-L/csvlens))
 
 Often helpful:
 - spotify for tunes
 - todoist for quick capture inbox and basic recurring tasks across devices
-- menubar stats (App store) 
 - brave-browser for distraction-free YouTube isolated from other browsing
 - handbrake for video transcoding
 - iina for longer video playback (nicer than VLC on Macs, more GUI than `mpv`)
