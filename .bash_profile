@@ -17,7 +17,7 @@ if [[ "$(uname)" == "Darwin" ]] && [[ -x /opt/homebrew/bin/brew ]]; then
   fi
 fi
 
-if [[ "$(uname)" == "Darwin" ]] && declare -f update_environment_from_tmux >/dev/null; then
+if [[ -n "${TMUX:-}" ]] && declare -f update_environment_from_tmux >/dev/null; then
   update_environment_from_tmux
 fi
 # Case-insensitive globbing (used in pathname expansion)

@@ -2,6 +2,8 @@
 
 This document exhaustively describes the Neovim configuration in this dotfiles repo. It is written so the setup can be recreated from scratch without reading the original files. All behavior described here is based on the actual configuration and its surrounding dotfiles context.
 
+Ghostty is the preferred terminal in this repo. Alacritty has been fully removed, and the Neovim theme model is built around a small outer-terminal marker plus terminal-default fallbacks everywhere else.
+
 ## Scope
 
 - Focus: Neovim functionality and capabilities enabled by the config under `~/.config/nvim`.
@@ -13,6 +15,7 @@ This document exhaustively describes the Neovim configuration in this dotfiles r
 Directory layout (relative to `~/.config/nvim`):
 
 ```
+SPEC.md
 init.lua
 lazy-lock.json
 lua/
@@ -21,6 +24,7 @@ lua/
     options.lua
     path.lua
     plugins.lua
+    terminal.lua
   plugin_config/
     blink.lua
     colourscheme.lua
@@ -76,8 +80,8 @@ Minimum versions and required binaries:
 
 Recommended (from the dotfiles context):
 
-- Alacritty terminal. The colorscheme is only applied automatically when running in Alacritty.
-- A Nerd Font (the dotfiles use UbuntuMono Nerd Font in Alacritty), though icons are disabled in lualine so this is not required for core functionality.
+- A truecolor terminal. This repo currently configures Ghostty as the preferred terminal and uses tmux with `tmux-256color` as the main runtime layer.
+- A Nerd Font (the dotfiles use Hack Nerd Font in Ghostty), though icons are disabled in lualine so this is not required for core functionality.
 
 ## Core Options (Editor Behavior)
 
@@ -94,8 +98,12 @@ Basics:
 
 Color and syntax:
 
-- `termguicolors = false` (true color is disabled by default).
-- `background = dark` and `colors_name = default`.
+- `core/terminal.lua` is the shared terminal detection helper.
+- Ghostty exports `DOTFILES_TERM=ghostty`, and tmux refreshes that outer-terminal marker via `update-environment`.
+- In tmux, Neovim reads the tmux-managed outer-terminal marker; outside tmux, it reads `DOTFILES_TERM` from the process environment.
+- `termguicolors = true` in Ghostty and `false` elsewhere.
+- `colors_name = default` before plugin config loads.
+- `background = dark`.
 - `syntax = on` (syntax highlighting is enabled).
 
 Indentation:
@@ -189,7 +197,7 @@ Active plugins (configured or used):
 - `folke/lazydev.nvim` (Lua dev enhancements).
 - `numToStr/Comment.nvim` (installed but not configured; see "Inactive" section).
 - `j-hui/fidget.nvim` (LSP status notifications).
-- `EdenEast/nightfox.nvim` (colorscheme; conditional).
+- `folke/tokyonight.nvim` (colorscheme).
 - `lukas-reineke/indent-blankline.nvim` (indent guides via `ibl`).
 - `nvim-telescope/telescope.nvim` + `telescope-fzf-native.nvim` (fuzzy finder).
 - `nvim-treesitter/nvim-treesitter` + `nvim-treesitter-textobjects` (syntax + text objects).
@@ -198,7 +206,7 @@ Plugin definitions with non-default options:
 
 - `saghen/blink.cmp`: `version = "1.*"`, depends on `friendly-snippets`.
 - `mason-org/mason.nvim`: `lazy = true` (loaded on demand by `require('mason')`).
-- `EdenEast/nightfox.nvim`: `priority = 1000`, `lazy = true`.
+- `folke/tokyonight.nvim`: `priority = 1000`; eager in Ghostty and lazy elsewhere.
 - `lukas-reineke/indent-blankline.nvim`: `main = "ibl"`.
 - `nvim-telescope/telescope.nvim`: `branch = "0.1.x"`, `lazy = true`.
 - `nvim-telescope/telescope-fzf-native.nvim`: `build = "make"`, `cond = executable('make') == 1`.
@@ -209,18 +217,16 @@ Plugin definitions with non-default options:
 
 Colorscheme:
 
-- `nightfox` is only applied if Neovim is running inside Alacritty (detected by `ALACRITTY_LOG` or `ALACRITTY_SOCKET`).
-- Nightfox setup options:
-  - `compile_path = stdpath("cache") .. "/nightfox"`
-  - `compil_file_suffix = "_compiled"` (note the spelling)
-  - `module_default = false`
-- After setup: `colorscheme nightfox` then `require('nightfox').load()`.
-- Otherwise, the default Vim colors are used (`colors_name = default`), with `termguicolors = false`.
+- In Ghostty, `tokyonight` is configured with `style = "moon"` and applied on startup.
+- Outside Ghostty, Neovim keeps the default colorscheme.
+- `termguicolors` follows the same outer-terminal marker.
+- This keeps remote, nested, and incidental terminal sessions simple: terminal defaults own the palette unless the session is explicitly marked as Ghostty.
+- The setup does not rewrite the outer terminal palette; colours stay owned by the terminal or tmux layer.
 
 Statusline and winbar (lualine):
 
 - Icons disabled.
-- Theme set to `auto`.
+- Theme set to `tokyonight` in Ghostty and `auto` elsewhere.
 - Component separators: `|`, section separators: empty.
 - Sections: `mode`, `branch`, `diff`, `diagnostics`, `filename`, `location`.
 - `lualine_x` and `lualine_y` are empty.
@@ -555,8 +561,11 @@ These are outside `~/.config/nvim`, but affect how Neovim is used:
 - `EDITOR` is set to `nvim` if available (`~/.config/.exports`).
 - Shell function `v()` opens Neovim if installed; fallback to `vi` (`~/.config/.functions`).
 - Shell function `sf()` uses `rg` + `fzf` to pick a file and opens it with `v()`.
-- Alacritty uses Nightfox terminal colors; Neovim only applies Nightfox when running in Alacritty.
-- Tmux config enables true color and is tuned for Neovim (cursor style, terminal overrides).
+- Shell function `update_environment_from_tmux()` refreshes tmux-managed environment variables when a shell is started or reloaded inside tmux.
+- Ghostty uses its built-in `TokyoNight Moon` theme.
+- Ghostty exports `DOTFILES_TERM=ghostty` as the outer terminal marker; tmux refreshes it from the attaching client, and shell reloads inside tmux can re-import it.
+- Tmux advertises `tmux-256color`, enables RGB for modern `xterm-256color`-style clients, and keeps most styling on terminal defaults.
+- Neovim uses Tokyo Night Moon in Ghostty and terminal defaults elsewhere.
 
 ## Installed but Inactive / Conditional
 
@@ -583,7 +592,7 @@ These pins are used for reproducibility:
 - mason-lspconfig.nvim: 21c2a84ce368e99b18f52ab348c4c02c32c02fcf
 - mason-tool-installer.nvim: 443f1ef8b5e6bf47045cb2217b6f748a223cf7dc
 - mason.nvim: 44d1e90e1f66e077268191e3ee9d2ac97cc18e65
-- nightfox.nvim: ba47d4b4c5ec308718641ba7402c143836f35aa9
+- tokyonight.nvim: 5da1b76e64daf4c5d410f06bcb6b9cb640da7dfd
 - nvim-lspconfig: 44acfe887d4056f704ccc4f17513ed41c9e2b2e6
 - nvim-treesitter: fcd51bbe9245aa9b79a3930ed9ac42e16e1cf33f
 - nvim-treesitter-textobjects: a0e182ae21fda68c59d1f36c9ed45600aef50311
@@ -602,6 +611,6 @@ These pins are used for reproducibility:
 2. Place the file structure above under `~/.config/nvim`.
 3. Ensure required binaries are available: `git`, `rg`, `lazygit`, `make`, Node.js, and Python at the configured `python3_host_prog` path.
 4. Launch Neovim once to let `lazy.nvim` install plugins and Mason install LSP servers/tools.
-5. Optionally run in Alacritty to apply the Nightfox colorscheme automatically.
+5. Launch Neovim in Ghostty for the matched Tokyo Night Moon setup, or in any other terminal to intentionally fall back to terminal defaults.
 
 This concludes the spec for the current Neovim setup.

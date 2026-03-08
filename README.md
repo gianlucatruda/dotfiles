@@ -5,10 +5,10 @@ I forked [Mathias's dotfiles](https://github.com/mathiasbynens/dotfiles) in 2017
 My stack:
 
 - Bash as shell
-- Tmux for multiplexing
+- Tmux for multiplexing and as the main terminal compatibility layer
 - Neovim as primary editor, based off [Kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim/)
 - Vim (with lean .vimrc, no plugins) as fallback editor
-- Alacritty as terminal
+- Ghostty as current terminal emulator
 - Homebrew as package manager
 - Karabiner for key modifiers and custom keybindings
 - [Aerospace](https://github.com/nikitabobko/AeroSpace) as (tiling) window manager (with [tweaks](https://youtu.be/-FoWClVHG5g))
@@ -172,17 +172,16 @@ Often helpful:
 
 ### Font and colour
 
-- [Nightfox](https://github.com/EdenEast/nightfox.nvim/tree/main) colorscheme (both alacritty and nvim).
-- [UbuntuMono](https://www.programmingfonts.org/#ubuntu) with [Nerd font icons](https://www.nerdfonts.com).
+- Ghostty is the only terminal config in this repo now; Alacritty is fully deprecated.
+- Ghostty uses its built-in `TokyoNight Moon` theme and exports `DOTFILES_TERM=ghostty` as the outer terminal marker.
+- tmux provides the runtime contract: `tmux-256color`, RGB enabled for modern `xterm-256color`-style clients, and a status line that mostly keeps terminal defaults.
+- Neovim reads that outer terminal marker; tmux refreshes `DOTFILES_TERM` from the attaching client so terminal-specific behavior still works inside tmux.
+- [Hack Nerd Font](https://www.nerdfonts.com/font-downloads) for terminal and editor use.
 
 
-### Structure 
+### Structure
 
-Generate with:
-
-```bash
-tree -a -L 5 --gitignore -I .git/ -I .gitignore -I README.md
-```
+Current tracked structure:
 
 ```
 .
@@ -197,19 +196,17 @@ tree -a -L 5 --gitignore -I .git/ -I .gitignore -I README.md
 │   ├── .path
 │   ├── aerospace
 │   │   └── aerospace.toml
-│   ├── alacritty.toml
 │   ├── btop
-│   │   ├── btop.conf
-│   │   └── themes
+│   │   └── btop.conf
 │   ├── git
+│   │   └── config
+│   ├── ghostty
 │   │   └── config
 │   ├── homebrew
 │   │   └── Brewfile
 │   ├── htop
 │   │   └── htoprc
 │   ├── karabiner
-│   │   ├── assets
-│   │   │   └── complex_modifications
 │   │   ├── complex_modifications
 │   │   │   └── 1584620783.json
 │   │   └── karabiner.json
@@ -218,6 +215,7 @@ tree -a -L 5 --gitignore -I .git/ -I .gitignore -I README.md
 │   │   ├── icons
 │   │   └── lfrc
 │   ├── nvim
+│   │   ├── SPEC.md
 │   │   ├── init.lua
 │   │   ├── lazy-lock.json
 │   │   └── lua
@@ -225,7 +223,8 @@ tree -a -L 5 --gitignore -I .git/ -I .gitignore -I README.md
 │   │       │   ├── keymaps.lua
 │   │       │   ├── options.lua
 │   │       │   ├── path.lua
-│   │       │   └── plugins.lua
+│   │       │   ├── plugins.lua
+│   │       │   └── terminal.lua
 │   │       └── plugin_config
 │   │           ├── blink.lua
 │   │           ├── colourscheme.lua
@@ -262,8 +261,6 @@ tree -a -L 5 --gitignore -I .git/ -I .gitignore -I README.md
     ├── gt-synchdd
     ├── gt-todoist-export
     └── gt-tts
-
-21 directories, 56 files
 ```
 
 
@@ -272,7 +269,7 @@ tree -a -L 5 --gitignore -I .git/ -I .gitignore -I README.md
 - **`v()`**: Opens the current directory or a specified directory in neovim if available, otherwise uses vi.
 - **`sf()`**: Searches for text-readable, non-hidden files (or all files including hidden with `-a` flag, excluding `.git`) in the current directory using `rg` and `fzf`, then opens the selected file in Vim.
 - **`sd()`**: Searches directories using `fzf` and changes to the selected directory, excluding paths containing `.git`.
-- **`update_environment_from_tmumx()`**: Updates the environment variables in tmux if running inside a tmux session.
+- **`update_environment_from_tmux()`**: Refreshes tmux-managed environment variables when a shell is started or reloaded inside tmux.
 - **`mkd()`**: Creates a new directory (and any necessary parent directories) then changes into it.
 - **`fs()`**: Displays the size of a file or total size of a directory using `du`, presenting results in human-readable form.
 - **Built-in Overridden `diff()`**: Uses Git’s colored diff functionality when Git is installed, otherwise falls back to standard behavior.
@@ -286,13 +283,18 @@ inside Neovim without affecting your shell.
 
 Markdown formatting uses Prettier (via Mason) when you run `<leader>f` or `:Format`.
 
+Theme behavior stays intentionally simple: Neovim only enables `Tokyo Night Moon` in Ghostty; other terminals keep their own palette.
+
 Neovim highlights:
 - LSP UI toggles live under `<leader>tl` (diagnostics, virtual text, inlay hints, Ty workspace) with `<leader>tla` for all.
 - Completion auto-trigger toggle lives at `<leader>tc`.
 - Winbar shows git-root-relative paths (fallback to CWD), and `<leader><tab>` jumps to the most recent buffer.
 
+See `.config/nvim/SPEC.md` for the full behavior-level spec.
+
 ```
 .config/nvim/
+├── SPEC.md
 ├── init.lua
 ├── lazy-lock.json
 └── lua
@@ -300,7 +302,8 @@ Neovim highlights:
     │   ├── keymaps.lua
     │   ├── options.lua
     │   ├── path.lua
-    │   └── plugins.lua
+    │   ├── plugins.lua
+    │   └── terminal.lua
     └── plugin_config
         ├── blink.lua
         ├── colourscheme.lua
@@ -314,6 +317,4 @@ Neovim highlights:
         ├── oil.lua
         ├── telescope.lua
         └── treesitter.lua
-
-4 directories, 18 files
 ```

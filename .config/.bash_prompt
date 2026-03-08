@@ -1,13 +1,11 @@
 #!/usr/bin/env bash
 
-# Shell prompt based on the Solarized Dark theme.
-# Screenshot: http://i.imgur.com/EkEtphC.png
-# Heavily inspired by @necolas’s prompt: https://github.com/necolas/dotfiles
-# iTerm → Profiles → Text → use 13pt Monaco with 1.1 vertical spacing.
+# Minimal prompt with a small Git status summary.
 
+# Only upgrade bare xterm; preserve richer terminal names like tmux-256color or xterm-ghostty.
 if [[ $COLORTERM = gnome-* && $TERM = xterm ]] && infocmp gnome-256color >/dev/null 2>&1; then
 	export TERM='gnome-256color';
-elif infocmp xterm-256color >/dev/null 2>&1; then
+elif [[ $TERM = xterm ]] && infocmp xterm-256color >/dev/null 2>&1; then
 	export TERM='xterm-256color';
 fi;
 
@@ -60,16 +58,14 @@ prompt_git() {
 			(( stashed )) && s+='s';
 		fi;
 
-		# Get the short symbolic ref.
-		# If HEAD isn’t a symbolic ref, get the short SHA for the latest commit
-		# Otherwise, just give up.
+		# Prefer the short branch name, otherwise fall back to HEAD SHA.
 		branchName="$(git symbolic-ref --quiet --short HEAD 2> /dev/null || \
 			git rev-parse --short HEAD 2> /dev/null || \
 			echo '(unknown)')";
 
 		[ -n "${s}" ] && s=" ${s}";
 
-		echo -e "${1}${branchName}${2}${s}"; # Place [] at end of branch name with symbols
+		printf '%b' "${1}${branchName}${2}${s}";
 	else
 		return;
 	fi;

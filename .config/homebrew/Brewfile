@@ -294,8 +294,6 @@ brew "philocalyst/tap/caligula"
 brew "skardyy/mcat/mcat"
 # AeroSpace is an i3-like tiling window manager for macOS
 cask "nikitabobko/tap/aerospace"
-# GPU-accelerated terminal emulator
-cask "alacritty"
 # Inspect application bundles
 cask "apparency"
 # Multi-track audio editor and recorder
@@ -304,7 +302,9 @@ cask "audacity"
 cask "codex"
 # Virtual monitor for screen sharing
 cask "deskpad"
-cask "font-ubuntu-mono-nerd-font"
+cask "font-hack-nerd-font"
+# Terminal emulator that uses platform-native UI and GPU acceleration
+cask "ghostty"
 # Utility to hide menu bar items
 cask "hiddenbar"
 # Utility to render Jupyter notebooks

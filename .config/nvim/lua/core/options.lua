@@ -1,3 +1,5 @@
+local terminal = require('core.terminal')
+
 -- BASICS
 vim.opt.clipboard = 'unnamedplus' -- Sync clipboard between OS and Neovim.
 vim.wo.number = true              -- Make line numbers default
@@ -10,10 +12,10 @@ vim.opt.linebreak = true          -- word wrap
 vim.opt.wrap = true               -- line wrap
 
 -- Set good default colours and inherit (overridden if plugins load)
-vim.opt.termguicolors = false -- 24-bit colors
-vim.g.colors_name = "default"
-vim.opt.background = "dark"   -- or light
-vim.opt.syntax = "on"         -- Enable syntax highlighting
+vim.opt.termguicolors = terminal.is_ghostty() -- 24-bit colors in Ghostty only
+vim.g.colors_name = 'default'
+vim.opt.background = 'dark'                   -- or light
+vim.opt.syntax = 'on'                         -- Enable syntax highlighting
 
 -- INDENTATION
 vim.opt.autoindent = true  -- Align the new line indent with the previous line
@@ -31,10 +33,10 @@ vim.opt.incsearch = true  -- Highlight dynamically as pattern is typed
 vim.opt.hlsearch = true   -- Highlight searches
 
 -- BEHAVIOUR
-vim.opt.mouse = "a"                      -- Enable mouse in all modes
-vim.opt.backspace = "indent,eol,start"   -- Allow backspace in insert mode
+vim.opt.mouse = 'a'                      -- Enable mouse in all modes
+vim.opt.backspace = 'indent,eol,start'   -- Allow backspace in insert mode
 vim.opt.startofline = false              -- Don't reset cursor to start of line when moving around
-vim.opt.shortmess:append("atI")          -- Don't show the intro message when starting Vim
+vim.opt.shortmess:append('atI')          -- Don't show the intro message when starting Vim
 vim.opt.errorbells = false               -- No annoyances on errors
 vim.opt.visualbell = false               -- No annoyances on errors
 vim.wo.signcolumn = 'yes'                -- Keep signcolumn on by default
@@ -46,7 +48,7 @@ vim.opt.titlelen = 25
 -- according to h: titlestring uses same syntax as statusline with filename-modifiers
 vim.opt.titlestring = '%{fnamemodify(getcwd(), ":t")}:%t'
 vim.opt.showmode = false -- Hide mode; lualine already shows it
-vim.opt.showcmd = true  -- Show the (partial) command as it's being typed
+vim.opt.showcmd = true   -- Show the (partial) command as it's being typed
 
 -- PERFORMANCE
 vim.opt.updatetime = 1000     -- Reduce idle time for CursorHold/checktime
@@ -58,9 +60,9 @@ vim.opt.maxmempattern = 20000 -- Increase max syntax highlight memory
 vim.opt.undofile = true -- Save undo history
 vim.opt.autoread = true -- Auto read when a file is changed externally
 -- Check if file is modified and prompt to reload
-vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold", "CursorHoldI" }, {
-  pattern = "*",
-  command = "checktime"
+vim.api.nvim_create_autocmd({ 'FocusGained', 'BufEnter', 'CursorHold', 'CursorHoldI' }, {
+  pattern = '*',
+  command = 'checktime',
 })
 
 -- Use Prettier for Markdown formatting; marksman does not format.

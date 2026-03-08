@@ -1,0 +1,15 @@
+# Preferred terminal profile. Keep it small and let tmux own the runtime contract.
+
+font-family = Hack Nerd Font
+font-size = 14
+
+theme = "TokyoNight Moon"
+env = DOTFILES_TERM=ghostty
+
+maximize = true
+macos-titlebar-style = hidden
+window-padding-x = 10
+window-padding-y = 10
+window-padding-color = background
+
+mouse-hide-while-typing = true

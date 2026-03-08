@@ -1,4 +1,5 @@
 local path = require('core.path')
+local terminal = require('core.terminal')
 
 local function winbar_path()
   local bufnr = vim.api.nvim_get_current_buf()
@@ -17,7 +18,7 @@ end
 require('lualine').setup {
   options = {
     icons_enabled = false,
-    theme = 'auto',
+    theme = terminal.is_ghostty() and 'tokyonight' or 'auto',
     component_separators = '|',
     section_separators = '',
   },
