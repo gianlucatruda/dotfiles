@@ -26,9 +26,9 @@ require('lazy').setup({
   'WhoIsSethDaniel/mason-tool-installer.nvim',
   { 'j-hui/fidget.nvim', opts = {} }, -- LSP status notification UI
   {
-    'EdenEast/nightfox.nvim',         -- Nightfox colourscheme
+    'folke/tokyonight.nvim',          -- Tokyo Night colourscheme
     priority = 1000,
-    lazy = true,
+    lazy = false,
   },
   {
     'lukas-reineke/indent-blankline.nvim', -- Indentation guides

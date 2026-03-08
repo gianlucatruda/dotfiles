@@ -15,7 +15,7 @@ This is a phased migration. The intended order is:
 
 1. Theme migration for the current setup
 2. `tmux-256color` baseline
-3. Simpler Neovim color setup
+3. Neovim cleanup and polish
 4. Ghostty fit-and-finish
 
 ## Success Criteria
@@ -91,12 +91,13 @@ Reasoning:
 - The migration should be low-risk and reversible while the new terminal is evaluated.
 - `Ghostty` is the likely long-term direction, but there is no need to force that move before the theme and tmux foundations are correct.
 
-### 6. Keep the migration phased, even if some phases temporarily preserve old behavior
+### 6. Switch Neovim to the final theme model in Phase 1
 
 Reasoning:
 
-- The requested order is intentional: theme first, tmux next, Neovim simplification after that.
-- This may temporarily preserve some existing conditional logic longer than ideal, but it keeps the migration controlled and easier to review.
+- The terminal-gated Neovim logic is the main source of inconsistency today.
+- Switching Neovim to a fixed `Tokyo Night Moon` setup immediately removes the biggest source of jank.
+- Later Neovim work should be cleanup and polish, not a second theme architecture change.
 
 ## High-Level Phases
 
@@ -119,13 +120,10 @@ Success criteria for this phase:
 
 - `Tokyo Night Moon` replaces `Nightfox` as the chosen theme family.
 - Current Alacritty ergonomics remain intact.
+- Neovim switches immediately to an unconditional `Tokyo Night Moon` setup.
+- Neovim no longer depends on `Alacritty` detection to load its colorscheme.
 - Documentation reflects the new target theme.
 - No Ghostty-specific changes are required yet.
-
-Notes:
-
-- To respect the agreed order, this phase may keep some current Neovim gating behavior temporarily.
-- The point of this phase is to establish the new theme family first, not to finish the final Neovim model yet.
 
 ## Phase 2 - `tmux-256color` Baseline
 
@@ -147,11 +145,11 @@ Success criteria for this phase:
 - Nested tmux sessions remain usable and visually correct.
 - The configuration no longer relies on inheriting the outer terminal identity as tmux's primary model.
 
-## Phase 3 - Simpler Neovim Color Setup
+## Phase 3 - Neovim Cleanup And Polish
 
 Goal:
 
-- Remove the terminal-specific theme logic and make Neovim behave well everywhere.
+- Keep the new fixed-theme model simple, explicit, and polished.
 
 Expected touchpoints:
 
@@ -163,10 +161,10 @@ Expected touchpoints:
 
 Success criteria for this phase:
 
-- Neovim uses a proper theme without depending on `Alacritty` detection.
+- Remaining Neovim color settings are consistent with the fixed `Tokyo Night Moon` model.
 - Neovim looks good in local tmux, nested tmux, and SSH sessions.
 - Neovim does not rewrite the outer terminal palette.
-- Fallback behavior is simpler and more predictable than today.
+- Related UI config and docs are simpler and more predictable than today.
 
 ## Phase 4 - Ghostty Feel And Aesthetic
 
@@ -209,10 +207,10 @@ These may be revisited later, but should not expand the initial implementation u
 
 Some of these may eventually get improved theme alignment, but they are not the critical path.
 
-## More decisions
+## Additional Decisions
 
-- Neovim simplification and collapsing sooner. Ideally just auto-detect and inherit terminal theme.
-- Tmux status styling should automatically adjust based on the terminal theme.
+- Neovim should use a fixed `Tokyo Night Moon` theme instead of auto-detecting and inheriting the outer terminal theme.
+- Tmux status styling should also use a fixed `Tokyo Night Moon` look instead of adapting to the terminal theme.
 - `btop`, `lazygit`, `fzf`, and `delta` should NOT be included in the early theme pass, as they should mostly inherit colour.
 - `UbuntuMono Nerd Font` should remain the font of choice.
 

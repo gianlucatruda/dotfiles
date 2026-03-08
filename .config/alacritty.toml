@@ -23,82 +23,29 @@ y = 10
 [mouse]
 hide_when_typing = true
 
-# Nightfox Alacritty Colors
-## name: nightfox
-## upstream: https://github.com/edeneast/nightfox.nvim/raw/main/extra/nightfox/alacritty.toml
+# Tokyo Night Moon Alacritty Colors
+## upstream: https://github.com/folke/tokyonight.nvim/raw/main/extras/alacritty/tokyonight_moon.toml
 
 [colors.primary]
-background = "#192330"
-foreground = "#cdcecf"
-dim_foreground = "#aeafb0"
-bright_foreground = "#d6d6d7"
-
-[colors.cursor]
-text = "#cdcecf"
-cursor = "#aeafb0"
-
-[colors.vi_mode_cursor]
-text = "#cdcecf"
-cursor = "#63cdcf"
-
-[colors.search.matches]
-foreground = "#cdcecf"
-background = "#3c5372"
-
-[colors.search.focused_match]
-foreground = "#cdcecf"
-background = "#81b29a"
-
-[colors.footer_bar]
-foreground = "#cdcecf"
-background = "#29394f"
-
-[colors.hints.start]
-foreground = "#cdcecf"
-background = "#f4a261"
-
-[colors.hints.end]
-foreground = "#cdcecf"
-background = "#29394f"
-
-[colors.selection]
-text = "#cdcecf"
-background = "#2b3b51"
+background = "#222436"
+foreground = "#c8d3f5"
 
 [colors.normal]
-black = "#393b44"
-red = "#c94f6d"
-green = "#81b29a"
-yellow = "#dbc074"
-blue = "#719cd6"
-magenta = "#9d79d6"
-cyan = "#63cdcf"
-white = "#dfdfe0"
+black = "#1b1d2b"
+red = "#ff757f"
+green = "#c3e88d"
+yellow = "#ffc777"
+blue = "#82aaff"
+magenta = "#c099ff"
+cyan = "#86e1fc"
+white = "#828bb8"
 
 [colors.bright]
-black = "#575860"
-red = "#d16983"
-green = "#8ebaa4"
-yellow = "#e0c989"
-blue = "#86abdc"
-magenta = "#baa1e2"
-cyan = "#7ad5d6"
-white = "#e4e4e5"
-
-[colors.dim]
-black = "#30323a"
-red = "#ab435d"
-green = "#6e9783"
-yellow = "#baa363"
-blue = "#6085b6"
-magenta = "#8567b6"
-cyan = "#54aeb0"
-white = "#bebebe"
-
-[[colors.indexed_colors]]
-index = 16
-color = "#f4a261"
-
-[[colors.indexed_colors]]
-index = 17
-color = "#d67ad2"
+black = "#444a73"
+red = "#ff8d94"
+green = "#c7fb6d"
+yellow = "#ffd8ab"
+blue = "#9ab8ff"
+magenta = "#caabff"
+cyan = "#b2ebff"
+white = "#c8d3f5"

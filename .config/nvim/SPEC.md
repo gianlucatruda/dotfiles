@@ -76,7 +76,7 @@ Minimum versions and required binaries:
 
 Recommended (from the dotfiles context):
 
-- Alacritty terminal. The colorscheme is only applied automatically when running in Alacritty.
+- A truecolor terminal. This repo currently configures Alacritty and uses tmux with `tmux-256color` as the main runtime layer.
 - A Nerd Font (the dotfiles use UbuntuMono Nerd Font in Alacritty), though icons are disabled in lualine so this is not required for core functionality.
 
 ## Core Options (Editor Behavior)
@@ -94,8 +94,8 @@ Basics:
 
 Color and syntax:
 
-- `termguicolors = false` (true color is disabled by default).
-- `background = dark` and `colors_name = default`.
+- `termguicolors = true` (true color is enabled by default).
+- `background = dark`.
 - `syntax = on` (syntax highlighting is enabled).
 
 Indentation:
@@ -189,7 +189,7 @@ Active plugins (configured or used):
 - `folke/lazydev.nvim` (Lua dev enhancements).
 - `numToStr/Comment.nvim` (installed but not configured; see "Inactive" section).
 - `j-hui/fidget.nvim` (LSP status notifications).
-- `EdenEast/nightfox.nvim` (colorscheme; conditional).
+- `folke/tokyonight.nvim` (colorscheme).
 - `lukas-reineke/indent-blankline.nvim` (indent guides via `ibl`).
 - `nvim-telescope/telescope.nvim` + `telescope-fzf-native.nvim` (fuzzy finder).
 - `nvim-treesitter/nvim-treesitter` + `nvim-treesitter-textobjects` (syntax + text objects).
@@ -198,7 +198,7 @@ Plugin definitions with non-default options:
 
 - `saghen/blink.cmp`: `version = "1.*"`, depends on `friendly-snippets`.
 - `mason-org/mason.nvim`: `lazy = true` (loaded on demand by `require('mason')`).
-- `EdenEast/nightfox.nvim`: `priority = 1000`, `lazy = true`.
+- `folke/tokyonight.nvim`: `priority = 1000`, `lazy = false`.
 - `lukas-reineke/indent-blankline.nvim`: `main = "ibl"`.
 - `nvim-telescope/telescope.nvim`: `branch = "0.1.x"`, `lazy = true`.
 - `nvim-telescope/telescope-fzf-native.nvim`: `build = "make"`, `cond = executable('make') == 1`.
@@ -209,18 +209,14 @@ Plugin definitions with non-default options:
 
 Colorscheme:
 
-- `nightfox` is only applied if Neovim is running inside Alacritty (detected by `ALACRITTY_LOG` or `ALACRITTY_SOCKET`).
-- Nightfox setup options:
-  - `compile_path = stdpath("cache") .. "/nightfox"`
-  - `compil_file_suffix = "_compiled"` (note the spelling)
-  - `module_default = false`
-- After setup: `colorscheme nightfox` then `require('nightfox').load()`.
-- Otherwise, the default Vim colors are used (`colors_name = default`), with `termguicolors = false`.
+- `tokyonight` is configured unconditionally with `style = "moon"`.
+- Startup applies `vim.cmd.colorscheme('tokyonight')`, so Neovim always uses the same fixed theme regardless of the outer terminal brand.
+- The setup does not rewrite the outer terminal palette; terminal colors stay owned by the terminal or tmux layer.
 
 Statusline and winbar (lualine):
 
 - Icons disabled.
-- Theme set to `auto`.
+- Theme set to `tokyonight`.
 - Component separators: `|`, section separators: empty.
 - Sections: `mode`, `branch`, `diff`, `diagnostics`, `filename`, `location`.
 - `lualine_x` and `lualine_y` are empty.
@@ -555,8 +551,9 @@ These are outside `~/.config/nvim`, but affect how Neovim is used:
 - `EDITOR` is set to `nvim` if available (`~/.config/.exports`).
 - Shell function `v()` opens Neovim if installed; fallback to `vi` (`~/.config/.functions`).
 - Shell function `sf()` uses `rg` + `fzf` to pick a file and opens it with `v()`.
-- Alacritty uses Nightfox terminal colors; Neovim only applies Nightfox when running in Alacritty.
-- Tmux config enables true color and is tuned for Neovim (cursor style, terminal overrides).
+- Alacritty uses the Tokyo Night Moon terminal palette.
+- Tmux advertises `tmux-256color`, enables true color and undercurl support, and acts as the stable terminal contract for Neovim.
+- Neovim uses a fixed Tokyo Night Moon theme instead of detecting the outer terminal.
 
 ## Installed but Inactive / Conditional
 
@@ -583,7 +580,7 @@ These pins are used for reproducibility:
 - mason-lspconfig.nvim: 21c2a84ce368e99b18f52ab348c4c02c32c02fcf
 - mason-tool-installer.nvim: 443f1ef8b5e6bf47045cb2217b6f748a223cf7dc
 - mason.nvim: 44d1e90e1f66e077268191e3ee9d2ac97cc18e65
-- nightfox.nvim: ba47d4b4c5ec308718641ba7402c143836f35aa9
+- tokyonight.nvim: 5da1b76e64daf4c5d410f06bcb6b9cb640da7dfd
 - nvim-lspconfig: 44acfe887d4056f704ccc4f17513ed41c9e2b2e6
 - nvim-treesitter: fcd51bbe9245aa9b79a3930ed9ac42e16e1cf33f
 - nvim-treesitter-textobjects: a0e182ae21fda68c59d1f36c9ed45600aef50311
@@ -602,6 +599,6 @@ These pins are used for reproducibility:
 2. Place the file structure above under `~/.config/nvim`.
 3. Ensure required binaries are available: `git`, `rg`, `lazygit`, `make`, Node.js, and Python at the configured `python3_host_prog` path.
 4. Launch Neovim once to let `lazy.nvim` install plugins and Mason install LSP servers/tools.
-5. Optionally run in Alacritty to apply the Nightfox colorscheme automatically.
+5. Launch Neovim in any truecolor terminal; the dotfiles are tuned for Alacritty + tmux, but the colorscheme no longer depends on terminal detection.
 
 This concludes the spec for the current Neovim setup.

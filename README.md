@@ -172,7 +172,7 @@ Often helpful:
 
 ### Font and colour
 
-- [Nightfox](https://github.com/EdenEast/nightfox.nvim/tree/main) colorscheme (both alacritty and nvim).
+- Fixed [Tokyo Night Moon](https://github.com/folke/tokyonight.nvim) across Alacritty, tmux, and Neovim.
 - [UbuntuMono](https://www.programmingfonts.org/#ubuntu) with [Nerd font icons](https://www.nerdfonts.com).
 
 

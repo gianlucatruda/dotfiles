@@ -9,9 +9,8 @@ vim.opt.sidescrolloff = 8         -- Keep 8 columns left/right of cursor
 vim.opt.linebreak = true          -- word wrap
 vim.opt.wrap = true               -- line wrap
 
--- Set good default colours and inherit (overridden if plugins load)
-vim.opt.termguicolors = false -- 24-bit colors
-vim.g.colors_name = "default"
+-- Use true color everywhere.
+vim.opt.termguicolors = true -- 24-bit colors
 vim.opt.background = "dark"   -- or light
 vim.opt.syntax = "on"         -- Enable syntax highlighting
 
