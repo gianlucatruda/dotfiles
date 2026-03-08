@@ -172,8 +172,10 @@ Often helpful:
 
 ### Font and colour
 
-- Fixed [Tokyo Night Moon](https://github.com/folke/tokyonight.nvim) across Alacritty, Ghostty, and tmux.
-- Ghostty uses its built-in `TokyoNight Moon` theme, plus a small local config with a hidden macOS titlebar, so it can be evaluated alongside Alacritty without shipping a duplicate theme file.
+- Fixed [Tokyo Night Moon](https://github.com/folke/tokyonight.nvim) across Ghostty, Alacritty, and tmux.
+- Ghostty is now the preferred terminal and uses its built-in `TokyoNight Moon` theme plus a small local config with a hidden macOS titlebar.
+- Alacritty keeps a matching local palette as a fallback terminal during transition.
+- Neovim uses `Tokyo Night Moon` only in Ghostty, with a single shared detection flag backed by a Ghostty-set `DOTFILES_TERM=ghostty` marker that tmux preserves; elsewhere it falls back to `colorscheme default` and terminal-owned colours.
 - tmux advertises `tmux-256color` and keeps its top status line on the terminal's default background so it blends into the outer terminal instead of painting a separate bar.
 - [UbuntuMono](https://www.programmingfonts.org/#ubuntu) with [Nerd font icons](https://www.nerdfonts.com).
 

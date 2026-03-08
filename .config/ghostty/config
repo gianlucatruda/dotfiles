@@ -4,6 +4,7 @@ font-family = UbuntuMono Nerd Font
 font-size = 16
 
 theme = "TokyoNight Moon"
+env = DOTFILES_TERM=ghostty
 
 maximize = true
 macos-titlebar-style = hidden

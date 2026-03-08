@@ -9,8 +9,34 @@ vim.opt.sidescrolloff = 8         -- Keep 8 columns left/right of cursor
 vim.opt.linebreak = true          -- word wrap
 vim.opt.wrap = true               -- line wrap
 
--- Use true color everywhere.
-vim.opt.termguicolors = true -- 24-bit colors
+local function tmux_environment(name)
+  local line = vim.fn.systemlist({ 'tmux', 'show-environment', name })[1]
+
+  if vim.v.shell_error ~= 0 or not line or vim.startswith(line, '-') then
+    return nil
+  end
+
+  return line:match('^[^=]+=([%s%S]*)$')
+end
+
+local function use_ghostty_tokyonight()
+  if vim.env.DOTFILES_TERM == 'ghostty'
+    or vim.env.GHOSTTY_RESOURCES_DIR
+    or vim.env.TERM_PROGRAM == 'ghostty' then
+    return true
+  end
+
+  if not vim.env.TMUX then
+    return false
+  end
+
+  return tmux_environment('DOTFILES_TERM') == 'ghostty'
+end
+
+vim.g.dotfiles_use_ghostty_tokyonight = use_ghostty_tokyonight()
+
+-- Match Ghostty's theme, otherwise fall back to terminal-owned colors.
+vim.opt.termguicolors = vim.g.dotfiles_use_ghostty_tokyonight -- 24-bit colors
 vim.opt.background = "dark"   -- or light
 vim.opt.syntax = "on"         -- Enable syntax highlighting
 
