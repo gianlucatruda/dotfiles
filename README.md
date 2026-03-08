@@ -8,7 +8,7 @@ My stack:
 - Tmux for multiplexing and as the main terminal compatibility layer
 - Neovim as primary editor, based off [Kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim/)
 - Vim (with lean .vimrc, no plugins) as fallback editor
-- Ghostty as current terminal, with Alacritty kept as a fallback during transition
+- Ghostty as current terminal emulator
 - Homebrew as package manager
 - Karabiner for key modifiers and custom keybindings
 - [Aerospace](https://github.com/nikitabobko/AeroSpace) as (tiling) window manager (with [tweaks](https://youtu.be/-FoWClVHG5g))
@@ -172,9 +172,8 @@ Often helpful:
 
 ### Font and colour
 
-- Fixed [Tokyo Night Moon](https://github.com/folke/tokyonight.nvim) across Ghostty, Alacritty, and tmux.
+- Fixed [Tokyo Night Moon](https://github.com/folke/tokyonight.nvim) across Ghostty and tmux.
 - Ghostty is now the preferred terminal and uses its built-in `TokyoNight Moon` theme plus a small local config with a hidden macOS titlebar.
-- Alacritty keeps a matching local palette as a fallback terminal during transition.
 - Neovim uses `Tokyo Night Moon` only in Ghostty, with a single shared detection flag backed by a Ghostty-set `DOTFILES_TERM=ghostty` marker that tmux preserves; elsewhere it falls back to `colorscheme default` and terminal-owned colours.
 - Shells inside tmux also normalize `TERMINAL_EMULATOR=ghostty`, and when needed `TERM_PROGRAM=ghostty`, so scripts can still detect the outer terminal without changing tmux's actual runtime contract.
 - tmux advertises `tmux-256color` and keeps its top status line on the terminal's default background so it blends into the outer terminal instead of painting a separate bar.
@@ -202,7 +201,6 @@ tree -a -L 5 --gitignore -I .git/ -I .gitignore -I README.md
 │   ├── .path
 │   ├── aerospace
 │   │   └── aerospace.toml
-│   ├── alacritty.toml
 │   ├── btop
 │   │   ├── btop.conf
 │   │   └── themes

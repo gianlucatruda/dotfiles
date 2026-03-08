@@ -76,7 +76,7 @@ Minimum versions and required binaries:
 
 Recommended (from the dotfiles context):
 
-- A truecolor terminal. This repo currently configures Ghostty as the preferred terminal, keeps Alacritty as a fallback, and uses tmux with `tmux-256color` as the main runtime layer.
+- A truecolor terminal. This repo currently configures Ghostty as the preferred terminal and uses tmux with `tmux-256color` as the main runtime layer.
 - A Nerd Font (the dotfiles use Hack Nerd Font in both terminal configs), though icons are disabled in lualine so this is not required for core functionality.
 
 ## Core Options (Editor Behavior)
@@ -557,7 +557,6 @@ These are outside `~/.config/nvim`, but affect how Neovim is used:
 - Shell function `sf()` uses `rg` + `fzf` to pick a file and opens it with `v()`.
 - Ghostty uses its built-in `TokyoNight Moon` theme.
 - Ghostty exports `DOTFILES_TERM=ghostty` so Neovim can detect it reliably, including inside tmux.
-- Alacritty keeps a matching local Tokyo Night Moon palette as fallback.
 - Tmux advertises `tmux-256color`, enables true color and undercurl support, uses Tokyo Night Moon accents, and keeps the status line on the terminal's default background.
 - Neovim uses Tokyo Night Moon in Ghostty and terminal-owned colors elsewhere.
 

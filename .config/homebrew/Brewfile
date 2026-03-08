@@ -294,8 +294,6 @@ brew "philocalyst/tap/caligula"
 brew "skardyy/mcat/mcat"
 # AeroSpace is an i3-like tiling window manager for macOS
 cask "nikitabobko/tap/aerospace"
-# GPU-accelerated terminal emulator
-cask "alacritty"
 # Inspect application bundles
 cask "apparency"
 # Multi-track audio editor and recorder
