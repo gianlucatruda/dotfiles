@@ -304,7 +304,7 @@ cask "audacity"
 cask "codex"
 # Virtual monitor for screen sharing
 cask "deskpad"
-cask "font-ubuntu-mono-nerd-font"
+cask "font-hack-nerd-font"
 # Terminal emulator that uses platform-native UI and GPU acceleration
 cask "ghostty"
 # Utility to hide menu bar items

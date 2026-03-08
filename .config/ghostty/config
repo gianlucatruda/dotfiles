@@ -1,7 +1,7 @@
 # Keep Ghostty close to the current terminal feel during evaluation.
 
-font-family = UbuntuMono Nerd Font
-font-size = 16
+font-family = Hack Nerd Font
+font-size = 14
 
 theme = "TokyoNight Moon"
 env = DOTFILES_TERM=ghostty

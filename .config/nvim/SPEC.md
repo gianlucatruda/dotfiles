@@ -77,7 +77,7 @@ Minimum versions and required binaries:
 Recommended (from the dotfiles context):
 
 - A truecolor terminal. This repo currently configures Ghostty as the preferred terminal, keeps Alacritty as a fallback, and uses tmux with `tmux-256color` as the main runtime layer.
-- A Nerd Font (the dotfiles use UbuntuMono Nerd Font in both terminal configs), though icons are disabled in lualine so this is not required for core functionality.
+- A Nerd Font (the dotfiles use Hack Nerd Font in both terminal configs), though icons are disabled in lualine so this is not required for core functionality.
 
 ## Core Options (Editor Behavior)
 

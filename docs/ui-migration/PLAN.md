@@ -233,7 +233,7 @@ Some of these may eventually get improved theme alignment, but they are not the 
 - Tmux status styling should use fixed `Tokyo Night Moon` accents, but keep the status line background on the terminal default so it feels integrated with the outer terminal.
 - Ghostty is now the preferred terminal, with Alacritty retained as fallback during transition.
 - `btop`, `lazygit`, `fzf`, and `delta` should NOT be included in the early theme pass, as they should mostly inherit colour.
-- `UbuntuMono Nerd Font` should remain the font of choice.
+- `Hack Nerd Font` should be the font of choice.
 
 ## Working Rule For This Migration
 

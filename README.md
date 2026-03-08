@@ -178,7 +178,7 @@ Often helpful:
 - Neovim uses `Tokyo Night Moon` only in Ghostty, with a single shared detection flag backed by a Ghostty-set `DOTFILES_TERM=ghostty` marker that tmux preserves; elsewhere it falls back to `colorscheme default` and terminal-owned colours.
 - Shells inside tmux also normalize `TERMINAL_EMULATOR=ghostty`, and when needed `TERM_PROGRAM=ghostty`, so scripts can still detect the outer terminal without changing tmux's actual runtime contract.
 - tmux advertises `tmux-256color` and keeps its top status line on the terminal's default background so it blends into the outer terminal instead of painting a separate bar.
-- [UbuntuMono](https://www.programmingfonts.org/#ubuntu) with [Nerd font icons](https://www.nerdfonts.com).
+- [Hack Nerd Font](https://www.nerdfonts.com/font-downloads) for terminal and editor use.
 
 
 ### Structure 
