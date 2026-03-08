@@ -6,7 +6,7 @@ This document defines the high-level plan for the terminal/editor UI overhaul ac
 
 The main objective is to move from a tightly coupled `Alacritty + Nightfox + conditional Neovim theme` setup to a cleaner, more portable, and more widely supported stack built around:
 
-- `Tokyo Night Moon` as the target theme family
+- `Tokyo Night Moon` as the target theme family for the preferred terminal stack
 - `tmux` as the stable runtime layer for local and remote workflows
 - a simpler Neovim colorscheme model that works well in normal, nested, and remote sessions
 - parallel support for `Alacritty` and `Ghostty`
@@ -22,7 +22,8 @@ This is a phased migration. The intended order is:
 
 - Phases 1-3 are complete in the current dotfiles state.
 - Phase 4 has started with Ghostty package/config support added alongside Alacritty.
-- The active stack now uses fixed `Tokyo Night Moon` styling across Alacritty, tmux, Neovim, and the new Ghostty config.
+- The active stack now uses fixed `Tokyo Night Moon` styling across Alacritty, Ghostty, and tmux.
+- Neovim uses `Tokyo Night Moon` in Alacritty and Ghostty, but falls back to terminal-owned colours in other terminals such as VSCodium.
 - tmux now advertises `tmux-256color`, provides explicit truecolor and undercurl support, and keeps its top status line on the terminal's default background so it blends into the terminal instead of painting a separate strip.
 - Existing Karabiner keybindings remain unchanged for now; Ghostty launcher remapping is deferred unless explicitly requested.
 

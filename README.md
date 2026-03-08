@@ -172,8 +172,8 @@ Often helpful:
 
 ### Font and colour
 
-- Fixed [Tokyo Night Moon](https://github.com/folke/tokyonight.nvim) across Alacritty, Ghostty, tmux, and Neovim.
-- Ghostty ships with a matching local config and theme so it can be evaluated alongside Alacritty without changing Neovim or tmux logic.
+- Fixed [Tokyo Night Moon](https://github.com/folke/tokyonight.nvim) across Alacritty, Ghostty, and tmux.
+- Ghostty uses its built-in `TokyoNight Moon` theme, plus a small local config with a hidden macOS titlebar, so it can be evaluated alongside Alacritty without shipping a duplicate theme file.
 - tmux advertises `tmux-256color` and keeps its top status line on the terminal's default background so it blends into the outer terminal instead of painting a separate bar.
 - [UbuntuMono](https://www.programmingfonts.org/#ubuntu) with [Nerd font icons](https://www.nerdfonts.com).
 
@@ -207,8 +207,6 @@ tree -a -L 5 --gitignore -I .git/ -I .gitignore -I README.md
 │   │   └── config
 │   ├── ghostty
 │   │   ├── config
-│   │   └── themes
-│   │       └── tokyonight_moon
 │   ├── homebrew
 │   │   └── Brewfile
 │   ├── htop
@@ -269,7 +267,7 @@ tree -a -L 5 --gitignore -I .git/ -I .gitignore -I README.md
     ├── gt-todoist-export
     └── gt-tts
 
-23 directories, 58 files
+22 directories, 57 files
 ```
 
 
