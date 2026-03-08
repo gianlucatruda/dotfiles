@@ -1,11 +1,12 @@
 # Keep Ghostty close to the current terminal feel during evaluation.
 
 font-family = UbuntuMono Nerd Font
-font-size = 14
+font-size = 16
 
 theme = tokyonight_moon
 
 maximize = true
+macos-titlebar-style = hidden
 window-padding-x = 10
 window-padding-y = 10
 window-padding-color = background

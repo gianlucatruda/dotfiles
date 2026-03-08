@@ -199,6 +199,7 @@ Success criteria for this phase:
 Current implementation status:
 
 - A local Ghostty config and `Tokyo Night Moon` theme are now present under XDG config.
+- The macOS Ghostty config now hides the native titlebar so the window chrome feels closer to the current terminal setup.
 - Homebrew package support is in place so Ghostty can be installed from the repo.
 - Karabiner is intentionally unchanged because launcher keybinding changes require an explicit request.
 
