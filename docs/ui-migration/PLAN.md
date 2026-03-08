@@ -1,0 +1,227 @@
+# UI Migration Plan
+
+## Overview
+
+This document defines the high-level plan for the terminal/editor UI overhaul across this dotfiles repo.
+
+The main objective is to move from a tightly coupled `Alacritty + Nightfox + conditional Neovim theme` setup to a cleaner, more portable, and more widely supported stack built around:
+
+- `Tokyo Night Moon` as the target theme family
+- `tmux` as the stable runtime layer for local and remote workflows
+- a simpler Neovim colorscheme model that works well in normal, nested, and remote sessions
+- parallel support for `Alacritty` now and `Ghostty` later
+
+This is a phased migration. The intended order is:
+
+1. Theme migration for the current setup
+2. `tmux-256color` baseline
+3. Simpler Neovim color setup
+4. Ghostty fit-and-finish
+
+## Success Criteria
+
+The overhaul is successful when all of the following are true:
+
+- `Tokyo Night Moon` is the active theme family for the current terminal/editor workflow.
+- `Alacritty` continues to work cleanly during the transition.
+- `Ghostty` can be added later without forcing another theme rethink.
+- Neovim looks good out of the box in local, nested, and remote tmux sessions.
+- Running Neovim over SSH does not mutate or override the outer terminal palette.
+- The setup remains declarative, dotfile-friendly, and viable across macOS and Linux.
+- The migration reduces custom theme glue instead of adding more.
+- The resulting configuration is easier to understand and maintain than the current setup.
+
+## Constraints
+
+- Do not break the current daily-driver workflow while the migration is in progress.
+- Keep `Alacritty` supported while `Ghostty` is evaluated.
+- Assume `tmux-256color` is available everywhere that matters.
+- Optimize for a tmux-heavy workflow, including nested local/remote tmux sessions.
+- Avoid terminal-brand-specific Neovim behavior in the final design.
+- Avoid palette mutation techniques that rewrite terminal colors at runtime.
+- Keep the implementation simple and modular; do not over-engineer the theme layer.
+- Preserve existing ergonomics unless there is a clear migration reason to change them.
+
+## Non-Goals
+
+- Do not try to make every TUI perfectly theme-matched in the first pass.
+- Do not redesign shell prompt colors, file-manager colors, or every legacy ANSI tool up front.
+- Do not switch fully to `Ghostty` before the terminal/theme architecture is settled.
+- Do not introduce theme-sync tools that depend on OSC palette rewriting.
+
+## Key Decisions
+
+### 1. Use `Tokyo Night Moon` as the target theme
+
+Reasoning:
+
+- It is closer to the current `Nightfox` taste than more stylized options like `Catppuccin`.
+- It has broad upstream support across Neovim, terminals, tmux, and common TUIs.
+- It is popular enough to reduce custom integration work and future friction.
+- It gives a cleaner long-term path than staying on a niche or semi-custom palette.
+
+### 2. Treat `tmux` as the primary UI contract
+
+Reasoning:
+
+- Real usage is mostly `terminal -> tmux -> nvim` or `terminal -> tmux -> ssh -> tmux -> (n)vim`, not bare terminal sessions.
+- The most important compatibility layer is therefore tmux, not any one terminal emulator.
+- A stable tmux terminfo strategy matters more than terminal-specific editor detection.
+
+### 3. Decouple terminal theming from Neovim theming
+
+Reasoning:
+
+- The current setup ties Neovim theme activation to `Alacritty` detection.
+- That coupling is the main source of inconsistent behavior and janky fallbacks.
+- The final architecture should let the terminal own terminal settings and let Neovim own editor colors.
+
+### 4. Do not let Neovim or theme tooling rewrite terminal palettes by default
+
+Reasoning:
+
+- Remote-safe behavior matters.
+- A normal Neovim theme is fine over SSH; palette mutation is the dangerous part.
+- Avoiding runtime palette rewriting keeps local and remote behavior predictable.
+
+### 5. Support `Alacritty` and `Ghostty` in parallel during the transition
+
+Reasoning:
+
+- The migration should be low-risk and reversible while the new terminal is evaluated.
+- `Ghostty` is the likely long-term direction, but there is no need to force that move before the theme and tmux foundations are correct.
+
+### 6. Keep the migration phased, even if some phases temporarily preserve old behavior
+
+Reasoning:
+
+- The requested order is intentional: theme first, tmux next, Neovim simplification after that.
+- This may temporarily preserve some existing conditional logic longer than ideal, but it keeps the migration controlled and easier to review.
+
+## High-Level Phases
+
+## Phase 1 - Theme Migration On Current Setup
+
+Goal:
+
+- Adopt `Tokyo Night Moon` as the theme family in the existing `Alacritty`-based workflow.
+
+Expected touchpoints:
+
+- `.config/alacritty.toml`
+- `.config/nvim/lua/core/plugins.lua`
+- `.config/nvim/lua/plugin_config/colourscheme.lua`
+- `.config/nvim/lazy-lock.json`
+- `README.md`
+- `.config/nvim/SPEC.md`
+
+Success criteria for this phase:
+
+- `Tokyo Night Moon` replaces `Nightfox` as the chosen theme family.
+- Current Alacritty ergonomics remain intact.
+- Documentation reflects the new target theme.
+- No Ghostty-specific changes are required yet.
+
+Notes:
+
+- To respect the agreed order, this phase may keep some current Neovim gating behavior temporarily.
+- The point of this phase is to establish the new theme family first, not to finish the final Neovim model yet.
+
+## Phase 2 - `tmux-256color` Baseline
+
+Goal:
+
+- Make tmux the stable rendering contract for local and remote work.
+
+Expected touchpoints:
+
+- `.config/tmux/tmux.conf`
+- possibly `.config/.bash_prompt` only if truly necessary
+- `README.md`
+- `.config/nvim/SPEC.md`
+
+Success criteria for this phase:
+
+- tmux advertises `tmux-256color` consistently.
+- Truecolor and undercurl support are explicit and stable.
+- Nested tmux sessions remain usable and visually correct.
+- The configuration no longer relies on inheriting the outer terminal identity as tmux's primary model.
+
+## Phase 3 - Simpler Neovim Color Setup
+
+Goal:
+
+- Remove the terminal-specific theme logic and make Neovim behave well everywhere.
+
+Expected touchpoints:
+
+- `.config/nvim/lua/plugin_config/colourscheme.lua`
+- `.config/nvim/lua/core/options.lua`
+- `.config/nvim/lua/plugin_config/lualine.lua` only if needed
+- `README.md`
+- `.config/nvim/SPEC.md`
+
+Success criteria for this phase:
+
+- Neovim uses a proper theme without depending on `Alacritty` detection.
+- Neovim looks good in local tmux, nested tmux, and SSH sessions.
+- Neovim does not rewrite the outer terminal palette.
+- Fallback behavior is simpler and more predictable than today.
+
+## Phase 4 - Ghostty Feel And Aesthetic
+
+Goal:
+
+- Add `Ghostty` in a way that preserves the feel you like from the current terminal setup.
+
+Expected touchpoints:
+
+- new Ghostty config under XDG config
+- `.config/homebrew/Brewfile`
+- `.config/karabiner/karabiner.json`
+- possibly `README.md`
+
+Success criteria for this phase:
+
+- `Ghostty` is available alongside `Alacritty`.
+- It feels close to the current preferred terminal ergonomics.
+- It uses the same theme family and fits the new tmux/Neovim model cleanly.
+- Switching between `Alacritty` and `Ghostty` does not require separate Neovim logic.
+
+## Guiding Principles
+
+- Prefer fewer moving parts over perfect cross-tool synchronization.
+- Use theme families with strong upstream extras instead of maintaining custom palettes where possible.
+- Let ANSI-only tools be "close enough" via terminal palette matching.
+- Keep Neovim theme logic simple, explicit, and terminal-agnostic.
+- Make remote behavior predictable before chasing local visual polish.
+
+## Likely Out-Of-Scope For Early Phases
+
+These may be revisited later, but should not expand the initial implementation unnecessarily:
+
+- `.config/.bash_prompt`
+- `.config/lf/colors`
+- `.config/lf/lfrc`
+- `.config/ranger/rc.conf`
+- `.config/htop/htoprc`
+- `.config/btop/btop.conf`
+
+Some of these may eventually get improved theme alignment, but they are not the critical path.
+
+## More decisions
+
+- Neovim simplification and collapsing sooner. Ideally just auto-detect and inherit terminal theme.
+- Tmux status styling should automatically adjust based on the terminal theme.
+- `btop`, `lazygit`, `fzf`, and `delta` should NOT be included in the early theme pass, as they should mostly inherit colour.
+- `UbuntuMono Nerd Font` should remain the font of choice.
+
+## Working Rule For This Migration
+
+When tradeoffs appear, prefer:
+
+1. remote-safe behavior
+2. tmux stability
+3. simpler Neovim logic
+4. theme consistency
+5. terminal-specific polish
