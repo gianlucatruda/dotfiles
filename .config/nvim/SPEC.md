@@ -2,6 +2,8 @@
 
 This document exhaustively describes the Neovim configuration in this dotfiles repo. It is written so the setup can be recreated from scratch without reading the original files. All behavior described here is based on the actual configuration and its surrounding dotfiles context.
 
+Ghostty is the preferred terminal in this repo. Alacritty has been fully removed, and the Neovim theme model is built around a small Ghostty marker plus terminal-owned fallbacks everywhere else.
+
 ## Scope
 
 - Focus: Neovim functionality and capabilities enabled by the config under `~/.config/nvim`.
@@ -13,6 +15,7 @@ This document exhaustively describes the Neovim configuration in this dotfiles r
 Directory layout (relative to `~/.config/nvim`):
 
 ```
+SPEC.md
 init.lua
 lazy-lock.json
 lua/
@@ -77,7 +80,7 @@ Minimum versions and required binaries:
 Recommended (from the dotfiles context):
 
 - A truecolor terminal. This repo currently configures Ghostty as the preferred terminal and uses tmux with `tmux-256color` as the main runtime layer.
-- A Nerd Font (the dotfiles use Hack Nerd Font in both terminal configs), though icons are disabled in lualine so this is not required for core functionality.
+- A Nerd Font (the dotfiles use Hack Nerd Font in Ghostty), though icons are disabled in lualine so this is not required for core functionality.
 
 ## Core Options (Editor Behavior)
 
@@ -94,9 +97,9 @@ Basics:
 
 Color and syntax:
 
-- `vim.g.dotfiles_use_ghostty_tokyonight` is set once from the terminal environment.
+- `vim.g.dotfiles_is_ghostty` is set once from the shared terminal marker.
 - Ghostty exports `DOTFILES_TERM=ghostty`, and tmux preserves that marker via `update-environment`.
-- The detection also accepts direct Ghostty markers such as `GHOSTTY_RESOURCES_DIR` or `TERM_PROGRAM = ghostty`.
+- In tmux, Neovim reads the tmux-managed marker; outside tmux, it reads `DOTFILES_TERM` from the process environment.
 - `termguicolors = true` in Ghostty and `false` elsewhere.
 - `background = dark`.
 - `syntax = on` (syntax highlighting is enabled).
@@ -214,7 +217,8 @@ Colorscheme:
 
 - In Ghostty, `tokyonight` is configured with `style = "moon"` and applied on startup.
 - Outside Ghostty, startup applies `vim.cmd.colorscheme('default')`.
-- `termguicolors` follows the same shared Ghostty detection flag.
+- `termguicolors` follows the same shared `DOTFILES_TERM`-based Ghostty detection flag.
+- This keeps remote, nested, and incidental terminal sessions simple: the terminal owns the palette unless the session is explicitly marked as Ghostty.
 - The setup does not rewrite the outer terminal palette; terminal colors stay owned by the terminal or tmux layer.
 
 Statusline and winbar (lualine):
@@ -555,8 +559,9 @@ These are outside `~/.config/nvim`, but affect how Neovim is used:
 - `EDITOR` is set to `nvim` if available (`~/.config/.exports`).
 - Shell function `v()` opens Neovim if installed; fallback to `vi` (`~/.config/.functions`).
 - Shell function `sf()` uses `rg` + `fzf` to pick a file and opens it with `v()`.
+- Shell function `update_environment_from_tmux()` refreshes tmux-managed environment variables when a shell is started or reloaded inside tmux.
 - Ghostty uses its built-in `TokyoNight Moon` theme.
-- Ghostty exports `DOTFILES_TERM=ghostty` so Neovim can detect it reliably, including inside tmux.
+- Ghostty exports `DOTFILES_TERM=ghostty`; tmux preserves that marker, and shell reloads inside tmux can re-import it.
 - Tmux advertises `tmux-256color`, enables true color and undercurl support, uses Tokyo Night Moon accents, and keeps the status line on the terminal's default background.
 - Neovim uses Tokyo Night Moon in Ghostty and terminal-owned colors elsewhere.
 
@@ -604,6 +609,6 @@ These pins are used for reproducibility:
 2. Place the file structure above under `~/.config/nvim`.
 3. Ensure required binaries are available: `git`, `rg`, `lazygit`, `make`, Node.js, and Python at the configured `python3_host_prog` path.
 4. Launch Neovim once to let `lazy.nvim` install plugins and Mason install LSP servers/tools.
-5. Launch Neovim in Ghostty for the matched Tokyo Night Moon setup, or in any other terminal to fall back to terminal-owned colors.
+5. Launch Neovim in Ghostty for the matched Tokyo Night Moon setup, or in any other terminal to intentionally fall back to terminal-owned colors.
 
 This concludes the spec for the current Neovim setup.

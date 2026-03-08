@@ -1,4 +1,4 @@
-# Keep Ghostty close to the current terminal feel during evaluation.
+# Preferred terminal profile. Keep it small and let tmux own the runtime contract.
 
 font-family = Hack Nerd Font
 font-size = 14

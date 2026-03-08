@@ -1,10 +1,10 @@
-if vim.g.dotfiles_use_ghostty_tokyonight then
-  require('tokyonight').setup({
-    style = 'moon',
-  })
-
-  vim.cmd.colorscheme('tokyonight')
+if not vim.g.dotfiles_is_ghostty then
+  vim.cmd.colorscheme('default')
   return
 end
 
-vim.cmd.colorscheme('default')
+require('tokyonight').setup({
+  style = 'moon',
+})
+
+vim.cmd.colorscheme('tokyonight')

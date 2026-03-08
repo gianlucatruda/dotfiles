@@ -17,7 +17,7 @@ end
 require('lualine').setup {
   options = {
     icons_enabled = false,
-    theme = vim.g.dotfiles_use_ghostty_tokyonight and 'tokyonight' or 'auto',
+    theme = vim.g.dotfiles_is_ghostty and 'tokyonight' or 'auto',
     component_separators = '|',
     section_separators = '',
   },

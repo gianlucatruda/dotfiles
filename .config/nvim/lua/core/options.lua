@@ -1,13 +1,12 @@
--- BASICS
-vim.opt.clipboard = 'unnamedplus' -- Sync clipboard between OS and Neovim.
-vim.wo.number = true              -- Make line numbers default
--- vim.opt.relativenumber = true    -- Enable relative line numbers
-vim.opt.cursorline = true         -- Highlight current line
-vim.opt.wildmenu = true           -- Enhance command-line completion
-vim.opt.scrolloff = 10            -- Keep 10 lines above/below cursor
-vim.opt.sidescrolloff = 8         -- Keep 8 columns left/right of cursor
-vim.opt.linebreak = true          -- word wrap
-vim.opt.wrap = true               -- line wrap
+-- Basics
+vim.opt.clipboard = 'unnamedplus'
+vim.wo.number = true
+vim.opt.cursorline = true
+vim.opt.wildmenu = true
+vim.opt.scrolloff = 10
+vim.opt.sidescrolloff = 8
+vim.opt.linebreak = true
+vim.opt.wrap = true
 
 local function tmux_environment(name)
   local line = vim.fn.systemlist({ 'tmux', 'show-environment', name })[1]
@@ -19,73 +18,65 @@ local function tmux_environment(name)
   return line:match('^[^=]+=([%s%S]*)$')
 end
 
-local function use_ghostty_tokyonight()
-  if vim.env.DOTFILES_TERM == 'ghostty'
-    or vim.env.GHOSTTY_RESOURCES_DIR
-    or vim.env.TERM_PROGRAM == 'ghostty' then
-    return true
+local function is_ghostty()
+  if vim.env.TMUX then
+    return tmux_environment('DOTFILES_TERM') == 'ghostty'
   end
 
-  if not vim.env.TMUX then
-    return false
-  end
-
-  return tmux_environment('DOTFILES_TERM') == 'ghostty'
+  return vim.env.DOTFILES_TERM == 'ghostty'
 end
 
-vim.g.dotfiles_use_ghostty_tokyonight = use_ghostty_tokyonight()
+vim.g.dotfiles_is_ghostty = is_ghostty()
 
--- Match Ghostty's theme, otherwise fall back to terminal-owned colors.
-vim.opt.termguicolors = vim.g.dotfiles_use_ghostty_tokyonight -- 24-bit colors
-vim.opt.background = "dark"   -- or light
-vim.opt.syntax = "on"         -- Enable syntax highlighting
+-- Let Ghostty opt into Neovim-owned colors; other terminals keep their own palette.
+vim.opt.termguicolors = vim.g.dotfiles_is_ghostty
+vim.opt.background = 'dark'
+vim.opt.syntax = 'on'
 
--- INDENTATION
-vim.opt.autoindent = true  -- Align the new line indent with the previous line
-vim.opt.breakindent = true -- Enable break indent
-vim.opt.smartindent = true -- Smart auto-indenting
--- Gianluca's custom tab settings (vim-sleuth will override in some contexts?) -----
--- Note: these are similar to my defaults in .vimrc for vanilla vim (good baseline)
+-- Indentation
+vim.opt.autoindent = true
+vim.opt.breakindent = true
+vim.opt.smartindent = true
 vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
 
--- SEARCHING
-vim.opt.ignorecase = true -- Case-insensitive searching
-vim.opt.smartcase = true  -- Case sensitive if uppercase in search
-vim.opt.incsearch = true  -- Highlight dynamically as pattern is typed
-vim.opt.hlsearch = true   -- Highlight searches
+-- Search
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
+vim.opt.incsearch = true
+vim.opt.hlsearch = true
 
--- BEHAVIOUR
-vim.opt.mouse = "a"                      -- Enable mouse in all modes
-vim.opt.backspace = "indent,eol,start"   -- Allow backspace in insert mode
-vim.opt.startofline = false              -- Don't reset cursor to start of line when moving around
-vim.opt.shortmess:append("atI")          -- Don't show the intro message when starting Vim
-vim.opt.errorbells = false               -- No annoyances on errors
-vim.opt.visualbell = false               -- No annoyances on errors
-vim.wo.signcolumn = 'yes'                -- Keep signcolumn on by default
-vim.opt.completeopt = 'menuone,noselect' -- Set completeopt to have a better completion experience
+-- Behavior
+vim.opt.mouse = 'a'
+vim.opt.backspace = 'indent,eol,start'
+vim.opt.startofline = false
+vim.opt.shortmess:append('atI')
+vim.opt.errorbells = false
+vim.opt.visualbell = false
+vim.wo.signcolumn = 'yes'
+vim.opt.completeopt = 'menuone,noselect'
 
--- DISPLAY
-vim.opt.title = true -- Show the titlestring in the window titlebar
+-- Display
+vim.opt.title = true
 vim.opt.titlelen = 25
--- according to h: titlestring uses same syntax as statusline with filename-modifiers
 vim.opt.titlestring = '%{fnamemodify(getcwd(), ":t")}:%t'
-vim.opt.showmode = false -- Hide mode; lualine already shows it
-vim.opt.showcmd = true  -- Show the (partial) command as it's being typed
+vim.opt.showmode = false
+vim.opt.showcmd = true
 
--- PERFORMANCE
-vim.opt.updatetime = 1000     -- Reduce idle time for CursorHold/checktime
-vim.opt.timeoutlen = 300      -- Reduce key timeout duration
-vim.opt.redrawtime = 10000    -- Increase max redraw time
-vim.opt.maxmempattern = 20000 -- Increase max syntax highlight memory
+-- Performance
+vim.opt.updatetime = 1000
+vim.opt.timeoutlen = 300
+vim.opt.redrawtime = 10000
+vim.opt.maxmempattern = 20000
 
--- FILES
-vim.opt.undofile = true -- Save undo history
-vim.opt.autoread = true -- Auto read when a file is changed externally
--- Check if file is modified and prompt to reload
-vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold", "CursorHoldI" }, {
-  pattern = "*",
-  command = "checktime"
+-- Files
+vim.opt.undofile = true
+vim.opt.autoread = true
+
+-- Reload buffers when files change on disk.
+vim.api.nvim_create_autocmd({ 'FocusGained', 'BufEnter', 'CursorHold', 'CursorHoldI' }, {
+  pattern = '*',
+  command = 'checktime',
 })
 
 -- Use Prettier for Markdown formatting; marksman does not format.
@@ -96,7 +87,7 @@ vim.api.nvim_create_autocmd('FileType', {
   end,
 })
 
--- Highlight on yank
+-- Highlight yanked text briefly.
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
 vim.api.nvim_create_autocmd('TextYankPost', {
   callback = function()

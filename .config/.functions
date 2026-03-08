@@ -48,18 +48,10 @@ function cd() {
 }
 
 
-# Update environment variables in tmux (used in .bash_profile)
+# Refresh tmux-managed environment when reloading a shell inside tmux.
 function update_environment_from_tmux() {
   if [ -n "${TMUX}" ]; then
     eval "$(tmux show-environment -s)"
-  fi
-
-  if [ -n "${DOTFILES_TERM}" ]; then
-    export TERMINAL_EMULATOR="${DOTFILES_TERM}"
-
-    if [ -n "${TMUX}" ] && [ "${TERM_PROGRAM:-}" = "tmux" ]; then
-      export TERM_PROGRAM="${DOTFILES_TERM}"
-    fi
   fi
 }
 
@@ -83,8 +75,7 @@ function fs() {
 }
 
 # Use Git’s colored diff when available
-hash git &>/dev/null;
-if [ $? -eq 0 ]; then
+if command -v git >/dev/null 2>&1; then
 	function diff() {
 		git diff --no-index --color-words "$@";
 	}
