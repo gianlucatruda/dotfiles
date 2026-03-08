@@ -181,11 +181,7 @@ Often helpful:
 
 ### Structure
 
-Generate with:
-
-```bash
-tree -a -L 5 --gitignore -I .git/ -I .gitignore -I README.md
-```
+Current tracked structure:
 
 ```
 .
@@ -205,8 +201,7 @@ tree -a -L 5 --gitignore -I .git/ -I .gitignore -I README.md
 │   ├── git
 │   │   └── config
 │   ├── ghostty
-│   │   ├── config
-│   │   └── themes
+│   │   └── config
 │   ├── homebrew
 │   │   └── Brewfile
 │   ├── htop
@@ -228,7 +223,8 @@ tree -a -L 5 --gitignore -I .git/ -I .gitignore -I README.md
 │   │       │   ├── keymaps.lua
 │   │       │   ├── options.lua
 │   │       │   ├── path.lua
-│   │       │   └── plugins.lua
+│   │       │   ├── plugins.lua
+│   │       │   └── terminal.lua
 │   │       └── plugin_config
 │   │           ├── blink.lua
 │   │           ├── colourscheme.lua
@@ -253,9 +249,6 @@ tree -a -L 5 --gitignore -I .git/ -I .gitignore -I README.md
 ├── AGENTS.md
 ├── bootstrap.sh
 ├── brew.sh
-├── docs
-│   └── ui-migration
-│       └── PLAN.md
 ├── macos.sh
 └── scripts
     ├── gt-btooth
@@ -268,8 +261,6 @@ tree -a -L 5 --gitignore -I .git/ -I .gitignore -I README.md
     ├── gt-synchdd
     ├── gt-todoist-export
     └── gt-tts
-
-22 directories, 58 files
 ```
 
 
@@ -311,7 +302,8 @@ See `.config/nvim/SPEC.md` for the full behavior-level spec.
     │   ├── keymaps.lua
     │   ├── options.lua
     │   ├── path.lua
-    │   └── plugins.lua
+    │   ├── plugins.lua
+    │   └── terminal.lua
     └── plugin_config
         ├── blink.lua
         ├── colourscheme.lua
@@ -325,6 +317,4 @@ See `.config/nvim/SPEC.md` for the full behavior-level spec.
         ├── oil.lua
         ├── telescope.lua
         └── treesitter.lua
-
-4 directories, 19 files
 ```

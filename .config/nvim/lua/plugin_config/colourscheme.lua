@@ -1,5 +1,6 @@
-if not vim.g.dotfiles_is_ghostty then
-  vim.cmd.colorscheme('default')
+local terminal = require('core.terminal')
+
+if not terminal.is_ghostty() then
   return
 end
 

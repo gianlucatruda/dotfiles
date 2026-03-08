@@ -24,6 +24,7 @@ lua/
     options.lua
     path.lua
     plugins.lua
+    terminal.lua
   plugin_config/
     blink.lua
     colourscheme.lua
@@ -97,10 +98,11 @@ Basics:
 
 Color and syntax:
 
-- `vim.g.dotfiles_is_ghostty` is set once from the shared terminal marker.
+- `core/terminal.lua` is the shared terminal detection helper.
 - Ghostty exports `DOTFILES_TERM=ghostty`, and tmux preserves that marker via `update-environment`.
 - In tmux, Neovim reads the tmux-managed marker; outside tmux, it reads `DOTFILES_TERM` from the process environment.
 - `termguicolors = true` in Ghostty and `false` elsewhere.
+- `colors_name = default` before plugin config loads.
 - `background = dark`.
 - `syntax = on` (syntax highlighting is enabled).
 
@@ -204,7 +206,7 @@ Plugin definitions with non-default options:
 
 - `saghen/blink.cmp`: `version = "1.*"`, depends on `friendly-snippets`.
 - `mason-org/mason.nvim`: `lazy = true` (loaded on demand by `require('mason')`).
-- `folke/tokyonight.nvim`: `priority = 1000`, `lazy = false`.
+- `folke/tokyonight.nvim`: `priority = 1000`; eager in Ghostty and lazy elsewhere.
 - `lukas-reineke/indent-blankline.nvim`: `main = "ibl"`.
 - `nvim-telescope/telescope.nvim`: `branch = "0.1.x"`, `lazy = true`.
 - `nvim-telescope/telescope-fzf-native.nvim`: `build = "make"`, `cond = executable('make') == 1`.
@@ -216,7 +218,7 @@ Plugin definitions with non-default options:
 Colorscheme:
 
 - In Ghostty, `tokyonight` is configured with `style = "moon"` and applied on startup.
-- Outside Ghostty, startup applies `vim.cmd.colorscheme('default')`.
+- Outside Ghostty, Neovim keeps the default colorscheme.
 - `termguicolors` follows the same shared `DOTFILES_TERM`-based Ghostty detection flag.
 - This keeps remote, nested, and incidental terminal sessions simple: the terminal owns the palette unless the session is explicitly marked as Ghostty.
 - The setup does not rewrite the outer terminal palette; terminal colors stay owned by the terminal or tmux layer.

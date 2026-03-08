@@ -1,3 +1,5 @@
+local terminal = require('core.terminal')
+
 require('lazy').setup({
   'nvim-lua/plenary.nvim',          -- Lua funcs used by plugins
   'nvim-lualine/lualine.nvim',      -- Customisable statusline
@@ -28,7 +30,7 @@ require('lazy').setup({
   {
     'folke/tokyonight.nvim',          -- Tokyo Night colourscheme
     priority = 1000,
-    lazy = false,
+    lazy = not terminal.is_ghostty(),
   },
   {
     'lukas-reineke/indent-blankline.nvim', -- Indentation guides
