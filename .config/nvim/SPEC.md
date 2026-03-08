@@ -76,8 +76,8 @@ Minimum versions and required binaries:
 
 Recommended (from the dotfiles context):
 
-- A truecolor terminal. This repo currently configures Alacritty and uses tmux with `tmux-256color` as the main runtime layer.
-- A Nerd Font (the dotfiles use UbuntuMono Nerd Font in Alacritty), though icons are disabled in lualine so this is not required for core functionality.
+- A truecolor terminal. This repo currently configures Alacritty and Ghostty, and uses tmux with `tmux-256color` as the main runtime layer.
+- A Nerd Font (the dotfiles use UbuntuMono Nerd Font in both terminal configs), though icons are disabled in lualine so this is not required for core functionality.
 
 ## Core Options (Editor Behavior)
 
@@ -551,7 +551,7 @@ These are outside `~/.config/nvim`, but affect how Neovim is used:
 - `EDITOR` is set to `nvim` if available (`~/.config/.exports`).
 - Shell function `v()` opens Neovim if installed; fallback to `vi` (`~/.config/.functions`).
 - Shell function `sf()` uses `rg` + `fzf` to pick a file and opens it with `v()`.
-- Alacritty uses the Tokyo Night Moon terminal palette.
+- Alacritty and Ghostty both use Tokyo Night Moon terminal colors.
 - Tmux advertises `tmux-256color`, enables true color and undercurl support, uses Tokyo Night Moon accents, and keeps the status line on the terminal's default background.
 - Neovim uses a fixed Tokyo Night Moon theme instead of detecting the outer terminal.
 
@@ -599,6 +599,6 @@ These pins are used for reproducibility:
 2. Place the file structure above under `~/.config/nvim`.
 3. Ensure required binaries are available: `git`, `rg`, `lazygit`, `make`, Node.js, and Python at the configured `python3_host_prog` path.
 4. Launch Neovim once to let `lazy.nvim` install plugins and Mason install LSP servers/tools.
-5. Launch Neovim in any truecolor terminal; the dotfiles are tuned for Alacritty + tmux, but the colorscheme no longer depends on terminal detection.
+5. Launch Neovim in any truecolor terminal; the dotfiles are tuned for Alacritty or Ghostty with tmux, but the colorscheme no longer depends on terminal detection.
 
 This concludes the spec for the current Neovim setup.

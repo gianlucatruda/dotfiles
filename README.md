@@ -8,7 +8,7 @@ My stack:
 - Tmux for multiplexing and as the main terminal compatibility layer
 - Neovim as primary editor, based off [Kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim/)
 - Vim (with lean .vimrc, no plugins) as fallback editor
-- Alacritty as current terminal
+- Alacritty as current terminal, with Ghostty config included for evaluation
 - Homebrew as package manager
 - Karabiner for key modifiers and custom keybindings
 - [Aerospace](https://github.com/nikitabobko/AeroSpace) as (tiling) window manager (with [tweaks](https://youtu.be/-FoWClVHG5g))
@@ -172,7 +172,8 @@ Often helpful:
 
 ### Font and colour
 
-- Fixed [Tokyo Night Moon](https://github.com/folke/tokyonight.nvim) across Alacritty, tmux, and Neovim.
+- Fixed [Tokyo Night Moon](https://github.com/folke/tokyonight.nvim) across Alacritty, Ghostty, tmux, and Neovim.
+- Ghostty ships with a matching local config and theme so it can be evaluated alongside Alacritty without changing Neovim or tmux logic.
 - tmux advertises `tmux-256color` and keeps its top status line on the terminal's default background so it blends into the outer terminal instead of painting a separate bar.
 - [UbuntuMono](https://www.programmingfonts.org/#ubuntu) with [Nerd font icons](https://www.nerdfonts.com).
 
@@ -204,6 +205,10 @@ tree -a -L 5 --gitignore -I .git/ -I .gitignore -I README.md
 │   │   └── themes
 │   ├── git
 │   │   └── config
+│   ├── ghostty
+│   │   ├── config
+│   │   └── themes
+│   │       └── tokyonight_moon
 │   ├── homebrew
 │   │   └── Brewfile
 │   ├── htop
@@ -264,7 +269,7 @@ tree -a -L 5 --gitignore -I .git/ -I .gitignore -I README.md
     ├── gt-todoist-export
     └── gt-tts
 
-21 directories, 56 files
+23 directories, 58 files
 ```
 
 

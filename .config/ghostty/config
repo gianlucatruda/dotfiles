@@ -1,0 +1,13 @@
+# Keep Ghostty close to the current terminal feel during evaluation.
+
+font-family = UbuntuMono Nerd Font
+font-size = 18
+
+theme = tokyonight_moon
+
+maximize = true
+window-padding-x = 10
+window-padding-y = 10
+window-padding-color = background
+
+mouse-hide-while-typing = true

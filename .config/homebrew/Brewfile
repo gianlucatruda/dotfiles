@@ -305,6 +305,8 @@ cask "codex"
 # Virtual monitor for screen sharing
 cask "deskpad"
 cask "font-ubuntu-mono-nerd-font"
+# Terminal emulator that uses platform-native UI and GPU acceleration
+cask "ghostty"
 # Utility to hide menu bar items
 cask "hiddenbar"
 # Utility to render Jupyter notebooks

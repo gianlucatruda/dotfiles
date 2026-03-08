@@ -9,7 +9,7 @@ The main objective is to move from a tightly coupled `Alacritty + Nightfox + con
 - `Tokyo Night Moon` as the target theme family
 - `tmux` as the stable runtime layer for local and remote workflows
 - a simpler Neovim colorscheme model that works well in normal, nested, and remote sessions
-- parallel support for `Alacritty` now and `Ghostty` later
+- parallel support for `Alacritty` and `Ghostty`
 
 This is a phased migration. The intended order is:
 
@@ -21,9 +21,10 @@ This is a phased migration. The intended order is:
 ## Current Status
 
 - Phases 1-3 are complete in the current dotfiles state.
-- The active stack now uses fixed `Tokyo Night Moon` styling across Alacritty, tmux, and Neovim.
+- Phase 4 has started with Ghostty package/config support added alongside Alacritty.
+- The active stack now uses fixed `Tokyo Night Moon` styling across Alacritty, tmux, Neovim, and the new Ghostty config.
 - tmux now advertises `tmux-256color`, provides explicit truecolor and undercurl support, and keeps its top status line on the terminal's default background so it blends into the terminal instead of painting a separate strip.
-- Phase 4 remains future work while `Ghostty` is evaluated.
+- Existing Karabiner keybindings remain unchanged for now; Ghostty launcher remapping is deferred unless explicitly requested.
 
 ## Success Criteria
 
@@ -31,7 +32,7 @@ The overhaul is successful when all of the following are true:
 
 - `Tokyo Night Moon` is the active theme family for the current terminal/editor workflow.
 - `Alacritty` continues to work cleanly during the transition.
-- `Ghostty` can be added later without forcing another theme rethink.
+- `Ghostty` is available alongside `Alacritty` without forcing another theme rethink.
 - Neovim looks good out of the box in local, nested, and remote tmux sessions.
 - Running Neovim over SSH does not mutate or override the outer terminal palette.
 - The setup remains declarative, dotfile-friendly, and viable across macOS and Linux.
@@ -182,9 +183,10 @@ Goal:
 
 Expected touchpoints:
 
-- new Ghostty config under XDG config
+- `.config/ghostty/config`
+- `.config/ghostty/themes/tokyonight_moon`
 - `.config/homebrew/Brewfile`
-- `.config/karabiner/karabiner.json`
+- `.config/karabiner/karabiner.json` only if launcher remapping is explicitly requested
 - possibly `README.md`
 
 Success criteria for this phase:
@@ -193,6 +195,12 @@ Success criteria for this phase:
 - It feels close to the current preferred terminal ergonomics.
 - It uses the same theme family and fits the new tmux/Neovim model cleanly.
 - Switching between `Alacritty` and `Ghostty` does not require separate Neovim logic.
+
+Current implementation status:
+
+- A local Ghostty config and `Tokyo Night Moon` theme are now present under XDG config.
+- Homebrew package support is in place so Ghostty can be installed from the repo.
+- Karabiner is intentionally unchanged because launcher keybinding changes require an explicit request.
 
 ## Guiding Principles
 
