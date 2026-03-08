@@ -173,9 +173,9 @@ Often helpful:
 ### Font and colour
 
 - Ghostty is the only terminal config in this repo now; Alacritty is fully deprecated.
-- Ghostty uses its built-in `TokyoNight Moon` theme and exports `DOTFILES_TERM=ghostty`.
-- tmux is the runtime contract: `tmux-256color`, explicit truecolor and undercurl support, and a status line that stays on the terminal's default background.
-- Neovim reads the shared terminal marker; in Ghostty it uses `Tokyo Night Moon`, elsewhere it falls back to `colorscheme default` and terminal-owned colours.
+- Ghostty uses its built-in `TokyoNight Moon` theme and exports `DOTFILES_TERM=ghostty` as the outer terminal marker.
+- tmux provides the runtime contract: `tmux-256color`, RGB enabled for modern `xterm-256color`-style clients, and a status line that mostly keeps terminal defaults.
+- Neovim reads that outer terminal marker; tmux refreshes `DOTFILES_TERM` from the attaching client so terminal-specific behavior still works inside tmux.
 - [Hack Nerd Font](https://www.nerdfonts.com/font-downloads) for terminal and editor use.
 
 

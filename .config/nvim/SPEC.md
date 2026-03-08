@@ -2,7 +2,7 @@
 
 This document exhaustively describes the Neovim configuration in this dotfiles repo. It is written so the setup can be recreated from scratch without reading the original files. All behavior described here is based on the actual configuration and its surrounding dotfiles context.
 
-Ghostty is the preferred terminal in this repo. Alacritty has been fully removed, and the Neovim theme model is built around a small Ghostty marker plus terminal-owned fallbacks everywhere else.
+Ghostty is the preferred terminal in this repo. Alacritty has been fully removed, and the Neovim theme model is built around a small outer-terminal marker plus terminal-default fallbacks everywhere else.
 
 ## Scope
 
@@ -99,8 +99,8 @@ Basics:
 Color and syntax:
 
 - `core/terminal.lua` is the shared terminal detection helper.
-- Ghostty exports `DOTFILES_TERM=ghostty`, and tmux preserves that marker via `update-environment`.
-- In tmux, Neovim reads the tmux-managed marker; outside tmux, it reads `DOTFILES_TERM` from the process environment.
+- Ghostty exports `DOTFILES_TERM=ghostty`, and tmux refreshes that outer-terminal marker via `update-environment`.
+- In tmux, Neovim reads the tmux-managed outer-terminal marker; outside tmux, it reads `DOTFILES_TERM` from the process environment.
 - `termguicolors = true` in Ghostty and `false` elsewhere.
 - `colors_name = default` before plugin config loads.
 - `background = dark`.
@@ -219,9 +219,9 @@ Colorscheme:
 
 - In Ghostty, `tokyonight` is configured with `style = "moon"` and applied on startup.
 - Outside Ghostty, Neovim keeps the default colorscheme.
-- `termguicolors` follows the same shared `DOTFILES_TERM`-based Ghostty detection flag.
-- This keeps remote, nested, and incidental terminal sessions simple: the terminal owns the palette unless the session is explicitly marked as Ghostty.
-- The setup does not rewrite the outer terminal palette; terminal colors stay owned by the terminal or tmux layer.
+- `termguicolors` follows the same outer-terminal marker.
+- This keeps remote, nested, and incidental terminal sessions simple: terminal defaults own the palette unless the session is explicitly marked as Ghostty.
+- The setup does not rewrite the outer terminal palette; colours stay owned by the terminal or tmux layer.
 
 Statusline and winbar (lualine):
 
@@ -563,9 +563,9 @@ These are outside `~/.config/nvim`, but affect how Neovim is used:
 - Shell function `sf()` uses `rg` + `fzf` to pick a file and opens it with `v()`.
 - Shell function `update_environment_from_tmux()` refreshes tmux-managed environment variables when a shell is started or reloaded inside tmux.
 - Ghostty uses its built-in `TokyoNight Moon` theme.
-- Ghostty exports `DOTFILES_TERM=ghostty`; tmux preserves that marker, and shell reloads inside tmux can re-import it.
-- Tmux advertises `tmux-256color`, enables true color and undercurl support, uses Tokyo Night Moon accents, and keeps the status line on the terminal's default background.
-- Neovim uses Tokyo Night Moon in Ghostty and terminal-owned colors elsewhere.
+- Ghostty exports `DOTFILES_TERM=ghostty` as the outer terminal marker; tmux refreshes it from the attaching client, and shell reloads inside tmux can re-import it.
+- Tmux advertises `tmux-256color`, enables RGB for modern `xterm-256color`-style clients, and keeps most styling on terminal defaults.
+- Neovim uses Tokyo Night Moon in Ghostty and terminal defaults elsewhere.
 
 ## Installed but Inactive / Conditional
 
@@ -611,6 +611,6 @@ These pins are used for reproducibility:
 2. Place the file structure above under `~/.config/nvim`.
 3. Ensure required binaries are available: `git`, `rg`, `lazygit`, `make`, Node.js, and Python at the configured `python3_host_prog` path.
 4. Launch Neovim once to let `lazy.nvim` install plugins and Mason install LSP servers/tools.
-5. Launch Neovim in Ghostty for the matched Tokyo Night Moon setup, or in any other terminal to intentionally fall back to terminal-owned colors.
+5. Launch Neovim in Ghostty for the matched Tokyo Night Moon setup, or in any other terminal to intentionally fall back to terminal defaults.
 
 This concludes the spec for the current Neovim setup.
