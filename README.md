@@ -8,7 +8,7 @@ My stack:
 - Tmux for multiplexing and as the main terminal compatibility layer
 - Neovim as primary editor, based off [Kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim/)
 - Vim (with lean .vimrc, no plugins) as fallback editor
-- Alacritty as current terminal, with Ghostty config included for evaluation
+- Ghostty as current terminal, with Alacritty kept as a fallback during transition
 - Homebrew as package manager
 - Karabiner for key modifiers and custom keybindings
 - [Aerospace](https://github.com/nikitabobko/AeroSpace) as (tiling) window manager (with [tweaks](https://youtu.be/-FoWClVHG5g))
