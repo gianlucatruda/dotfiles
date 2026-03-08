@@ -1,7 +1,7 @@
 # Keep Ghostty close to the current terminal feel during evaluation.
 
 font-family = UbuntuMono Nerd Font
-font-size = 18
+font-size = 14
 
 theme = tokyonight_moon
 
