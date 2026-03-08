@@ -13,11 +13,8 @@ My stack:
 - Karabiner for key modifiers and custom keybindings
 - [Aerospace](https://github.com/nikitabobko/AeroSpace) as (tiling) window manager (with [tweaks](https://youtu.be/-FoWClVHG5g))
 
-<img width="1840" alt="SCR-20250404-pesw" src="https://github.com/user-attachments/assets/2120218b-0845-46c8-91de-7d778d8e871e" />
-
-<img width="1840" alt="SCR-20250404-pfzx" src="https://github.com/user-attachments/assets/a50332f4-aaa4-47d6-9051-c02832264693" />
-
-<img width="1840" alt="SCR-20250404-pfxu" src="https://github.com/user-attachments/assets/eae9e7c9-a009-427f-ab7c-b5f41f82cbae" />
+<img width="1810" height="1160" alt="SCR-20260308-rwwo" src="https://github.com/user-attachments/assets/6ab8a0f4-8ca1-4564-9326-c0bb646d0d1a" />
+<img width="1810" height="1160" alt="SCR-20260308-rwqv" src="https://github.com/user-attachments/assets/1261b193-65ec-4f43-bffb-f266ed40f1dd" />
 
 ---
 
