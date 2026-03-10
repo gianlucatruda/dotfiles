@@ -9,8 +9,6 @@ tap "nikitabobko/tap"
 tap "philocalyst/tap"
 # Search tool like grep, but optimized for programmers
 brew "ack"
-# Distributed revision control system
-brew "git"
 # Extendable version manager with support for Ruby, Node.js, Erlang & more
 brew "asdf"
 # Tool for generating GNU Standards-compliant Makefiles
@@ -49,6 +47,8 @@ brew "csvlens"
 brew "datasette"
 # OpenType text shaping engine
 brew "harfbuzz"
+# C/C++ and Java libraries for Unicode and globalization
+brew "icu4c@77"
 # Development kit for the Java programming language
 brew "openjdk"
 # Tools to work with Android .dex and Java .class files
@@ -93,6 +93,8 @@ brew "pango"
 brew "tesseract"
 # Interpreter for PostScript and PDF
 brew "ghostscript"
+# Distributed revision control system
+brew "git"
 # Git extension for versioning large files
 brew "git-lfs"
 # Prevents you from committing sensitive information to a git repo
@@ -109,8 +111,6 @@ brew "htop"
 brew "hugo"
 # Network logon cracker which supports many services
 brew "hydra"
-# C/C++ and Java libraries for Unicode and globalization
-brew "icu4c@77"
 # Command-line editor
 brew "id3v2"
 # ISO/IEC 23008-12:2017 HEIF file format decoder and encoder
@@ -275,8 +275,6 @@ brew "wget"
 brew "woff2"
 # Shell extension to navigate your filesystem faster
 brew "zoxide"
-# The AI coding agent built for the terminal.
-brew "anomalyco/tap/opencode"
 # Convert existing TrueType/OpenType fonts to WOFF format
 brew "bramstein/webfonttools/sfnt2woff"
 # WOFF utilities with Zopfli compression
@@ -295,6 +293,8 @@ cask "nikitabobko/tap/aerospace"
 cask "apparency"
 # Multi-track audio editor and recorder
 cask "audacity"
+# Terminal-based AI coding assistant
+cask "claude-code"
 # OpenAI's coding agent that runs in your terminal
 cask "codex"
 # Virtual monitor for screen sharing
