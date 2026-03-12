@@ -2,6 +2,9 @@ require('oil').setup {
   -- Keep netrw as the default to avoid changing long-lived habits.
   -- Set to true if you want Oil to fully replace netrw.
   default_file_explorer = false,
+  view_options = {
+    show_hidden = true,
+  },
 }
 
 -- Mnemonic entry point, with a standard fallback for fast parent navigation.
