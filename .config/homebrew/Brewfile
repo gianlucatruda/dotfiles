@@ -1,5 +1,7 @@
 tap "anomalyco/tap"
 tap "bramstein/webfonttools"
+tap "derekwisong/datui"
+tap "domcyrus/rustnet"
 tap "felixkratz/formulae"
 tap "ferdium/ferdium"
 tap "infisical/get-cli"
@@ -279,6 +281,10 @@ brew "zoxide"
 brew "bramstein/webfonttools/sfnt2woff"
 # WOFF utilities with Zopfli compression
 brew "bramstein/webfonttools/sfnt2woff-zopfli"
+# Data Exploration in the Terminal
+brew "derekwisong/datui/datui"
+# High-performance, cross-platform network monitoring tool with TUI
+brew "domcyrus/rustnet/rustnet"
 # A window border system for macOS
 brew "felixkratz/formulae/borders"
 # The official Infisical CLI
