@@ -1,4 +1,5 @@
 tap "anomalyco/tap"
+tap "atlassian/acli"
 tap "bramstein/webfonttools"
 tap "derekwisong/datui"
 tap "domcyrus/rustnet"
@@ -119,8 +120,6 @@ brew "id3v2"
 brew "libheif"
 # Tools and libraries to manipulate images in select formats
 brew "imagemagick"
-# Feature-rich interactive Jira CLI
-brew "jira-cli"
 # Featureful UNIX password cracker
 brew "john"
 # Port-knock server
@@ -277,6 +276,8 @@ brew "wget"
 brew "woff2"
 # Shell extension to navigate your filesystem faster
 brew "zoxide"
+# Software to interact with Atlassian Cloud from the terminal
+brew "atlassian/acli/acli"
 # Convert existing TrueType/OpenType fonts to WOFF format
 brew "bramstein/webfonttools/sfnt2woff"
 # WOFF utilities with Zopfli compression
