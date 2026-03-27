@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Battery_battery_additional</key>
+	<string>percentageAndTime</string>
+	<key>Battery_battery_chargerInside</key>
+	<true/>
+	<key>Battery_battery_color</key>
+	<true/>
+	<key>Battery_battery_hideAdditionalWhenFull</key>
+	<false/>
+	<key>Battery_battery_xlSize</key>
+	<false/>
+	<key>Battery_notifications_high</key>
+	<string>0.97</string>
+	<key>Battery_notifications_low</key>
+	<string>0.2</string>
+	<key>CPU_mini_alignment</key>
+	<string>center</string>
+	<key>CPU_mini_color</key>
+	<string>monochrome</string>
+	<key>CPU_mini_label</key>
+	<true/>
+	<key>CPU_state</key>
+	<false/>
+	<key>CPU_updateInterval</key>
+	<integer>1</integer>
+	<key>CPU_updateTopInterval</key>
+	<integer>1</integer>
+	<key>Clock_calendarWeekNumbers</key>
+	<true/>
+	<key>Clock_list</key>
+	<data>
+	W3sibmFtZSI6IkxvY2FsIHRpbWUiLCJmb3JtYXQiOiJ5eS1NTS1kZCBISDptbSIsImVu
+	YWJsZWQiOmZhbHNlLCJ0eiI6ImxvY2FsIiwiaWQiOiIxQTM4NTFFMy03QTlGLTQwNjUt
+	QUY1MS0xQkJENzk4OTI5MTUifSx7ImVuYWJsZWQiOnRydWUsIm5hbWUiOiJEYXRlIiwi
+	Zm9ybWF0IjoieXktTU0tZGQiLCJ0eiI6ImxvY2FsIiwiaWQiOiJGMUQ4QTFBRC1ERDU2
+	LTRFMDktQjIwNS0xOUE1REEwMTExQUEifSx7Im5hbWUiOiJXZWVrIE5vIiwiZm9ybWF0
+	IjoidyIsImVuYWJsZWQiOnRydWUsInR6IjoibG9jYWwiLCJpZCI6IkFFMDExNEQ0LTQ2
+	MEYtNDE5Ni04RjY3LTcxMEE3MzlGODk1RCJ9XQ==
+	</data>
+	<key>Clock_sensors_alignment</key>
+	<string>center</string>
+	<key>Clock_sensors_mode</key>
+	<string>twoRows</string>
+	<key>Clock_sensors_monospacedFont</key>
+	<true/>
+	<key>Clock_state</key>
+	<true/>
+	<key>Disk_state</key>
+	<false/>
+	<key>GPU_state</key>
+	<false/>
+	<key>NSNavPanelExpandedSizeForSaveMode</key>
+	<string>{800, 448}</string>
+	<key>NSStatusItem Preferred Position Battery_battery</key>
+	<real>114</real>
+	<key>NSStatusItem Preferred Position Clock_sensors</key>
+	<real>179</real>
+	<key>NSStatusItem Preferred Position Network_speed</key>
+	<real>249</real>
+	<key>NSWindow Frame NSNavPanelAutosaveName</key>
+	<string>464 473 800 448 0 0 1728 1079 </string>
+	<key>NSWindow Frame eu.exelban.Stats.Settings.WindowFrame</key>
+	<string>504 364 723 480 0 0 1728 1079 </string>
+	<key>Network_base</key>
+	<string>bit</string>
+	<key>Network_processes</key>
+	<integer>5</integer>
+	<key>Network_publicIP</key>
+	<true/>
+	<key>Network_publicIPRefreshInterval</key>
+	<string>hour</string>
+	<key>Network_reader</key>
+	<string>interface</string>
+	<key>Network_speed_displayValue</key>
+	<string>oi</string>
+	<key>Network_speed_icon</key>
+	<string>arrows</string>
+	<key>Network_speed_iconAlignment</key>
+	<string>left</string>
+	<key>Network_speed_iconColor</key>
+	<string>transparent</string>
+	<key>Network_speed_mode</key>
+	<string>twoRows</string>
+	<key>Network_speed_value</key>
+	<true/>
+	<key>Network_speed_valueColor</key>
+	<string>none</string>
+	<key>Network_usageReset</key>
+	<string>Once per month</string>
+	<key>Network_widgetActivationThreshold</key>
+	<integer>2</integer>
+	<key>Network_widgetActivationThresholdState</key>
+	<false/>
+	<key>RAM_state</key>
+	<false/>
+	<key>Sensors_fanValue</key>
+	<string>percentage</string>
+	<key>runAtLoginInitialized</key>
+	<true/>
+	<key>setupProcess</key>
+	<true/>
+	<key>stack_Date_index</key>
+	<integer>1</integer>
+	<key>stack_Week No_index</key>
+	<integer>0</integer>
+	<key>updater_check_ts</key>
+	<integer>1774639905</integer>
+	<key>version</key>
+	<string>2.12.6</string>
+</dict>
+</plist>
