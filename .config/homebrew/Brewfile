@@ -1,6 +1,7 @@
 tap "bramstein/webfonttools"
 tap "felixkratz/formulae"
 tap "ferdium/ferdium"
+tap "human37/open-wispr"
 tap "jordond/tap"
 tap "modularml/packages"
 tap "nikitabobko/tap"
@@ -288,6 +289,8 @@ brew "bramstein/webfonttools/sfnt2woff"
 brew "bramstein/webfonttools/sfnt2woff-zopfli"
 # A window border system for macOS
 brew "felixkratz/formulae/borders"
+# Push-to-talk voice dictation for macOS using Whisper
+brew "human37/open-wispr/open-wispr"
 # Terminal-based battery and energy monitor for macos and linux
 brew "jordond/tap/jolt"
 # User-friendly, lightweight TUI for disk imaging
