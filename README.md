@@ -14,11 +14,8 @@ My stack:
 - [AeroSpace](https://github.com/nikitabobko/AeroSpace) + `borders` for tiling window management
 - Stats for lightweight menu bar system monitoring
 
-<img width="1840" alt="SCR-20250404-pesw" src="https://github.com/user-attachments/assets/2120218b-0845-46c8-91de-7d778d8e871e" />
+<img width="1810" height="1160" alt="SCR-20260327-rqfb" src="https://github.com/user-attachments/assets/ab95d613-35ab-4d4b-8d42-b0de72fa8ad0" />
 
-<img width="1840" alt="SCR-20250404-pfzx" src="https://github.com/user-attachments/assets/a50332f4-aaa4-47d6-9051-c02832264693" />
-
-<img width="1840" alt="SCR-20250404-pfxu" src="https://github.com/user-attachments/assets/eae9e7c9-a009-427f-ab7c-b5f41f82cbae" />
 
 ---
 
