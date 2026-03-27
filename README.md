@@ -5,13 +5,14 @@ I forked [Mathias's dotfiles](https://github.com/mathiasbynens/dotfiles) in 2017
 My stack:
 
 - Bash as shell
+- Ghostty as terminal emulator
 - Tmux for multiplexing and as the main terminal compatibility layer
-- Neovim as primary editor, based off [Kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim/)
-- Vim (with lean .vimrc, no plugins) as fallback editor
-- Ghostty as current terminal emulator
+- Neovim as primary editor, with a modular `lazy.nvim` setup originally based on [Kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim/)
+- Vim (with lean `.vimrc`, no plugins) as fallback editor
 - Homebrew as package manager
-- Karabiner for key modifiers and custom keybindings
-- [Aerospace](https://github.com/nikitabobko/AeroSpace) as (tiling) window manager (with [tweaks](https://youtu.be/-FoWClVHG5g))
+- Karabiner-Elements for modifiers, navigation, and app launchers
+- [AeroSpace](https://github.com/nikitabobko/AeroSpace) + `borders` for tiling window management
+- Stats for lightweight menu bar system monitoring
 
 <img width="1840" alt="SCR-20250404-pesw" src="https://github.com/user-attachments/assets/2120218b-0845-46c8-91de-7d778d8e871e" />
 
@@ -240,10 +241,13 @@ Current tracked structure:
 │   │           └── treesitter.lua
 │   ├── ranger
 │   │   └── rc.conf
+│   ├── stats
+│   │   └── Stats.plist
 │   ├── tmux
 │   │   └── tmux.conf
 │   └── zen
 │       └── zen-keyboard-shortcuts.json
+├── .gitignore
 ├── .gitignore_global
 ├── .vimrc
 ├── AGENTS.md
