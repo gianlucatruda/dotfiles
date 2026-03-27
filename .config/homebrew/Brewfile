@@ -1,9 +1,7 @@
 tap "bramstein/webfonttools"
 tap "felixkratz/formulae"
-tap "ferdium/ferdium"
 tap "human37/open-wispr"
 tap "jordond/tap"
-tap "modularml/packages"
 tap "nikitabobko/tap"
 tap "philocalyst/tap"
 tap "skardyy/mcat"
@@ -197,8 +195,6 @@ brew "ripgrep"
 brew "opencode"
 # OpenBSD freely-licensed SSH connectivity tools
 brew "openssh"
-# Cryptography and SSL/TLS Toolkit
-brew "openssl@3.0"
 # Open Visual Inference And Optimization toolkit for AI inference
 brew "openvino"
 # Swiss-army knife of markup format conversion
@@ -215,12 +211,8 @@ brew "pngcheck"
 brew "pv"
 # Python version management
 brew "pyenv"
-# Interpreted, interactive, object-oriented programming language
-brew "python@3.11"
 # Tools for and transforming and inspecting PDF files
 brew "qpdf"
-# Cross-platform application and UI framework
-brew "qt@5"
 # File browser
 brew "ranger"
 # Ruby version manager
@@ -239,8 +231,6 @@ brew "rlwrap"
 brew "rmlint"
 # Extremely fast Python linter, written in Rust
 brew "ruff"
-# Terminal multiplexer with VT100/ANSI terminal emulation
-brew "screen"
 # Rich git commit graph in your terminal
 brew "serie"
 # Static analysis and lint tool, for (ba)sh scripts

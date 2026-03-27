@@ -9,6 +9,7 @@ My stack:
 - Tmux for multiplexing and as the main terminal compatibility layer
 - Neovim as primary editor, with a modular `lazy.nvim` setup originally based on [Kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim/)
 - Vim (with lean `.vimrc`, no plugins) as fallback editor
+- `ranger` (also trying out `lf`) as terminal file managers
 - Homebrew as package manager
 - Karabiner-Elements for modifiers, navigation, and app launchers
 - [AeroSpace](https://github.com/nikitabobko/AeroSpace) + `borders` for tiling window management
@@ -68,6 +69,8 @@ Install packages with Homebrew:
 ```bash
 ./brew.sh
 ```
+
+`brew.sh` only bootstraps a tiny base (Homebrew Bash + completion) before handing off to `brew bundle` with `.config/homebrew/Brewfile`.
 
 #### Keeping homebrew synced with dotfiles
 
