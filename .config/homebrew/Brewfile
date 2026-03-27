@@ -276,6 +276,8 @@ brew "watch"
 brew "watchexec"
 # Internet file retriever
 brew "wget"
+# Port of OpenAI's Whisper model in C/C++
+brew "whisper-cpp"
 # Utilities to create and convert Web Open Font File (WOFF) files
 brew "woff2"
 # Shell extension to navigate your filesystem faster
