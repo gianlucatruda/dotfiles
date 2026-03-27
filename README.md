@@ -239,6 +239,7 @@ Current tracked structure:
 │   ├── ranger
 │   │   └── rc.conf
 │   ├── stats
+│   │   ├── README.txt
 │   │   └── Stats.plist
 │   ├── tmux
 │   │   └── tmux.conf
