@@ -16,6 +16,8 @@
 	<string>0.97</string>
 	<key>Battery_notifications_low</key>
 	<string>0.2</string>
+	<key>Battery_processes</key>
+	<integer>5</integer>
 	<key>CPU_mini_alignment</key>
 	<string>center</string>
 	<key>CPU_mini_color</key>
@@ -52,14 +54,27 @@
 	<false/>
 	<key>GPU_state</key>
 	<false/>
+	<key>LaunchAtLoginNext</key>
+	<true/>
 	<key>NSNavPanelExpandedSizeForSaveMode</key>
 	<string>{800, 448}</string>
 	<key>NSStatusItem Preferred Position Battery_battery</key>
-	<real>114</real>
+	<real>122</real>
 	<key>NSStatusItem Preferred Position Clock_sensors</key>
-	<real>179</real>
+	<real>187</real>
 	<key>NSStatusItem Preferred Position Network_speed</key>
-	<real>249</real>
+	<real>257</real>
+	<key>NSToolbar Configuration eu.exelban.Stats.Settings.Toolbar</key>
+	<dict>
+		<key>TB Display Mode</key>
+		<integer>1</integer>
+		<key>TB Icon Size Mode</key>
+		<integer>1</integer>
+		<key>TB Is Shown</key>
+		<true/>
+		<key>TB Size Mode</key>
+		<integer>1</integer>
+	</dict>
 	<key>NSWindow Frame NSNavPanelAutosaveName</key>
 	<string>464 473 800 448 0 0 1728 1079 </string>
 	<key>NSWindow Frame eu.exelban.Stats.Settings.WindowFrame</key>
@@ -106,8 +121,10 @@
 	<integer>1</integer>
 	<key>stack_Week No_index</key>
 	<integer>0</integer>
+	<key>support_ts</key>
+	<integer>1774646360</integer>
 	<key>updater_check_ts</key>
-	<integer>1774639905</integer>
+	<integer>1774650828</integer>
 	<key>version</key>
 	<string>2.12.6</string>
 </dict>
