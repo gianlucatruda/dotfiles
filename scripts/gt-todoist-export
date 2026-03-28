@@ -1,43 +1,220 @@
 #!/usr/bin/env python3
+
+import argparse
 import csv
+import json
+import os
 import sys
+import urllib.error
+import urllib.parse
+import urllib.request
 
 
-def convert_csv_to_markdown(csv_file_path):
+API_BASE = "https://api.todoist.com/api/v1"
+
+
+def markdown_from_rows(rows):
+    markdown_lines = []
+
+    for row in rows:
+        content = (row.get("content") or row.get("CONTENT") or "").strip()
+        description = (row.get("description") or row.get("DESCRIPTION") or "").strip()
+        if not content:
+            continue
+        markdown_lines.append(f"- {content}")
+        if description:
+            markdown_lines.append(f"    - {description}")
+
+    return "\n".join(markdown_lines)
+
+
+def unwrap_collection(payload, *, resource_name):
+    if isinstance(payload, list):
+        return payload
+
+    if isinstance(payload, dict):
+        for key in (resource_name, "results", "items"):
+            value = payload.get(key)
+            if isinstance(value, list):
+                return value
+
+    raise TypeError(f"unexpected {resource_name} payload shape: {type(payload).__name__}")
+
+
+def csv_rows(csv_file_path):
+    with open(csv_file_path, newline="", encoding="utf-8-sig") as handle:
+        reader = csv.DictReader(handle)
+        rows = []
+        for row in reader:
+            if row.get("TYPE", "").strip().lower() != "task":
+                continue
+            rows.append(row)
+        return rows
+
+
+def api_get(path, token, query=None):
+    url = f"{API_BASE}/{path}"
+    if query:
+        url = f"{url}?{urllib.parse.urlencode(query)}"
+
+    request = urllib.request.Request(
+        url,
+        headers={
+            "Authorization": f"Bearer {token}",
+            "Content-Type": "application/json",
+        },
+    )
+
+    with urllib.request.urlopen(request) as response:
+        return json.load(response)
+
+
+def api_post_form(path, token, form_data):
+    url = f"{API_BASE}/{path}"
+    encoded_form = urllib.parse.urlencode(form_data).encode("utf-8")
+    request = urllib.request.Request(
+        url,
+        data=encoded_form,
+        headers={
+            "Authorization": f"Bearer {token}",
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+    )
+
+    with urllib.request.urlopen(request) as response:
+        return json.load(response)
+
+
+def get_project_id(token, project_name):
+    sync_data = api_post_form(
+        "sync",
+        token,
+        {
+            "sync_token": "*",
+            "resource_types": json.dumps(["projects"]),
+        },
+    )
+    projects = unwrap_collection(sync_data, resource_name="projects")
+    for project in projects:
+        if project.get("name") == project_name:
+            return project.get("id")
+    raise ValueError(f"Todoist project not found: {project_name}")
+
+
+def live_rows(token, project_name=None):
+    sync_data = api_post_form(
+        "sync",
+        token,
+        {
+            "sync_token": "*",
+            "resource_types": json.dumps(["items", "projects"]),
+        },
+    )
+    rows = unwrap_collection(sync_data, resource_name="items")
+
+    if project_name:
+        project_id = get_project_id(token, project_name)
+        rows = [row for row in rows if str(row.get("project_id")) == str(project_id)]
+
+    return rows
+
+
+def resolve_output_path(args):
+    if args.output:
+        return args.output
+    if args.legacy_output:
+        return args.legacy_output
+    return None
+
+
+def parse_args(argv):
+    parser = argparse.ArgumentParser(
+        description=(
+            "Export Todoist tasks to Markdown bullets. With a CSV path, mimics the "
+            "legacy gt-todoist-export behavior. Without a CSV path, fetches live open "
+            "tasks from Todoist's current official API."
+        )
+    )
+    parser.add_argument(
+        "legacy_csv",
+        nargs="?",
+        help="optional Todoist CSV export path for legacy conversion mode",
+    )
+    parser.add_argument(
+        "legacy_output",
+        nargs="?",
+        help="optional output path in legacy CSV mode",
+    )
+    parser.add_argument(
+        "-o",
+        "--output",
+        help="write Markdown to this file as well as stdout",
+    )
+    parser.add_argument(
+        "--project",
+        help="limit live export to a single Todoist project by exact name",
+    )
+    parser.add_argument(
+        "--api-token",
+        default=os.environ.get("TODOIST_API_TOKEN"),
+        help="Todoist API token; defaults to TODOIST_API_TOKEN",
+    )
+    return parser.parse_args(argv)
+
+
+def write_output(markdown_content, output_path):
+    with open(output_path, "w", encoding="utf-8") as handle:
+        handle.write(markdown_content)
+
+
+def main(argv=None):
+    args = parse_args(argv or sys.argv[1:])
+    output_path = resolve_output_path(args)
+
     try:
-        # Open the CSV file with utf-8-sig encoding to handle potential BOM
-        with open(csv_file_path, newline="", encoding="utf-8-sig") as f:
-            reader = csv.DictReader(f)
-            markdown_lines = []
+        if args.legacy_csv:
+            markdown_content = markdown_from_rows(csv_rows(args.legacy_csv))
+        else:
+            if not args.api_token:
+                print(
+                    "Live export requires TODOIST_API_TOKEN or --api-token. "
+                    "Install the official CLI with `npm install -g @doist/todoist-cli` "
+                    "for daily shell use, then provide a Todoist API token for this "
+                    "structured export step.",
+                    file=sys.stderr,
+                )
+                return 1
+            markdown_content = markdown_from_rows(
+                live_rows(args.api_token, project_name=args.project)
+            )
+    except FileNotFoundError as exc:
+        print(f"Error processing CSV: {exc}", file=sys.stderr)
+        return 1
+    except ValueError as exc:
+        print(str(exc), file=sys.stderr)
+        return 1
+    except urllib.error.HTTPError as exc:
+        detail = exc.read().decode("utf-8", errors="ignore").strip()
+        if detail:
+            print(f"Todoist API error: {exc.code} {detail}", file=sys.stderr)
+        else:
+            print(f"Todoist API error: {exc.code} {exc.reason}", file=sys.stderr)
+        return 1
+    except urllib.error.URLError as exc:
+        print(f"Todoist API connection error: {exc.reason}", file=sys.stderr)
+        return 1
+    except Exception as exc:
+        print(f"Error processing Todoist export: {exc}", file=sys.stderr)
+        return 1
 
-            for row in reader:
-                # Skip empty rows or non-task rows
-                if row.get("TYPE", "").strip().lower() == "task":
-                    # Extract the content and description fields
-                    content = row.get("CONTENT", "").strip()
-                    description = row.get("DESCRIPTION", "").strip()
-                    if content:
-                        # Add as a markdown list item
-                        markdown_lines.append(f"- {content}")
-                        if description:
-                            markdown_lines.append(f"    - {description}")
+    print(markdown_content)
 
-            return "\n".join(markdown_lines)
-    except Exception as e:
-        return f"Error processing CSV: {str(e)}"
+    if output_path:
+        write_output(markdown_content, output_path)
+        print(f"Markdown written to {output_path}")
+
+    return 0
 
 
 if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        print(f"Usage: python {sys.argv[0]} <csv_file_path>")
-        sys.exit(1)
-
-    markdown_content = convert_csv_to_markdown(sys.argv[1])
-    print(markdown_content)
-
-    # Optionally write to a file
-    if len(sys.argv) > 2:
-        output_file = sys.argv[2]
-        with open(output_file, "w", encoding="utf-8") as f:
-            f.write(markdown_content)
-        print(f"Markdown written to {output_file}")
+    raise SystemExit(main())
