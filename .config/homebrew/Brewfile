@@ -1,5 +1,6 @@
 tap "bramstein/webfonttools"
 tap "felixkratz/formulae"
+tap "hjr265/gittop"
 tap "human37/open-wispr"
 tap "jordond/tap"
 tap "nikitabobko/tap"
@@ -279,6 +280,8 @@ brew "bramstein/webfonttools/sfnt2woff"
 brew "bramstein/webfonttools/sfnt2woff-zopfli"
 # A window border system for macOS
 brew "felixkratz/formulae/borders"
+# Beautiful terminal UI for visualizing Git repository statistics
+brew "hjr265/gittop/gittop"
 # Push-to-talk voice dictation for macOS using Whisper
 brew "human37/open-wispr/open-wispr"
 # Terminal-based battery and energy monitor for macos and linux
