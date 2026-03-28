@@ -17,9 +17,11 @@ require('telescope').setup {
     layout_config = {
       width = 0.96,
       height = 0.9,
-      preview_width = 0.25,
       preview_cutoff = 140,
       prompt_position = 'top',
+      horizontal = {
+        preview_width = 0.25,
+      },
     },
     sorting_strategy = 'ascending',
     -- Keep head + tail visible; built-ins can't preserve both ends.
