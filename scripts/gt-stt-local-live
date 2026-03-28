@@ -1,0 +1,348 @@
+#!/usr/bin/env python3
+
+import json
+import os
+import pty
+import re
+import select
+import shutil
+import signal
+import subprocess
+import sys
+import termios
+import tempfile
+import tty
+
+
+FINAL_MODEL = os.environ.get(
+    "GT_STT_MODEL",
+    os.path.expanduser("~/.cache/whisper.cpp/ggml-medium.en.bin"),
+)
+
+DEFAULT_LIVE_MODEL = os.path.expanduser("~/.cache/whisper.cpp/ggml-base.en.bin")
+AUDIO_DEVICE_OVERRIDE = os.environ.get("GT_STT_AUDIO_DEVICE")
+
+
+def model_is_usable(path: str) -> bool:
+    return os.path.exists(path) and os.path.getsize(path) > 1024 * 1024
+
+
+LIVE_MODEL = os.environ.get(
+    "GT_STT_LIVE_MODEL",
+    DEFAULT_LIVE_MODEL if model_is_usable(DEFAULT_LIVE_MODEL) else FINAL_MODEL,
+)
+
+NOISE_PREFIXES = (
+    "load_backend:",
+    "ggml_",
+    "whisper_init_",
+    "whisper_model_load:",
+    "whisper_backend_",
+    "whisper_print_timings:",
+    "init:",
+    "main:",
+)
+
+ANSI_RE = re.compile(r"\x1b\[[0-9;?]*[ -/]*[@-~]")
+WHITESPACE_RE = re.compile(r"\s+")
+FFMPEG_AUDIO_RE = re.compile(r"\[AVFoundation indev @ .*?\] \[(\d+)\] (.+)")
+
+
+def get_default_input_name() -> str:
+    result = subprocess.run(
+        ["system_profiler", "SPAudioDataType", "-json"],
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+
+    if result.returncode != 0:
+        raise RuntimeError("failed to read audio devices from system_profiler")
+
+    data = json.loads(result.stdout)
+    for section in data.get("SPAudioDataType", []):
+        for item in section.get("_items", []):
+            if item.get("coreaudio_default_audio_input_device") == "spaudio_yes":
+                name = item.get("_name")
+                if name:
+                    return name
+
+    raise RuntimeError("could not determine the current default input device")
+
+
+def get_ffmpeg_audio_device(default_name: str) -> str:
+    result = subprocess.run(
+        ["ffmpeg", "-f", "avfoundation", "-list_devices", "true", "-i", ""],
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+
+    in_audio_section = False
+    for line in result.stderr.splitlines():
+        if "AVFoundation audio devices:" in line:
+            in_audio_section = True
+            continue
+        if not in_audio_section:
+            continue
+
+        match = FFMPEG_AUDIO_RE.search(line)
+        if not match:
+            continue
+        index, name = match.groups()
+        if name == default_name:
+            return index
+
+    return default_name
+
+
+def build_stream_cmd() -> list[str]:
+    cmd = [
+        "whisper-stream",
+        "-m",
+        LIVE_MODEL,
+        "--step",
+        "500",
+        "--length",
+        "3000",
+        "--keep",
+        "300",
+        "-t",
+        "8",
+        "-kc",
+    ]
+
+    if AUDIO_DEVICE_OVERRIDE:
+        cmd.extend(["-c", AUDIO_DEVICE_OVERRIDE])
+
+    return cmd
+
+
+def is_noise(line: str) -> bool:
+    text = line.strip()
+    return not text or text.startswith(NOISE_PREFIXES)
+
+
+def strip_ansi(text: str) -> str:
+    return ANSI_RE.sub("", text)
+
+
+def render_live(text: str) -> None:
+    width = max(20, shutil.get_terminal_size((100, 20)).columns - 1)
+    compact = WHITESPACE_RE.sub(" ", strip_ansi(text)).strip()
+    if len(compact) > width:
+        compact = compact[: width - 1] + "…"
+    sys.stdout.write("\r\033[2K" + compact)
+    sys.stdout.flush()
+
+
+def copy_to_clipboard(text: str) -> None:
+    subprocess.run(["pbcopy"], input=text, text=True, check=False)
+
+
+def clean_text(text: str) -> str:
+    lines = []
+    for raw_line in text.splitlines():
+        line = WHITESPACE_RE.sub(" ", strip_ansi(raw_line)).strip()
+        if not line:
+            continue
+        if line in ("[Start speaking]", "[BLANK_AUDIO]"):
+            continue
+        lines.append(line)
+    return "\n".join(lines).strip()
+
+
+def finalize_transcript(audio_path: str) -> str:
+    cli_cmd = [
+        "whisper-cli",
+        "-m",
+        FINAL_MODEL,
+        "-f",
+        audio_path,
+        "-np",
+        "-nt",
+        "-l",
+        "en",
+        "-t",
+        "8",
+    ]
+
+    result = subprocess.run(
+        cli_cmd,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+
+    if result.returncode != 0:
+        error = result.stderr.strip() or result.stdout.strip() or "unknown error"
+        raise RuntimeError(f"whisper-cli failed: {error}")
+
+    return clean_text(result.stdout)
+
+
+def main() -> int:
+    if not os.path.exists(FINAL_MODEL):
+        print(f"Final model not found: {FINAL_MODEL}", file=sys.stderr)
+        return 1
+    if not model_is_usable(FINAL_MODEL):
+        print(f"Final model looks invalid or incomplete: {FINAL_MODEL}", file=sys.stderr)
+        return 1
+    if not model_is_usable(LIVE_MODEL):
+        print(f"Live model not found: {LIVE_MODEL}", file=sys.stderr)
+        return 1
+
+    try:
+        default_input_name = get_default_input_name()
+    except RuntimeError as exc:
+        print(str(exc), file=sys.stderr)
+        return 1
+
+    ffmpeg_audio_device = AUDIO_DEVICE_OVERRIDE or get_ffmpeg_audio_device(default_input_name)
+    stream_cmd = build_stream_cmd()
+
+    temp_dir = tempfile.mkdtemp(prefix="gt-stt-local-live-")
+    audio_path = os.path.join(temp_dir, "capture.wav")
+
+    record_cmd = [
+        "ffmpeg",
+        "-hide_banner",
+        "-loglevel",
+        "error",
+        "-f",
+        "avfoundation",
+        "-i",
+        f":{ffmpeg_audio_device}",
+        "-ar",
+        "16000",
+        "-ac",
+        "1",
+        "-c:a",
+        "pcm_s16le",
+        audio_path,
+    ]
+
+    print(f"Starting live STT with preview model: {LIVE_MODEL}")
+    print(f"Final transcript model: {FINAL_MODEL}")
+    print(f"Default input device: {default_input_name}")
+    if AUDIO_DEVICE_OVERRIDE:
+        print(f"Audio device override: {AUDIO_DEVICE_OVERRIDE}")
+    print("Stop with Ctrl-C, Ctrl-D, or Esc. Final transcript copies to clipboard.")
+    print()
+
+    recorder = subprocess.Popen(
+        record_cmd,
+        stdin=subprocess.DEVNULL,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        close_fds=True,
+    )
+
+    master_fd, slave_fd = pty.openpty()
+    proc = subprocess.Popen(
+        stream_cmd,
+        stdin=slave_fd,
+        stdout=slave_fd,
+        stderr=slave_fd,
+        text=False,
+        close_fds=True,
+    )
+    os.close(slave_fd)
+
+    pending = b""
+    stdin_fd = sys.stdin.fileno()
+    old_tty = termios.tcgetattr(stdin_fd)
+    stopping = False
+    live_line = ""
+
+    try:
+        tty.setraw(stdin_fd)
+
+        while True:
+            watched_fds = [master_fd]
+            if not stopping:
+                watched_fds.append(stdin_fd)
+
+            read_ready, _, _ = select.select(watched_fds, [], [])
+
+            if master_fd in read_ready:
+                chunk = os.read(master_fd, 4096)
+                if not chunk:
+                    break
+
+                pending += chunk
+                parts = re.split(rb"\r|\n", pending)
+                pending = parts.pop() if parts else b""
+
+                for raw_line in parts:
+                    line = strip_ansi(raw_line.decode("utf-8", errors="ignore")).strip()
+                    if is_noise(line):
+                        continue
+                    if line in ("[Start speaking]", "[BLANK_AUDIO]"):
+                        continue
+                    live_line = line
+                    render_live(live_line)
+
+            if stdin_fd in read_ready:
+                key = os.read(stdin_fd, 1)
+                if key in (b"\x03", b"\x04", b"\x1b"):
+                    proc.send_signal(signal.SIGINT)
+                    recorder.send_signal(signal.SIGINT)
+                    stopping = True
+
+            if stopping and proc.poll() is not None:
+                break
+
+            if not stopping and proc.poll() is not None:
+                break
+
+        if pending:
+            tail = strip_ansi(pending.decode("utf-8", errors="ignore")).strip()
+            if tail and not is_noise(tail) and tail not in ("[Start speaking]", "[BLANK_AUDIO]"):
+                live_line = tail
+                render_live(live_line)
+
+        if live_line:
+            sys.stdout.write("\n")
+            sys.stdout.flush()
+
+        try:
+            proc.wait(timeout=5)
+        except subprocess.TimeoutExpired:
+            proc.kill()
+            proc.wait(timeout=5)
+
+        try:
+            recorder.wait(timeout=5)
+        except subprocess.TimeoutExpired:
+            recorder.kill()
+            recorder.wait(timeout=5)
+
+    finally:
+        termios.tcsetattr(stdin_fd, termios.TCSADRAIN, old_tty)
+        try:
+            os.close(master_fd)
+        except OSError:
+            pass
+
+    try:
+        final_text = finalize_transcript(audio_path)
+    except RuntimeError as exc:
+        print(f"\n{exc}", file=sys.stderr)
+        shutil.rmtree(temp_dir, ignore_errors=True)
+        return 1
+
+    if not final_text:
+        print("\nNo transcript captured.")
+        shutil.rmtree(temp_dir, ignore_errors=True)
+        return 0
+
+    copy_to_clipboard(final_text)
+    print("\n--- Final transcript copied to clipboard ---\n")
+    print(final_text)
+    shutil.rmtree(temp_dir, ignore_errors=True)
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
