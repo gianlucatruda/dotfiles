@@ -6,9 +6,6 @@ tap "jordond/tap"
 tap "nikitabobko/tap"
 tap "philocalyst/tap"
 tap "skardyy/mcat"
-
-# Replace cargo installation of tree-sitter-cli
-brew "tree-sitter"
 # Search tool like grep, but optimized for programmers
 brew "ack"
 # General-purpose data compression with high compression ratio
@@ -167,6 +164,8 @@ brew "yt-dlp"
 brew "mpv"
 # Open source relational database management system
 brew "mysql-client"
+# Incremental parsing library
+brew "tree-sitter"
 # Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
 # Image manipulation
@@ -239,6 +238,8 @@ brew "tlrc"
 brew "tmux"
 # Display directories as trees (with optional color/HTML output)
 brew "tree"
+# Parser generator tool
+brew "tree-sitter-cli"
 # Tools for building TCP client-server applications
 brew "ucspi-tcp"
 # Extremely fast Python package installer and resolver, written in Rust
@@ -281,7 +282,6 @@ cask "apparency"
 cask "audacity"
 # OpenAI's coding agent that runs in your terminal
 cask "codex"
-# My terminal font
 cask "font-hack-nerd-font"
 # Terminal emulator that uses platform-native UI and GPU acceleration
 cask "ghostty"

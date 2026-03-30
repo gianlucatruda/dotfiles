@@ -77,8 +77,10 @@ Install packages with Homebrew:
 Update the dotfiles repo from the system:
 ```bash
 cd <your-dotfiles-repo>
-brew bundle dump --all --describe --force --file .config/homebrew/Brewfile
+
+brew bundle dump --formula --tap --cask --mas --describe --force --file .config/homebrew/Brewfile
 ```
+Note: previously, I used `brew bundle dump --all --describe --force --file .config/homebrew/Brewfile` but this now includes language-specific tools like `uv`, `npm`, `cargo`, etc. that I don't want tracked. See `man brew` for details.
 
 Update the system from the dotfiles repo:
 ```bash
