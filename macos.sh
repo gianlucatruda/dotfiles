@@ -101,6 +101,9 @@ defaults write NSGlobalDomain InitialKeyRepeat -int 10
 # Set language and text formats
 defaults write NSGlobalDomain AppleMetricUnits -bool true
 
+# Fn/Globe key does nothing (0=Nothing, 1=Change Input, 2=Emoji, 3=Dictation)
+defaults write com.apple.HIToolbox AppleFnUsageType -int 0
+
 ###############################################################################
 # Screen                                                                      #
 ###############################################################################
