@@ -115,8 +115,6 @@ brew "grep"
 brew "htop"
 # Configurable static site generator
 brew "hugo"
-# C/C++ and Java libraries for Unicode and globalization
-brew "icu4c@77"
 # Command-line editor
 brew "id3v2"
 # ISO/IEC 23008-12:2017 HEIF file format decoder and encoder
