@@ -41,8 +41,6 @@ brew "btop"
 brew "glib"
 # Vector graphics library with cross-device output support
 brew "cairo"
-# Work on automating classical cipher cracking in C
-brew "cifer"
 # Cross-platform make
 brew "cmake"
 # GNU multiple precision arithmetic library
@@ -77,14 +75,10 @@ brew "poppler"
 brew "diff-pdf"
 # TCP over DNS tunnel
 brew "dns2tcp"
-# Dancer's shell, or distributed shell
-brew "dsh"
 # More intuitive version of du in rust
 brew "dust"
 # Like neofetch, but much faster because written mostly in C
 brew "fastfetch"
-# Zip password cracker
-brew "fcrackzip"
 # Simple, fast and user-friendly alternative to find
 brew "fd"
 # Identify or delete duplicate files
@@ -113,10 +107,6 @@ brew "ghostscript"
 brew "git"
 # Git extension for versioning large files
 brew "git-lfs"
-# Prevents you from committing sensitive information to a git repo
-brew "git-secrets"
-# Audit git repos for secrets
-brew "gitleaks"
 # Render markdown on the CLI
 brew "glow"
 # GNU grep, egrep and fgrep
@@ -125,8 +115,6 @@ brew "grep"
 brew "htop"
 # Configurable static site generator
 brew "hugo"
-# Network logon cracker which supports many services
-brew "hydra"
 # C/C++ and Java libraries for Unicode and globalization
 brew "icu4c@77"
 # Command-line editor
@@ -135,8 +123,6 @@ brew "id3v2"
 brew "libheif"
 # Tools and libraries to manipulate images in select formats
 brew "imagemagick"
-# Featureful UNIX password cracker
-brew "john"
 # Port-knock server
 brew "knock"
 # Simple terminal UI for git commands
@@ -241,10 +227,6 @@ brew "serie"
 brew "shellcheck"
 # SOcket CAT: netcat on steroids
 brew "socat"
-# Penetration testing for SQL injection and database servers
-brew "sqlmap"
-# Add a public key to a remote machine's authorized_keys file
-brew "ssh-copy-id"
 # Stress test a computer system in various selectable ways
 brew "stress-ng"
 # TCP/IP packet demultiplexer
@@ -261,8 +243,6 @@ brew "tree"
 brew "ucspi-tcp"
 # Extremely fast Python package installer and resolver, written in Rust
 brew "uv"
-# Syntax-aware linter for prose
-brew "vale"
 # Visual Binary Diff
 brew "vbindiff"
 # Executes a program periodically, showing output fullscreen
@@ -301,8 +281,7 @@ cask "apparency"
 cask "audacity"
 # OpenAI's coding agent that runs in your terminal
 cask "codex"
-# Virtual monitor for screen sharing
-cask "deskpad"
+# My terminal font
 cask "font-hack-nerd-font"
 # Terminal emulator that uses platform-native UI and GPU acceleration
 cask "ghostty"
@@ -310,8 +289,6 @@ cask "ghostty"
 cask "hiddenbar"
 # Utility to render Jupyter notebooks
 cask "jupyter-notebook-viewer"
-# Open-source screen recorder built with web technology
-cask "kap"
 # Keyboard customiser
 cask "karabiner-elements"
 # File system integration
@@ -324,14 +301,3 @@ cask "ungoogled-chromium"
 cask "upscayl"
 # Binary releases of VS Code without MS branding/telemetry/licensing
 cask "vscodium"
-vscode "ms-python.debugpy"
-vscode "ms-python.python"
-vscode "vscodevim.vim"
-cargo "cargo-generate"
-cargo "clap"
-cargo "flamegraph"
-cargo "rustlings"
-cargo "wasm-bindgen-cli"
-cargo "wasm-pack"
-uv "posting"
-uv "ty"
