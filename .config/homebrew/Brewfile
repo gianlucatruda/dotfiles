@@ -1,3 +1,4 @@
+tap "atlassian/acli"
 tap "bramstein/webfonttools"
 tap "felixkratz/formulae"
 tap "hjr265/gittop"
@@ -14,6 +15,8 @@ brew "xz"
 brew "jpeg-xl"
 # Codec library for encoding and decoding AV1 video streams
 brew "aom"
+# Extendable version manager with support for Ruby, Node.js, Erlang & more
+brew "asdf"
 # Automatic configure script builder
 brew "autoconf"
 # Tool for generating GNU Standards-compliant Makefiles
@@ -50,10 +53,10 @@ brew "csvlens"
 brew "datasette"
 # OpenType text shaping engine
 brew "harfbuzz"
+# C/C++ and Java libraries for Unicode and globalization
+brew "icu4c@77"
 # Development kit for the Java programming language
 brew "openjdk"
-# Interpreted, interactive, object-oriented programming language
-brew "python@3.12"
 # Tools to work with Android .dex and Java .class files
 brew "dex2jar"
 # Validating, recursive, caching DNS resolver
@@ -112,8 +115,6 @@ brew "grep"
 brew "htop"
 # Configurable static site generator
 brew "hugo"
-# C/C++ and Java libraries for Unicode and globalization
-brew "icu4c@77"
 # Command-line editor
 brew "id3v2"
 # ISO/IEC 23008-12:2017 HEIF file format decoder and encoder
@@ -152,6 +153,8 @@ brew "macmon"
 brew "magic-wormhole"
 # Utility for directing compilation
 brew "make"
+# Simple tool to make locally trusted development certificates
+brew "mkcert"
 # Deep clean and optimize your Mac
 brew "mole"
 # CLI tool for saving complete web pages as a single HTML file
@@ -194,12 +197,18 @@ brew "php"
 brew "pigz"
 # Friendly PIL fork (Python Imaging Library)
 brew "pillow"
+# Execute binaries from Python packages in isolated environments
+brew "pipx"
 # Print info and check PNG, JNG, and MNG files
 brew "pngcheck"
+# Fast, disk space efficient package manager
+brew "pnpm"
 # Monitor data's progress through a pipe
 brew "pv"
 # Python version management
 brew "pyenv"
+# Interpreted, interactive, object-oriented programming language
+brew "python@3.12"
 # Tools for and transforming and inspecting PDF files
 brew "qpdf"
 # File browser
@@ -242,8 +251,6 @@ brew "tree"
 brew "tree-sitter-cli"
 # Tools for building TCP client-server applications
 brew "ucspi-tcp"
-# Extremely fast Python package installer and resolver, written in Rust
-brew "uv"
 # Visual Binary Diff
 brew "vbindiff"
 # Executes a program periodically, showing output fullscreen
@@ -258,6 +265,8 @@ brew "whisper-cpp"
 brew "woff2"
 # Shell extension to navigate your filesystem faster
 brew "zoxide"
+# Software to interact with Atlassian Cloud from the terminal
+brew "atlassian/acli/acli"
 # Convert existing TrueType/OpenType fonts to WOFF format
 brew "bramstein/webfonttools/sfnt2woff"
 # WOFF utilities with Zopfli compression
@@ -297,7 +306,5 @@ cask "macfuse"
 cask "stats"
 # Google Chromium, sans integration with Google
 cask "ungoogled-chromium"
-# AI image upscaler
-cask "upscayl"
 # Binary releases of VS Code without MS branding/telemetry/licensing
 cask "vscodium"
