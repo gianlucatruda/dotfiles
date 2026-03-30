@@ -1,15 +1,18 @@
-tap "bramstein/webfonttools"
-tap "felixkratz/formulae", "https://github.com/FelixKratz/homebrew-formulae"
+tap "atlassian/acli"
+tap "derekwisong/datui"
+tap "domcyrus/rustnet"
+tap "felixkratz/formulae"
 tap "hjr265/gittop"
 tap "human37/open-wispr"
-tap "jordond/tap"
 tap "nikitabobko/tap"
 tap "philocalyst/tap"
-tap "skardyy/mcat", "https://github.com/Skardyy/homebrew-mcat"
+tap "skardyy/mcat", "https://github.com/Skardyy/homebrew-mcat", trusted: { formulae: ["mcat"] }
 # Search tool like grep, but optimized for programmers
 brew "ack"
 # Codec library for encoding and decoding AV1 video streams
 brew "aom"
+# Extendable version manager with support for Ruby, Node.js, Erlang & more
+brew "asdf"
 # Automatic configure script builder
 brew "autoconf"
 # Tool for generating GNU Standards-compliant Makefiles
@@ -50,10 +53,10 @@ brew "datasette"
 brew "libtiff"
 # OpenType text shaping engine
 brew "harfbuzz"
+# C/C++ and Java libraries for Unicode and globalization
+brew "icu4c@77"
 # Development kit for the Java programming language
 brew "openjdk"
-# Interpreted, interactive, object-oriented programming language
-brew "python@3.12"
 # Tools to work with Android .dex and Java .class files
 brew "dex2jar"
 # GNU Transport Layer Security (TLS) Library
@@ -122,8 +125,6 @@ brew "grep"
 brew "htop"
 # Configurable static site generator
 brew "hugo"
-# C/C++ and Java libraries for Unicode and globalization
-brew "icu4c@77"
 # Command-line editor
 brew "id3v2"
 # ISO/IEC 23008-12:2017 HEIF file format decoder and encoder
@@ -134,6 +135,8 @@ brew "imagemagick"
 brew "libraw"
 # Tools and libraries to manipulate images in many formats
 brew "imagemagick-full"
+# CLI for Infisical
+brew "infisical"
 # Lightweight and flexible command-line JSON processor
 brew "jq"
 # Port-knock server
@@ -160,6 +163,10 @@ brew "macmon"
 brew "magic-wormhole"
 # Utility for directing compilation
 brew "make"
+# Terminal image, video, directory, and Markdown viewer
+brew "mcat"
+# Simple tool to make locally trusted development certificates
+brew "mkcert"
 # Deep clean and optimize your Mac
 brew "mole"
 # CLI tool for saving complete web pages as a single HTML file
@@ -202,14 +209,18 @@ brew "php"
 brew "pigz"
 # Friendly PIL fork (Python Imaging Library)
 brew "pillow"
+# Execute binaries from Python packages in isolated environments
+brew "pipx"
 # Print info and check PNG, JNG, and MNG files
 brew "pngcheck"
-# Code formatter for JavaScript, CSS, JSON, GraphQL, Markdown, YAML
-brew "prettier"
+# Fast, disk space efficient package manager
+brew "pnpm"
 # Monitor data's progress through a pipe
 brew "pv"
 # Python version management
 brew "pyenv"
+# Interpreted, interactive, object-oriented programming language
+brew "python@3.12"
 # Tools for and transforming and inspecting PDF files
 brew "qpdf"
 # Ruby version manager
@@ -240,6 +251,8 @@ brew "shellcheck"
 brew "socat"
 # Stress test a computer system in various selectable ways
 brew "stress-ng"
+# Easiest, most secure way to use WireGuard and 2FA
+brew "tailscale"
 # TCP/IP packet demultiplexer
 brew "tcpflow"
 # Replay saved tcpdump files at arbitrary speeds
@@ -254,8 +267,6 @@ brew "tree"
 brew "tree-sitter-cli"
 # Tools for building TCP client-server applications
 brew "ucspi-tcp"
-# Extremely fast Python package installer and resolver, written in Rust
-brew "uv"
 # Visual Binary Diff
 brew "vbindiff"
 # Executes a program periodically, showing output fullscreen
@@ -270,6 +281,12 @@ brew "woff2"
 brew "yazi"
 # Shell extension to navigate your filesystem faster
 brew "zoxide"
+# Software to interact with Atlassian Cloud from the terminal
+brew "atlassian/acli/acli", trusted: true
+# Data Exploration in the Terminal
+brew "derekwisong/datui/datui", trusted: true
+# High-performance, cross-platform network monitoring tool with TUI
+brew "domcyrus/rustnet/rustnet", trusted: true
 # A window border system for macOS
 brew "felixkratz/formulae/borders", trusted: true
 # Beautiful terminal UI for visualizing Git repository statistics
@@ -278,18 +295,20 @@ brew "hjr265/gittop/gittop", trusted: true
 brew "human37/open-wispr/open-wispr", trusted: true
 # User-friendly, lightweight TUI for disk imaging
 brew "philocalyst/tap/caligula", trusted: true
-# a powerfull extended cat command, to cat all the things you couldn't before
-brew "skardyy/mcat/mcat", trusted: true
 # AeroSpace is an i3-like tiling window manager for macOS
 cask "nikitabobko/tap/aerospace", trusted: true
 # Inspect application bundles
 cask "apparency"
 # Multi-track audio editor and recorder
 cask "audacity"
+# Terminal-based AI coding assistant
+cask "claude-code"
 # OpenAI's coding agent that runs in your terminal
 cask "codex"
 cask "font-hack-nerd-font"
 cask "font-symbols-only-nerd-font"
+# Set of tools to manage resources and applications hosted on Google Cloud
+cask "gcloud-cli"
 # Terminal emulator that uses platform-native UI and GPU acceleration
 cask "ghostty"
 # Utility to hide menu bar items
@@ -300,6 +319,8 @@ cask "jupyter-notebook-viewer"
 cask "karabiner-elements"
 # File system integration
 cask "macfuse"
+# Open-source software for live streaming and screen recording
+cask "obs"
 # System monitor for the menu bar
 cask "stats"
 # Google Chromium, sans integration with Google
