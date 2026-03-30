@@ -9,6 +9,13 @@ tap "skardyy/mcat"
 
 # Replace cargo installation of tree-sitter-cli
 brew "tree-sitter"
+# Work
+brew "asdf"
+brew "mkcert"
+brew "pipx"
+brew "pnpm"
+brew "atlassian/acli/acli"
+
 # Search tool like grep, but optimized for programmers
 brew "ack"
 # General-purpose data compression with high compression ratio
