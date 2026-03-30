@@ -6,6 +6,9 @@ tap "jordond/tap"
 tap "nikitabobko/tap"
 tap "philocalyst/tap"
 tap "skardyy/mcat"
+
+# Replace cargo installation of tree-sitter-cli
+brew "tree-sitter"
 # Search tool like grep, but optimized for programmers
 brew "ack"
 # General-purpose data compression with high compression ratio

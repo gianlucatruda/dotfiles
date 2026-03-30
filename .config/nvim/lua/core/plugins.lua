@@ -46,11 +46,14 @@ require('lazy').setup({
     build = 'make',
     cond = function() return vim.fn.executable 'make' == 1 end,
   },
-  'nvim-treesitter/nvim-treesitter-textobjects', -- Custom Treesitter objects
   {
     'nvim-treesitter/nvim-treesitter',           -- Highlight, edit, navigate code
+    branch = 'main',
     build = ':TSUpdate',
-    lazy = true,
+    lazy = false,
+    dependencies = {
+      { 'nvim-treesitter/nvim-treesitter-textobjects', branch = 'main' },
+    },
   },
 
 }, {})
