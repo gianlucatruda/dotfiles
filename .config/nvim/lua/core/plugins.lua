@@ -38,7 +38,6 @@ require('lazy').setup({
   },
   {
     'nvim-telescope/telescope.nvim', -- Fuzzy-finder, navigator
-    branch = '0.1.x',
     lazy = true,
   },
   {
