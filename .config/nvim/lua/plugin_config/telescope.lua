@@ -43,15 +43,19 @@ require('telescope').setup {
 
 pcall(require('telescope').load_extension, 'fzf')
 
-local function find_git_root()
+local function find_search_root()
   local current_file = vim.api.nvim_buf_get_name(0)
   local start_dir = current_file ~= '' and vim.fs.dirname(current_file) or vim.fn.getcwd()
-  return vim.fs.root(start_dir, { '.git' }) or vim.fn.getcwd()
+  return vim.fs.root(start_dir, { '.git' }) or start_dir
+end
+
+local function in_git_repo(pathname)
+  return vim.fs.root(pathname, { '.git' }) ~= nil
 end
 
 local function live_grep_git_root()
   require('telescope.builtin').live_grep {
-    search_dirs = { find_git_root() },
+    search_dirs = { find_search_root() },
     additional_args = function()
       return { '--hidden', '--glob', '!.git/' }
     end,
@@ -60,7 +64,7 @@ end
 
 local function live_grep_git_root_all()
   require('telescope.builtin').live_grep {
-    search_dirs = { find_git_root() },
+    search_dirs = { find_search_root() },
     additional_args = function()
       return { '--hidden', '--no-ignore', '--glob', '!.git/' }
     end,
@@ -89,11 +93,20 @@ vim.keymap.set('n', '<leader>s/', telescope_live_grep_open_files, { desc = '[S]e
 vim.keymap.set('n', '<leader>ss', require('telescope.builtin').builtin, { desc = '[S]earch [S]elect Telescope' })
 vim.keymap.set('n', '<leader>gf', require('telescope.builtin').git_files, { desc = 'Search [G]it [F]iles' })
 vim.keymap.set('n', '<leader>sf', function()
-  require('telescope.builtin').git_files { cwd = find_git_root(), show_untracked = true, recurse_submodules = false }
+  local root = find_search_root()
+
+  if in_git_repo(root) then
+    require('telescope.builtin').git_files { cwd = root, show_untracked = true, recurse_submodules = false }
+    return
+  end
+
+  require('telescope.builtin').find_files {
+    cwd = root,
+  }
 end, { desc = '[S]earch [F]iles (tracked + untracked, git root)' })
 vim.keymap.set('n', '<leader>sF', function()
   require('telescope.builtin').find_files {
-    cwd = find_git_root(),
+    cwd = find_search_root(),
     hidden = true,
     no_ignore = true,
     file_ignore_patterns = { '.git/' },
