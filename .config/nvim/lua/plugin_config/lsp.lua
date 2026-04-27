@@ -91,7 +91,7 @@ local function apply_ty_settings(client)
   client.settings = client.settings or {}
   client.settings.ty = client.settings.ty or {}
   client.settings.ty.diagnosticMode = state.ty_diagnostic_mode
-  client.notify('workspace/didChangeConfiguration', { settings = client.settings })
+  client:notify('workspace/didChangeConfiguration', { settings = client.settings })
 end
 
 local function apply_ty_diagnostic_mode()
