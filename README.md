@@ -51,9 +51,18 @@ echo "" >> ~/.config/.extra
 
 Add the following details (and any other system-wide variables):
 ```bash
-# Git identity (used by bootstrap.sh)
+# Plain assignment vs export:
+#   - Plain assignment: only visible within the current shell process.
+#     Fine for variables consumed by sourced scripts (e.g. bootstrap.sh).
+#   - export: inherited by child processes (scripts, uv run, python, etc.).
+#     Required for anything read by external programs like API clients.
+
+# Git identity (used by bootstrap.sh, which runs via `source` — plain assignment is sufficient)
 GIT_USER_EMAIL="name@email.com"
 GIT_SIGNING_KEY="<signing_key>"
+
+# API keys (consumed by external processes — must be exported)
+export OPENAI_API_KEY="sk-..."
 ```
 
 `bootstrap.sh` will apply `git config --global core.editor`, `user.email`, and `user.signingkey` if the variables above are set. Re-run `bootstrap.sh` after changing them.
