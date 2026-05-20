@@ -1,5 +1,6 @@
 tap "atlassian/acli"
 tap "bramstein/webfonttools"
+tap "darrylmorley/whatcable"
 tap "derekwisong/datui"
 tap "domcyrus/rustnet"
 tap "felixkratz/formulae"
@@ -241,6 +242,8 @@ brew "shellcheck"
 brew "socat"
 # Stress test a computer system in various selectable ways
 brew "stress-ng"
+# Easiest, most secure way to use WireGuard and 2FA
+brew "tailscale"
 # TCP/IP packet demultiplexer
 brew "tcpflow"
 # Replay saved tcpdump files at arbitrary speeds
@@ -267,6 +270,8 @@ brew "wget"
 brew "whisper-cpp"
 # Utilities to create and convert Web Open Font File (WOFF) files
 brew "woff2"
+# Validate and execute GitHub Actions workflows locally
+brew "wrkflw"
 # Shell extension to navigate your filesystem faster
 brew "zoxide"
 # Software to interact with Atlassian Cloud from the terminal
@@ -297,6 +302,8 @@ cask "nikitabobko/tap/aerospace"
 cask "apparency"
 # Multi-track audio editor and recorder
 cask "audacity"
+# Terminal-based AI coding assistant
+cask "claude-code"
 # OpenAI's coding agent that runs in your terminal
 cask "codex"
 cask "font-hack-nerd-font"
@@ -316,3 +323,5 @@ cask "stats"
 cask "ungoogled-chromium"
 # Binary releases of VS Code without MS branding/telemetry/licensing
 cask "vscodium"
+# Menu bar app for USB-C cable diagnostics
+cask "darrylmorley/whatcable/whatcable"
