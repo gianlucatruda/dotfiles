@@ -87,18 +87,21 @@ Update the dotfiles repo from the system:
 ```bash
 cd <your-dotfiles-repo>
 
-brew bundle dump --formula --tap --cask --mas --describe --force --file .config/homebrew/Brewfile
+brew bundle dump --formula --tap --cask --mas --force --file .config/homebrew/Brewfile
 ```
-Note: previously, I used `brew bundle dump --all --describe --force --file .config/homebrew/Brewfile` but this now includes language-specific tools like `uv`, `npm`, `cargo`, etc. that I don't want tracked. See `man brew` for details.
+Note: Homebrew 6 makes Bundle descriptions the default, so `--describe` is no longer needed. Previously, I used `brew bundle dump --all --describe --force --file .config/homebrew/Brewfile` but this now includes language-specific tools like `uv`, `npm`, `cargo`, etc. that I don't want tracked. See `man brew` for details.
 
 Update the system from the dotfiles repo:
 ```bash
 cd <your-dotfiles-repo>
 source bootstrap.sh 
-brew bundle install -v --cleanup --force --file ~/.config/homebrew/Brewfile
+brew bundle install -v --file ~/.config/homebrew/Brewfile
+brew bundle cleanup --force --file ~/.config/homebrew/Brewfile
 ```
 
-Note: you can also install, cleanup, upgrade in steps:
+Note: Homebrew 6 makes Bundle descriptions the default and deprecates the old `brew bundle install --cleanup` flow. Cleanup is now an explicit `brew bundle cleanup` step; omit `--force` to preview removals first.
+
+You can also install, cleanup, upgrade in steps:
 ```bash
 brew bundle install --no-upgrade --file ~/.config/homebrew/Brewfile
 brew bundle cleanup --force --file ~/.config/homebrew/Brewfile
