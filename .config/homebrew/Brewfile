@@ -258,18 +258,12 @@ brew "whisper-cpp"
 brew "woff2"
 # Shell extension to navigate your filesystem faster
 brew "zoxide"
-# Convert existing TrueType/OpenType fonts to WOFF format
-brew "bramstein/webfonttools/sfnt2woff"
-# WOFF utilities with Zopfli compression
-brew "bramstein/webfonttools/sfnt2woff-zopfli"
 # A window border system for macOS
 brew "felixkratz/formulae/borders"
 # Beautiful terminal UI for visualizing Git repository statistics
 brew "hjr265/gittop/gittop"
 # Push-to-talk voice dictation for macOS using Whisper
 brew "human37/open-wispr/open-wispr"
-# Terminal-based battery and energy monitor for macos and linux
-brew "jordond/tap/jolt"
 # User-friendly, lightweight TUI for disk imaging
 brew "philocalyst/tap/caligula"
 # a powerfull extended cat command, to cat all the things you couldn't before
