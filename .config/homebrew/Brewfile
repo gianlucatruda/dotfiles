@@ -259,17 +259,17 @@ brew "woff2"
 # Shell extension to navigate your filesystem faster
 brew "zoxide"
 # A window border system for macOS
-brew "felixkratz/formulae/borders"
+brew "felixkratz/formulae/borders", trusted: true
 # Beautiful terminal UI for visualizing Git repository statistics
-brew "hjr265/gittop/gittop"
+brew "hjr265/gittop/gittop", trusted: true
 # Push-to-talk voice dictation for macOS using Whisper
-brew "human37/open-wispr/open-wispr"
+brew "human37/open-wispr/open-wispr", trusted: true
 # User-friendly, lightweight TUI for disk imaging
-brew "philocalyst/tap/caligula"
+brew "philocalyst/tap/caligula", trusted: true
 # a powerfull extended cat command, to cat all the things you couldn't before
-brew "skardyy/mcat/mcat"
+brew "skardyy/mcat/mcat", trusted: true
 # AeroSpace is an i3-like tiling window manager for macOS
-cask "nikitabobko/tap/aerospace"
+cask "nikitabobko/tap/aerospace", trusted: true
 # Inspect application bundles
 cask "apparency"
 # Multi-track audio editor and recorder
