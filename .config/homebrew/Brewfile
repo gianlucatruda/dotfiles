@@ -1,11 +1,11 @@
 tap "bramstein/webfonttools"
-tap "felixkratz/formulae"
+tap "felixkratz/formulae", "https://github.com/FelixKratz/homebrew-formulae"
 tap "hjr265/gittop"
 tap "human37/open-wispr"
 tap "jordond/tap"
 tap "nikitabobko/tap"
 tap "philocalyst/tap"
-tap "skardyy/mcat"
+tap "skardyy/mcat", "https://github.com/Skardyy/homebrew-mcat"
 # Search tool like grep, but optimized for programmers
 brew "ack"
 # General-purpose data compression with high compression ratio
