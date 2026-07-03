@@ -81,7 +81,23 @@ brew "fd"
 # Identify or delete duplicate files
 brew "fdupes"
 # Play, record, convert, and stream select audio and video codecs
-brew "ffmpeg"
+brew "ffmpeg", link: false
+# New file format for still image compression
+brew "jpeg-xl"
+# Subtitle renderer for the ASS/SSA subtitle format
+brew "libass"
+# Light HTTP/1.1 server library
+brew "libmicrohttpd"
+# Reliable Internet Stream Transport (RIST)
+brew "librist"
+# Framework for layout and rendering of i18n text
+brew "pango"
+# OCR (Optical Character Recognition) engine
+brew "tesseract"
+# Port of OpenAI's Whisper model in C/C++
+brew "whisper-cpp"
+# Play, record, convert, and stream many audio and video codecs
+brew "ffmpeg-full", link: true
 # Collection of GNU find, xargs, and locate
 brew "findutils"
 # Console program to recover files based on their headers and footers
@@ -90,16 +106,10 @@ brew "foremost"
 brew "libtool"
 # Command-line fuzzy finder written in Go
 brew "fzf"
-# New file format for still image compression
-brew "jpeg-xl"
 # Library for encoding and decoding .avif files
 brew "libavif"
 # GitHub command-line tool
 brew "gh"
-# Framework for layout and rendering of i18n text
-brew "pango"
-# OCR (Optical Character Recognition) engine
-brew "tesseract"
 # Interpreter for PostScript and PDF
 brew "ghostscript"
 # Distributed revision control system
@@ -121,23 +131,21 @@ brew "id3v2"
 # ISO/IEC 23008-12:2017 HEIF file format decoder and encoder
 brew "libheif"
 # Tools and libraries to manipulate images in select formats
-brew "imagemagick"
+brew "imagemagick", link: false
+# Library for reading RAW files from digital photo cameras
+brew "libraw"
+# Tools and libraries to manipulate images in many formats
+brew "imagemagick-full", link: true
+# Lightweight and flexible command-line JSON processor
+brew "jq"
 # Port-knock server
 brew "knock"
 # Simple terminal UI for git commands
 brew "lazygit"
 # Terminal file manager
 brew "lf"
-# Subtitle renderer for the ASS/SSA subtitle format
-brew "libass"
 # Provides library functionality for FIDO U2F & FIDO 2.0, including USB
 brew "libfido2"
-# Light HTTP/1.1 server library
-brew "libmicrohttpd"
-# Library for reading RAW files from digital photo cameras
-brew "libraw"
-# Reliable Internet Stream Transport (RIST)
-brew "librist"
 # LLM inference in C/C++
 brew "llama.cpp"
 # Access large language models from the command-line
@@ -202,8 +210,6 @@ brew "pv"
 brew "pyenv"
 # Tools for and transforming and inspecting PDF files
 brew "qpdf"
-# File browser
-brew "ranger"
 # Ruby version manager
 brew "rbenv"
 # Rsync for cloud storage
@@ -212,6 +218,8 @@ brew "rclone"
 brew "rdfind"
 # Perl-powered file rename script with many helpful built-ins
 brew "rename"
+# SVG rendering tool and library
+brew "resvg"
 # Command-line toolbox for fancy output in the terminal
 brew "rich-cli"
 # Readline wrapper: adds readline support to tools that lack it
@@ -222,6 +230,8 @@ brew "rmlint"
 brew "ruff"
 # Rich git commit graph in your terminal
 brew "serie"
+# 7-Zip is a file archiver with a high compression ratio
+brew "sevenzip"
 # Static analysis and lint tool, for (ba)sh scripts
 brew "shellcheck"
 # SOcket CAT: netcat on steroids
@@ -252,10 +262,10 @@ brew "watch"
 brew "watchexec"
 # Internet file retriever
 brew "wget"
-# Port of OpenAI's Whisper model in C/C++
-brew "whisper-cpp"
 # Utilities to create and convert Web Open Font File (WOFF) files
 brew "woff2"
+# Blazing fast terminal file manager written in Rust, based on async I/O
+brew "yazi"
 # Shell extension to navigate your filesystem faster
 brew "zoxide"
 # A window border system for macOS
@@ -277,6 +287,7 @@ cask "audacity"
 # OpenAI's coding agent that runs in your terminal
 cask "codex"
 cask "font-hack-nerd-font"
+cask "font-symbols-only-nerd-font"
 # Terminal emulator that uses platform-native UI and GPU acceleration
 cask "ghostty"
 # Utility to hide menu bar items
