@@ -8,10 +8,6 @@ tap "philocalyst/tap"
 tap "skardyy/mcat", "https://github.com/Skardyy/homebrew-mcat"
 # Search tool like grep, but optimized for programmers
 brew "ack"
-# General-purpose data compression with high compression ratio
-brew "xz"
-# New file format for still image compression
-brew "jpeg-xl"
 # Codec library for encoding and decoding AV1 video streams
 brew "aom"
 # Automatic configure script builder
@@ -24,6 +20,8 @@ brew "bash"
 brew "bash-completion@2"
 # Clone of cat(1) with syntax highlighting and Git integration
 brew "bat"
+# General-purpose data compression with high compression ratio
+brew "xz"
 # GNU binary tools for native development
 brew "binutils"
 # 7-Zip (high compression file archiver) implementation
@@ -56,8 +54,6 @@ brew "openjdk"
 brew "python@3.12"
 # Tools to work with Android .dex and Java .class files
 brew "dex2jar"
-# Validating, recursive, caching DNS resolver
-brew "unbound"
 # GNU Transport Layer Security (TLS) Library
 brew "gnutls"
 # GNU Privacy Guard (OpenPGP)
@@ -68,12 +64,16 @@ brew "gpgme"
 brew "openjpeg"
 # PDF rendering library (based on the xpdf-3.0 code base)
 brew "poppler"
+# Validating, recursive, caching DNS resolver
+brew "unbound"
 # Visually compare two PDF files
 brew "diff-pdf"
 # TCP over DNS tunnel
 brew "dns2tcp"
 # More intuitive version of du in rust
 brew "dust"
+# Powerful, lightweight programming language
+brew "lua"
 # Like neofetch, but much faster because written mostly in C
 brew "fastfetch"
 # Simple, fast and user-friendly alternative to find
@@ -90,6 +90,8 @@ brew "foremost"
 brew "libtool"
 # Command-line fuzzy finder written in Go
 brew "fzf"
+# New file format for still image compression
+brew "jpeg-xl"
 # Library for encoding and decoding .avif files
 brew "libavif"
 # GitHub command-line tool
@@ -140,8 +142,6 @@ brew "librist"
 brew "llama.cpp"
 # Access large language models from the command-line
 brew "llm"
-# Powerful, lightweight programming language
-brew "lua"
 # Text-based web browser
 brew "lynx"
 # Swiss Army Knife for macOS
