@@ -76,3 +76,6 @@ fi
 if command -v pyenv >/dev/null 2>&1; then
   eval "$(pyenv init - --no-rehash)"
 fi
+
+# Prefer mise shims over Homebrew/pyenv/asdf tools.
+export PATH="$HOME/.local/share/mise/shims:$PATH"
