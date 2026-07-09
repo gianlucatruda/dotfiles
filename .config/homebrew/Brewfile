@@ -11,8 +11,6 @@ tap "skardyy/mcat", "https://github.com/Skardyy/homebrew-mcat", trusted: { formu
 brew "ack"
 # Codec library for encoding and decoding AV1 video streams
 brew "aom"
-# Extendable version manager with support for Ruby, Node.js, Erlang & more
-brew "asdf"
 # Automatic configure script builder
 brew "autoconf"
 # Tool for generating GNU Standards-compliant Makefiles
@@ -165,6 +163,8 @@ brew "magic-wormhole"
 brew "make"
 # Terminal image, video, directory, and Markdown viewer
 brew "mcat"
+# Polyglot runtime manager (asdf rust clone)
+brew "mise"
 # Simple tool to make locally trusted development certificates
 brew "mkcert"
 # Deep clean and optimize your Mac
