@@ -74,6 +74,9 @@ if command -v pyenv >/dev/null 2>&1; then
   eval "$(pyenv init - --no-rehash)"
 fi
 
+# Prefer mise shims over Homebrew/pyenv/asdf tools.
+export PATH="$HOME/.local/share/mise/shims:$PATH"
+
 # Zoxide must init last. Skip it in non-interactive agent shells.
 if [[ $- == *i* ]] && command -v zoxide >/dev/null 2>&1; then
   eval "$(zoxide init bash)"
