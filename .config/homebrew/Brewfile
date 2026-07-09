@@ -4,6 +4,7 @@ tap "domcyrus/rustnet"
 tap "felixkratz/formulae"
 tap "hjr265/gittop"
 tap "human37/open-wispr"
+tap "infisical/get-cli", trusted: { formulae: ["infisical"] }
 tap "nikitabobko/tap"
 tap "philocalyst/tap"
 tap "skardyy/mcat", "https://github.com/Skardyy/homebrew-mcat", trusted: { formulae: ["mcat"] }
@@ -63,6 +64,8 @@ brew "gnutls"
 brew "gnupg"
 # Library access to GnuPG
 brew "gpgme"
+# Libraries for security-enabled client and server applications
+brew "nss"
 # Library for JPEG-2000 image manipulation
 brew "openjpeg"
 # PDF rendering library (based on the xpdf-3.0 code base)
@@ -305,6 +308,8 @@ cask "audacity"
 cask "claude-code"
 # OpenAI's coding agent that runs in your terminal
 cask "codex"
+# App to build and share containerised applications and microservices
+cask "docker-desktop"
 cask "font-hack-nerd-font"
 cask "font-symbols-only-nerd-font"
 # Set of tools to manage resources and applications hosted on Google Cloud
