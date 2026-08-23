@@ -308,17 +308,21 @@
               {
                 "conditions": [
                   {
-                    "identifiers": {
-                      "is_keyboard": true,
-                      "product_id": 17876,
-                      "vendor_id": 25601
-                    },
+                    "identifiers": [
+                      {
+                        "is_keyboard": true,
+                        "product_id": 17876,
+                        "vendor_id": 25601
+                      }
+                    ],
                     "type": "device_if"
                   }
                 ],
                 "from": {
                   "key_code": "f19",
-                  "modifiers": { "optional": ["any"] }
+                  "modifiers": {
+                    "optional": ["any"]
+                  }
                 },
                 "to": [
                   {
