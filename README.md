@@ -212,6 +212,18 @@ Often helpful:
 - Neovim reads that outer terminal marker; tmux refreshes `DOTFILES_TERM` from the attaching client so terminal-specific behavior still works inside tmux.
 - [Hack Nerd Font](https://www.nerdfonts.com/font-downloads) for terminal and editor use.
 
+#### Borne keyboard reference
+
+Factory base layer:
+
+![YIVU Borne stock base layer](.config/keyboard-layouts/borne/borne-stock-base.svg)
+
+Current remapped base layer:
+
+![YIVU Borne remapped base layer](.config/keyboard-layouts/borne/borne-remapped-base.svg)
+
+These diagrams are references only. The Borne Vial layout is tracked in Git; commit history records its revisions.
+
 ### Structure
 
 Current tracked structure:
@@ -243,6 +255,12 @@ Current tracked structure:
 │   │   ├── complex_modifications
 │   │   │   └── 1584620783.json
 │   │   └── karabiner.json
+│   ├── keyboard-layouts
+│   │   └── borne
+│   │       ├── borne-remapped-base.png
+│   │       ├── borne-remapped-base.svg
+│   │       ├── borne-stock-base.png
+│   │       └── borne-stock-base.svg
 │   ├── lf
 │   │   ├── colors
 │   │   ├── icons
