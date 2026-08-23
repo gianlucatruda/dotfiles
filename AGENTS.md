@@ -9,6 +9,7 @@ Guide for coding agents working with this dotfiles repository.
 Personal dotfiles for Bash + Tmux + Neovim on macOS. Forked from Mathias Bynens in 2017, heavily customized since.
 
 Core values:
+
 - **Modular** - Each component has single responsibility, separate files
 - **Simple** - No over-engineering. Three similar lines beats premature abstraction
 - **Performant** - Lazy load where appropriate. Minimal dependencies
@@ -19,6 +20,7 @@ Core values:
 ## Architecture
 
 ### Shell Configuration
+
 - `.bash_profile` - Entry point, loads everything
 - `.config/.aliases` - Simple command shortcuts
 - `.config/.functions` - Complex bash functions
@@ -28,12 +30,14 @@ Core values:
 Load order matters. All sourced from `.bash_profile`.
 
 ### Neovim Configuration
+
 - Plugin manager: `lazy.nvim`
 - Plugin declarations in `lua/core/plugins.lua`
 - Individual plugin configs in `lua/plugin_config/`
 - `lua/plugin_config/init.lua` loads all configs (ORDER MATTERS)
 
 ### Other
+
 - `bootstrap.sh` - Syncs dotfiles to home directory
 - `scripts/` - Standalone utilities with `gt-` prefix
 - `.config/homebrew/Brewfile` - Package declarations
@@ -43,6 +47,7 @@ Load order matters. All sourced from `.bash_profile`.
 ## Adding Components
 
 ### Neovim Plugin
+
 1. Add declaration to `lua/core/plugins.lua`
 2. Create config file in `lua/plugin_config/pluginname.lua`
 3. Load it in `lua/plugin_config/init.lua`
@@ -50,12 +55,15 @@ Load order matters. All sourced from `.bash_profile`.
 Keymap conventions: Leader is `<Space>`, use descriptive text like `{ desc = '[S]earch [F]iles' }`, mnemonic letters after leader.
 
 ### Shell Component
+
 - Aliases → `.config/.aliases`
 - Functions → `.config/.functions`
 - Scripts → `scripts/gt-*`
 
 ### Homebrew Package
+
 Edit `.config/homebrew/Brewfile` directly, or install and dump:
+
 ```bash
 brew install package
 brew bundle dump --force --file .config/homebrew/Brewfile
@@ -66,6 +74,7 @@ brew bundle dump --force --file .config/homebrew/Brewfile
 ## Rules for Agents
 
 ### Always
+
 - Read existing code first to understand patterns
 - Match existing style and conventions
 - Keep it minimal - only add what's explicitly needed
@@ -74,9 +83,11 @@ brew bundle dump --force --file .config/homebrew/Brewfile
 - Proactively keep README.md, AGENTS.md, and other docs in sync with code changes
 
 ### Validation (Neovim)
+
 - When verifying Neovim changes, run with isolated XDG paths so installs and caches do not touch the user's live config; suggest this workflow to users.
 - Use `NVIM_DOTFILES_CHECKHEALTH=1` to skip plugin_config during headless checks; omit to validate the full setup.
 - Example:
+
 ```bash
 NVIM_DOTFILES_CHECKHEALTH=1 \
 XDG_CONFIG_HOME="$PWD/.config" \
@@ -87,6 +98,7 @@ nvim --headless "+checkhealth" "+qall"
 ```
 
 ### Never
+
 - Run tests (user will do this)
 - Change keybindings without explicit request
 - Add unnecessary plugins/dependencies
@@ -99,6 +111,7 @@ nvim --headless "+checkhealth" "+qall"
 - Remove used code
 
 ### Be Careful With
+
 - `.bash_profile` load order
 - `plugin_config/init.lua` load order (ORDER MATTERS)
 - Commented code (kept as reference, don't remove)
@@ -106,4 +119,4 @@ nvim --headless "+checkhealth" "+qall"
 
 ---
 
-*Last updated: 2026-02-20*
+_Last updated: 2026-02-20_
