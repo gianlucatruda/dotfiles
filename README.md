@@ -214,13 +214,9 @@ Often helpful:
 
 #### Borne keyboard reference
 
-Factory base layer:
-
-![YIVU Borne stock base layer](.config/keyboard-layouts/borne/borne-stock-base.svg)
-
 Current remapped base layer:
 
-![YIVU Borne remapped base layer](.config/keyboard-layouts/borne/borne-remapped-base.svg)
+![YIVU Borne remapped base layer](./docs/keyboard/keyboard-layouts/borne/borne-remapped-base.png)
 
 These diagrams are references only. The Borne Vial layout is tracked in Git; commit history records its revisions.
 
@@ -255,12 +251,6 @@ Current tracked structure:
 │   │   ├── complex_modifications
 │   │   │   └── 1584620783.json
 │   │   └── karabiner.json
-│   ├── keyboard-layouts
-│   │   └── borne
-│   │       ├── borne-remapped-base.png
-│   │       ├── borne-remapped-base.svg
-│   │       ├── borne-stock-base.png
-│   │       └── borne-stock-base.svg
 │   ├── lf
 │   │   ├── colors
 │   │   ├── icons
