@@ -335,6 +335,37 @@
             ]
           },
           {
+            "description": "Borne: right wheel press (F18) to Fn/Globe for GhostPepper",
+            "manipulators": [
+              {
+                "conditions": [
+                  {
+                    "identifiers": [
+                      {
+                        "is_keyboard": true,
+                        "product_id": 17876,
+                        "vendor_id": 25601
+                      }
+                    ],
+                    "type": "device_if"
+                  }
+                ],
+                "from": {
+                  "key_code": "f18",
+                  "modifiers": {
+                    "optional": ["any"]
+                  }
+                },
+                "to": [
+                  {
+                    "apple_vendor_top_case_key_code": "keyboard_fn"
+                  }
+                ],
+                "type": "basic"
+              }
+            ]
+          },
+          {
             "description": "Map mouse button5 (frontmost) to forward (browser, Finder, etc.)",
             "manipulators": [
               {
