@@ -9,7 +9,7 @@ My stack:
 - Tmux for multiplexing and as the main terminal compatibility layer
 - Neovim as primary editor, with a modular `lazy.nvim` setup originally based on [Kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim/)
 - Vim (with lean `.vimrc`, no plugins) as fallback editor
-- `ranger` (also trying out `lf`) as terminal file managers
+- `yazi` as primary terminal file manager, with `lf` as a lightweight alternative (legacy `ranger` config still tracked)
 - Homebrew as package manager
 - Karabiner-Elements for modifiers, navigation, and app launchers
 - [AeroSpace](https://github.com/nikitabobko/AeroSpace) + `borders` for tiling window management
@@ -176,7 +176,7 @@ Then load up by running `reload`, which is an alias for:
 exec $SHELL -l
 ```
 
-Note: pyenv is initialized with `--no-rehash` for faster shell startup. Run `pyenv rehash` manually after installing new Python versions or global CLI tools.
+Note: pyenv is initialized with `--no-rehash` for faster shell startup. Run `pyenv rehash` manually after installing new Python versions or global CLI tools. mise shims take precedence over pyenv/asdf tools when installed.
 
 ---
 
@@ -256,7 +256,6 @@ Current tracked structure:
 │   │   ├── icons
 │   │   └── lfrc
 │   ├── nvim
-│   │   ├── SPEC.md
 │   │   ├── init.lua
 │   │   ├── lazy-lock.json
 │   │   └── lua
@@ -286,6 +285,12 @@ Current tracked structure:
 │   │   └── Stats.plist
 │   ├── tmux
 │   │   └── tmux.conf
+│   ├── vial
+│   │   └── layouts
+│   │       └── borne
+│   │           ├── base.vil
+│   │           ├── borne-before-plan1-left.vil
+│   │           └── borne-before-plan1-right.vil
 │   └── zen
 │       └── zen-keyboard-shortcuts.json
 ├── .gitignore
@@ -294,13 +299,19 @@ Current tracked structure:
 ├── AGENTS.md
 ├── bootstrap.sh
 ├── brew.sh
+├── docs
+│   └── keyboard
+│       ├── keyboard-layouts
+│       └── keyboard-remapping-requirements-spec.md
 ├── macos.sh
 └── scripts
     ├── gt-btooth
     ├── gt-cheat
+    ├── gt-imgen
     ├── gt-perfprofile
     ├── gt-scan
     ├── gt-stt
+    ├── gt-stt-local-live
     ├── gt-sync-homelab
     ├── gt-sync-obsidian
     ├── gt-synchdd
@@ -313,12 +324,14 @@ Current tracked structure:
 - **`v()`**: Opens the current directory or a specified directory in neovim if available, otherwise uses vi.
 - **`sf()`**: Searches for text-readable, non-hidden files (or all files including hidden with `-a` flag, excluding `.git`) in the current directory using `rg` and `fzf`, then opens the selected file in Vim.
 - **`sd()`**: Searches directories using `fzf` and changes to the selected directory, excluding paths containing `.git`.
+- **`cd()`**: Overrides the builtin to route through `zoxide` when installed, falling back to the builtin otherwise.
 - **`update_environment_from_tmux()`**: Refreshes tmux-managed environment variables when a shell is started or reloaded inside tmux.
 - **`mkd()`**: Creates a new directory (and any necessary parent directories) then changes into it.
 - **`fs()`**: Displays the size of a file or total size of a directory using `du`, presenting results in human-readable form.
 - **Built-in Overridden `diff()`**: Uses Git’s colored diff functionality when Git is installed, otherwise falls back to standard behavior.
 - **`o()`**: Opens the current directory or a specified file/directory with the default system application.
 - **`tre()`**: Runs the `tree` command showing hidden files and colorizing the output (ignoring `.git`, `node_modules`, and `bower_components` directories) and pipes the results to `less` with options to keep colors and line numbers.
+- **`llmq()`**: Writes an LLM prompt in `$EDITOR`, sends it to `llm` (gpt-5-nano) with a concise-technical system prompt, and renders the reply with `batmd`.
 
 ### Neovim setup
 
@@ -335,11 +348,8 @@ Neovim highlights:
 - Completion auto-trigger toggle lives at `<leader>tc`.
 - Winbar shows git-root-relative paths (fallback to CWD), and `<leader><tab>` jumps to the most recent buffer.
 
-See `.config/nvim/SPEC.md` for the full behavior-level spec.
-
 ```
 .config/nvim/
-├── SPEC.md
 ├── init.lua
 ├── lazy-lock.json
 └── lua
