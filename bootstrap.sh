@@ -11,6 +11,7 @@ function doIt() {
 		--exclude ".extra" \
 		--exclude ".gitignore" \
 		--exclude ".aider*" \
+		--exclude "docs/" \
 	-avh --no-perms . ~;
 	source ~/.bash_profile;
 	# Rebuild pyenv shims once after bootstrapping (skip if pyenv isn't installed)
