@@ -1,6 +1,9 @@
 tap "atlassian/acli"
+tap "can1357/tap"
+tap "datadog-labs/pack"
 tap "derekwisong/datui"
 tap "domcyrus/rustnet"
+tap "eugene1g/safehouse"
 tap "felixkratz/formulae"
 tap "hjr265/gittop"
 tap "human37/open-wispr"
@@ -286,10 +289,16 @@ brew "yazi"
 brew "zoxide"
 # Software to interact with Atlassian Cloud from the terminal
 brew "atlassian/acli/acli", trusted: true
+# Coding agent with the IDE wired in
+brew "can1357/tap/omp", trusted: true
+# Go-based command-line wrapper for easy interaction with Datadog APIs
+brew "datadog-labs/pack/pup", trusted: true
 # Data Exploration in the Terminal
 brew "derekwisong/datui/datui", trusted: true
 # High-performance, cross-platform network monitoring tool with TUI
 brew "domcyrus/rustnet/rustnet", trusted: true
+# macOS sandbox wrapper for coding agents
+brew "eugene1g/safehouse/agent-safehouse", trusted: true
 # A window border system for macOS
 brew "felixkratz/formulae/borders", trusted: true
 # Beautiful terminal UI for visualizing Git repository statistics
