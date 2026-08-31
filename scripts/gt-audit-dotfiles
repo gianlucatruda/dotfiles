@@ -2,7 +2,6 @@
 
 set -euo pipefail
 
-repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 home_dir="${HOME:?HOME must be set}"
 
 usage() {
@@ -20,6 +19,9 @@ Status:
 
 Options:
   --help      Show this help.
+
+When installed in ~/scripts, the command uses the repository path recorded by
+bootstrap.sh. Re-run bootstrap.sh after moving the repository.
 EOF
 }
 
@@ -39,7 +41,32 @@ case "${1:-}" in
     usage >&2
     exit 1
     ;;
-esac
+  esac
+
+resolve_repo_root() {
+  local script_root
+  local configured_root
+  local root_file="$home_dir/.config/.dotfiles-root"
+
+  script_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+  if git -C "$script_root" rev-parse --show-toplevel >/dev/null 2>&1; then
+    git -C "$script_root" rev-parse --show-toplevel
+    return
+  fi
+
+  if [[ -r "$root_file" ]]; then
+    IFS= read -r configured_root < "$root_file"
+    if git -C "$configured_root" rev-parse --show-toplevel >/dev/null 2>&1; then
+      git -C "$configured_root" rev-parse --show-toplevel
+      return
+    fi
+  fi
+
+  echo 'Cannot find the dotfiles repository. Re-run bootstrap.sh from its checkout.' >&2
+  exit 1
+}
+
+repo_root="$(resolve_repo_root)"
 
 if [[ -t 1 && -z "${NO_COLOR:-}" ]]; then
   green=$'\033[32m'
@@ -57,7 +84,7 @@ fi
 
 is_never_track() {
   case "$1" in
-    .DS_Store|.Trash|.bash_history|.bash_sessions|.cache|.cargo|.claude|.claude.json|.claude.json.backup|.codex|.crush|.cursor|.cursor-tutor|.degit|.docker|.fontconfig|.gem|.gitconfig|.gnupg|.lesshst|.matplotlib|.newsboat|.node_history|.npm|.ollama|.openhands-state|.pyenv|.python_history|.ropeproject|.rustup|.screen|.sqlite_history|.ssh|.streamlit|.swiftpm|.terminfo|.thumbnails|.tldrc|.viminfo|.vimrc.swo|.zsh_history|.zsh_sessions|.config/.extra|.config/browserify|.config/gh|.config/mole|.config/rclone)
+    .DS_Store|.Trash|.bash_history|.bash_sessions|.cache|.cargo|.claude|.claude.json|.claude.json.backup|.codex|.crush|.cursor|.cursor-tutor|.degit|.docker|.fontconfig|.gem|.gitconfig|.gnupg|.lesshst|.matplotlib|.newsboat|.node_history|.npm|.ollama|.openhands-state|.pyenv|.python_history|.ropeproject|.rustup|.screen|.sqlite_history|.ssh|.streamlit|.swiftpm|.terminfo|.thumbnails|.tldrc|.viminfo|.vimrc.swo|.zsh_history|.zsh_sessions|.config/.dotfiles-root|.config/.extra|.config/browserify|.config/gh|.config/mole|.config/rclone)
       return 0
       ;;
   esac
