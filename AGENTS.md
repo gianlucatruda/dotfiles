@@ -77,10 +77,13 @@ brew bundle dump --force --file .config/homebrew/Brewfile
 
 - Read existing code first to understand patterns
 - Match existing style and conventions
-- Keep it minimal - only add what's explicitly needed
+- Keep it minimal. Only add what's explicitly needed.
+- Write code/configs that are easy and delightful for humans to read and maintain. 
 - Maintain modularity (right file for right purpose)
 - The code is the source of truth - read it to understand specifics
 - Proactively keep README.md, AGENTS.md, and other docs in sync with code changes
+- Respond in ultraconcise and ultraclear Simplified Technical English (ASD-STE100).
+- (Re)write docs and comments in  ultraconcise and ultraclear Simplified Technical English (ASD-STE100).
 
 ### Validation (Neovim)
 
