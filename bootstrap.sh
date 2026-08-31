@@ -7,6 +7,7 @@ function doIt() {
 	rsync --exclude ".git/" \
 		--exclude ".DS_Store" \
 		--exclude "*.sh" \
+		--include ".config/agents/shared/skills/***" \
 		--exclude "*.md" \
 		--exclude "*.txt" \
 		--exclude ".extra" \
