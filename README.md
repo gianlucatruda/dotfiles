@@ -70,6 +70,16 @@ export OPENAI_API_KEY="sk-..."
 
 `bootstrap.sh` will apply `git config --global core.editor`, `user.email`, and `user.signingkey` if the variables above are set. Re-run `bootstrap.sh` after changing them.
 
+### Auditing local dotfiles
+
+`bootstrap.sh` syncs from this repository to the home directory. To audit local dotfiles first, run:
+
+```bash
+scripts/gt-audit-dotfiles
+```
+
+Run `scripts/gt-audit-dotfiles --help` for its status legend and options.
+
 ### Mac-specific setup
 
 Configure some macOS preferences:

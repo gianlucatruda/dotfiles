@@ -1,0 +1,121 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+home_dir="${HOME:?HOME must be set}"
+
+usage() {
+  cat <<EOF
+Usage: $(basename "$0") [--help]
+
+Classify home-directory dotfiles against this repository. Read-only: it prints
+paths only and never reads file contents, copies files, or deletes anything.
+
+Status:
+  ✓ tracked   Current repository file or directory.
+  ○ review    Local item not known to the repository.
+  ↶ removed   Present in Git history, but not tracked now.
+  × exclude   Cache, state, credentials, or unsuitable for wholesale tracking.
+
+Options:
+  --help      Show this help.
+EOF
+}
+
+if [[ $# -gt 1 ]]; then
+  usage >&2
+  exit 1
+fi
+
+case "${1:-}" in
+  '')
+    ;;
+  --help|-h)
+    usage
+    exit 0
+    ;;
+  *)
+    usage >&2
+    exit 1
+    ;;
+esac
+
+if [[ -t 1 && -z "${NO_COLOR:-}" ]]; then
+  green=$'\033[32m'
+  white=$'\033[37m'
+  amber=$'\033[33m'
+  grey=$'\033[90m'
+  reset=$'\033[0m'
+else
+  green=''
+  white=''
+  amber=''
+  grey=''
+  reset=''
+fi
+
+is_never_track() {
+  case "$1" in
+    .DS_Store|.Trash|.bash_history|.bash_sessions|.cache|.cargo|.claude|.claude.json|.claude.json.backup|.codex|.crush|.cursor|.cursor-tutor|.degit|.docker|.fontconfig|.gem|.gitconfig|.gnupg|.lesshst|.matplotlib|.newsboat|.node_history|.npm|.ollama|.openhands-state|.pyenv|.python_history|.ropeproject|.rustup|.screen|.sqlite_history|.ssh|.streamlit|.swiftpm|.terminfo|.thumbnails|.tldrc|.viminfo|.vimrc.swo|.zsh_history|.zsh_sessions|.config/.extra|.config/browserify|.config/gh|.config/mole|.config/rclone)
+      return 0
+      ;;
+  esac
+  return 1
+}
+
+is_tracked() {
+  [[ -n "$(git -C "$repo_root" ls-files -- "$1")" ]]
+}
+
+was_previously_tracked() {
+  [[ -n "$(git -C "$repo_root" log --all --format=%H -1 -- "$1")" ]]
+}
+
+print_entry() {
+  local relative="$1"
+
+  if is_tracked "$relative"; then
+    printf '  %s✓ tracked%s  %s\n' "$green" "$reset" "$relative"
+  elif was_previously_tracked "$relative"; then
+    printf '  %s↶ removed%s  %s\n' "$amber" "$reset" "$relative"
+  elif is_never_track "$relative"; then
+    printf '  %s× exclude%s  %s\n' "$grey" "$reset" "$relative"
+  else
+    printf '  %s○ review%s   %s\n' "$white" "$reset" "$relative"
+  fi
+}
+
+print_section() {
+  local heading="$1"
+  local root="$2"
+  local kind="$3"
+  local prefix="$4"
+  local name_pattern="$5"
+  local count=0
+  local path
+  local name
+
+  echo "$heading"
+  while IFS= read -r path; do
+    name="${path##*/}"
+    print_entry "$prefix$name"
+    count=$((count + 1))
+  done < <(find "$root" -maxdepth 1 -mindepth 1 -type "$kind" -name "$name_pattern" -print | sort)
+
+  if [[ $count -eq 0 ]]; then
+    echo '  (none)'
+  fi
+}
+
+echo "Dotfiles audit: $home_dir → $repo_root"
+echo '✓ tracked   ○ review   ↶ removed from repository   × exclude from version control'
+echo
+
+print_section 'Home-level files:' "$home_dir" f '' '.*'
+echo
+print_section 'Home-level directories:' "$home_dir" d '' '.*'
+echo
+print_section 'Config directories:' "$home_dir/.config" d '.config/' '*'
+echo
+print_section 'Config files:' "$home_dir/.config" f '.config/' '*'
