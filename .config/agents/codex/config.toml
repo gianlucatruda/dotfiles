@@ -3,7 +3,7 @@ model_reasoning_effort = "medium"
 model_reasoning_summary = "detailed"
 personality = "pragmatic"
 approval_policy = "on-request"
-approvals_reviewer = "user"
+approvals_reviewer = "auto_review"
 sandbox_mode = "workspace-write"
 service_tier = "fast"
 
