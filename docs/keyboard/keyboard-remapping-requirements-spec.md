@@ -147,7 +147,14 @@ These patterns are more important than the printed label on an individual key.
 - No dedicated built-in arrow cluster is required for the normal workflow
 - QMK/Vial firmware processes events before Karabiner and macOS
 
-The current Borne firmware layers and encoder actions are not stored in the dotfiles repository.
+The tracked Vial layout is `.config/vial/layouts/borne/base.vil`. Its encoder behaviour is:
+
+| Context | Left encoder | Right encoder |
+| ------- | ------------ | ------------- |
+| Base layer | Turn: volume down/up. Press: mute. | Turn: Page Up/Down. Press: F18. |
+| Layer 1 | Turn: display brightness down/up. Press: RGB mode. | Turn: Page Up/Down. Press: RGB toggle. |
+
+The F18 press becomes Apple Fn/Globe for GhostPepper.
 
 ### 6.3 Lofree Flow Lite84
 
@@ -454,6 +461,7 @@ These translations apply only when the keyboard firmware sends the related funct
 | `046d:c08b`  | Logitech G502 HERO interfaces                                          | Vendor-specific events ignored      |
 | `3434:d030`  | Keychron Link interface                                                | Processed as a pointing interface   |
 | `3434:d031`  | Keychron Link interfaces                                               | Vendor-specific events ignored      |
+| `6401:45d4`  | YIVU Borne                                                            | F18 to Fn/Globe |
 
 The Logitech K810 is not one of the four target keyboards. Its rules remain part of the current configuration baseline.
 

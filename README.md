@@ -220,6 +220,8 @@ Current remapped base layer:
 
 These diagrams are references only. The Borne Vial layout is tracked in Git; commit history records its revisions.
 
+The base layer uses the left encoder for volume and mute, and the right encoder for Page Up/Down. On Layer 1, the left encoder controls display brightness; both encoder presses retain their RGB controls.
+
 ### Structure
 
 Current tracked structure:
