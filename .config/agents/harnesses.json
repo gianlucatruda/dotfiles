@@ -29,6 +29,10 @@
       "target": ".config/opencode/opencode.json"
     },
     {
+      "source": "opencode/tui.json",
+      "target": ".config/opencode/tui.json"
+    },
+    {
       "source": "shared/AGENTS.md",
       "target": ".codex/AGENTS.md"
     },

@@ -1,0 +1,8 @@
+{
+  "$schema": "https://opencode.ai/tui.json",
+  "keybinds": {
+    "editor_open": "ctrl+g",
+    "messages_first": "home",
+    "status_view": "ctrl+x s"
+  }
+}
