@@ -152,7 +152,7 @@ The tracked Vial layout is `.config/vial/layouts/borne/base.vil`. Its encoder be
 | Context | Left encoder | Right encoder |
 | ------- | ------------ | ------------- |
 | Base layer | Turn: volume down/up. Press: mute. | Turn: Page Up/Down. Press: F18. |
-| Layer 1 | Turn: display brightness down/up. Press: RGB mode. | Turn: Page Up/Down. Press: RGB toggle. |
+| Layer 1 | Turn: display brightness down/up. Press: RGB mode. | Turn: keyboard RGB brightness down/up. Press: RGB toggle. |
 
 The F18 press becomes Apple Fn/Globe for GhostPepper.
 
