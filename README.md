@@ -80,6 +80,10 @@ scripts/gt-audit-dotfiles
 
 Run `scripts/gt-audit-dotfiles --help` for its status legend and options.
 
+### Agent configuration
+
+Tracked shared agent configuration lives in `.config/agents/`. Shared skills use the `gt-` prefix to avoid name collisions. Shared instructions use `AGENTS.md`; Claude receives a copy as `CLAUDE.md`. `bootstrap.sh` first deploys this directory to `~/.config/agents/`, then applies the targets declared in `harnesses.json`. It does not replace harness state or delete other skills.
+
 ### Mac-specific setup
 
 Configure some macOS preferences:

@@ -1,0 +1,26 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "ollama": {
+      "models": {
+        "gemma4:31b": {
+          "_launch": true,
+          "name": "gemma4:31b"
+        },
+        "gemma4:e4b": {
+          "_launch": true,
+          "name": "gemma4:e4b"
+        },
+        "qwen3-coder-next:q4_K_M": {
+          "_launch": true,
+          "name": "qwen3-coder-next:q4_K_M"
+        }
+      },
+      "name": "Ollama",
+      "npm": "@ai-sdk/openai-compatible",
+      "options": {
+        "baseURL": "http://127.0.0.1:11434/v1"
+      }
+    }
+  }
+}

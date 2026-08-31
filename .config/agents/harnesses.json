@@ -1,0 +1,52 @@
+{
+  "deployments": [
+    {
+      "source": "shared/skills",
+      "target": ".codex/skills"
+    },
+    {
+      "source": "shared/skills",
+      "target": ".claude/skills"
+    },
+    {
+      "source": "shared/skills",
+      "target": ".config/opencode/skills"
+    },
+    {
+      "source": "shared/skills",
+      "target": ".pi/agent/skills"
+    },
+    {
+      "source": "shared/skills",
+      "target": ".omp/agent/skills"
+    },
+    {
+      "source": "codex/config.toml",
+      "target": ".codex/config.toml"
+    },
+    {
+      "source": "opencode/opencode.json",
+      "target": ".config/opencode/opencode.json"
+    },
+    {
+      "source": "shared/AGENTS.md",
+      "target": ".codex/AGENTS.md"
+    },
+    {
+      "source": "shared/AGENTS.md",
+      "target": ".claude/CLAUDE.md"
+    },
+    {
+      "source": "shared/AGENTS.md",
+      "target": ".config/opencode/AGENTS.md"
+    },
+    {
+      "source": "shared/AGENTS.md",
+      "target": ".pi/agent/AGENTS.md"
+    },
+    {
+      "source": "shared/AGENTS.md",
+      "target": ".omp/agent/AGENTS.md"
+    }
+  ]
+}

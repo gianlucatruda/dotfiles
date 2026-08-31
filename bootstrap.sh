@@ -14,7 +14,21 @@ function doIt() {
 		--exclude ".aider*" \
 		--exclude "docs/" \
 		-avh --no-perms . ~;
+	rsync -a --no-perms .config/agents/shared/AGENTS.md ~/.config/agents/shared/;
 	printf '%s\n' "$dotfiles_repo_root" > ~/.config/.dotfiles-root;
+	jq -r '.deployments[] | [.source, .target] | @tsv' ~/.config/agents/harnesses.json |
+	while IFS=$'\t' read -r source target; do
+		source_path="$HOME/.config/agents/$source"
+		target_path="$HOME/$target"
+
+		if [[ -d "$source_path" ]]; then
+			mkdir -p "$target_path"
+			rsync -a --no-perms "$source_path/" "$target_path/"
+		else
+			mkdir -p "$(dirname "$target_path")"
+			rsync -a --no-perms "$source_path" "$target_path"
+		fi
+	done
 	source ~/.bash_profile;
 	# Rebuild pyenv shims once after bootstrapping (skip if pyenv isn't installed)
 	if command -v pyenv >/dev/null 2>&1 && [[ -d "$HOME/.pyenv/shims" ]]; then

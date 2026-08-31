@@ -41,6 +41,7 @@ Load order matters. All sourced from `.bash_profile`.
 - `bootstrap.sh` - Syncs dotfiles to home directory
 - `scripts/` - Standalone utilities with `gt-` prefix
 - `.config/homebrew/Brewfile` - Package declarations
+- `.config/agents/` - Shared agent configuration; shared skills use the `gt-` prefix
 
 ---
 
@@ -59,6 +60,8 @@ Keymap conventions: Leader is `<Space>`, use descriptive text like `{ desc = '[S
 - Aliases → `.config/.aliases`
 - Functions → `.config/.functions`
 - Scripts → `scripts/gt-*`
+- Shared agent skills → `.config/agents/shared/skills/gt-*`
+- Shared agent instructions → `.config/agents/shared/AGENTS.md`
 
 ### Homebrew Package
 
