@@ -303,38 +303,6 @@
             ]
           },
           {
-            "description": "Borne: hold screenshot modifiers with F19",
-            "manipulators": [
-              {
-                "conditions": [
-                  {
-                    "identifiers": [
-                      {
-                        "is_keyboard": true,
-                        "product_id": 17876,
-                        "vendor_id": 25601
-                      }
-                    ],
-                    "type": "device_if"
-                  }
-                ],
-                "from": {
-                  "key_code": "f19",
-                  "modifiers": {
-                    "optional": ["any"]
-                  }
-                },
-                "to": [
-                  {
-                    "key_code": "left_control",
-                    "modifiers": ["left_option", "left_command"]
-                  }
-                ],
-                "type": "basic"
-              }
-            ]
-          },
-          {
             "description": "Borne: right wheel press (F18) to Fn/Globe for GhostPepper",
             "manipulators": [
               {
