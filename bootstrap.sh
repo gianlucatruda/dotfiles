@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 cd "$(dirname "${BASH_SOURCE}")";
+dotfiles_repo_root="$(pwd -P)";
 
 function doIt() {
 	rsync --exclude ".git/" \
@@ -12,7 +13,8 @@ function doIt() {
 		--exclude ".gitignore" \
 		--exclude ".aider*" \
 		--exclude "docs/" \
-	-avh --no-perms . ~;
+		-avh --no-perms . ~;
+	printf '%s\n' "$dotfiles_repo_root" > ~/.config/.dotfiles-root;
 	source ~/.bash_profile;
 	# Rebuild pyenv shims once after bootstrapping (skip if pyenv isn't installed)
 	if command -v pyenv >/dev/null 2>&1 && [[ -d "$HOME/.pyenv/shims" ]]; then
@@ -46,4 +48,4 @@ else
 		doIt;
 	fi;
 fi;
-unset doIt;
+unset doIt dotfiles_repo_root;
