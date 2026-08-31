@@ -68,8 +68,8 @@ prefix = "ctrl+h"
 # Prefix-mode actions
 # help = "prefix+?"
 # settings = "prefix+s"
-# detach = "prefix+q"
-# reload_config = "prefix+shift+r"
+detach = "prefix+d"
+reload_config = "prefix+r"
 # open_notification_target = "prefix+o"
 # workspace_picker = "prefix+w"
 # goto = "prefix+g"
@@ -85,29 +85,30 @@ prefix = "ctrl+h"
 # next_agent = ""         # optional, unset by default
 # focus_agent = ""        # optional indexed binding, e.g. "prefix+alt+1..9"
 # remote_image_paste = "ctrl+v" # only active in herdr --remote; empty disables raw-key image paste
-# new_tab = "prefix+c"
+new_tab = "prefix+c"
 # rename_tab = "prefix+shift+t"
-# previous_tab = "prefix+p"
+# Match Tmux's prefix+Tab window toggle as closely as HerdR permits.
+previous_tab = "prefix+tab"
 # next_tab = "prefix+n"
-# move_tab_previous = ""   # optional, e.g. "alt+shift+left" moves the tab toward the front
-# move_tab_next = ""       # optional, e.g. "alt+shift+right" moves the tab toward the back
+move_tab_previous = "prefix+shift+h"
+move_tab_next = "prefix+shift+l"
 # switch_tab = "prefix+1..9"
 # switch_workspace = ""   # optional indexed binding, e.g. "prefix+shift+1..9"
 # close_tab = "prefix+shift+x"
 # rename_pane = "prefix+shift+p"
 # edit_scrollback = "prefix+e"
-# focus_pane_left = "prefix+h"
-# focus_pane_down = "prefix+j"
-# focus_pane_up = "prefix+k"
-# focus_pane_right = "prefix+l"
-# cycle_pane_next = "prefix+tab"
+focus_pane_left = "prefix+h"
+focus_pane_down = "prefix+j"
+focus_pane_up = "prefix+k"
+focus_pane_right = "prefix+l"
+cycle_pane_next = ""
 # cycle_pane_previous = "prefix+shift+tab"
 # last_pane = ""          # optional, unset by default; bind e.g. "prefix+tab" for global back-and-forth
-# split_vertical = "prefix+v"
-# split_horizontal = "prefix+minus"
+split_vertical = "prefix+%"
+split_horizontal = "prefix+\""
 # close_pane = "prefix+x"
 # zoom = "prefix+z"       # legacy alias: fullscreen
-# resize_mode = "prefix+r"
+resize_mode = "prefix+plus"
 # resize_pane_left = ""   # optional, e.g. "ctrl+shift+alt+left" resizes without entering resize mode
 # resize_pane_down = ""   # optional, e.g. "ctrl+shift+alt+down"
 # resize_pane_up = ""     # optional, e.g. "ctrl+shift+alt+up"
@@ -135,6 +136,12 @@ prefix = "ctrl+h"
 # command = "lazygit"
 # width = "80%"
 # height = "80%"
+
+[[keys.command]]
+key = "prefix+q"
+type = "shell"
+command = "herdr server stop"
+description = "Stop HerdR"
 
 # Legacy indexed shortcut config is still parsed for compatibility.
 # Prefer switch_tab, switch_workspace, and focus_agent for new configs.
