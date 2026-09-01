@@ -33,6 +33,10 @@
       "target": ".config/opencode/tui.json"
     },
     {
+      "source": "pi/settings.json",
+      "target": ".pi/agent/settings.json"
+    },
+    {
       "source": "claude/settings.json",
       "target": ".claude/settings.json"
     },
