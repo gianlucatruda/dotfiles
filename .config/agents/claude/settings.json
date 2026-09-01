@@ -1,0 +1,31 @@
+{
+  "model": "opus[1m]",
+  "enabledPlugins": {
+    "impeccable@impeccable": true
+  },
+  "extraKnownMarketplaces": {
+    "impeccable": {
+      "source": {
+        "source": "github",
+        "repo": "pbakaus/impeccable"
+      }
+    }
+  },
+  "effortLevel": "high",
+  "skipDangerousModePermissionPrompt": true,
+  "theme": "auto",
+  "agentPushNotifEnabled": true,
+  "permissions": {
+    "defaultMode": "auto"
+  },
+  "env": {
+    "DISABLE_ERROR_REPORTING": "1",
+    "DISABLE_FEEDBACK_COMMAND": "1",
+    "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1"
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "bash ~/.claude/statusline",
+    "padding": 0
+  }
+}

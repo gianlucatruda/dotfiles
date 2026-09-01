@@ -33,6 +33,14 @@
       "target": ".config/opencode/tui.json"
     },
     {
+      "source": "claude/settings.json",
+      "target": ".claude/settings.json"
+    },
+    {
+      "source": "claude/statusline",
+      "target": ".claude/statusline"
+    },
+    {
       "source": "shared/AGENTS.md",
       "target": ".codex/AGENTS.md"
     },

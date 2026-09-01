@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+# Claude Code status line. Mirrors the codex `status_line` segments.
+# Reads session JSON on stdin (see statusline docs), prints one line.
+#
+# WHY no `.sh` extension: bootstrap.sh's home-dir rsync excludes `*.sh`, so a
+# `.sh` file never reaches ~. WHY invoked as `bash <file>` in settings: bootstrap
+# strips perms (--no-perms), so the file has no exec bit.
+
+input=$(cat)
+
+model=$(jq -r '.model.display_name // "?"' <<<"$input")
+dir=$(jq -r '.workspace.current_dir // .cwd // ""' <<<"$input")
+pct=$(jq -r '(.context_window.used_percentage // 0) | floor' <<<"$input")
+cost=$(jq -r '.cost.total_cost_usd // 0' <<<"$input")
+added=$(jq -r '.cost.total_lines_added // 0' <<<"$input")
+removed=$(jq -r '.cost.total_lines_removed // 0' <<<"$input")
+
+# ANSI colors
+reset=$'\033[0m'; dim=$'\033[2m'
+c_model=$'\033[36m'; c_dir=$'\033[34m'; c_git=$'\033[35m'; c_cost=$'\033[32m'
+sep="${dim} · ${reset}"
+
+# Git branch + dirty file count, only inside a work tree.
+git_seg=""
+if [ -n "$dir" ]; then
+	if branch=$(git -C "$dir" symbolic-ref --quiet --short HEAD 2>/dev/null) ||
+		branch=$(git -C "$dir" rev-parse --short HEAD 2>/dev/null); then
+		dirty=$(git -C "$dir" status --porcelain 2>/dev/null | grep -c .)
+		git_seg="${c_git}${branch}${reset}"
+		[ "$dirty" -gt 0 ] && git_seg="${git_seg}${dim}±${dirty}${reset}"
+	fi
+fi
+
+# Context gauge: green < 60, yellow < 85, red at/above 85.
+if [ "$pct" -ge 85 ]; then c_ctx=$'\033[31m'
+elif [ "$pct" -ge 60 ]; then c_ctx=$'\033[33m'
+else c_ctx=$'\033[32m'; fi
+
+out="${c_model}${model}${reset}"
+[ -n "$dir" ] && out="${out}${sep}${c_dir}${dir##*/}${reset}"
+[ -n "$git_seg" ] && out="${out}${sep}${git_seg}"
+out="${out}${sep}${c_ctx}${pct}% ctx${reset}"
+[ "$added" -gt 0 ] || [ "$removed" -gt 0 ] &&
+	out="${out}${sep}${dim}+${added}/-${removed}${reset}"
+
+# Cost only once it is non-trivial.
+costfmt=$(printf '%.2f' "$cost" 2>/dev/null || echo 0)
+[ "$costfmt" != "0.00" ] && out="${out}${sep}${c_cost}\$${costfmt}${reset}"
+
+printf '%s' "$out"
