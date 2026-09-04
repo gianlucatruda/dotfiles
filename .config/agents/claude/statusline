@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
-# Claude Code status line. Mirrors the codex `status_line` segments.
+# Claude Code status line. Mirrors the codex status_line segments:
+#   model+effort+fast · dir · git · context · usage limits.
 # Reads session JSON on stdin (see statusline docs), prints one line.
+#
+# WHY no cost: on a subscription the dollar figure is noise; the binding numbers
+# are the rate-limit windows, so we show those instead.
 #
 # WHY no `.sh` extension: bootstrap.sh's home-dir rsync excludes `*.sh`, so a
 # `.sh` file never reaches ~. WHY invoked as `bash <file>` in settings: bootstrap
@@ -9,15 +13,19 @@
 input=$(cat)
 
 model=$(jq -r '.model.display_name // "?"' <<<"$input")
+effort=$(jq -r '.effort.level // empty' <<<"$input")
+fast=$(jq -r 'if .fast_mode then "fast" else empty end' <<<"$input")
 dir=$(jq -r '.workspace.current_dir // .cwd // ""' <<<"$input")
 pct=$(jq -r '(.context_window.used_percentage // 0) | floor' <<<"$input")
-cost=$(jq -r '.cost.total_cost_usd // 0' <<<"$input")
-added=$(jq -r '.cost.total_lines_added // 0' <<<"$input")
-removed=$(jq -r '.cost.total_lines_removed // 0' <<<"$input")
+
+# Subscription windows, as percent LEFT to match codex ("weekly 89% left").
+# Absent off-subscription and until the first API reply; then show each.
+h5=$(jq -r 'if .rate_limits.five_hour.used_percentage != null then (100 - .rate_limits.five_hour.used_percentage) | floor else empty end' <<<"$input")
+wk=$(jq -r 'if .rate_limits.seven_day.used_percentage != null then (100 - .rate_limits.seven_day.used_percentage) | floor else empty end' <<<"$input")
 
 # ANSI colors
 reset=$'\033[0m'; dim=$'\033[2m'
-c_model=$'\033[36m'; c_dir=$'\033[34m'; c_git=$'\033[35m'; c_cost=$'\033[32m'
+c_model=$'\033[36m'; c_dir=$'\033[34m'; c_git=$'\033[35m'
 sep="${dim} · ${reset}"
 
 # Git branch + dirty file count, only inside a work tree.
@@ -36,15 +44,23 @@ if [ "$pct" -ge 85 ]; then c_ctx=$'\033[31m'
 elif [ "$pct" -ge 60 ]; then c_ctx=$'\033[33m'
 else c_ctx=$'\033[32m'; fi
 
+# Usage window: red near empty, yellow low, green with headroom. "left" semantics.
+usage_seg() { # $1=label  $2=percent-left
+	local label=$1 left=$2 c
+	if [ "$left" -le 10 ]; then c=$'\033[31m'
+	elif [ "$left" -le 25 ]; then c=$'\033[33m'
+	else c=$'\033[32m'; fi
+	printf '%s%s %s%s%%%s %sleft%s' "$dim" "$label" "$c" "$left" "$reset" "$dim" "$reset"
+}
+
+# Model + effort + fast, like codex `gpt-5.6-terra medium fast`.
 out="${c_model}${model}${reset}"
+[ -n "$effort" ] && out="${out} ${dim}${effort}${reset}"
+[ -n "$fast" ] && out="${out} ${dim}${fast}${reset}"
 [ -n "$dir" ] && out="${out}${sep}${c_dir}${dir##*/}${reset}"
 [ -n "$git_seg" ] && out="${out}${sep}${git_seg}"
 out="${out}${sep}${c_ctx}${pct}% ctx${reset}"
-[ "$added" -gt 0 ] || [ "$removed" -gt 0 ] &&
-	out="${out}${sep}${dim}+${added}/-${removed}${reset}"
-
-# Cost only once it is non-trivial.
-costfmt=$(printf '%.2f' "$cost" 2>/dev/null || echo 0)
-[ "$costfmt" != "0.00" ] && out="${out}${sep}${c_cost}\$${costfmt}${reset}"
+[ -n "$h5" ] && out="${out}${sep}$(usage_seg 5h "$h5")"
+[ -n "$wk" ] && out="${out}${sep}$(usage_seg weekly "$wk")"
 
 printf '%s' "$out"
