@@ -37,6 +37,10 @@
       "target": ".pi/agent/settings.json"
     },
     {
+      "source": "pi/extensions",
+      "target": ".pi/agent/extensions"
+    },
+    {
       "source": "claude/settings.json",
       "target": ".claude/settings.json"
     },
