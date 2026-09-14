@@ -8,6 +8,7 @@ function doIt() {
 		--exclude ".DS_Store" \
 		--exclude "*.sh" \
 		--include ".config/agents/shared/skills/***" \
+		--include ".config/tortus/AGENTS.personal.md" \
 		--exclude "*.md" \
 		--exclude "*.txt" \
 		--exclude ".extra" \
