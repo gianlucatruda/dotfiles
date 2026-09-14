@@ -30,6 +30,55 @@ Record small, repeatable workflow problems in tmp/shared/agents/papercuts/PAPERC
 - Append only.
 - Do not fix or ticket papercuts unless asked.
 
+## Worktrees
+
+Use `gt-tortus-worktree` for every lifecycle operation.
+
+Never call `git worktree` directly.
+
+Before work that writes files:
+- Run `gt-tortus-worktree status`
+- Give each writing agent one exclusive worktree
+- Do not modify a worktree assigned to another writing agent
+
+Select the worktree by task type:
+- Keep `main` clean for integration and review
+- Use `dev` for short human-led work
+- Use `fix` for quick hotfixes
+- Use one active branch in each persistent worktree
+- Create `<ISSUE>-<description>` for all other work
+
+Use these commands:
+
+```sh
+gt-tortus-worktree status
+gt-tortus-worktree init
+gt-tortus-worktree new KAI-123-short-description
+gt-tortus-worktree release dev
+gt-tortus-worktree remove KAI-123-short-description
+```
+
+Run the required command directly. Do not reproduce its steps manually.
+
+If the command fails, report the error. Do not remove partial work automatically.
+
+After work finishes:
+- Release a clean persistent worktree before reuse
+- Remove named worktrees after merge or abandonment
+
+### Shared Postgres
+
+- All worktrees use one shared database
+- Prefer database-free checks
+- Do not create per-worktree databases or Compose stacks
+- Only one worktree may run `api:serve`
+- Read `tmp/shared/agents/database-owner.txt` before API integration work
+- An empty ownership file means `api:serve` has no owner
+- Record `<worktree> | <agent> | <ISO datetime>` before starting `api:serve`
+- Do not start while another worktree owns `api:serve`
+- Only the recorded owner may stop `api:serve`
+- Clear the ownership file after stopping `api:serve`
+
 ## Kairos
 
 Kairos is an experimental pre-launch project.
