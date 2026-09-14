@@ -1,0 +1,263 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+main_dir="${TORTUS_MAIN_DIR:-$HOME/1-Projects/tortus/main}"
+shared_dir="${TORTUS_SHARED_DIR:-$HOME/shared}"
+
+usage() {
+  cat <<'EOF'
+Usage: gt-tortus-worktree <command> [arguments]
+
+Create and manage personal TORTUS worktrees.
+
+Commands:
+  init                         Create persistent worktrees and coordination state.
+  new <ISSUE>-<description>    Create a named feature worktree and branch.
+  release <dev|fix>            Detach a clean persistent worktree from its branch.
+  remove <ISSUE>-<description> Remove a clean named feature worktree.
+  status                       List worktrees and their Git state.
+
+Options:
+  --help                       Show this help.
+
+Environment:
+  TORTUS_MAIN_DIR              Main worktree. Default: ~/1-Projects/tortus/main
+  TORTUS_SHARED_DIR            Shared directory. Default: ~/shared
+
+Examples:
+  gt-tortus-worktree init
+  gt-tortus-worktree new KAI-123-short-description
+  gt-tortus-worktree release dev
+
+The command never fetches, resets, removes branches, or starts application services.
+EOF
+}
+
+die() {
+  printf 'gt-tortus-worktree: %s\n' "$*" >&2
+  exit 1
+}
+
+require_main_worktree() {
+  local resolved
+  local root
+
+  resolved="$(cd "$main_dir" 2>/dev/null && pwd -P)" || die "Cannot find main worktree: $main_dir"
+  root="$(git -C "$resolved" rev-parse --show-toplevel 2>/dev/null)" || die "Not a Git worktree: $main_dir"
+  [[ "$root" == "$resolved" ]] || die "Main worktree must be a repository root: $main_dir"
+  main_dir="$resolved"
+  [[ "$(git -C "$main_dir" branch --show-current)" == 'main' ]] || die "Main worktree must check out main: $main_dir"
+}
+
+require_shared_directory() {
+  local resolved
+  resolved="$(cd "$shared_dir" 2>/dev/null && pwd -P)" || die "Cannot find shared directory: $shared_dir"
+  shared_dir="$resolved"
+}
+
+worktrees_dir() {
+  printf '%s/worktrees\n' "$(dirname "$main_dir")"
+}
+
+setup_worktree() {
+  local worktree="$1"
+  local shared_path="$worktree/tmp/shared"
+
+  if [[ -L "$shared_path" ]]; then
+    [[ "$(readlink "$shared_path")" == "$shared_dir" ]] || die "Unexpected shared link: $shared_path"
+  elif [[ -e "$shared_path" ]]; then
+    die "Shared path exists: $shared_path"
+  fi
+
+  pnpm -C "$worktree" dev-setup -- --skip-api-database
+  "$worktree/agents/scripts/setup.sh" --apply
+  mkdir -p "$worktree/tmp"
+  [[ -L "$shared_path" ]] || ln -s "$shared_dir" "$shared_path"
+}
+
+require_clean_worktree() {
+  local worktree="$1"
+  [[ -z "$(git -C "$worktree" status --porcelain)" ]] || die "Worktree has uncommitted changes: $worktree"
+}
+
+worktree_paths() {
+  git -C "$main_dir" worktree list --porcelain | sed -n 's/^worktree //p'
+}
+
+git_common_dir() {
+  local worktree="$1"
+  local common_dir
+
+  common_dir="$(git -C "$worktree" rev-parse --git-common-dir 2>/dev/null)" || return 1
+  [[ "$common_dir" == /* ]] || common_dir="$worktree/$common_dir"
+  (cd "$common_dir" && pwd -P)
+}
+
+require_registered_worktree() {
+  local expected="$1"
+  local actual_root
+  local actual_common_dir
+  local main_common_dir
+
+  actual_root="$(git -C "$expected" rev-parse --show-toplevel 2>/dev/null)" || die "Cannot read worktree: $expected"
+  actual_root="$(cd "$actual_root" && pwd -P)" || die "Cannot resolve worktree: $expected"
+  [[ "$actual_root" == "$expected" ]] || die "Not a worktree root: $expected"
+  actual_common_dir="$(git_common_dir "$expected")" || die "Cannot read worktree: $expected"
+  main_common_dir="$(git_common_dir "$main_dir")" || die "Cannot read main worktree: $main_dir"
+  [[ "$actual_common_dir" == "$main_common_dir" ]] || die "Not a registered TORTUS worktree: $expected"
+}
+
+require_no_legacy_slots() {
+  local parent
+  local slot
+  local legacy_slot
+
+  parent="$(dirname "$main_dir")"
+  for slot in dev fix; do
+    legacy_slot="$parent/$slot"
+    [[ ! -e "$legacy_slot" && ! -L "$legacy_slot" ]] || die "Resolve legacy slot before init: $legacy_slot"
+  done
+}
+
+validate_worktree_name() {
+  local name="$1"
+  [[ "$name" =~ ^[A-Za-z0-9][A-Za-z0-9._-]*$ ]] || die "Use letters, numbers, dots, underscores, and hyphens"
+}
+
+create_slot() {
+  local slot="$1"
+  local worktree
+  worktree="$(worktrees_dir)/$slot"
+
+  if [[ -e "$worktree" || -L "$worktree" ]]; then
+    require_registered_worktree "$worktree"
+  else
+    git -C "$main_dir" worktree add --detach "$worktree" origin/main
+  fi
+
+  setup_worktree "$worktree"
+}
+
+init_worktrees() {
+  local database_owner="$shared_dir/agents/database-owner.txt"
+
+  require_no_legacy_slots
+
+  mkdir -p "$shared_dir/agents"
+  if [[ -e "$database_owner" || -L "$database_owner" ]]; then
+    [[ -f "$database_owner" ]] || die "Database owner path is not a file: $database_owner"
+  else
+    touch "$database_owner"
+  fi
+
+  mkdir -p "$(worktrees_dir)"
+  create_slot dev
+  create_slot fix
+}
+
+new_worktree() {
+  local branch="$1"
+  local worktree
+  worktree="$(worktrees_dir)/$branch"
+
+  validate_worktree_name "$branch"
+  [[ "$branch" != 'dev' && "$branch" != 'fix' ]] || die "Use the persistent $branch worktree"
+  [[ ! -e "$worktree" && ! -L "$worktree" ]] || die "Worktree already exists: $worktree"
+  git -C "$main_dir" show-ref --verify --quiet "refs/heads/$branch" && die "Branch already exists: $branch"
+
+  mkdir -p "$(worktrees_dir)"
+  git -C "$main_dir" worktree add -b "$branch" "$worktree" origin/main
+  setup_worktree "$worktree"
+}
+
+release() {
+  local slot="$1"
+  local worktree
+  worktree="$(worktrees_dir)/$slot"
+
+  [[ "$slot" == 'dev' || "$slot" == 'fix' ]] || die "Only dev and fix are persistent worktrees"
+  [[ -d "$worktree" ]] || die "Cannot find worktree: $worktree"
+  require_registered_worktree "$worktree"
+  require_clean_worktree "$worktree"
+  git -C "$worktree" switch --detach origin/main
+}
+
+remove_worktree() {
+  local name="$1"
+  local worktree
+
+  validate_worktree_name "$name"
+  worktree="$(worktrees_dir)/$name"
+
+  [[ "$name" != 'dev' && "$name" != 'fix' ]] || die "Persistent worktrees cannot be removed"
+  [[ -d "$worktree" ]] || die "Cannot find worktree: $worktree"
+  require_registered_worktree "$worktree"
+  require_clean_worktree "$worktree"
+  git -C "$main_dir" worktree remove "$worktree"
+  printf 'Removed worktree. Delete its branch separately when appropriate: %s\n' "$name"
+}
+
+status() {
+  local worktree
+
+  git -C "$main_dir" worktree list
+  while IFS= read -r worktree; do
+    printf '\n%s\n' "$worktree"
+    if [[ -d "$worktree" ]]; then
+      git -C "$worktree" status --short --branch
+    else
+      printf 'Unavailable or prunable.\n'
+    fi
+  done < <(worktree_paths)
+}
+
+usage_error() {
+  usage >&2
+  exit 1
+}
+
+command="${1:-}"
+if [[ $# -gt 0 ]]; then
+  shift
+fi
+
+case "$command" in
+  init)
+    [[ $# -eq 0 ]] || usage_error
+    require_main_worktree
+    require_shared_directory
+    init_worktrees
+    ;;
+  new)
+    [[ $# -eq 1 ]] || usage_error
+    require_main_worktree
+    require_shared_directory
+    new_worktree "$1"
+    ;;
+  release)
+    [[ $# -eq 1 ]] || usage_error
+    require_main_worktree
+    release "$1"
+    ;;
+  remove)
+    [[ $# -eq 1 ]] || usage_error
+    require_main_worktree
+    remove_worktree "$1"
+    ;;
+  status)
+    [[ $# -eq 0 ]] || usage_error
+    require_main_worktree
+    status
+    ;;
+  --help|-h)
+    [[ $# -eq 0 ]] || usage_error
+    usage
+    ;;
+  '')
+    usage
+    ;;
+  *)
+    usage_error
+    ;;
+esac
