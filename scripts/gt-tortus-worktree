@@ -31,6 +31,7 @@ Examples:
   gt-tortus-worktree release dev
 
 The command never fetches, resets, removes branches, or starts application services.
+Each invocation prints its runtime to two decimal places on standard error.
 EOF
 }
 
@@ -70,7 +71,7 @@ setup_worktree() {
     die "Shared path exists: $shared_path"
   fi
 
-  pnpm -C "$worktree" dev-setup -- --skip-api-database
+  pnpm -C "$worktree" dev-setup
   "$worktree/agents/scripts/setup.sh" --apply
   mkdir -p "$worktree/tmp"
   [[ -L "$shared_path" ]] || ln -s "$shared_dir" "$shared_path"
@@ -222,42 +223,45 @@ if [[ $# -gt 0 ]]; then
   shift
 fi
 
-case "$command" in
-  init)
-    [[ $# -eq 0 ]] || usage_error
-    require_main_worktree
-    require_shared_directory
-    init_worktrees
-    ;;
-  new)
-    [[ $# -eq 1 ]] || usage_error
-    require_main_worktree
-    require_shared_directory
-    new_worktree "$1"
-    ;;
-  release)
-    [[ $# -eq 1 ]] || usage_error
-    require_main_worktree
-    release "$1"
-    ;;
-  remove)
-    [[ $# -eq 1 ]] || usage_error
-    require_main_worktree
-    remove_worktree "$1"
-    ;;
-  status)
-    [[ $# -eq 0 ]] || usage_error
-    require_main_worktree
-    status
-    ;;
-  --help|-h)
-    [[ $# -eq 0 ]] || usage_error
-    usage
-    ;;
-  '')
-    usage
-    ;;
-  *)
-    usage_error
-    ;;
-esac
+TIMEFORMAT=$'\nCompleted in %2Rs'
+time (
+  case "$command" in
+    init)
+      [[ $# -eq 0 ]] || usage_error
+      require_main_worktree
+      require_shared_directory
+      init_worktrees
+      ;;
+    new)
+      [[ $# -eq 1 ]] || usage_error
+      require_main_worktree
+      require_shared_directory
+      new_worktree "$1"
+      ;;
+    release)
+      [[ $# -eq 1 ]] || usage_error
+      require_main_worktree
+      release "$1"
+      ;;
+    remove)
+      [[ $# -eq 1 ]] || usage_error
+      require_main_worktree
+      remove_worktree "$1"
+      ;;
+    status)
+      [[ $# -eq 0 ]] || usage_error
+      require_main_worktree
+      status
+      ;;
+    --help|-h)
+      [[ $# -eq 0 ]] || usage_error
+      usage
+      ;;
+    '')
+      usage
+      ;;
+    *)
+      usage_error
+      ;;
+  esac
+)
