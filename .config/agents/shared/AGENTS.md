@@ -12,3 +12,5 @@ Prefer simple, direct code that humans can navigate and maintain.
 - Comments explain WHY. Names explain WHAT. Code explains HOW.
 - Draw from the 12 principles of Jane-Stree House Style for all code.
 - Modular and composable tools. UNIX Philosophy.
+
+Look for and follow AGENTS.personal.md instructions in the project directory. These are TORTUS monorepo specific instructions by me and MUST be followed if they are present. Declare this in the chat.
