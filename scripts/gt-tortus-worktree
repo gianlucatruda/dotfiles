@@ -97,23 +97,24 @@ worktrees_dir() {
   printf '%s/worktrees\n' "$(dirname "$main_dir")"
 }
 
-run_setup_command() {
+# Keep the cleanup trap local to this command.
+run_setup_command() (
   local log_file
   local exit_code=0
 
   if [[ "$verbose" == true ]]; then
     "$@"
-    return
+    exit
   fi
 
   log_file="$(mktemp "${TMPDIR:-/tmp}/gt-tortus-worktree.XXXXXX")"
+  trap 'rm -f "$log_file"' EXIT
   "$@" </dev/null >"$log_file" 2>&1 || exit_code=$?
   if [[ "$exit_code" -ne 0 ]]; then
     cat "$log_file" >&2
   fi
-  rm -f "$log_file"
-  return "$exit_code"
-}
+  exit "$exit_code"
+)
 
 setup_worktree() {
   local worktree="$1"
@@ -228,13 +229,15 @@ init_worktrees() {
 
 new_worktree() {
   local branch="$1"
+  local existing_branch
   local worktree
-  worktree="$(worktrees_dir)/$branch"
 
   validate_worktree_name "$branch"
+  worktree="$(worktrees_dir)/$branch"
   [[ "$branch" != 'dev' && "$branch" != 'fix' ]] || die "Use the persistent $branch worktree"
   [[ ! -e "$worktree" && ! -L "$worktree" ]] || die "Worktree already exists: $worktree"
-  git -C "$main_dir" show-ref --verify --quiet "refs/heads/$branch" && die "Branch already exists: $branch"
+  existing_branch="$(git -C "$main_dir" branch --list "$branch")"
+  [[ -z "$existing_branch" ]] || die "Branch already exists: $branch"
 
   printf 'Creating %s...\n' "$worktree"
   mkdir -p "$(worktrees_dir)"
@@ -335,42 +338,33 @@ time (
       *) arguments+=("$argument") ;;
     esac
   done
-  if [[ ${#arguments[@]} -gt 0 ]]; then
-    set -- "${arguments[@]}"
-  else
-    set --
-  fi
 
-  command="${1:-}"
-  if [[ $# -gt 0 ]]; then
-    shift
-  fi
-
+  command="${arguments[0]:-}"
   case "$command" in
     init)
-      [[ $# -eq 0 ]] || usage_error
+      [[ ${#arguments[@]} -eq 1 ]] || usage_error
       require_main_worktree
       require_shared_directory
       init_worktrees
       ;;
     new)
-      [[ $# -eq 1 ]] || usage_error
+      [[ ${#arguments[@]} -eq 2 ]] || usage_error
       require_main_worktree
       require_shared_directory
-      new_worktree "$1"
+      new_worktree "${arguments[1]}"
       ;;
     release)
-      [[ $# -eq 1 ]] || usage_error
+      [[ ${#arguments[@]} -eq 2 ]] || usage_error
       require_main_worktree
-      release "$1"
+      release "${arguments[1]}"
       ;;
     remove)
-      [[ $# -eq 1 ]] || usage_error
+      [[ ${#arguments[@]} -eq 2 ]] || usage_error
       require_main_worktree
-      remove_worktree "$1"
+      remove_worktree "${arguments[1]}"
       ;;
     status)
-      [[ $# -eq 0 ]] || usage_error
+      [[ ${#arguments[@]} -eq 1 ]] || usage_error
       require_main_worktree
       status
       ;;
