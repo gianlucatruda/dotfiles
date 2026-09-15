@@ -14,7 +14,7 @@ Create and manage personal TORTUS worktrees.
 
 Commands:
   init                        Set up all worktrees under the worktrees directory.
-  new <ISSUE>-<description>    Create a named feature worktree and branch.
+  new <ISSUE>-<description>    Create a named worktree with a new or existing branch.
   release <name>              Detach a clean worktree at origin/main.
   remove <ISSUE>-<description> Remove a clean named feature worktree.
   status                      Summarise branches, file counts, and line changes.
@@ -237,11 +237,14 @@ new_worktree() {
   [[ "$branch" != 'dev' && "$branch" != 'fix' ]] || die "Use the persistent $branch worktree"
   [[ ! -e "$worktree" && ! -L "$worktree" ]] || die "Worktree already exists: $worktree"
   existing_branch="$(git -C "$main_dir" branch --list "$branch")"
-  [[ -z "$existing_branch" ]] || die "Branch already exists: $branch"
 
   printf 'Creating %s...\n' "$worktree"
   mkdir -p "$(worktrees_dir)"
-  run_setup_command git -C "$main_dir" worktree add -b "$branch" "$worktree" origin/main
+  if [[ -n "$existing_branch" ]]; then
+    run_setup_command git -C "$main_dir" worktree add "$worktree" "$branch"
+  else
+    run_setup_command git -C "$main_dir" worktree add -b "$branch" "$worktree" origin/main
+  fi
   setup_worktree "$worktree"
 }
 
