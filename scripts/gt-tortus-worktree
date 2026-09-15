@@ -10,64 +10,34 @@ usage() {
   cat <<'EOF'
 Usage: gt-tortus-worktree [options] <command> [arguments]
 
-Create and manage personal TORTUS worktrees.
-
 Commands:
-  init                        Set up all worktrees under the worktrees directory.
-  new <ISSUE>-<description>    Create a named worktree with a new or existing branch.
-  release <name>              Detach a clean worktree at origin/main.
-  remove <ISSUE>-<description> Remove a clean named feature worktree.
-  status                      Summarise branches, file counts, and line changes.
+  init                 Create dev/fix and set up registered worktrees.
+  new <name>           Create a worktree for a local, origin, or new branch.
+  release <name>       Detach a clean worktree at origin/main.
+  remove <name>        Remove one clean feature worktree.
+  purge                Confirm, release, and remove all feature worktrees.
+  status               Show branches, changed files, and line counts.
 
 Options:
-  --verbose, -v               Show full setup output and allow interactive prompts.
-  --help, -h                  Show this help.
+  -v, --verbose        Show setup output and allow prompts.
+  -h, --help           Show help.
 
-Init:
-  Uses the worktrees directory beside the main directory.
-  Creates missing dev and fix worktrees detached at origin/main.
-  Sets up every existing, registered worktree under that directory, including named worktrees.
-  Skips missing worktrees and leaves worktrees outside that directory unchanged.
-  Preserves existing branches and runs setup once per worktree.
-  Runs pnpm dev-setup and agents/scripts/setup.sh --apply in each worktree.
-  Links each tmp/shared to TORTUS_SHARED_DIR after setup succeeds.
-  Creates TORTUS_SHARED_DIR/agents/database-owner.txt if missing.
-  Runs setup sequentially and stops on the first failure.
-
-Release:
-  Accepts any worktree name under the worktrees directory.
-  Requires a clean worktree, including no untracked files.
-  Detaches at origin/main and keeps the branch.
-
-Status:
-  Shows one line per registered worktree.
-  Counts changed tracked files and untracked files separately.
-  Line totals compare tracked files with HEAD, including staged and unstaged changes.
-  Binary changes have a separate count.
-  Uses green for clean counts, amber for changes, and red for conflicts.
-  Added lines are green. Deleted lines and unavailable worktrees are red.
-  Colours require a terminal. Set NO_COLOR=1 to disable them.
-
-Output:
-  Init and new show progress and failed command output by default.
-  Quiet setup reads no input. Use --verbose for interactive prompts.
-  Options can appear before or after the command.
+Rules:
+  Init creates dev/fix under worktrees/ beside main and sets up registered worktrees.
+  Setup runs pnpm dev-setup and agents/scripts/setup.sh --apply.
+  Init links tmp/shared to TORTUS_SHARED_DIR and creates TORTUS_SHARED_DIR/agents/database-owner.txt.
+  New fetches matching origin/<name> and sets it as upstream.
+  New branches without a match start at origin/main without upstream.
+  Existing branches without a match lose stale origin/main tracking.
+  Release, remove, and purge require clean worktrees with no untracked files.
+  Purge checks locks, lists direct registered feature worktrees, and requires typed 'purge' confirmation.
+  Main, dev, fix, and all branches remain.
+  Status follows lifecycle operations, including failures.
 
 Environment:
-  TORTUS_MAIN_DIR              Main worktree. Default: ~/1-Projects/tortus/main
-  TORTUS_SHARED_DIR            Shared directory. Default: ~/shared
-
-Examples:
-  gt-tortus-worktree init
-  gt-tortus-worktree init --verbose
-  gt-tortus-worktree new KAI-123-short-description
-  gt-tortus-worktree new KAI-123-short-description -v
-  gt-tortus-worktree release dev
-  gt-tortus-worktree release KAI-123-short-description
-
-Worktree operations never fetch, reset Git state, or remove branches.
-Setup behaviour follows each worktree's pnpm dev-setup command.
-Each invocation prints its runtime to two decimal places on standard error.
+  TORTUS_MAIN_DIR      Main worktree. Default: ~/1-Projects/tortus/main
+  TORTUS_SHARED_DIR    Shared directory. Default: ~/shared
+  NO_COLOR             Disable terminal colours when set.
 EOF
 }
 
@@ -229,23 +199,58 @@ init_worktrees() {
 
 new_worktree() {
   local branch="$1"
-  local existing_branch
   local worktree
+  local remote_check
+  local upstream=''
+  local existing_branch=false
+  local origin_branch=false
 
   validate_worktree_name "$branch"
+  git -C "$main_dir" check-ref-format --branch "$branch" >/dev/null || die "Invalid Git branch name: $branch"
   worktree="$(worktrees_dir)/$branch"
   [[ "$branch" != 'dev' && "$branch" != 'fix' ]] || die "Use the persistent $branch worktree"
   [[ ! -e "$worktree" && ! -L "$worktree" ]] || die "Worktree already exists: $worktree"
-  existing_branch="$(git -C "$main_dir" branch --list "$branch")"
+  if [[ "$verbose" == false ]]; then
+    export GIT_TERMINAL_PROMPT=0
+  fi
+  if git -C "$main_dir" show-ref --verify --quiet "refs/heads/$branch"; then
+    existing_branch=true
+  fi
+  if git -C "$main_dir" ls-remote --exit-code --heads origin "refs/heads/$branch" >/dev/null; then
+    origin_branch=true
+  else
+    remote_check=$?
+    [[ "$remote_check" -eq 2 ]] || die "Cannot check origin for branch: $branch"
+  fi
+  if [[ "$existing_branch" == true && "$origin_branch" == false ]]; then
+    upstream="$(git -C "$main_dir" for-each-ref --format='%(upstream:short)' "refs/heads/$branch")" || die "Cannot read upstream: $branch"
+  fi
 
   printf 'Creating %s...\n' "$worktree"
   mkdir -p "$(worktrees_dir)"
-  if [[ -n "$existing_branch" ]]; then
+  if [[ "$origin_branch" == true ]]; then
+    run_setup_command git -C "$main_dir" fetch --no-tags origin "+refs/heads/$branch:refs/remotes/origin/$branch"
+  fi
+  if [[ "$existing_branch" == true ]]; then
     run_setup_command git -C "$main_dir" worktree add "$worktree" "$branch"
+    if [[ "$origin_branch" == true ]]; then
+      run_setup_command git -C "$worktree" branch --set-upstream-to="origin/$branch"
+      printf 'Tracking origin/%s\n' "$branch"
+    elif [[ "$upstream" == 'origin/main' ]]; then
+      run_setup_command git -C "$worktree" branch --unset-upstream
+      printf 'Cleared origin/main upstream for %s\n' "$branch"
+    fi
+  elif [[ "$origin_branch" == true ]]; then
+    run_setup_command git -C "$main_dir" worktree add --track -b "$branch" "$worktree" "origin/$branch"
+    printf 'Tracking origin/%s\n' "$branch"
   else
-    run_setup_command git -C "$main_dir" worktree add -b "$branch" "$worktree" origin/main
+    run_setup_command git -C "$main_dir" worktree add --no-track -b "$branch" "$worktree" origin/main
   fi
   setup_worktree "$worktree"
+}
+
+release_worktree_path() {
+  git -C "$1" switch --detach origin/main
 }
 
 release() {
@@ -258,7 +263,22 @@ release() {
   [[ -d "$worktree" ]] || die "Cannot find worktree: $worktree"
   require_registered_worktree "$worktree"
   require_clean_worktree "$worktree"
-  git -C "$worktree" switch --detach origin/main
+  release_worktree_path "$worktree"
+}
+
+require_removable_worktree() {
+  local worktree="$1"
+  local name="${worktree##*/}"
+  [[ "$name" != 'dev' && "$name" != 'fix' ]] || die "Persistent worktrees cannot be removed"
+  [[ -d "$worktree" ]] || die "Cannot find worktree: $worktree"
+  require_registered_worktree "$worktree"
+  require_clean_worktree "$worktree"
+}
+
+remove_worktree_path() {
+  local worktree="$1"
+  git -C "$main_dir" worktree remove "$worktree"
+  printf 'Removed worktree. Delete its branch separately when appropriate: %s\n' "${worktree##*/}"
 }
 
 remove_worktree() {
@@ -267,13 +287,58 @@ remove_worktree() {
 
   validate_worktree_name "$name"
   worktree="$(worktrees_dir)/$name"
+  require_removable_worktree "$worktree"
+  remove_worktree_path "$worktree"
+}
 
-  [[ "$name" != 'dev' && "$name" != 'fix' ]] || die "Persistent worktrees cannot be removed"
-  [[ -d "$worktree" ]] || die "Cannot find worktree: $worktree"
-  require_registered_worktree "$worktree"
-  require_clean_worktree "$worktree"
-  git -C "$main_dir" worktree remove "$worktree"
-  printf 'Removed worktree. Delete its branch separately when appropriate: %s\n' "$name"
+purge_worktrees() {
+  local worktrees_root
+  local registered_paths
+  local locked_paths
+  local locked_worktree
+  local worktree
+  local name
+  local answer
+  local -a candidates=()
+
+  worktrees_root="$(worktrees_dir)"
+  registered_paths="$(worktree_paths)" || return
+  locked_paths="$(git -C "$main_dir" worktree list --porcelain | awk '
+    /^worktree / { path = substr($0, 10) }
+    /^locked($| )/ { print path }
+  ')" || return
+  while IFS= read -r -u 3 worktree; do
+    [[ "$worktree" == "$worktrees_root/"* ]] || continue
+    name="${worktree#"$worktrees_root/"}"
+    [[ "$name" != */* && "$name" != 'dev' && "$name" != 'fix' ]] || continue
+    require_removable_worktree "$worktree"
+    while IFS= read -r -u 4 locked_worktree; do
+      [[ "$worktree" != "$locked_worktree" ]] || die "Worktree is locked: $worktree"
+    done 4<<< "$locked_paths"
+    candidates+=("$worktree")
+  done 3<<< "$registered_paths"
+
+  if [[ ${#candidates[@]} -eq 0 ]]; then
+    printf 'No feature worktrees to purge.\n'
+    return
+  fi
+
+  [[ -t 0 ]] || die "Purge requires an interactive terminal"
+  printf 'Purge these worktrees:\n' >&2
+  for worktree in "${candidates[@]}"; do
+    printf '  %s\n' "${worktree##*/}" >&2
+  done
+  printf "Type 'purge' to confirm: " >&2
+  IFS= read -r answer || die "Cannot read purge confirmation"
+  if [[ "$answer" != 'purge' ]]; then
+    printf 'Purge cancelled.\n'
+    return
+  fi
+
+  for worktree in "${candidates[@]}"; do
+    release_worktree_path "$worktree"
+    remove_worktree_path "$worktree"
+  done
 }
 
 status() {
@@ -295,7 +360,7 @@ status() {
   fi
 
   parent="$(dirname "$main_dir")"
-  registered_paths="$(worktree_paths)"
+  registered_paths="$(worktree_paths)" || return
   while IFS= read -r -u 3 worktree; do
     if [[ ! -d "$worktree" ]]; then
       printf '%s%s | unavailable or prunable%s\n' "$red" "${worktree#"$parent/"}" "$reset"
@@ -312,7 +377,7 @@ status() {
         colour = conflicted ? red : (changed || untracked ? amber : green)
         printf "[%s] | %s%d changed, %d untracked%s", branch, colour, changed, untracked, reset
       }
-    ')"
+    ')" || return
     diff_summary="$(git -C "$worktree" diff --no-ext-diff --numstat HEAD -- | awk \
       -v green="$green" -v amber="$amber" -v red="$red" -v reset="$reset" '
       $1 == "-" { binary++; next }
@@ -321,9 +386,19 @@ status() {
         printf "%s+%d%s %s-%d%s", green, added, reset, red, deleted, reset
         if (binary) printf " | %s%d binary%s", amber, binary, reset
       }
-    ')"
+    ')" || return
     printf '%s %s | %s\n' "${worktree#"$parent/"}" "$summary" "$diff_summary"
   done 3<<< "$registered_paths"
+}
+
+show_status_after_operation() {
+  local exit_code=$?
+  trap - EXIT
+  if ! status; then
+    printf 'gt-tortus-worktree: Cannot show status\n' >&2
+    [[ "$exit_code" -ne 0 ]] || exit_code=1
+  fi
+  exit "$exit_code"
 }
 
 usage_error() {
@@ -348,23 +423,33 @@ time (
       [[ ${#arguments[@]} -eq 1 ]] || usage_error
       require_main_worktree
       require_shared_directory
+      trap show_status_after_operation EXIT
       init_worktrees
       ;;
     new)
       [[ ${#arguments[@]} -eq 2 ]] || usage_error
       require_main_worktree
       require_shared_directory
+      trap show_status_after_operation EXIT
       new_worktree "${arguments[1]}"
       ;;
     release)
       [[ ${#arguments[@]} -eq 2 ]] || usage_error
       require_main_worktree
+      trap show_status_after_operation EXIT
       release "${arguments[1]}"
       ;;
     remove)
       [[ ${#arguments[@]} -eq 2 ]] || usage_error
       require_main_worktree
+      trap show_status_after_operation EXIT
       remove_worktree "${arguments[1]}"
+      ;;
+    purge)
+      [[ ${#arguments[@]} -eq 1 ]] || usage_error
+      require_main_worktree
+      trap show_status_after_operation EXIT
+      purge_worktrees
       ;;
     status)
       [[ ${#arguments[@]} -eq 1 ]] || usage_error
