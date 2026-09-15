@@ -19,6 +19,7 @@ fi
 
 if [[ -n "${TMUX:-}" ]] && declare -f update_environment_from_tmux >/dev/null; then
   update_environment_from_tmux
+  export GIT_SSH_COMMAND='SSH_AUTH_SOCK=$(tmux display-message -p "#{SSH_AUTH_SOCK}") ssh'
 fi
 # Case-insensitive globbing (used in pathname expansion)
 shopt -s nocaseglob;
