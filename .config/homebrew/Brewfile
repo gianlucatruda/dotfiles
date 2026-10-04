@@ -34,6 +34,8 @@ brew "bottom"
 brew "btop"
 # Core application library for C
 brew "glib"
+# Low-level library for pixel manipulation
+brew "pixman"
 # Vector graphics library with cross-device output support
 brew "cairo"
 # Cross-platform make
@@ -56,8 +58,12 @@ brew "openjdk"
 brew "python@3.12"
 # Tools to work with Android .dex and Java .class files
 brew "dex2jar"
+# USB programmer
+brew "dfu-util"
 # GNU Transport Layer Security (TLS) Library
 brew "gnutls"
+# Cryptographic library based on the code from GnuPG
+brew "libgcrypt"
 # GNU Privacy Guard (OpenPGP)
 brew "gnupg"
 # Library access to GnuPG
@@ -80,6 +86,8 @@ brew "fastfetch"
 brew "fd"
 # Identify or delete duplicate files
 brew "fdupes"
+# SDL2 compatibility layer that uses SDL3 behind the scenes
+brew "sdl2-compat"
 # New file format for still image compression
 brew "jpeg-xl"
 # Subtitle renderer for the ASS/SSA subtitle format
@@ -88,12 +96,14 @@ brew "libass"
 brew "libmicrohttpd"
 # Reliable Internet Stream Transport (RIST)
 brew "librist"
+# LLM inference in C/C++
+brew "llama.cpp"
 # Framework for layout and rendering of i18n text
 brew "pango"
 # OCR (Optical Character Recognition) engine
 brew "tesseract"
 # Port of OpenAI's Whisper model in C/C++
-brew "whisper-cpp"
+brew "whisper.cpp"
 # Play, record, convert, and stream many audio and video codecs
 brew "ffmpeg-full"
 # Collection of GNU find, xargs, and locate
@@ -118,10 +128,14 @@ brew "git-lfs"
 brew "glow"
 # GNU grep, egrep and fgrep
 brew "grep"
+# Agent multiplexer that lives in your terminal
+brew "herdr"
 # Improved top (interactive process viewer)
 brew "htop"
 # Configurable static site generator
 brew "hugo"
+# Review-first terminal diff viewer for agent-authored changesets
+brew "hunk"
 # C/C++ and Java libraries for Unicode and globalization
 brew "icu4c@77"
 # Command-line editor
@@ -144,8 +158,8 @@ brew "lazygit"
 brew "lf"
 # Provides library functionality for FIDO U2F & FIDO 2.0, including USB
 brew "libfido2"
-# LLM inference in C/C++
-brew "llama.cpp"
+# General purpose TCP-IP emulator
+brew "libslirp"
 # Access large language models from the command-line
 brew "llm"
 # Powerful, lightweight programming language
@@ -292,6 +306,8 @@ cask "font-hack-nerd-font"
 cask "font-symbols-only-nerd-font"
 # Terminal emulator that uses platform-native UI and GPU acceleration
 cask "ghostty"
+# Speech to text application
+cask "handy"
 # Utility to hide menu bar items
 cask "hiddenbar"
 # Utility to render Jupyter notebooks
