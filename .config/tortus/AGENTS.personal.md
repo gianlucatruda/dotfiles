@@ -17,6 +17,8 @@ If `tmp/shared/agents/AGENTS.md` exists, follow instructions:
 If `tmp/shared/agents/logs/LOG.txt` exists:
 - Tail-read it before writing
 - Append only
+- Use the `tmp/shared/...` path for reads and writes
+- If append fails, request approval for the same symlink path
 - For work longer than 20 seconds (except where it's just a simple question to answer for the user), log before and after the work
 - Include the task, scope, branch, worktree, result, validation, and blockers
 
@@ -30,6 +32,7 @@ e.g. the 24th subagent of a session calling itself `lunafox42` would append: `20
 Record small, repeatable workflow problems in tmp/shared/agents/papercuts/PAPERCUTS.md
 - Append only.
 - Do not fix or ticket papercuts unless asked.
+- Do not include PHI, secrets, prompts, transcripts, or raw sensitive errors.
 
 ## Worktrees
 
@@ -94,6 +97,9 @@ Kairos testing (overrides the repository Red/Green/Refactor TDD default):
 - Write only the absolutely essential integration tests, or use manual testing.
 - Maximum 1-2 new tests per piece of work.
 - Do not add broad unit coverage or brittle exact-output tests.
+- For one API spec, use `pnpm nx test kairos-api -- --testFile=<spec-path> --no-tui`.
+- Set `NX_WORKSPACE_DATA_DIRECTORY` and `NX_CACHE_DIRECTORY` under `/private/tmp`.
+- Set `UV_CACHE_DIR` under `/private/tmp` for uv-backed checks.
 
 Kairos code and writing:
 - Write all code, comments, docstrings, and docs in Simplified Technical English, per `docs/conventions/code-style/technical-writing.md`.
