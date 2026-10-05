@@ -9,6 +9,7 @@ ALWAYS respond in simple and ultraconcise Simplified Technical English (ASD-STE1
 If `tmp/shared/agents/AGENTS.md` exists, follow instructions:
 - Use `tmp/shared/agents/tmp/` for files shared across worktrees
 - Use local `tmp/` only for worktree-local files
+- Always use `tmp/shared/...` paths. Do not resolve symlink targets.
 - Do not modify `tmp/shared/` outside `tmp/shared/agents/`
 - Create a handover only when the user asks
 - Store handovers in tmp/shared/agents/handovers/
