@@ -95,6 +95,8 @@ brew "fd"
 brew "fdupes"
 # SDL2 compatibility layer that uses SDL3 behind the scenes
 brew "sdl2-compat"
+# Play, record, convert, and stream select audio and video codecs
+brew "ffmpeg"
 # New file format for still image compression
 brew "jpeg-xl"
 # Subtitle renderer for the ASS/SSA subtitle format
@@ -143,8 +145,6 @@ brew "htop"
 brew "hugo"
 # Review-first terminal diff viewer for agent-authored changesets
 brew "hunk"
-# C/C++ and Java libraries for Unicode and globalization
-brew "icu4c@77"
 # Command-line editor
 brew "id3v2"
 # ISO/IEC 23008-12:2017 HEIF file format decoder and encoder
@@ -185,6 +185,8 @@ brew "magic-wormhole"
 brew "make"
 # Terminal image, video, directory, and Markdown viewer
 brew "mcat"
+# C++ lexer for extracting named exports from CommonJS modules
+brew "merve"
 # Polyglot runtime manager (asdf rust clone)
 brew "mise"
 # Simple tool to make locally trusted development certificates
@@ -330,7 +332,7 @@ cask "apparency"
 # Multi-track audio editor and recorder
 cask "audacity"
 # Terminal-based AI coding assistant
-cask "claude-code"
+cask "claude-code@latest"
 # OpenAI's coding agent that runs in your terminal
 cask "codex"
 # App to build and share containerised applications and microservices
@@ -345,6 +347,8 @@ cask "ghostty"
 cask "handy"
 # Utility to hide menu bar items
 cask "hiddenbar"
+# Incident management platform
+cask "incident-io"
 # Utility to render Jupyter notebooks
 cask "jupyter-notebook-viewer"
 # Keyboard customiser
@@ -359,7 +363,5 @@ cask "stats"
 cask "ungoogled-chromium"
 # AI image upscaler
 cask "upscayl"
-# Configurator of compatible keyboards in real time
-cask "vial"
 # Binary releases of VS Code without MS branding/telemetry/licensing
 cask "vscodium"
