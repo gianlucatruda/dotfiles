@@ -24,7 +24,7 @@ Options:
 
 Rules:
   Init creates dev/fix under worktrees/ beside main and sets up registered worktrees.
-  Setup runs pnpm dev-setup and agents/scripts/setup.sh --apply.
+  Setup runs pnpm dev setup and agents/scripts/setup.sh --apply.
   Init links tmp/shared to TORTUS_SHARED_DIR and creates TORTUS_SHARED_DIR/agents/database-owner.txt.
   New fetches matching origin/<name> and sets it as upstream.
   New branches without a match start at origin/main without upstream.
@@ -97,7 +97,7 @@ setup_worktree() {
     die "Shared path exists: $shared_path"
   fi
 
-  run_setup_command pnpm -C "$worktree" dev-setup
+  run_setup_command pnpm -C "$worktree" dev setup
   run_setup_command "$worktree/agents/scripts/setup.sh" --apply
   mkdir -p "$worktree/tmp"
   [[ -L "$shared_path" ]] || ln -s "$shared_dir" "$shared_path"
