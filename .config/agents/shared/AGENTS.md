@@ -98,3 +98,9 @@ When principles conflict, use this order:
 3. Make contracts, effects, and ownership clear.
 4. Remove unnecessary code.
 5. Follow conventions.
+Look for and follow AGENTS.personal.md before repository work.
+Read it through the project path.
+Do not resolve symlink targets.
+These are TORTUS monorepo specific instructions.
+They MUST be followed if present.
+Declare this in the chat.
