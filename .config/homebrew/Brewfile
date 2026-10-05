@@ -97,6 +97,8 @@ brew "fd"
 brew "fdupes"
 # SDL2 compatibility layer that uses SDL3 behind the scenes
 brew "sdl2-compat"
+# Play, record, convert, and stream select audio and video codecs
+brew "ffmpeg"
 # New file format for still image compression
 brew "jpeg-xl"
 # Subtitle renderer for the ASS/SSA subtitle format
@@ -185,6 +187,8 @@ brew "magic-wormhole"
 brew "make"
 # Terminal image, video, directory, and Markdown viewer
 brew "mcat"
+# C++ lexer for extracting named exports from CommonJS modules
+brew "merve"
 # Polyglot runtime manager (asdf rust clone)
 brew "mise"
 # Simple tool to make locally trusted development certificates
@@ -336,7 +340,7 @@ cask "apparency"
 # Multi-track audio editor and recorder
 cask "audacity"
 # Terminal-based AI coding assistant
-cask "claude-code"
+cask "claude-code@latest"
 # OpenAI's coding agent that runs in your terminal
 cask "codex"
 # App to build and share containerised applications and microservices
