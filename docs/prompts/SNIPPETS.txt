@@ -10,6 +10,8 @@ A highly technical and specific lecture covering all the concepts, methods, and 
 
 review John Lasseters principles of animation
 
+Restate my intent before continuing
+
 Prompt guidance - include these three things:
 1. What you want it to do
 2. How much effort you want it to spend
