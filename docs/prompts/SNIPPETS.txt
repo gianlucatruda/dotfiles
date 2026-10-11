@@ -7,3 +7,10 @@ ultraconcise and ultraclear Simplified Technical English (ASD-STE100) with no ma
 Write all responses, comments, docs, PRs in ultraconcise and ultraclear Simplified Technical English (ASD-STE100). No mannered speech. No filler words or hedging. Lead with the answser. Be direct and clear. Max 15 words per sentence. One idea per sentence. No parenthetical asides. No em-dashes. No semi-colons (unless listing). Every word of text must strongly justify its existence.
 
 A highly technical and specific lecture covering all the concepts, methods, and specific tools mentioned in the source material. Target audience is junior ML engineers who have a firm grasp of CS, maths, stats, and data fundamentals and who are looking for deep technical mastery and strong mental models from the source material (to crush technical interviews and achieve technical excellence in their careers). Cover all the concepts and materials in the source extremely thoroughly and comprehensively. Be exhaustive and complete.
+
+review John Lasseters principles of animation
+
+Prompt guidance - include these three things:
+1. What you want it to do
+2. How much effort you want it to spend
+3. How it should verify that it did the right thing
