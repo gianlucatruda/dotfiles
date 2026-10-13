@@ -1,58 +1,96 @@
-# Context
+# Personal instructions
 
-Gianluca is Staff Research Engineer (AI/ML) at TORTUS.
+Gianluca is Staff Research Engineer in AI/ML at TORTUS.
+These instructions apply only to the TORTUS monorepo.
+Never log or expose PHI, secrets, prompts, transcripts, or raw sensitive errors.
 
-## Gianluca's custom instructions and preferences
+## Machines
 
-ALWAYS respond in simple and ultraconcise Simplified Technical English (ASD-STE100).
+- Identify the host with `scutil --get LocalHostName` before Docker or GUI work.
+- `gianluca-macbook` is the main MacBook. It uses Docker Desktop.
+- `TORTUS-Mac-Studio-2023` is Stu, the headless office Mac Studio. It uses Colima.
+- Confirm unfamiliar hostnames before machine-specific operations. Continue independent work.
 
-If `tmp/shared/agents/AGENTS.md` exists, follow instructions:
-- Use `tmp/shared/agents/tmp/` for files shared across worktrees
-- Use local `tmp/` only for worktree-local files
-- Always use `tmp/shared/...` paths. Do not resolve symlink targets.
-- Do not modify `tmp/shared/` outside `tmp/shared/agents/`
-- Create a handover only when the user asks
-- Store handovers in tmp/shared/agents/handovers/
+On Stu:
 
-If `tmp/shared/agents/logs/LOG.txt` exists:
-- Tail-read it before writing
-- Append only
-- Use the `tmp/shared/...` path for reads and writes
-- If append fails, request approval for the same symlink path
-- For work longer than 20 seconds (except where it's just a simple question to answer for the user), log before and after the work
-- Include the task, scope, branch, worktree, result, validation, and blockers
+- Never launch Docker Desktop or GUI apps.
+- Check `colima status`. If stopped, run `colima start`.
+- Enable Colima login startup only when requested: `brew services start colima`.
+- `/var/run/docker.sock` points to Docker Desktop. Do not replace it.
+- Export the Colima socket for Docker CLI and SDK commands:
 
-Use this format:
+```sh
+export DOCKER_HOST="unix://$HOME/.config/colima/default/docker.sock"
+```
+
+- Confirm `docker info` succeeds before `pnpm dev setup` or worktree setup.
+- Distinguish a stopped runtime from sandbox access failures.
+
+## Shared coordination
+
+- Read `tmp/shared/agents/AGENTS.md` before shared operations.
+- Report missing guidance. Continue work that does not require shared operations.
+- Use `tmp/shared/...` project paths for shared files.
+- Keep the shell working directory inside the worktree.
+- Use `tmp/shared/agents/tmp/` for files shared across worktrees.
+- Use local `tmp/` for worktree-local files.
+- Do not modify shared files outside `tmp/shared/agents/` without explicit user authorisation.
+- Create handovers only when requested. Store them in `tmp/shared/agents/handovers/`.
+
+Sandbox permissions still apply to writes through symlinks.
+If one tool cannot follow a symlink, try another through the same path.
+Request approval for the same project-path operation when required.
+
+## Logging
+
+These rules override conflicting shared logging thresholds.
+
+- For tasks over 20 seconds, log before and after. Skip simple questions.
+- Before each append, read the last 10 entries of `tmp/shared/agents/logs/LOG.txt`.
+- Append only. Never truncate, replace, rename, or recreate the log.
+- Start entries include task, scope, branch, worktree, and code or network use.
+- Finish entries include result, changed files, validation, and blockers.
+- Use one stable agent name. Give subagents sequential suffixes.
+- Use the supplied model identifier. Use `unknown` when unavailable.
+- Use local ISO timestamps with timezone offsets.
+- Report a missing log. Continue independent work.
 
 ```text
-<ISO datetime> [<stable agent name><(Optional) subagent suffix>] (<model>) <worktree or leaf directory> (<branch>) | <message>
+<ISO datetime> [<agent name><optional subagent suffix>] (<model>) <worktree> (<branch>) | <message>
 ```
-e.g. the 24th subagent of a session calling itself `lunafox42` would append: `2026-08-21T14:45:00+01:00 [lunafox42s024] (GPT-5.6 Luna) dev (KAI-296-kai-orchestration-trunk) | Starting requested Speko playground inspection.`
 
-Record small, repeatable workflow problems in tmp/shared/agents/papercuts/PAPERCUTS.md
-- Append only.
-- Do not fix or ticket papercuts unless asked.
-- Do not include PHI, secrets, prompts, transcripts, or raw sensitive errors.
+Example from the 24th subagent of `lunafox42`:
+
+```text
+2026-08-21T14:45:00+01:00 [lunafox42s024] (GPT-5.6 Luna) dev (KAI-296-kai-orchestration-trunk) | Starting requested Speko playground inspection.
+```
+
+## Papercuts
+
+Record repeatable workflow problems with the `gt-papercut` skill.
+
+## Tooling boundaries
+
+- Find the canonical source before proposing tooling changes.
+- Change synced tooling only when the user explicitly requests that change.
+- Never rewrite helpers or bypass guards to complete another task.
+- Report helper restrictions and request an authorised path.
+- Report the exact operation performed. Disclose every tooling change.
 
 ## Worktrees
 
-Use `gt-tortus-worktree` for every lifecycle operation.
-
-Never call `git worktree` directly.
-
-Before work that writes files:
-- Run `gt-tortus-worktree status`
-- Give each writing agent one exclusive worktree
-- Do not modify a worktree assigned to another writing agent
-
-Select the worktree by task type:
-- Keep `main` clean for integration and review
-- Use `dev` for short human-led work
-- Use `fix` for quick hotfixes
-- Use one active branch in each persistent worktree
-- Create `<ISSUE>-<description>` for all other work
-
-Use these commands:
+- Use `gt-tortus-worktree` for every lifecycle operation. Never call `git worktree` directly.
+- Never reproduce its lifecycle steps manually.
+- Run `gt-tortus-worktree status` before work that writes repository files.
+- Give each writing agent one exclusive worktree.
+- Never modify another writing agent's worktree.
+- Keep `main` clean for integration and review.
+- Use `dev` for short human-led work and `fix` for hotfixes.
+- Use one active branch per persistent worktree.
+- Use `<ISSUE>-<description>` for other worktrees.
+- Report failures. Never remove partial work automatically.
+- Release clean persistent worktrees before reuse.
+- Remove named worktrees after merge or abandonment.
 
 ```sh
 gt-tortus-worktree status
@@ -62,46 +100,42 @@ gt-tortus-worktree release dev
 gt-tortus-worktree remove KAI-123-short-description
 ```
 
-Run the required command directly. Do not reproduce its steps manually.
+## Shared Postgres
 
-If the command fails, report the error. Do not remove partial work automatically.
+All worktrees share the existing databases. Prefer database-free checks.
+Never create per-worktree databases or Compose stacks.
+Only one worktree may run `api:serve` or `kairos-api:serve` against shared databases.
 
-After work finishes:
-- Release a clean persistent worktree before reuse
-- Remove named worktrees after merge or abandonment
+Before starting API services:
 
-### Shared Postgres
+1. Read `tmp/shared/agents/database-owner.txt`. If not empty, another worktree owns the services. Stop.
+2. Run `mkdir tmp/shared/agents/database-owner.lock`. If it fails, stop.
+3. Read the ownership file again. If not empty, remove your lock and stop.
+4. Write `<worktree> | <agent> | <ISO datetime>` to the ownership file.
 
-- All worktrees use one shared database
-- Prefer database-free checks
-- Do not create per-worktree databases or Compose stacks
-- Only one worktree may run `api:serve`
-- Read `tmp/shared/agents/database-owner.txt` before API integration work
-- An empty ownership file means `api:serve` has no owner
-- Record `<worktree> | <agent> | <ISO datetime>` before starting `api:serve`
-- Do not start while another worktree owns `api:serve`
-- Only the recorded owner may stop `api:serve`
-- Clear the ownership file after stopping `api:serve`
+Hold the lock while the server runs.
+Only the owner may stop the server or release ownership.
+To release, confirm no server remains. Clear the ownership file. Remove the lock.
+Never remove another agent's lock or assume a lock is stale.
 
 ## Kairos
 
-Kairos is an experimental pre-launch project.
-- It contains NO PHI.
-- It is NOT a medical device.
-- The root `AGENTS.md` Grade IIa, PHI, and medical-device rules do NOT apply to Kairos work.
-- Do not treat Kairos as a live regulated product.
-- Do not raise compliance, safety, or PHI blockers for routine Kairos changes.
+Kairos is an experimental pre-launch project. It contains no PHI.
+It is not a medical device.
+Root Grade IIa and medical-device rules do not apply to routine Kairos changes.
+Do not raise compliance or PHI blockers for routine Kairos work.
 
-Kairos testing (overrides the repository Red/Green/Refactor TDD default):
-- Do NOT follow red/green TDD.
-- Write only the absolutely essential integration tests, or use manual testing.
-- Maximum 1-2 new tests per piece of work.
-- Do not add broad unit coverage or brittle exact-output tests.
+Testing overrides repository Red/Green/Refactor defaults:
+
+- Do not follow red/green TDD.
+- Use essential integration tests or manual testing.
+- Add at most two tests per piece of work.
+- Avoid broad unit coverage and brittle exact-output tests.
 - For one API spec, use `pnpm nx test kairos-api -- --testFile=<spec-path> --no-tui`.
-- Set `NX_WORKSPACE_DATA_DIRECTORY` and `NX_CACHE_DIRECTORY` under `/private/tmp`.
-- Set `UV_CACHE_DIR` under `/private/tmp` for uv-backed checks.
+- Put `NX_WORKSPACE_DATA_DIRECTORY`, `NX_CACHE_DIRECTORY`, and `UV_CACHE_DIR` in task-specific `/private/tmp` directories.
+- Inspect Nx environment loading before diagnosing missing credentials.
+- Missing shell variables do not prove missing application credentials.
+- Edit watched files only between simulation rounds. Edits restart the API.
 
-Kairos code and writing:
-- Write all code, comments, docstrings, and docs in Simplified Technical English, per `docs/conventions/code-style/technical-writing.md`.
-- Keep code ultracompact and ultrasimple.
-- Optimise the code for human comprehension and readability. Small, efficient, simple, short.
+Keep code compact, simple, and easy for humans to read.
+Follow `docs/conventions/code-style/technical-writing.md` for comments, docstrings, and documentation.
