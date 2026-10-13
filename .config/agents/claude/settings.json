@@ -22,7 +22,8 @@
   "theme": "auto",
   "agentPushNotifEnabled": true,
   "permissions": {
-    "defaultMode": "auto"
+    "defaultMode": "auto",
+    "additionalDirectories": ["/Users/gianluca/shared/agents"]
   },
   "env": {
     "DISABLE_ERROR_REPORTING": "1",

@@ -97,10 +97,11 @@ setup_worktree() {
     die "Shared path exists: $shared_path"
   fi
 
-  run_setup_command pnpm -C "$worktree" dev setup
-  run_setup_command "$worktree/agents/scripts/setup.sh" --apply
+  # Link first so agents can coordinate even if setup fails.
   mkdir -p "$worktree/tmp"
   [[ -L "$shared_path" ]] || ln -s "$shared_dir" "$shared_path"
+  run_setup_command pnpm -C "$worktree" dev setup
+  run_setup_command "$worktree/agents/scripts/setup.sh" --apply
 }
 
 require_clean_worktree() {
