@@ -5,7 +5,10 @@
   "permission": {
     "edit": "allow",
     "bash": "ask",
-    "external_directory": "ask"
+    "external_directory": {
+      "*": "ask",
+      "/Users/gianluca/shared/agents/**": "allow"
+    }
   },
   "agent": {
     "build": {

@@ -85,6 +85,7 @@ Run `scripts/gt-audit-dotfiles --help` for its status legend and options.
 Tracked shared agent configuration lives in `.config/agents/`. Shared skills use the `gt-` prefix to avoid name collisions. Shared instructions use `AGENTS.md`; Claude receives a copy as `CLAUDE.md`. `bootstrap.sh` first deploys this directory to `~/.config/agents/`, then applies the targets declared in `harnesses.json`. It does not replace harness state or delete other skills.
 
 `scripts/gt-agent-log` appends one-line entries to a shared agent log. It fills in the timestamp, directory, and branch. It also creates agent names. Run `scripts/gt-agent-log --help` for the format and model ID rules.
+
 TORTUS-only instructions live in `.config/tortus/AGENTS.personal.md`. Bootstrap copies them to `~/.config/tortus/AGENTS.personal.md`. Monorepo setup runs `agents/scripts/personal-instructions.sh`, which links it into each worktree root. Harness instruction files receive only the shared `AGENTS.md`.
 
 ### Mac-specific setup
