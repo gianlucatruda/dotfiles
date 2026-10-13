@@ -23,7 +23,7 @@
   "agentPushNotifEnabled": true,
   "permissions": {
     "defaultMode": "auto",
-    "additionalDirectories": ["/Users/gianluca/shared/agents"]
+    "additionalDirectories": ["~/shared/agents"]
   },
   "env": {
     "DISABLE_ERROR_REPORTING": "1",
