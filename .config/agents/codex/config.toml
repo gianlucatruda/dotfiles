@@ -7,6 +7,9 @@ approvals_reviewer = "auto_review"
 sandbox_mode = "workspace-write"
 service_tier = "fast"
 
+[sandbox_workspace_write]
+writable_roots = ["/Users/gianluca/shared/agents"]
+
 [tui]
 fullscreen_transcript = true
 collapse_turn_details = true
