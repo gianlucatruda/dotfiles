@@ -7,6 +7,9 @@ approvals_reviewer = "auto_review"
 sandbox_mode = "workspace-write"
 service_tier = "fast"
 
+[sandbox_workspace_write]
+writable_roots = ["/Users/gianluca/shared/agents"]
+
 [tui]
 status_line = ["model-with-reasoning", "current-dir", "branch-changes", "run-state", "context-used", "five-hour-limit", "weekly-limit", "used-tokens"]
 status_line_use_colors = true

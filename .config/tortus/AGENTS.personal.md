@@ -28,14 +28,14 @@ export DOCKER_HOST="unix://$HOME/.config/colima/default/docker.sock"
 
 ## Shared coordination
 
-- Read `tmp/shared/agents/AGENTS.md` before shared operations.
-- Report missing guidance. Continue work that does not require shared operations.
-- Use `tmp/shared/...` project paths for shared files.
-- Keep the shell working directory inside the worktree.
+- Use `tmp/shared/...` project paths for shared files. Never use the symlink target.
+- Keep the shell working directory inside the worktree. Never `cd` into `tmp/shared`.
+- Never redirect shell output into `tmp/shared`. Use file tools or `gt-agent-log`.
 - Use `tmp/shared/agents/tmp/` for files shared across worktrees.
 - Use local `tmp/` for worktree-local files.
 - Do not modify shared files outside `tmp/shared/agents/` without explicit user authorisation.
 - Create handovers only when requested. Store them in `tmp/shared/agents/handovers/`.
+- Name handovers `YYYY-MM-DD_HH-MM_HANDOVER.md` in local time.
 
 Sandbox permissions still apply to writes through symlinks.
 If one tool cannot follow a symlink, try another through the same path.
@@ -43,26 +43,20 @@ Request approval for the same project-path operation when required.
 
 ## Logging
 
-These rules override conflicting shared logging thresholds.
+Use `gt-agent-log` for `tmp/shared/agents/logs/LOG.txt`.
+Run `gt-agent-log --help` for the entry format and model ID rules.
 
 - For tasks over 20 seconds, log before and after. Skip simple questions.
-- Before each append, read the last 10 entries of `tmp/shared/agents/logs/LOG.txt`.
-- Append only. Never truncate, replace, rename, or recreate the log.
-- Start entries include task, scope, branch, worktree, and code or network use.
-- Finish entries include result, changed files, validation, and blockers.
-- Use one stable agent name. Give subagents sequential suffixes.
-- Use the supplied model identifier. Use `unknown` when unavailable.
-- Use local ISO timestamps with timezone offsets.
+- Before each append, run `gt-agent-log tail tmp/shared/agents/logs/LOG.txt`.
+- Run `gt-agent-log name` once per session. Use that name for every entry.
+- Give subagents your name with a sequential suffix, for example `amberlynx58s001`.
+- Start entries state the task, scope, and code or network use.
+- Finish entries state the result, changed files, validation, and blockers.
+- Never edit, truncate, rename, or recreate the log.
 - Report a missing log. Continue independent work.
 
-```text
-<ISO datetime> [<agent name><optional subagent suffix>] (<model>) <worktree> (<branch>) | <message>
-```
-
-Example from the 24th subagent of `lunafox42`:
-
-```text
-2026-08-21T14:45:00+01:00 [lunafox42s024] (GPT-5.6 Luna) dev (KAI-296-kai-orchestration-trunk) | Starting requested Speko playground inspection.
+```sh
+gt-agent-log add tmp/shared/agents/logs/LOG.txt --agent amberlynx58 --model claude-opus-5-5 'Started KAI-123 review.'
 ```
 
 ## Papercuts
