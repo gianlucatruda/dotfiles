@@ -17,7 +17,8 @@ if [[ "$(uname)" == "Darwin" ]] && [[ -x /opt/homebrew/bin/brew ]]; then
   fi
 fi
 
-if [[ -n "${TMUX:-}" ]] && declare -f update_environment_from_tmux >/dev/null; then
+# Agent shells are non-interactive and cannot reach the tmux socket.
+if [[ $- == *i* ]] && [[ -n "${TMUX:-}" ]] && declare -f update_environment_from_tmux >/dev/null; then
   update_environment_from_tmux
   export GIT_SSH_COMMAND='SSH_AUTH_SOCK=$(tmux display-message -p "#{SSH_AUTH_SOCK}") ssh'
 fi
@@ -68,12 +69,12 @@ if command -v fzf >/dev/null 2>&1; then
   eval "$(fzf --bash)"
 fi
 
-# Zoxide integration with Bash
-if command -v zoxide >/dev/null 2>&1; then
-  eval "$(zoxide init bash)"
-fi
-
 # Pyenv integration with Bash
 if command -v pyenv >/dev/null 2>&1; then
   eval "$(pyenv init - --no-rehash)"
+fi
+
+# Zoxide must init last. Skip it in non-interactive agent shells.
+if [[ $- == *i* ]] && command -v zoxide >/dev/null 2>&1; then
+  eval "$(zoxide init bash)"
 fi
