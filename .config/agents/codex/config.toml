@@ -8,7 +8,7 @@ sandbox_mode = "workspace-write"
 service_tier = "fast"
 
 [sandbox_workspace_write]
-writable_roots = ["/Users/gianluca/shared/agents"]
+writable_roots = ["~/shared/agents"]
 
 [tui]
 status_line = ["model-with-reasoning", "current-dir", "branch-changes", "run-state", "context-used", "five-hour-limit", "weekly-limit", "used-tokens"]
