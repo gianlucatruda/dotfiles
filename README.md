@@ -84,6 +84,8 @@ Run `scripts/gt-audit-dotfiles --help` for its status legend and options.
 
 Tracked shared agent configuration lives in `.config/agents/`. Shared skills use the `gt-` prefix to avoid name collisions. Shared instructions use `AGENTS.md`; Claude receives a copy as `CLAUDE.md`. `bootstrap.sh` first deploys this directory to `~/.config/agents/`, then applies the targets declared in `harnesses.json`. It does not replace harness state or delete other skills.
 
+`scripts/gt-agent-log` appends one-line entries to a shared agent log. It fills in the timestamp, directory, and branch. It also creates agent names. Run `scripts/gt-agent-log --help` for the format and model ID rules.
+
 ### Mac-specific setup
 
 Configure some macOS preferences:
@@ -321,6 +323,7 @@ Current tracked structure:
 │       └── keyboard-remapping-requirements-spec.md
 ├── macos.sh
 └── scripts
+    ├── gt-agent-log
     ├── gt-btooth
     ├── gt-cheat
     ├── gt-imgen

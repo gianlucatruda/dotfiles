@@ -1,0 +1,134 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+usage() {
+  cat <<'EOF'
+Usage:
+  gt-agent-log name
+  gt-agent-log tail <file> [count]
+  gt-agent-log add <file> --agent <name> --model <id> <message>
+
+Keep one shared, append-only log for humans and agents.
+
+Commands:
+  name       Print a new agent name, for example amberlynx58.
+  tail       Print the last entries. Default count: 10.
+  add        Append one entry. The file must already exist.
+
+Entry format:
+  <timestamp> [<agent>] (<model>) <directory> (<branch>) | <message>
+
+The script fills in:
+  timestamp  Local ISO 8601 time with offset, for example 2026-10-13T18:40:00+01:00.
+  directory  Git worktree name, or the current directory name outside Git.
+  branch     Current Git branch. 'detached' for a detached HEAD. '-' outside Git.
+
+Agent names:
+  Run 'name' once per session. Use the same name for every entry.
+  Subagents add a sequential suffix: amberlynx58s001, amberlynx58s002.
+
+Model IDs:
+  Use the exact model ID, not a product name.
+  Good: claude-opus-5-5, claude-sonnet-5-5, gpt-5.6-sol, gpt-5.6-terra.
+  Bad: Claude, Opus, GPT-5 Codex.
+  Codex: read 'model' from ~/.codex/config.toml if the session does not show it.
+  Use 'unknown' only when no source gives the ID.
+
+Examples:
+  gt-agent-log tail tmp/shared/agents/logs/LOG.txt
+  gt-agent-log add tmp/shared/agents/logs/LOG.txt --agent amberlynx58 \
+    --model claude-opus-5-5 'Started KAI-123 review.'
+EOF
+}
+
+die() {
+  printf 'gt-agent-log: %s\n' "$*" >&2
+  exit 1
+}
+
+require_file() {
+  [[ -f "$1" ]] || die "No log file: $1. Create it first."
+}
+
+# BSD date has no %:z, so insert the offset colon by hand.
+timestamp() {
+  local t
+  t="$(date '+%Y-%m-%dT%H:%M:%S%z')"
+  printf '%s:%s\n' "${t:0:${#t}-2}" "${t: -2}"
+}
+
+directory() {
+  local root
+  if root="$(git rev-parse --show-toplevel 2>/dev/null)"; then
+    basename "$root"
+  else
+    basename "$PWD"
+  fi
+}
+
+branch() {
+  local name
+  if ! git rev-parse --git-dir >/dev/null 2>&1; then
+    printf -- '-\n'
+    return
+  fi
+  name="$(git branch --show-current)"
+  printf '%s\n' "${name:-detached}"
+}
+
+new_name() {
+  local adjectives=(amber brisk calm clever copper coral dusky ember fleet frosty
+    golden hazel ivory jade lunar mellow misty nimble quiet rusty silver swift tidal velvet)
+  local animals=(badger beaver crane falcon ferret finch fox gecko heron ibis
+    lynx marten newt otter owl panda puffin quokka raven robin stoat tern wren)
+  printf '%s%s%02d\n' \
+    "${adjectives[RANDOM % ${#adjectives[@]}]}" \
+    "${animals[RANDOM % ${#animals[@]}]}" \
+    "$((RANDOM % 100))"
+}
+
+tail_log() {
+  local file="$1"
+  local count="${2:-10}"
+  [[ "$count" =~ ^[0-9]+$ ]] || die "Count must be a number: $count"
+  require_file "$file"
+  tail -n "$count" "$file"
+}
+
+add_entry() {
+  local file="$1"
+  local agent=''
+  local model=''
+  local message
+  shift
+
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --agent) agent="${2:-}"; shift 2 || die 'Missing value for --agent' ;;
+      --model) model="${2:-}"; shift 2 || die 'Missing value for --model' ;;
+      --) shift; break ;;
+      -*) die "Unknown option: $1" ;;
+      *) break ;;
+    esac
+  done
+
+  [[ -n "$agent" ]] || die 'Missing --agent. Run: gt-agent-log name'
+  [[ -n "$model" ]] || die 'Missing --model. See: gt-agent-log --help'
+  message="$*"
+  [[ -n "$message" ]] || die 'Missing message'
+  [[ "$message" != *$'\n'* ]] || die 'Message must be one line'
+  require_file "$file"
+
+  # One short append is atomic, so parallel agents do not interleave entries.
+  printf '%s [%s] (%s) %s (%s) | %s\n' \
+    "$(timestamp)" "$agent" "$model" "$(directory)" "$(branch)" "$message" >> "$file"
+}
+
+case "${1:-}" in
+  name) [[ $# -eq 1 ]] || die 'name takes no arguments'; new_name ;;
+  tail) [[ $# -ge 2 && $# -le 3 ]] || die 'Usage: gt-agent-log tail <file> [count]'; tail_log "${@:2}" ;;
+  add) [[ $# -ge 2 ]] || die 'Usage: gt-agent-log add <file> --agent <name> --model <id> <message>'; add_entry "${@:2}" ;;
+  -h|--help) usage ;;
+  *) usage >&2; exit 1 ;;
+esac
