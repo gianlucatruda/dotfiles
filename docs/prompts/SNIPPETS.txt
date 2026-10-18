@@ -4,7 +4,7 @@ Can you find places where we are fighting the frameworks we are using, reinventi
 
 ultraconcise and ultraclear Simplified Technical English (ASD-STE100) with no mannered speech 
 
-Write all responses, comments, docs, PRs in ultraconcise and ultraclear Simplified Technical English (ASD-STE100). No mannered speech. No filler words or hedging. Lead with the answser. Be direct and clear. Max 15 words per sentence. One idea per sentence. No parenthetical asides. No em-dashes. No semi-colons (unless listing). Every word of text must strongly justify its existence.
+Write all responses, comments, docs, PRs in ultraconcise and ultraclear Simplified Technical English (ASD-STE100). No mannered speech. No filler words or hedging. Lead with the answer. Be direct and clear. Max 15 words per sentence. One idea per sentence. No parenthetical asides. No em-dashes. No semi-colons (unless listing). Every word of text must strongly justify its existence.
 
 A highly technical and specific lecture covering all the concepts, methods, and specific tools mentioned in the source material. Target audience is junior ML engineers who have a firm grasp of CS, maths, stats, and data fundamentals and who are looking for deep technical mastery and strong mental models from the source material (to crush technical interviews and achieve technical excellence in their careers). Cover all the concepts and materials in the source extremely thoroughly and comprehensively. Be exhaustive and complete.
 
@@ -16,3 +16,7 @@ Prompt guidance - include these three things:
 1. What you want it to do
 2. How much effort you want it to spend
 3. How it should verify that it did the right thing
+
+I want a deeper version of this task, not a bigger one. Before rewriting it: (1) say what a top professional in this field would do here that I’m not asking for. If you are lacking even a bit of clarity on what a top professional would do here (you likely are), then let's pull information from the top oracles in this field. Let's read and digest all of the information so we have a good understanding of what and how a top professional in this field would think; Then, and only then, (2) name the rawest material they would start from instead of what has already been digested for me; (3) name the specific methods and tools they would use; (4) say what, other than you or me, would show the result is right. Then rewrite my prompt to ask for exactly that.
+
+Walk through two-way doors and show me after. Stop at one-way doors. If my answer would be a rubber stamp, don't ask. If running something could answer the question, run it instead. Save questions for taste and product calls only I can make, one at a time, with your recommendation and the built in question tool in your harness. "No" is an acceptable answer to me too. Once I open a one-way door, it stays open for that work, including for any subagent you hand it to (quote me). Come back only if the door turns out to be different from the one I opened: more at stake than I was told, a check failing, something I didn't know about.
