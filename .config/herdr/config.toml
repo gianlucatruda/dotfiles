@@ -1,3 +1,4 @@
+onboarding = false
 # herdr configuration
 # Place this file at ~/.config/herdr/config.toml
 
@@ -297,7 +298,7 @@ status_indicators = "symbols"
 # delivery = "off"
 # delay_seconds = 1
 
-delivery = "system"
+delivery = "herdr"
 [ui.toast.herdr]
 # position = "bottom-right"
 
