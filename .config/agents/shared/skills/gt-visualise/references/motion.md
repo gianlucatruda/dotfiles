@@ -1,4 +1,4 @@
-# Motion tools
+# Motion and video tools
 
 Each entry gives the use, the package, a core pattern, and pitfalls. Patterns are sketches. Check them against the pinned version before you use one.
 
@@ -47,111 +47,6 @@ Pitfalls:
 
 - Call `requestRenderAll` during animation, or nothing redraws.
 - Version 5 code uses a global `fabric` namespace. Do not mix it with version 6 imports.
-
-## three.js
-
-- Repo: https://github.com/mrdoob/three.js
-- Package: `three`. Add-ons import from `three/addons/...`.
-- Use for: 3D scenes, camera moves, lights, particles, post-processing, custom GLSL shaders.
-- Avoid for: one flat shader with no scene graph. Use twgl.js.
-
-```js
-import * as THREE from "three"
-const renderer = new THREE.WebGLRenderer({ antialias: true })
-renderer.setPixelRatio(Math.min(devicePixelRatio, 2))
-const scene = new THREE.Scene()
-const camera = new THREE.PerspectiveCamera(50, innerWidth / innerHeight, 0.1, 100)
-renderer.setAnimationLoop((ms) => {
-  const t = ms / 1000
-  camera.position.set(Math.cos(t) * 5, 2, Math.sin(t) * 5)
-  camera.lookAt(0, 0, 0)
-  renderer.render(scene, camera)
-})
-```
-
-Pitfalls:
-
-- Call `dispose()` on geometries, materials, textures, and the renderer on teardown.
-- Update `camera.aspect`, call `updateProjectionMatrix()`, and resize the renderer on window resize.
-- Set `renderer.outputColorSpace` and texture `colorSpace` correctly, or colours look washed out.
-- Do not use `THREE.Clock`. It is deprecated since r183. Use the loop timestamp, or `THREE.Timer` for deltas.
-- For a standalone HTML file, map `three` and `three/addons/` in an import map.
-
-## drei
-
-- Repo: https://github.com/pmndrs/drei
-- Package: `@react-three/drei`. Needs `@react-three/fiber` and `three`.
-- Use for: three.js in React. Gives controls, environment maps, staging, text, and helpers.
-- Avoid for: non-React projects.
-
-```jsx
-import { Canvas } from "@react-three/fiber"
-import { OrbitControls, Environment, Float } from "@react-three/drei"
-<Canvas dpr={[1, 2]} camera={{ position: [0, 1, 5] }}>
-  <Float speed={2}><mesh><torusKnotGeometry /><meshStandardMaterial /></mesh></Float>
-  <Environment preset="city" />
-  <OrbitControls enableDamping />
-</Canvas>
-```
-
-Pitfalls:
-
-- Animate with `useFrame((state, delta) => ...)`. Do not use React state per frame.
-- Match `@react-three/fiber` major version to the React major version.
-
-## twgl.js
-
-- Repo: https://github.com/greggman/twgl.js
-- Package: `twgl.js`.
-- Use for: full-screen fragment shaders, small raw WebGL effects, shader backgrounds.
-- Avoid for: scenes with many objects, cameras, or loaders. Use three.js.
-
-```js
-import * as twgl from "twgl.js"
-const gl = canvas.getContext("webgl2")
-const programInfo = twgl.createProgramInfo(gl, [vertexSrc, fragmentSrc])
-const bufferInfo = twgl.createBufferInfoFromArrays(gl, {
-  position: [-1, -1, 0, 1, -1, 0, -1, 1, 0, -1, 1, 0, 1, -1, 0, 1, 1, 0],
-})
-function render(ms) {
-  twgl.resizeCanvasToDisplaySize(gl.canvas, Math.min(devicePixelRatio, 2))
-  gl.viewport(0, 0, gl.canvas.width, gl.canvas.height)
-  gl.useProgram(programInfo.program)
-  twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo)
-  twgl.setUniforms(programInfo, { u_time: ms / 1000, u_resolution: [gl.canvas.width, gl.canvas.height] })
-  twgl.drawBufferInfo(gl, bufferInfo)
-  requestAnimationFrame(render)
-}
-requestAnimationFrame(render)
-```
-
-Pitfalls:
-
-- Write GLSL ES 3.00 shaders. Start them with `#version 300 es`.
-- Keep fragment shader cost low. It runs once per pixel per frame.
-
-## cobe
-
-- Repo: https://github.com/shuding/cobe
-- Package: `cobe`.
-- Use for: a small animated dot-matrix globe, usually in a hero section.
-- Avoid for: real map data, labels, or interaction beyond rotation. Use deck.gl.
-
-```js
-import createGlobe from "cobe"
-const globe = createGlobe(canvas, {
-  devicePixelRatio: 2, width: 1200, height: 1200, phi: 0, theta: 0.3,
-  dark: 1, diffuse: 1.2, mapSamples: 16000, mapBrightness: 6,
-  baseColor: [0.3, 0.3, 0.3], markerColor: [0.1, 0.8, 1], glowColor: [1, 1, 1],
-  markers: [{ location: [51.5, -0.12], size: 0.05 }],
-  onRender: (state) => { state.phi = performance.now() / 4000 },
-})
-```
-
-Pitfalls:
-
-- Call `globe.destroy()` on teardown.
-- `width` and `height` set the drawing buffer size. Set the display size with CSS.
 
 ## deck.gl
 
@@ -308,6 +203,7 @@ Use this path when the user needs a file, not a live page.
 
 1. Math, diagram, or text explainer: render with Manim.
 2. Browser canvas scene: step the scene time by `1 / fps` and encode each frame with Mediabunny.
-3. Do not use `MediaRecorder` for final output. It records wall-clock time, drops frames under load, and its formats differ by browser.
-4. Post-process with native `ffmpeg` when a shell is available.
-5. For a GIF, make a palette first: `-vf "fps=30,scale=800:-1:flags=lanczos,split[a][b];[a]palettegen[p];[b][p]paletteuse"`.
+3. Blender scene: render PNG frames, then encode: `ffmpeg -framerate 24 -i frame_%04d.png -c:v libx264 -pix_fmt yuv420p out.mp4`.
+4. Do not use `MediaRecorder` for final output. It records wall-clock time, drops frames under load, and its formats differ by browser.
+5. Post-process with native `ffmpeg` when a shell is available.
+6. For a GIF, make a palette first: `-vf "fps=30,scale=800:-1:flags=lanczos,split[a][b];[a]palettegen[p];[b][p]paletteuse"`.
