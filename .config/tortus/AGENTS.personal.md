@@ -5,49 +5,73 @@ These instructions are tailored to the TORTUS monorepo.
 
 Always write all responses, comments, docs, PRs (titles and descriptions) in ultraconcise and ultraclear Simplified Technical English (ASD-STE100). Active voice. No Claudespeak or LLMisms. No mannered speech. No filler words or hedging. Lead with the answer. Be direct and clear. Max 15 words per sentence. One idea per sentence. No parenthetical asides. No em-dashes. No semi-colons (unless listing). Every word of text must strongly justify its existence.
 
-Always restate my intent before continuing (and have subagents and other herdr sessions do the same).
+Before task work, restate my intent in one line. Skip it for direct questions. Then lead with the answer. Have subagents and herdr sessions do the same.
 
 Always walk through two-way doors and show me after. Stop at one-way doors. If my answer would be a rubber stamp, don't ask. If running something could answer the question, run it instead. Save questions for taste and product calls only I can make, one at a time, with your recommendation and the built in question tool in your harness. "No" is an acceptable answer to me too. Once I open a one-way door, it stays open for that work, including for any subagent you hand it to (quote me). Come back only if the door turns out to be different from the one I opened: more at stake than I was told, a check failing, something I didn't know about.
 
+Subagents without a question tool stop at a one-way door. They report it to their caller.
+
+One-way doors include: push or merge to shared branches, force-push, messages to Slack, Linear, GitHub, or email, deleting shared or remote data, shared database writes or migrations, feature flag changes, and synced tooling edits.
+
 ## Delegation
 
-Prompt guidance to other agents / subagents must always include these three things:
+Prompt guidance to other agents / subagents must always include these four things:
 
 1. What you want it to do
 2. How much effort you want it to spend
 3. How it should verify that it did the right thing
+4. Its log name, any door I opened (quote me), and: "Read and follow AGENTS.personal.md through the project path."
+
+Pass the text below verbatim. In it, "I" and "me" mean Gianluca. A big feature is new user-visible behavior, a new module, or a change across packages.
 
 Instruct the worker agents: Before beginning big features: (1) say what a top professional in this field would do here that I'm not asking for. If you are lacking even a bit of clarity on what a top professional would do here (you likely are), then let's pull information from the top oracles in this field. Let's read and digest all of the information so we have a good understanding of what and how a top professional in this field would think; Then, and only then, (2) name the rawest material they would start from instead of what has already been digested for me; (3) name the specific methods and tools they would use; (4) say what, other than you or me, would show the result is right. Then rewrite my prompt to ask for exactly that.
 
+Then do the rewritten task. Wait for me only at a one-way door.
+The rewritten prompt becomes the requested scope. List each scope addition in the final report.
+
 ## Preferences
 
-- Do not write code comments. Only humans get to write comments (or instruct you specifically to do so).
+- Do not add code comments or docstrings unless I ask. This overrides the global comment rule. Exceptions: required lint or type suppressions, each with a short reason. When code changes, update or delete existing comments that become false.
 - Think hard and long about what to name re-useable things: functions, objects, types, variables. Name them well.
-- CLI tools must be self-documenting with --help and argument bounds / typing.
-- Write compact, flexible code in a readable procedural style.
+- Write compact code in a readable procedural style.
 - Use stateless functional programming idioms over stateful OOP ones.
-- Dispose of almost all unit tests once you know a component works. Don't commit them.
+- Delete scratch unit tests you wrote once the component works. Do not commit them. Never delete existing committed tests unless I ask.
 - Use only essential integration tests or manual verification.
-- Add at most three tests per 1000 lines of actual work.
+- Add at most three tests per 1000 lines of actual work. These limits do not apply when I ask for tests.
 - No broad unit coverage or brittle exact-output tests.
 - Apply `docs/conventions/code-style/technical-writing.md` for comments, docstrings, and documentation.
 - When referencing Linear issues or Github PRs to me (the human), always also include the title or a 3-5 word explanation so I don't have to look up the IDs.
 
+## Code and tools for humans with limited context
+
+Assume the reader or user knows only the file or command in front of them.
+
+- A reader understands one function or file without reading the rest of the codebase.
+- Names, types, and signatures state purpose, inputs, outputs, and effects.
+- Keep related code together. Avoid action at a distance and hidden configuration.
+- The common case needs no arguments. Choose safe, sensible defaults.
+- Expose typed, bounded arguments for less common cases. Add options without breaking existing calls.
+- CLI tools must be self-documenting. `--help` shows purpose, arguments, defaults, bounds, and one example.
+- Errors state what failed, why, and the next action.
+- Destructive operations need an explicit flag. Offer a dry run.
+- Output is readable by humans. Offer a machine-readable form when scripts consume it.
+- Apply this to scripts, APIs, config, and agent skills, not only CLIs.
+
 ## The Principles
 
 All agents and subagents MUST follow these.
-In each reply, name every principle applied and the decision it changed.
-Cite only principles that changed a decision. A citation with no decision is invalid.
-Skip citations for simple questions.
+In each final task report, list principles that changed a decision. Use one line each: number, then decision.
+Omit the list when none changed a decision. A citation with no decision is invalid.
+A simple question needs no file change and no command beyond reads. Skip citations for it.
 Pass this rule to every subagent you spawn.
-The Preferences above take precedence when they conflict.
+Authority order: my explicit request for this task, then Preferences, then the principle order below.
 
 ### Scope
 
 1. **Do the least that solves it.** Delete before you add. Each construct must earn its cost.
 2. **Experience first.** The user's result beats implementation convenience.
-3. **Go straight to the target design.** Integrate new requirements as if present from day one. Migrate callers and delete legacy APIs in one wave. Keep no temporary compatibility states.
-4. **Prototype without precedent.** Build two or three competing options. Let the results decide.
+3. **Go straight to the target design.** Integrate new requirements as if present from day one. For internal APIs, migrate callers and delete the old API in one wave. Keep compatibility for deployed clients, stored data, and external APIs until I say otherwise.
+4. **Prototype novel designs.** For a UI or architecture decision with no precedent in the codebase, build two or three competing options. Let the results decide.
 
 ### Design
 
@@ -187,19 +211,21 @@ Before starting API services:
 1. Read `tmp/shared/agents/database-owner.txt`. If not empty, another worktree owns the services. Stop.
 2. Run `mkdir tmp/shared/agents/database-owner.lock`. If it fails, stop.
 3. Read the ownership file again. If not empty, remove your lock and stop.
-4. Write `<worktree> | <agent> | <ISO datetime>` to the ownership file.
+4. Use a file tool to write `<worktree> | <agent> | <ISO datetime>` to the ownership file.
 
 Hold the lock while the server runs.
 Only the owner may stop the server or release ownership.
 To release, confirm no server remains. Clear the ownership file. Remove the lock.
 Never remove another agent's lock or assume a lock is stale.
+If a lock looks stale, report its owner line to me and stop.
 
 ## TORTUS Health (Kairos)
 
 Kairos is a beta project rolling out in California and is NOT a medical device.
 Root Grade IIa and medical-device rules do not apply to routine Kairos changes.
 
-- Do not raise compliance or PHI blockers for routine Kairos work.
+- Do not raise medical-device compliance blockers for Kairos work.
+- Never copy real patient data into logs, prompts, fixtures, or shared files.
 - For one API spec, use `pnpm nx test kairos-api -- --testFile=<spec-path> --no-tui`.
 - Put `NX_WORKSPACE_DATA_DIRECTORY`, `NX_CACHE_DIRECTORY`, and `UV_CACHE_DIR` in task-specific `/private/tmp` directories.
 - Inspect Nx environment loading before diagnosing missing credentials.
