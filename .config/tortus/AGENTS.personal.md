@@ -1,30 +1,28 @@
 # Personal instructions
 
 Gianluca is Staff Research Engineer in AI/ML at TORTUS.
-These instructions apply only to the TORTUS monorepo.
-Never log or expose PHI, secrets, prompts, transcripts, or raw sensitive errors.
+These instructions are tailored to the TORTUS monorepo.
 
-## Machines
+Always write all responses, docs, and PRs in ultraconcise and ultraclear Simplified Technical English (ASD-STE100). No mannered speech. No filler words or hedging. Lead with the answer. Be direct and clear. Max 15 words per sentence. One idea per sentence. No parenthetical asides. No em-dashes. No semi-colons (unless listing). Every word of text must strongly justify its existence.
 
-- Identify the host with `scutil --get LocalHostName` before Docker or GUI work.
-- `gianluca-macbook` is the main MacBook. It uses Docker Desktop.
-- `TORTUS-Mac-Studio-2023` is Stu, the headless office Mac Studio. It uses Colima.
-- Confirm unfamiliar hostnames before machine-specific operations. Continue independent work.
+Walk through two-way doors and show me after. Stop at one-way doors. If my answer would be a rubber stamp, don't ask. If running something could answer the question, run it instead. Save questions for taste and product calls only I can make, one at a time, with your recommendation and the built in question tool in your harness. "No" is an acceptable answer to me too. Once I open a one-way door, it stays open for that work, including for any subagent you hand it to (quote me). Come back only if the door turns out to be different from the one I opened: more at stake than I was told, a check failing, something I didn't know about.
 
-On Stu:
+## Preferences
 
-- Never launch Docker Desktop or GUI apps.
-- Check `colima status`. If stopped, run `colima start`.
-- Enable Colima login startup only when requested: `brew services start colima`.
-- `/var/run/docker.sock` points to Docker Desktop. Do not replace it.
-- Export the Colima socket for Docker CLI and SDK commands:
-
-```sh
-export DOCKER_HOST="unix://$HOME/.config/colima/default/docker.sock"
-```
-
-- Confirm `docker info` succeeds before `pnpm dev setup` or worktree setup.
-- Distinguish a stopped runtime from sandbox access failures.
+- Always follow the principles of Jane Street's house style and _name_ the principles used:
+- Do not write code comments. Only humans get to write comments (or instruct you specifically to do so).
+- Think hard and long about what to name re-useable things: functions, objects, types, variables. Name them well.
+- CLI tools must be self-documenting with --help and argument bounds / typing.
+- Write concise and flexible code in a readable procedural style.
+- Use stateless functional programming idioms over stateful OOP ones.
+- Dispose of almost all unit tests once you know a component works. Don't commit them.
+- Use only essential integration tests or manual verification.
+- Add at most three tests per 1000 lines of actual work.
+- No broad unit coverage or brittle exact-output tests.
+- Missing shell variables do not prove missing application credentials.
+- Keep code compact, simple, and easy for humans to read.
+- Apply `docs/conventions/code-style/technical-writing.md` for comments, docstrings, and documentation.
+- When referencing Linear issues or Github PRs to me (the human), always also include the title or a 3-5 word explanation so I don't have to look up the IDs.
 
 ## Shared coordination
 
@@ -94,6 +92,28 @@ gt-tortus-worktree release dev
 gt-tortus-worktree remove KAI-123-short-description
 ```
 
+## Machines
+
+- Identify the host with `scutil --get LocalHostName` before Docker or GUI work.
+- `gianluca-macbook` is the main MacBook. It uses Docker Desktop.
+- `TORTUS-Mac-Studio-2023` is Stu, the headless office Mac Studio. It uses Colima.
+- Confirm unfamiliar hostnames before machine-specific operations. Continue independent work.
+
+On Stu:
+
+- Never launch Docker Desktop or GUI apps.
+- Check `colima status`. If stopped, run `colima start`.
+- Enable Colima login startup only when requested: `brew services start colima`.
+- `/var/run/docker.sock` points to Docker Desktop. Do not replace it.
+- Export the Colima socket for Docker CLI and SDK commands:
+
+```sh
+export DOCKER_HOST="unix://$HOME/.config/colima/default/docker.sock"
+```
+
+- Confirm `docker info` succeeds before `pnpm dev setup` or worktree setup.
+- Distinguish a stopped runtime from sandbox access failures.
+
 ## Shared Postgres
 
 All worktrees share the existing databases. Prefer database-free checks.
@@ -112,24 +132,13 @@ Only the owner may stop the server or release ownership.
 To release, confirm no server remains. Clear the ownership file. Remove the lock.
 Never remove another agent's lock or assume a lock is stale.
 
-## Kairos
+## TORTUS Health (Kairos)
 
-Kairos is an experimental pre-launch project. It contains no PHI.
-It is not a medical device.
+Kairos is a beta project rolling out in California and is NOT a medical device.
 Root Grade IIa and medical-device rules do not apply to routine Kairos changes.
-Do not raise compliance or PHI blockers for routine Kairos work.
 
-Testing overrides repository Red/Green/Refactor defaults:
-
-- Do not follow red/green TDD.
-- Use essential integration tests or manual testing.
-- Add at most two tests per piece of work.
-- Avoid broad unit coverage and brittle exact-output tests.
+- Do not raise compliance or PHI blockers for routine Kairos work.
 - For one API spec, use `pnpm nx test kairos-api -- --testFile=<spec-path> --no-tui`.
 - Put `NX_WORKSPACE_DATA_DIRECTORY`, `NX_CACHE_DIRECTORY`, and `UV_CACHE_DIR` in task-specific `/private/tmp` directories.
 - Inspect Nx environment loading before diagnosing missing credentials.
-- Missing shell variables do not prove missing application credentials.
 - Edit watched files only between simulation rounds. Edits restart the API.
-
-Keep code compact, simple, and easy for humans to read.
-Follow `docs/conventions/code-style/technical-writing.md` for comments, docstrings, and documentation.
