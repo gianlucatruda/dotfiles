@@ -1,4 +1,5 @@
 tap "bramstein/webfonttools"
+tap "espressif/eim"
 tap "felixkratz/formulae", "https://github.com/FelixKratz/homebrew-formulae"
 tap "hjr265/gittop"
 tap "human37/open-wispr"
@@ -72,8 +73,6 @@ brew "gpgme"
 brew "openjpeg"
 # PDF rendering library (based on the xpdf-3.0 code base)
 brew "poppler"
-# Validating, recursive, caching DNS resolver
-brew "unbound"
 # Visually compare two PDF files
 brew "diff-pdf"
 # TCP over DNS tunnel
@@ -268,6 +267,8 @@ brew "tree"
 brew "tree-sitter-cli"
 # Tools for building TCP client-server applications
 brew "ucspi-tcp"
+# Validating, recursive, caching DNS resolver
+brew "unbound"
 # Extremely fast Python package installer and resolver, written in Rust
 brew "uv"
 # Visual Binary Diff
@@ -284,6 +285,8 @@ brew "woff2"
 brew "yazi"
 # Shell extension to navigate your filesystem faster
 brew "zoxide"
+# ESP-IDF Installation Manager - CLI tool for setting up ESP-IDF development environment
+brew "espressif/eim/eim", trusted: true
 # A window border system for macOS
 brew "felixkratz/formulae/borders", trusted: true
 # Beautiful terminal UI for visualizing Git repository statistics
