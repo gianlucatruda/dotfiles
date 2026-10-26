@@ -79,6 +79,8 @@ brew "diff-pdf"
 brew "dns2tcp"
 # More intuitive version of du in rust
 brew "dust"
+# Select default apps for documents and URL schemes on macOS
+brew "duti"
 # Like neofetch, but much faster because written mostly in C
 brew "fastfetch"
 # Simple, fast and user-friendly alternative to find

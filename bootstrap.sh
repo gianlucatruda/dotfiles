@@ -51,6 +51,10 @@ function doIt() {
 			git config --global user.signingkey "$GI_SIGNING_KEY"
 		fi
 	fi
+	# If duti configured (macOS), use it to set default apps
+	if command -v duti >/dev/null 2>&1 && [[ -f "$HOME/.config/default-apps.duti" ]]; then
+		duti "$HOME/.config/default-apps.duti"
+	fi
 }
 
 # If --force or -f argument, skip the y/n confirmation

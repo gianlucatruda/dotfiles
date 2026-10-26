@@ -1,0 +1,218 @@
+# Review these preferences before applying them.
+# Seeded from saved overrides and 140 extension queries on 2026-10-23.
+
+# Text and code use VSCodium when opened from a GUI.
+# Specific rules override existing defaults that generic text types cannot replace.
+com.vscodium                         .bash                                                all
+com.vscodium                         .c                                                   all
+com.vscodium                         .cfg                                                 all
+com.vscodium                         .cjs                                                 all
+com.vscodium                         .conf                                                all
+com.vscodium                         .config                                              all
+com.vscodium                         .cpp                                                 all
+com.vscodium                         .css                                                 all
+com.vscodium                         .cts                                                 all
+com.vscodium                         .diff                                                all
+com.vscodium                         .editorconfig                                        all
+com.vscodium                         .eml                                                 all
+com.vscodium                         .entitlements                                        all
+com.vscodium                         .env                                                 all
+com.vscodium                         .eps                                                 all
+com.vscodium                         .fish                                                all
+com.vscodium                         .gitattributes                                       all
+com.vscodium                         .gitconfig                                           all
+com.vscodium                         .gitignore                                           all
+com.vscodium                         .glsl                                                all
+com.vscodium                         .go                                                  all
+com.vscodium                         .h                                                   all
+com.vscodium                         .hpp                                                 all
+com.vscodium                         .ics                                                 all
+com.vscodium                         .ini                                                 all
+com.vscodium                         .ipynb                                               all
+com.vscodium                         .java                                                all
+com.vscodium                         .js                                                  all
+com.vscodium                         .jsonl                                               all
+com.vscodium                         .jsx                                                 all
+com.vscodium                         .kt                                                  all
+com.vscodium                         .kts                                                 all
+com.vscodium                         .less                                                all
+com.vscodium                         .lock                                                all
+com.vscodium                         .log                                                 all
+com.vscodium                         .lua                                                 all
+com.vscodium                         .m                                                   all
+com.vscodium                         .mdx                                                 all
+com.vscodium                         .mm                                                  all
+# macOS groups .mts and .m2ts together. Both will open in VSCodium.
+com.vscodium                         .mts                                                 all
+com.vscodium                         .pbxproj                                             all
+com.vscodium                         .pkl                                                 all
+com.vscodium                         .plist                                               all
+com.vscodium                         .properties                                          all
+com.vscodium                         .pyw                                                 all
+com.vscodium                         .r                                                   all
+com.vscodium                         .rb                                                  all
+com.vscodium                         .rs                                                  all
+com.vscodium                         .rst                                                 all
+com.vscodium                         .rtf                                                 all
+com.vscodium                         .sass                                                all
+com.vscodium                         .scss                                                all
+com.vscodium                         .sql                                                 all
+com.vscodium                         .storyboard                                          all
+com.vscodium                         .strings                                             all
+com.vscodium                         .stringsdict                                         all
+com.vscodium                         .svg                                                 all
+com.vscodium                         .swift                                               all
+com.vscodium                         .toml                                                all
+com.vscodium                         .tsv                                                 all
+com.vscodium                         .tsx                                                 all
+com.vscodium                         .txt                                                 all
+com.vscodium                         .vcf                                                 all
+com.vscodium                         .xcconfig                                            all
+com.vscodium                         .xcodeproj                                           all
+com.vscodium                         .xcstrings                                           all
+com.vscodium                         .xcworkspace                                         all
+com.vscodium                         .xhtml                                               all
+com.vscodium                         .xib                                                 all
+com.vscodium                         .yaml                                                all
+com.vscodium                         .zsh                                                 all
+com.vscodium                         public.comma-separated-values-text                   all
+# macOS ties HTML opening to the default browser. Edit HTML explicitly in VSCodium.
+com.vscodium                         public.json                                          all
+# macOS groups .ts source and video files together. Both will open in VSCodium.
+com.vscodium                         public.mpeg-2-transport-stream                       all
+com.vscodium                         public.plain-text                                    all
+com.vscodium                         public.python-script                                 all
+com.vscodium                         public.shell-script                                  all
+com.vscodium                         public.source-code                                   all
+com.vscodium                         public.text                                          all
+com.vscodium                         public.xml                                           all
+
+# Markdown stays in Obsidian.
+md.obsidian                          net.daringfireball.markdown                          all
+
+# Media preference: Homebrew IINA, then Homebrew VLC, then QuickTime.
+# Homebrew manages both players. IINA is the selected handler.
+# Re-evaluate this fixed selection before applying it on another Mac.
+com.colliderli.iina                  .3ga                                                 all
+com.colliderli.iina                  .aac                                                 all
+com.colliderli.iina                  .aiff                                                all
+com.colliderli.iina                  .avi                                                 all
+com.colliderli.iina                  .flac                                                all
+com.colliderli.iina                  .m4v                                                 all
+com.colliderli.iina                  .mkv                                                 all
+com.colliderli.iina                  .mov                                                 all
+com.colliderli.iina                  .mp4                                                 all
+com.colliderli.iina                  .mpeg                                                all
+com.colliderli.iina                  .ogg                                                 all
+com.colliderli.iina                  .opus                                                all
+com.colliderli.iina                  .webm                                                all
+com.colliderli.iina                  com.apple.m4a-audio                                  all
+com.colliderli.iina                  com.microsoft.waveform-audio                         all
+com.colliderli.iina                  public.mp3                                           all
+
+# Other seeded choices remain available for review.
+com.apple.archiveutility             .7z                                                  all
+com.apple.Preview                    .ai                                                  all
+com.apple.Preview                    .avif                                                all
+com.apple.Preview                    .bmp                                                 all
+com.apple.archiveutility             .bz2                                                 all
+com.apple.DiskImageMounter           .dmg                                                 all
+com.apple.Preview                    .dng                                                 all
+com.apple.iWork.Pages                .doc                                                 all
+com.apple.iBooksX                    .epub                                                all
+com.apple.Preview                    .gif                                                 all
+com.apple.archiveutility             .gz                                                  all
+com.apple.Preview                    .heic                                                all
+com.apple.Preview                    .heif                                                all
+com.apple.Preview                    .icns                                                all
+com.apple.Preview                    .ico                                                 all
+com.apple.DiskImageMounter           .iso                                                 all
+com.apple.Preview                    .jpg                                                 all
+com.apple.iWork.Keynote              .key                                                 all
+net.kovidgoyal.calibre               .mobi                                                all
+com.apple.iWork.Numbers              .numbers                                             all
+org.libreoffice.script               .odp                                                 all
+org.libreoffice.script               .ods                                                 all
+org.libreoffice.script               .odt                                                 all
+# Explicit font types avoid conflicting extension registrations.
+com.apple.FontBook                   public.opentype-font                                 all
+com.apple.iWork.Pages                .pages                                               all
+com.apple.Preview                    .pdf                                                 all
+com.apple.installer                  .pkg                                                 all
+com.apple.Preview                    .png                                                 all
+com.apple.iWork.Keynote              .ppt                                                 all
+com.apple.Preview                    .psd                                                 all
+# calibre claimed this archive format during the initial query.
+net.kovidgoyal.calibre               .rar                                                 all
+# Raw audio and camera images share this extension.
+org.audacityteam.audacity4           .raw                                                 all
+# RTFD contains formatted text and attachments in a package.
+com.apple.TextEdit                   .rtfd                                                all
+com.apple.archiveutility             .tar                                                 all
+com.apple.Preview                    .tif                                                 all
+com.apple.FontBook                   public.truetype-ttf-font                             all
+com.apple.Preview                    .webp                                                all
+com.apple.iWork.Numbers              .xls                                                 all
+com.apple.archiveutility             .xz                                                  all
+com.apple.archiveutility             .zip                                                 all
+com.apple.iCal                       com.apple.ical.backup-package                        all
+com.apple.iCal                       com.apple.ical.vcs                                   all
+org.libreoffice.script               org.openxmlformats.presentationml.presentation       all
+org.libreoffice.script               org.openxmlformats.spreadsheetml.sheet               all
+org.libreoffice.script               org.openxmlformats.wordprocessingml.document         all
+# Restore the document type previously targeted by the ambiguous .otf rule.
+org.libreoffice.script               org.oasis-open.opendocument.formula-template          all
+com.apple.Terminal                   public.unix-executable                               all
+
+# Zen handles generic links. Helium and Chromium serve separate workflows.
+com.todoist.mac.Todoist              com.todoist
+com.docker.docker                    docker-desktop
+# HTTP also sets HTTPS and HTML. Separate assignments are rejected by macOS.
+app.zen-browser.zen                  http
+com.apple.mail                       mailto
+com.todoist.mac.Todoist              todoist
+com.apple.iCal                       webcal
+
+# VSCodium cannot handle these Xcode-specific URL schemes.
+# Excluding these rules does not remove existing macOS registrations.
+# com.apple.dt.Xcode                   apple-reference-documentation
+# com.apple.dt.Xcode                   doc
+# com.apple.dt.Xcode                   x-source-tag
+# com.apple.dt.Xcode                   x-swift-package-repository-authentication
+# com.apple.dt.Xcode                   x-xcode-ci-build-report-feedback
+# com.apple.dt.Xcode                   x-xcode-documentation
+# com.apple.dt.Xcode                   xcarchive
+# com.apple.dt.Xcode                   xcdevice
+# com.apple.dt.Xcode                   xcdoc
+# com.apple.dt.Xcode                   xcode
+# com.apple.dt.Xcode                   xcode-ci
+# com.apple.dt.Xcode                   xcode-ci-handler
+# com.apple.dt.Xcode                   xcpref
+
+# Previous saved choices remain as references for review.
+# com.adobe.premierepro.23             .prproj                                              all
+# com.superhuman.electron              com.apple.default-app.mail-client                    all
+# com.kapeli.dashdoc                   com.apple.xcode.docset                               all
+# com.cron.electron                    cron
+# com.evernote.evernote                en
+# io.balena.etcher                     etcher
+# com.evernote.evernote                evernote
+# jan.ai.app                           jan
+# com.loom.desktop                     loomdesktop
+# org.m0k.transmission                 magnet
+# com.superhuman.electron              mailto
+# notion.id                            notion
+# com.antonycourtney.tad               public.comma-separated-values-text                   all
+# com.microsoft.vscode                 public.json                                          all
+# org.alacritty                        public.unix-executable                               all
+# org.whispersystems.signal-desktop    sgnl
+# org.whispersystems.signal-desktop    signalcaptcha
+# com.tinyspeck.slackmacgap            slack
+# com.superhuman.electron              superhuman
+# us.zoom.xos                          zoomcontactcentercall
+# us.zoom.xos                          zoomphonecall
+# us.zoom.xos                          zoomphonesms
+
+# These queried formats still need application choices.
+# .app .torrent .msg .db .sqlite .sqlite3 .parquet .feather .zst .woff .woff2
+# .prproj
