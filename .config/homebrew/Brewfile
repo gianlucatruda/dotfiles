@@ -1,7 +1,4 @@
-tap "espressif/eim"
-tap "felixkratz/formulae", "https://github.com/FelixKratz/homebrew-formulae"
-tap "atlassian/acli"
-tap "can1357/tap"
+ap "can1357/tap"
 tap "datadog-labs/pack"
 tap "derekwisong/datui"
 tap "domcyrus/rustnet"
@@ -311,15 +308,11 @@ brew "woff2"
 brew "yazi"
 # Shell extension to navigate your filesystem faster
 brew "zoxide"
-# ESP-IDF Installation Manager - CLI tool for setting up ESP-IDF development environment
-brew "espressif/eim/eim", trusted: true
-# Software to interact with Atlassian Cloud from the terminal
-brew "atlassian/acli/acli", trusted: true
 # Coding agent with the IDE wired in
 brew "can1357/tap/omp", trusted: true
 # Go-based command-line wrapper for easy interaction with Datadog APIs
 brew "datadog-labs/pack/pup", trusted: true
-# Data Exploration in the Terminal
+# Explore tabular data in your terminal: Parquet, CSV, JSON and more
 brew "derekwisong/datui/datui", trusted: true
 # High-performance, cross-platform network monitoring tool with TUI
 brew "domcyrus/rustnet/rustnet", trusted: true
