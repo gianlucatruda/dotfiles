@@ -315,8 +315,8 @@ cask "ghostty"
 cask "handy"
 # Utility to hide menu bar items
 cask "hiddenbar"
-# Utility to render Jupyter notebooks
-cask "jupyter-notebook-viewer"
+# Free and open-source media player
+cask "iina"
 # Keyboard customiser
 cask "karabiner-elements"
 # File system integration
@@ -329,5 +329,7 @@ cask "ungoogled-chromium"
 cask "upscayl"
 # Configurator of compatible keyboards in real time
 cask "vial"
+# Multimedia player
+cask "vlc"
 # Binary releases of VS Code without MS branding/telemetry/licensing
 cask "vscodium"
