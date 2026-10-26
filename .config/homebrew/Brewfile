@@ -1,9 +1,7 @@
-tap "bramstein/webfonttools"
 tap "espressif/eim"
 tap "felixkratz/formulae", "https://github.com/FelixKratz/homebrew-formulae"
 tap "hjr265/gittop"
 tap "human37/open-wispr"
-tap "jordond/tap"
 tap "nikitabobko/tap"
 tap "philocalyst/tap"
 tap "skardyy/mcat", "https://github.com/Skardyy/homebrew-mcat"
@@ -137,8 +135,6 @@ brew "htop"
 brew "hugo"
 # Review-first terminal diff viewer for agent-authored changesets
 brew "hunk"
-# C/C++ and Java libraries for Unicode and globalization
-brew "icu4c@77"
 # Command-line editor
 brew "id3v2"
 # ISO/IEC 23008-12:2017 HEIF file format decoder and encoder
