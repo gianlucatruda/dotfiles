@@ -144,6 +144,18 @@ type = "shell"
 command = "herdr server stop"
 description = "Stop HerdR"
 
+[[keys.command]]
+key = "prefix+m"
+type = "shell"
+command = "bash -lc '~/.config/agents/shared/skills/gt-shepherd/scripts/shepherd-layout toggle' >/dev/null 2>>/tmp/gt-shepherd-keys.log"
+description = "Shepherd: toggle develop and review layout"
+
+[[keys.command]]
+key = "prefix+t"
+type = "shell"
+command = "bash -lc '~/.config/agents/shared/skills/gt-shepherd/scripts/shepherd-layout cycle' >/dev/null 2>>/tmp/gt-shepherd-keys.log"
+description = "Shepherd: show the next slot tool"
+
 # Legacy indexed shortcut config is still parsed for compatibility.
 # Prefer switch_tab, switch_workspace, and focus_agent for new configs.
 # [keys.indexed]

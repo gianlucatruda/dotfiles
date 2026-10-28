@@ -1,0 +1,277 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+usage() {
+  cat <<'EOF'
+Usage: shepherd-layout [status | toggle | cycle | develop [hunk|shell] | review [hunk|nvim]] [--base <ref>]
+
+Set up, show, or change the gt-shepherd panes in the current Herdr tab.
+
+Layouts:
+  develop [slot]  Agent | Neovim | slot. Slot: hunk or shell. Default slot: hunk.
+  review [slot]   Agent | slot. Slot: hunk or nvim. Default slot: hunk.
+  status          Print the current layout. Change nothing. This is the default command.
+  toggle          Switch between develop and review. Keep the slot tool when it fits.
+  cycle           Show the next slot tool of the current layout.
+
+Options:
+  --base <ref>    Hunk base. Needed only when Hunk is not running. Choose it from context.
+
+Rules:
+  Finds tool panes by label: shepherd:nvim, shepherd:hunk, shepherd:shell.
+  Hidden tool panes wait in the tab labelled shepherd:shelf. Their processes keep running.
+  Creates missing tool panes on the shelf. Lists them as new=.
+  Starts tools only in panes at a shell prompt. Lists them as started=.
+  Neovim listens on the shepherd-nvim socket. Shell stays at the prompt.
+  Fails after the layout step when Hunk is not running and --base is missing.
+  Moves only panes that differ from the target. A second run changes nothing.
+  Resets column widths only when the number of columns changes.
+  Never moves the agent pane. The first shown tool splits the agent pane.
+  From a Herdr key command, finds the pane labelled shepherd in the active tab.
+
+Output:
+  One line: layout=, slot=, panes=, widths=, then new= and started= when present.
+
+Examples:
+  shepherd-layout develop --base origin/main
+  shepherd-layout review nvim
+  shepherd-layout cycle
+EOF
+}
+
+die() {
+  printf 'shepherd-layout: %s\n' "$*" >&2
+  exit 1
+}
+
+if [[ -n "${HERDR_ACTIVE_WORKSPACE_ID:-}" ]]; then
+  agent="" workspace="$HERDR_ACTIVE_WORKSPACE_ID" active_tab="${HERDR_ACTIVE_TAB_ID:-}"
+elif [[ "${HERDR_ENV:-}" == 1 ]]; then
+  agent="$HERDR_PANE_ID" workspace="$HERDR_WORKSPACE_ID" active_tab=""
+else
+  die "Not inside Herdr. Run from the agent pane or a Herdr key command."
+fi
+root="" layout="custom" slot="none"
+tools=(nvim hunk shell)
+declare -A pane_of tab_of
+main="" shelf="" base="" hunk_error="" layout_json="" created=() started=() shown=()
+scripts="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+load_panes() {
+  local list id tab label cwd
+  list="$(herdr pane list --workspace "$workspace" 2>&1)" || die "Cannot list panes of workspace $workspace: $list"
+  if [[ -z "$agent" ]]; then
+    agent="$(jq -r --arg t "$active_tab" '[.result.panes[] | select(.label == "shepherd")] | (map(select(.tab_id == $t)) + .)[0].pane_id // ""' <<<"$list")"
+    [[ -n "$agent" ]] || die "No pane labelled shepherd in workspace $workspace. Run /gt-shepherd first."
+  fi
+  main="$(jq -r --arg a "$agent" '.result.panes[] | select(.pane_id == $a) | .tab_id' <<<"$list")"
+  [[ -n "$main" ]] || die "Agent pane $agent is not in workspace $workspace."
+  cwd="$(jq -r --arg a "$agent" '.result.panes[] | select(.pane_id == $a) | .cwd' <<<"$list")"
+  root="$(git -C "$cwd" rev-parse --show-toplevel 2>/dev/null || printf '%s\n' "$cwd")"
+  while IFS=$'\t' read -r id tab label; do
+    pane_of[$label]="$id" tab_of[$id]="$tab"
+  done < <(jq -r '.result.panes[] | select(.label // "" | startswith("shepherd:")) | [.pane_id, .tab_id, .label] | @tsv' <<<"$list")
+  list="$(herdr tab list --workspace "$workspace")"
+  shelf="$(jq -r '[.result.tabs[] | select(.label == "shepherd:shelf") | .tab_id][0] // ""' <<<"$list")"
+}
+
+shelf_pane() {
+  local id
+  for id in "${!tab_of[@]}"; do
+    if [[ "${tab_of[$id]}" == "$shelf" ]]; then printf '%s\n' "$id"; return; fi
+  done
+}
+
+load_shown() {
+  layout_json="$(herdr pane layout --pane "$agent")"
+  mapfile -t shown < <(jq -r --arg a "$agent" '.result.layout.panes | sort_by(.rect.x, .rect.y)[] | select(.pane_id != $a) | .pane_id' <<<"$layout_json")
+}
+
+tool_of() {
+  local tool
+  for tool in "${tools[@]}"; do
+    if [[ "${pane_of[shepherd:$tool]:-}" == "$1" ]]; then printf '%s\n' "$tool"; return; fi
+  done
+}
+
+create_missing() {
+  local tool id result target
+  for tool in "${tools[@]}"; do
+    [[ -z "${pane_of[shepherd:$tool]:-}" ]] || continue
+    target="$(shelf_pane)"
+    if [[ -n "$target" ]]; then
+      id="$(herdr pane split "$target" --direction down --cwd "$root" --no-focus | jq -r '.result.pane.pane_id')"
+    else
+      result="$(herdr tab create --workspace "$workspace" --cwd "$root" --label shepherd:shelf --no-focus)"
+      shelf="$(jq -r '.result.tab.tab_id' <<<"$result")"
+      id="$(jq -r '.result.root_pane.pane_id' <<<"$result")"
+    fi
+    herdr pane rename "$id" "shepherd:$tool" >/dev/null
+    pane_of[shepherd:$tool]="$id" tab_of[$id]="$shelf"
+    created+=("$tool")
+  done
+}
+
+move() {
+  local tool="$1" result id tab
+  shift
+  result="$(herdr pane move "${pane_of[shepherd:$tool]}" "$@" --no-focus)"
+  id="$(jq -r '.result.move_result.pane.pane_id' <<<"$result")"
+  tab="$(jq -r '.result.move_result.pane.tab_id' <<<"$result")"
+  pane_of[shepherd:$tool]="$id" tab_of[$id]="$tab"
+}
+
+show() { move "$1" --tab "$main" --target-pane "$2" --split right; }
+
+hide() {
+  local target
+  target="$(shelf_pane)"
+  if [[ -n "$shelf" && -n "$target" ]]; then
+    move "$1" --tab "$shelf" --target-pane "$target" --split down
+  else
+    move "$1" --new-tab --workspace "$workspace" --label shepherd:shelf
+    shelf="${tab_of[${pane_of[shepherd:$1]}]}"
+  fi
+}
+
+set_agent_width() {
+  local ratio="$1" current change
+  load_shown
+  current="$(jq -r --arg a "$agent" '.result.layout as $l | ($l.panes[] | select(.pane_id == $a) | .rect.width) / $l.area.width' <<<"$layout_json")"
+  change="$(jq -n --argjson c "$current" --argjson r "$ratio" '$r - $c')"
+  if jq -e -n --argjson d "$change" '$d > 0.02' >/dev/null; then
+    herdr pane resize --pane "$agent" --direction right --amount "$change" >/dev/null
+  elif jq -e -n --argjson d "$change" '$d < -0.02' >/dev/null; then
+    herdr pane resize --pane "$agent" --direction left --amount "${change#-}" >/dev/null
+  fi
+}
+
+is_idle() {
+  local info
+  info="$(herdr pane process-info --pane "$1")" || die "Cannot read processes of pane $1."
+  jq -e '[.result.process_info.foreground_processes[].name] | all(. == "bash" or . == "zsh" or . == "fish" or . == "sh")' <<<"$info" >/dev/null
+}
+
+start_tools() {
+  local id command sha
+  id="${pane_of[shepherd:nvim]}"
+  if is_idle "$id"; then
+    command="$("$scripts/shepherd-nvim" start)"
+    herdr pane run "$id" "$command" >/dev/null
+    started+=(nvim)
+  fi
+  id="${pane_of[shepherd:hunk]}"
+  is_idle "$id" || return 0
+  if [[ -z "$base" ]]; then
+    hunk_error="Hunk is not running in $id. Choose a base from context. Rerun with --base <ref>."
+    return 0
+  fi
+  if ! sha="$(git -C "$root" rev-parse --verify --quiet "$base^{commit}")"; then
+    hunk_error="Base $base is not a commit in $root. Fetch it, or choose another base."
+    return 0
+  fi
+  herdr pane run "$id" "hunk diff $sha --watch --agent-notes" >/dev/null
+  started+=(hunk)
+}
+
+detect() {
+  local first="" second=""
+  load_shown
+  [[ ${#shown[@]} -lt 1 ]] || first="$(tool_of "${shown[0]}")"
+  [[ ${#shown[@]} -lt 2 ]] || second="$(tool_of "${shown[1]}")"
+  layout=custom slot=none
+  if [[ ${#shown[@]} -eq 2 && "$first" == nvim && -n "$second" ]]; then layout=develop slot="$second"; fi
+  if [[ ${#shown[@]} -eq 1 && -n "$first" ]]; then layout=review slot="$first"; fi
+}
+
+next_layout() {
+  detect
+  case "$1:$layout:$slot" in
+    toggle:develop:shell) target=(review hunk) ;;
+    toggle:develop:*) target=(review "$slot") ;;
+    toggle:review:nvim) target=(develop hunk) ;;
+    toggle:review:*) target=(develop "$slot") ;;
+    cycle:develop:hunk) target=(develop shell) ;;
+    cycle:develop:shell) target=(develop hunk) ;;
+    cycle:review:hunk) target=(review nvim) ;;
+    cycle:review:nvim) target=(review hunk) ;;
+    *) target=(develop hunk) ;;
+  esac
+}
+
+report() {
+  local id names=() widths
+  detect
+  for id in "${shown[@]}"; do names+=("$(tool_of "$id"):$id"); done
+  widths="$(jq -r '[.result.layout.panes | sort_by(.rect.x, .rect.y)[] | .rect.width] | join(",")' <<<"$layout_json")"
+  local IFS=,
+  printf 'layout=%s slot=%s panes=agent:%s,%s widths=%s' "$layout" "$slot" "$agent" "${names[*]}" "$widths"
+  [[ ${#created[@]} -eq 0 ]] || printf ' new=%s' "${created[*]}"
+  [[ ${#started[@]} -eq 0 ]] || printf ' started=%s' "${started[*]}"
+  printf '\n'
+}
+
+apply() {
+  local target_layout="$1" target_slot="$2" want=() id tool target before ratio
+  case "$target_layout:$target_slot" in
+    develop:hunk | develop:shell) want=(nvim "$target_slot") ratio=0.333 ;;
+    review:hunk | review:nvim) want=("$target_slot") ratio=0.5 ;;
+    develop:*) die "develop slot must be hunk or shell, not $target_slot." ;;
+    review:*) die "review slot must be hunk or nvim, not $target_slot." ;;
+  esac
+
+  herdr pane rename "$agent" shepherd >/dev/null
+  create_missing
+  load_shown
+  before=${#shown[@]}
+
+  for tool in "${want[@]}"; do
+    [[ "${tab_of[${pane_of[shepherd:$tool]}]}" != "$main" ]] || continue
+    target="$agent"
+    [[ ${#shown[@]} -eq 0 ]] || target="${shown[-1]}"
+    show "$tool" "$target"
+    shown+=("${pane_of[shepherd:$tool]}")
+  done
+
+  for id in "${shown[@]}"; do
+    tool="$(tool_of "$id")"
+    [[ -n "$tool" && " ${want[*]} " != *" $tool "* ]] || continue
+    hide "$tool"
+  done
+
+  load_shown
+  if [[ "$target_layout" == develop && "${shown[0]}" != "${pane_of[shepherd:nvim]}" ]]; then
+    herdr pane swap --source-pane "${pane_of[shepherd:nvim]}" --target-pane "${shown[0]}" >/dev/null
+  fi
+
+  if [[ $before -ne ${#want[@]} ]]; then set_agent_width "$ratio"; fi
+}
+
+command="status" requested_slot="hunk"
+positional=()
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -h | --help) usage; exit 0 ;;
+    --base) [[ -n "${2:-}" ]] || die "--base needs a ref."; base="$2"; shift 2 ;;
+    -*) die "Unknown option: $1. Run shepherd-layout --help." ;;
+    *) positional+=("$1"); shift ;;
+  esac
+done
+[[ ${#positional[@]} -le 2 ]] || die "Too many arguments. Run shepherd-layout --help."
+[[ ${#positional[@]} -lt 1 ]] || command="${positional[0]}"
+[[ ${#positional[@]} -lt 2 ]] || requested_slot="${positional[1]}"
+
+load_panes
+case "$command" in
+  status) report ;;
+  develop | review | toggle | cycle)
+    target=("$command" "$requested_slot")
+    if [[ "$command" == toggle || "$command" == cycle ]]; then next_layout "$command"; fi
+    apply "${target[@]}"
+    start_tools
+    report
+    [[ -z "$hunk_error" ]] || die "$hunk_error"
+    ;;
+  *) die "Unknown command: $command. Run shepherd-layout --help." ;;
+esac

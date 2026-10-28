@@ -1,0 +1,205 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+usage() {
+  cat <<'EOF'
+Usage: shepherd-nvim <command> [arguments]
+
+Read and drive the shared Neovim editor of a gt-shepherd space.
+
+Commands:
+  socket                              Print the socket path.
+  start                               Print the command that starts Neovim on the socket.
+                                      Fails when Neovim already listens on the socket.
+  read                                Print editor state as JSON.
+  show [--force] <file> [line] [col]  Open a file in the current window. Put the cursor on line and col.
+  buffer [file]                       Print buffer text, with unsaved edits. Default: current buffer.
+  checktime                           Reload buffers that changed on disk and have no unsaved edits.
+
+Read output:
+  file, line, col, mode, word, text, scope, unsaved.
+  line is one-based. col is a one-based byte column.
+  scope lists enclosing named functions and classes, innermost first.
+  unsaved lists every buffer with unsaved edits.
+  selection has start_line, end_line, and text. It is present only in visual or select mode.
+
+Show rules:
+  Fails while the human types: insert, replace, select, command-line, or terminal mode.
+  --force leaves that mode first. Typed input in progress is lost.
+  Fails when the current buffer has unsaved edits and Neovim does not allow hidden buffers.
+  Clamps line to the buffer length. Default line: 1. Default col: 1.
+
+Environment:
+  SHEPHERD_NVIM_SOCKET  Socket path. Default: /tmp/gt-shepherd-<herdr tab id>.sock
+                        The agent pane and the Neovim pane share the tab, so both get the same path.
+
+Example:
+  shepherd-nvim show src/app.ts 42
+EOF
+}
+
+die() {
+  printf 'shepherd-nvim: %s\n' "$*" >&2
+  exit 1
+}
+
+socket_path() {
+  if [[ -n "${SHEPHERD_NVIM_SOCKET:-}" ]]; then
+    printf '%s\n' "$SHEPHERD_NVIM_SOCKET"
+    return
+  fi
+  [[ -n "${HERDR_TAB_ID:-}" ]] || die "HERDR_TAB_ID is not set. Run inside Herdr or set SHEPHERD_NVIM_SOCKET."
+  printf '/tmp/gt-shepherd-%s.sock\n' "${HERDR_TAB_ID//:/-}"
+}
+
+is_live() {
+  [[ -S "$1" ]] && nvim --server "$1" --remote-expr 1 >/dev/null 2>&1
+}
+
+vim_string() {
+  printf "'%s'" "${1//\'/\'\'}"
+}
+
+eval_lua() {
+  local socket
+  socket="$(socket_path)"
+  [[ -S "$socket" ]] || die "No Neovim socket at $socket. Run 'shepherd-nvim start' in the Neovim pane. In a sandbox, request socket access."
+  nvim --server "$socket" --remote-expr "luaeval($(vim_string "$1"), json_decode($(vim_string "$2")))"
+}
+
+absolute_path() {
+  if [[ "$1" == /* ]]; then printf '%s\n' "$1"; else printf '%s/%s\n' "$PWD" "$1"; fi
+}
+
+file_args() {
+  jq -cn --arg file "$1" --argjson line "${2:-1}" --argjson col "${3:-1}" --argjson force "${4:-false}" \
+    '{file: $file, line: $line, col: $col, force: $force}'
+}
+
+lua_prelude='local function canon(p) return vim.uv.fs_realpath(p) or vim.fn.fnamemodify(p, ":p") end
+local function find_buf(p)
+  local want = canon(p)
+  for _, b in ipairs(vim.api.nvim_list_bufs()) do
+    local name = vim.api.nvim_buf_get_name(b)
+    if name ~= "" and canon(name) == want then return b end
+  end
+end'
+
+read_lua="(function()
+$lua_prelude"'
+  local mode = vim.api.nvim_get_mode().mode
+  local cursor = vim.api.nvim_win_get_cursor(0)
+  local state = {
+    file = vim.api.nvim_buf_get_name(0),
+    line = cursor[1],
+    col = cursor[2] + 1,
+    mode = mode,
+    word = vim.fn.expand("<cword>"),
+    text = vim.api.nvim_get_current_line(),
+    scope = {},
+    unsaved = {},
+  }
+  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+    if vim.bo[buf].modified then table.insert(state.unsaved, vim.api.nvim_buf_get_name(buf)) end
+  end
+  local region = ({ v = "v", V = "V", ["\22"] = "\22", s = "v", S = "V", ["\19"] = "\22" })[mode:sub(1, 1)]
+  if region then
+    local anchor, head = vim.fn.getpos("v"), vim.fn.getpos(".")
+    state.selection = {
+      start_line = math.min(anchor[2], head[2]),
+      end_line = math.max(anchor[2], head[2]),
+      text = table.concat(vim.fn.getregion(anchor, head, { type = region }), "\n"),
+    }
+  end
+  local ok, node = pcall(vim.treesitter.get_node)
+  while ok and node do
+    local kind = node:type()
+    local is_scope = kind:find("function") or kind:find("method") or kind:find("class")
+    if is_scope and not (kind:find("call") or kind:find("invocation")) then
+      local name = node:field("name")[1]
+      if name then table.insert(state.scope, kind .. " " .. vim.treesitter.get_node_text(name, 0)) end
+    end
+    node = node:parent()
+  end
+  return vim.json.encode(state)
+end)()'
+
+busy_lua='(function()
+  local busy = { i = true, R = true, s = true, S = true, ["\19"] = true, c = true, t = true }
+  return busy[vim.api.nvim_get_mode().mode:sub(1, 1)] and "busy" or "free"
+end)()'
+
+show_lua="(function(a)
+$lua_prelude"'
+  local buf = find_buf(a.file)
+  if buf then
+    if buf ~= vim.api.nvim_get_current_buf() then vim.cmd.buffer(buf) end
+  else
+    vim.cmd.edit(vim.fn.fnameescape(a.file))
+  end
+  local line = math.max(1, math.min(a.line, vim.api.nvim_buf_line_count(0)))
+  vim.api.nvim_win_set_cursor(0, { line, math.max(0, a.col - 1) })
+  vim.cmd("normal! zz")
+  local cursor = vim.api.nvim_win_get_cursor(0)
+  return vim.json.encode({
+    file = vim.api.nvim_buf_get_name(0),
+    line = cursor[1],
+    col = cursor[2] + 1,
+    tabs = #vim.api.nvim_list_tabpages(),
+    windows = #vim.api.nvim_tabpage_list_wins(0),
+  })
+end)(_A)'
+
+buffer_lua="(function(a)
+$lua_prelude"'
+  local buf = 0
+  if a.file ~= "" then
+    buf = find_buf(a.file)
+    if not buf then error("No loaded buffer for " .. a.file) end
+  end
+  return table.concat(vim.api.nvim_buf_get_lines(buf, 0, -1, false), "\n")
+end)(_A)'
+
+start() {
+  local socket
+  socket="$(socket_path)"
+  if is_live "$socket"; then die "Neovim already listens on $socket. Reuse it. Do not start another."; fi
+  printf 'nvim --listen %q\n' "$socket"
+}
+
+show() {
+  local force=false file line col mode args
+  if [[ "${1:-}" == --force ]]; then force=true; shift; fi
+  [[ -n "${1:-}" ]] || die "show needs a file. Example: shepherd-nvim show src/app.ts 42"
+  line="${2:-1}" col="${3:-1}"
+  [[ "$line" =~ ^[0-9]+$ && "$col" =~ ^[0-9]+$ ]] || die "line and col must be positive integers."
+  [[ -f "$1" ]] || die "No file at $1. Check the path from your working directory."
+  file="$(absolute_path "$1")"
+  mode="$(eval_lua "$busy_lua" null)"
+  if [[ "$mode" == busy ]]; then
+    [[ "$force" == true ]] || die "The human is typing in Neovim. Wait, or ask before you use --force."
+    eval_lua 'vim.api.nvim_input("<C-\\><C-n>")' null >/dev/null
+  fi
+  args="$(file_args "$file" "$line" "$col")"
+  eval_lua "$show_lua" "$args"
+}
+
+buffer() {
+  local file="" args
+  [[ -z "${1:-}" ]] || file="$(absolute_path "$1")"
+  args="$(file_args "$file")"
+  eval_lua "$buffer_lua" "$args"
+}
+
+case "${1:-}" in
+  socket) socket_path ;;
+  start) start ;;
+  read) eval_lua "$read_lua" null ;;
+  show) shift; show "$@" ;;
+  buffer) shift; buffer "$@" ;;
+  checktime) eval_lua '(function() vim.cmd.checktime() return "ok" end)()' null ;;
+  -h | --help) usage ;;
+  '') usage >&2; exit 2 ;;
+  *) die "Unknown command: $1. Run shepherd-nvim --help." ;;
+esac
