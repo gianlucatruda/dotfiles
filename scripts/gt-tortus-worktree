@@ -25,7 +25,7 @@ Options:
 Rules:
   Init creates dev/fix under worktrees/ beside main and sets up registered worktrees.
   Setup runs pnpm dev setup and agents/scripts/setup.sh --apply.
-  Init links tmp/shared to TORTUS_SHARED_DIR and creates TORTUS_SHARED_DIR/agents/database-owner.txt.
+  Init links tmp/shared in main and all worktrees to TORTUS_SHARED_DIR, and creates TORTUS_SHARED_DIR/agents/database-owner.txt.
   New fetches matching origin/<name> and sets it as upstream.
   New branches without a match start at origin/main without upstream.
   Existing branches without a match lose stale origin/main tracking.
@@ -86,20 +86,26 @@ run_setup_command() (
   exit "$exit_code"
 )
 
-setup_worktree() {
+link_shared_directory() {
   local worktree="$1"
   local shared_path="$worktree/tmp/shared"
 
-  printf 'Setting up %s...\n' "$worktree"
   if [[ -L "$shared_path" ]]; then
     [[ "$(readlink "$shared_path")" == "$shared_dir" ]] || die "Unexpected shared link: $shared_path"
   elif [[ -e "$shared_path" ]]; then
     die "Shared path exists: $shared_path"
   fi
 
-  # Link first so agents can coordinate even if setup fails.
   mkdir -p "$worktree/tmp"
   [[ -L "$shared_path" ]] || ln -s "$shared_dir" "$shared_path"
+}
+
+setup_worktree() {
+  local worktree="$1"
+
+  printf 'Setting up %s...\n' "$worktree"
+  # Link first so agents can coordinate even if setup fails.
+  link_shared_directory "$worktree"
   run_setup_command pnpm -C "$worktree" dev setup
   run_setup_command "$worktree/agents/scripts/setup.sh" --apply
 }
@@ -185,6 +191,7 @@ init_worktrees() {
     touch "$database_owner"
   fi
 
+  link_shared_directory "$main_dir"
   mkdir -p "$worktrees_root"
   create_slot dev
   create_slot fix
