@@ -84,17 +84,16 @@ reload_config = "prefix+r"
 # next_workspace = ""     # optional, unset by default
 previous_agent = "prefix+["
 next_agent = "prefix+]"
-focus_agent = "prefix+alt+1..9"
+focus_agent = ""
 # remote_image_paste = "ctrl+v" # only active in herdr --remote; empty disables raw-key image paste
 new_tab = "prefix+c"
 # rename_tab = "prefix+shift+t"
-# Match Tmux's prefix+Tab window toggle as closely as HerdR permits.
-previous_tab = "prefix+tab"
+# previous_tab = "prefix+p"
 # next_tab = "prefix+n"
 move_tab_previous = "prefix+shift+h"
 move_tab_next = "prefix+shift+l"
-# switch_tab = "prefix+1..9"
-# switch_workspace = ""   # optional indexed binding, e.g. "prefix+shift+1..9"
+switch_tab = ""
+switch_workspace = "prefix+1..9"
 # close_tab = "prefix+shift+x"
 # rename_pane = "prefix+shift+p"
 # edit_scrollback = "prefix+e"
@@ -104,7 +103,7 @@ focus_pane_up = "prefix+k"
 focus_pane_right = "prefix+l"
 cycle_pane_next = ""
 # cycle_pane_previous = "prefix+shift+tab"
-# last_pane = ""          # optional, unset by default; bind e.g. "prefix+tab" for global back-and-forth
+last_pane = "prefix+tab"
 split_vertical = "prefix+%"
 split_horizontal = "prefix+\""
 # close_pane = "prefix+x"
@@ -310,7 +309,7 @@ status_indicators = "symbols"
 # delivery = "off"
 # delay_seconds = 1
 
-delivery = "herdr"
+delivery = "system"
 [ui.toast.herdr]
 # position = "bottom-right"
 
@@ -331,7 +330,7 @@ delivery = "herdr"
 # [ui.sound.agents]
 # droid = "off"
 
-enabled = false
+enabled = true
 [session]
 # Resume supported AI-agent panes into their native conversation sessions after
 # a Herdr server restart. Requires official integrations that report session refs.
