@@ -83,6 +83,9 @@ hostStyle="${yellow}";
 
 # Set the terminal title and prompt.
 PS1="\[\033]0;\W\007\]"; # working directory base name
+if [[ "${SSH_CONNECTION}" ]]; then
+    PS1="\[\033]0;ssh:\h\007\]";
+fi;
 PS1+="\[${bold}\]\n"; # newline
 PS1+="\[${userStyle}\]\u"; # username
 if [[ "${SSH_CONNECTION}" ]]; then # only show hostname when using SSH
