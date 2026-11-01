@@ -1,5 +1,21 @@
 #!/usr/bin/env bash
 
+function y() {
+	local cwd_file cwd result
+	cwd_file=$(mktemp -t yazi-cwd.XXXXXX) || return
+
+	command yazi "$@" --cwd-file="$cwd_file"
+	result=$?
+	IFS= read -r -d '' cwd < "$cwd_file"
+
+	if [[ -n "$cwd" && "$cwd" != "$PWD" ]]; then
+		builtin cd -- "$cwd" || result=$?
+	fi
+
+	command rm -f -- "$cwd_file" || return
+	return "$result"
+}
+
 # Open directory in [v]im (neovim, else vi(m))
 function v() {
 	if command -v nvim >/dev/null 2>&1; then
