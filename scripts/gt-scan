@@ -18,20 +18,23 @@ MYIP=$(ipconfig getifaddr en0)
 echo "My IP: $MYIP"
 
 # Assuming a typical subnet mask of 255.255.255.0
-NETBASE=$(echo $MYIP | sed 's/\.[0-9]*$/.0/')
+NETBASE=$MYIP
+if [[ $MYIP =~ \.[0-9]*$ ]]; then
+	NETBASE="${MYIP%.*}.0"
+fi
 echo "Network base: $NETBASE"
 
 echo -e "\nPerforming quick ping scan of $NETBASE/24\n"
-(set -x; nmap -sn -R -T4 $NETBASE/24)
+(set -x; nmap -sn -R -T4 "$NETBASE/24")
 
 echo -e "\n----------\n"
 
 echo -e "\nPerforming aggressive advanced scans with OS Detection.\nWARNING: You might get in trouble!\nSudo required.\n"
 if [[ -n "$1" && $1 == "-A" ]]; then
 	# -A: Enable OS detection, version detection, script scanning, and traceroute
-	(set -x; sudo nmap -R -A -O -T5 $NETBASE/24)
+	(set -x; sudo nmap -R -A -O -T5 "$NETBASE/24")
 	exit 1
 fi
 
-(set -x; sudo nmap -R -O -T5 $NETBASE/24)
+(set -x; sudo nmap -R -O -T5 "$NETBASE/24")
 exit 1

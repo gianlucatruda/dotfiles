@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 
-cd "$(dirname "${BASH_SOURCE}")";
+if ! cd "$(dirname "${BASH_SOURCE[0]}")"; then
+	if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+		exit 1
+	fi
+	return 1
+fi
 dotfiles_repo_root="$(pwd -P)";
 
 function doIt() {
@@ -30,6 +35,7 @@ function doIt() {
 			rsync -a --no-perms "$source_path" "$target_path"
 		fi
 	done
+	# shellcheck source=/dev/null
 	source ~/.bash_profile;
 	# Rebuild pyenv shims once after bootstrapping (skip if pyenv isn't installed)
 	if command -v pyenv >/dev/null 2>&1 && [[ -d "$HOME/.pyenv/shims" ]]; then
@@ -58,10 +64,10 @@ function doIt() {
 }
 
 # If --force or -f argument, skip the y/n confirmation
-if [ "$1" == "--force" -o "$1" == "-f" ]; then
+if [[ "$1" == "--force" || "$1" == "-f" ]]; then
 	doIt;
 else
-	read -p "This may overwrite existing files in your home directory. Are you sure? (y/n) " -n 1;
+	read -r -p "This may overwrite existing files in your home directory. Are you sure? (y/n) " -n 1;
 	echo "";
 	if [[ $REPLY =~ ^[Yy]$ ]]; then
 		doIt;

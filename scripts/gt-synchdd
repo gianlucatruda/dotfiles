@@ -7,9 +7,9 @@ if ! [[ -n $LOGDIR ]]; then
 fi
 mkdir -p "$LOGDIR"
 DATETIME="$(date +%Y-%m-%d_%H-%M-%S)"
-echo $DATETIME
+echo "$DATETIME"
 LOGFILE="$LOGDIR/${DATETIME}_gt-synchdd.log"
-echo $LOGFILE
+echo "$LOGFILE"
 SUBDIRS_TO_SYNC=(
 	"0-Inbox" \
 	"1-Projects" \

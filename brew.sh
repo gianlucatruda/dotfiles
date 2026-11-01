@@ -5,7 +5,7 @@
 # Minimal Homebrew bootstrap for a fresh machine.
 # Install only the small base needed before handing off to the tracked Brewfile.
 
-read -p "This will (un)install packages on your system. Are you sure? (y/n) " -n 1;
+read -r -p "This will (un)install packages on your system. Are you sure? (y/n) " -n 1;
 echo "";
 if ! [[ $REPLY =~ ^[Yy]$ ]]; then
   exit 1
@@ -31,7 +31,7 @@ brew install bash-completion@2
 # Save Homebrew’s installed location.
 BREW_PREFIX=$(brew --prefix)
 # Switch to using brew-installed bash as default shell
-if ! fgrep -q "${BREW_PREFIX}/bin/bash" /etc/shells; then
+if ! grep -Fq "${BREW_PREFIX}/bin/bash" /etc/shells; then
   echo "${BREW_PREFIX}/bin/bash" | sudo tee -a /etc/shells;
   chsh -s "${BREW_PREFIX}/bin/bash";
 fi;
@@ -58,5 +58,5 @@ if ! [[ -n $BREWPATH && -e "$BREWPATH" ]]; then
 	exit 1
 fi
 echo "Installing / upgrading from $BREWPATH ..."
-brew bundle install -v --cleanup --force --file $BREWPATH
+brew bundle install -v --cleanup --force --file "$BREWPATH"
 exit 0

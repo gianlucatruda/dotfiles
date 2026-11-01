@@ -46,20 +46,21 @@ function sf() {
 
 # [s]earch [d]irectory with fzf fuzzy finding, cd there
 function sd() {
-	local dir=$(find -L . -type d \( ! -path '*.git*' \) -mindepth 1 -maxdepth 4 | fzf --query "$1")
-    [[ -n "$dir" && -d "$dir" ]] && builtin cd "$dir"
+	local dir
+	dir=$(find -L . -type d \( ! -path '*.git*' \) -mindepth 1 -maxdepth 4 | fzf --query "$1") || return
+	[[ -n "$dir" && -d "$dir" ]] && builtin cd "$dir" || return
 }
 
 function cd() {
 	if [[ $# -gt 0 && $1 == -* ]]; then
-		builtin cd "$@"
+		builtin cd "$@" || return
 		return
 	fi
 
 	if declare -F __zoxide_z >/dev/null 2>&1; then
 		__zoxide_z "$@"
 	else
-		builtin cd "$@"
+		builtin cd "$@" || return
 	fi
 }
 
@@ -73,7 +74,7 @@ function update_environment_from_tmux() {
 
 # Create a new directory and enter it
 function mkd() {
-	mkdir -p "$@" && cd "$_";
+	mkdir -p "$@" && cd "$_" || return;
 }
 
 # Determine size of a file or total size of a directory
@@ -83,7 +84,7 @@ function fs() {
 	else
 		local arg=-sh;
 	fi
-	if [[ -n "$@" ]]; then
+	if [[ $# -gt 0 ]]; then
 		du $arg -- "$@";
 	else
 		du $arg .[^.]* ./*;

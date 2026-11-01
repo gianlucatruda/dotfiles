@@ -3,13 +3,13 @@
 # Adapted from ThePrimeagen: https://www.youtube.com/watch?v=hJzqEAf2U4I
 
 # All the utilities and languages you want to suggest
-utils=`compgen -c` 
-langs=`echo "python golang c cpp javascript typescript lua bash html latex" | tr ' ' '\n'`
+utils=$(compgen -c)
+langs=$(echo "python golang c cpp javascript typescript lua bash html latex" | tr ' ' '\n')
 
-selection=`printf "$langs\n$utils" | fzf`
-read -p "Query: " query
+selection=$(printf '%s\n%s' "$langs" "$utils" | fzf)
+read -r -p "Query: " query
 
-if printf "$langs" | grep -qs "^$selection$"; then
+if printf '%s' "$langs" | grep -qs "^$selection$"; then
   Q=$(echo "$query" | tr ' ' '+')
   URL="cht.sh/$selection/$Q"
 else 
@@ -26,7 +26,7 @@ for arg in "$@"; do
 done
 if [[ $debug -eq 1 ]]; then
   echo "DEBUG: $URL"
-  curl $URL
+  curl "$URL"
 else # bat (pretty output) with forced pagination, so you have to hit q to exit
-  curl -s $URL | bat --paging=always
+  curl -s "$URL" | bat --paging=always
 fi

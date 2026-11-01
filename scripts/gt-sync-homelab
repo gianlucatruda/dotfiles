@@ -7,9 +7,9 @@ if ! [[ -n $LOGDIR ]]; then
 fi
 mkdir -p "$LOGDIR"
 DATETIME="$(date +%Y-%m-%d_%H-%M-%S)"
-echo $DATETIME
+echo "$DATETIME"
 LOGFILE="$LOGDIR/${DATETIME}_gt-sync-homelab.log"
-echo $LOGFILE
+echo "$LOGFILE"
 
 # HOMELAB_HOME_DIR of format user@server.local:/home/user
 if ! [[ -n $HOMELAB_HOME_DIR ]]; then
@@ -23,7 +23,8 @@ SUBDIRS_TO_SYNC=(
 	"media/media" \
 )
 
-for DRIVE in "$HOMELAB_BACKUP_DIR_01"; do
+BACKUP_DIRS=("$HOMELAB_BACKUP_DIR_01")
+for DRIVE in "${BACKUP_DIRS[@]}"; do
 	if ! [[ -n $DRIVE ]]; then
 		echo -e "Backup path not properly specified. Check ~/.config/.extra"
 		exit 1 # Exit code 1 for error

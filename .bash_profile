@@ -6,6 +6,7 @@ export XDG_CONFIG_HOME="$HOME"/.config
 # * ~/.path can be used to extend `$PATH`.
 # * ~/.extra can be used for other settings you don’t want to commit.
 for file in "${XDG_CONFIG_HOME}"/.{path,bash_prompt,exports,aliases,functions,extra}; do
+	# shellcheck source=/dev/null
 	[ -r "$file" ] && [ -f "$file" ] && source "$file";
 done;
 unset file;
@@ -20,6 +21,7 @@ fi
 # Agent shells are non-interactive and cannot reach the tmux socket.
 if [[ $- == *i* ]] && [[ -n "${TMUX:-}" ]] && declare -f update_environment_from_tmux >/dev/null; then
   update_environment_from_tmux
+  # shellcheck disable=SC2016
   export GIT_SSH_COMMAND='SSH_AUTH_SOCK=$(tmux display-message -p "#{SSH_AUTH_SOCK}") ssh'
 fi
 # Case-insensitive globbing (used in pathname expansion)
@@ -38,8 +40,10 @@ done;
 
 # Add tab completion for many Bash commands
 if which brew &> /dev/null && [ -f "$(brew --prefix)/share/bash-completion/bash_completion" ]; then
+	# shellcheck source=/dev/null
 	source "$(brew --prefix)/share/bash-completion/bash_completion";
 elif [ -f /etc/bash_completion ]; then
+	# shellcheck source=/dev/null
 	source /etc/bash_completion;
 fi;
 
@@ -59,7 +63,8 @@ export LSCOLORS=cxgxfxexbxegedabagacad
 reset-cursor() {
   printf '\033]50;CursorShape=1\x7'
 }
-export PS1="$(reset-cursor)$PS1"
+PS1="$(reset-cursor)$PS1"
+export PS1
 
 # iTerm shell integration
 #test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"

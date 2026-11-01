@@ -93,8 +93,7 @@ CMD=(
 # Check if an output file is specified
 if [[ -n "$OUTPUT_FILE" ]]; then
   # Execute the curl command and save output to file
-  "${CMD[@]}" --output "$OUTPUT_FILE"
-  if [[ $? -eq 0 ]]; then
+  if "${CMD[@]}" --output "$OUTPUT_FILE"; then
     echo "Transcription created: $OUTPUT_FILE"
   else
     echo "An error occurred creating the transcription."
@@ -102,8 +101,7 @@ if [[ -n "$OUTPUT_FILE" ]]; then
   fi
 else
   # Execute the curl command and output directly to stdout
-  "${CMD[@]}"
-  if [[ $? -ne 0 ]]; then
+  if ! "${CMD[@]}"; then
     echo "An error occurred creating the transcription."
     exit 4
   fi

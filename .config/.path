@@ -10,7 +10,7 @@ export PATH="$HOME/bin:$PATH";
 export PATH="/usr/local/bin:$PATH"
 
 # Add node_modules to PATH so that they can be run from CLI
-export PATH="~/node_modules/.bin:$PATH"
+export PATH="$HOME/node_modules/.bin:$PATH"
 
 # Modular / Mojo
 export MODULAR_HOME="$HOME/.modular"
