@@ -80,13 +80,20 @@ brew bundle dump --force --file .config/homebrew/Brewfile
 
 - Read existing code first to understand patterns
 - Match existing style and conventions
+- Run ShellCheck after adding or modifying shell scripts or sourced shell configuration.
 - Keep it minimal. Only add what's explicitly needed.
 - Write code/configs that are easy and delightful for humans to read and maintain. 
 - Maintain modularity (right file for right purpose)
 - The code is the source of truth - read it to understand specifics
-- Proactively keep README.md, AGENTS.md, and other docs in sync with code changes
 - Respond in ultraconcise and ultraclear Simplified Technical English (ASD-STE100).
 - (Re)write docs and comments in  ultraconcise and ultraclear Simplified Technical English (ASD-STE100).
+
+### Documentation
+
+- Never change README or AGENTS files without an explicit user request.
+- Report major inconsistencies and propose improvements in chat. Neither authorizes an edit.
+- Update all other documentation when code changes make it inaccurate. Do not wait for instructions.
+- Document current behavior. Remove outdated content. Never add filler, unsolicited commentary, or decision histories.
 
 ### Validation (Neovim)
 
@@ -105,7 +112,6 @@ nvim --headless "+checkhealth" "+qall"
 
 ### Never
 
-- Run tests (user will do this)
 - Change keybindings without explicit request
 - Add unnecessary plugins/dependencies
 - Create documentation files proactively
