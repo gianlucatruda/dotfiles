@@ -3,54 +3,45 @@
 set -euo pipefail
 
 usage() {
-  cat <<'EOF'
-Usage: shepherd-layout [status | auto | toggle | cycle | <view>] [--base <ref>] [--root <dir>]
+  cat <<'HELP'
+Usage: shepherd-layout [ensure | status | toggle | cycle | <view>] [--base <ref>] [--root <dir>]
 
-Set up, show, or change the gt-shepherd panes in the current Herdr tab.
-
-Views: the agent column, then tool columns in the order nvim, hunk, shell.
-  2 columns: agent:hunk  agent:shell  agent:nvim
-  3 columns: agent:nvim:hunk  agent:nvim:shell  agent:hunk:shell
+Start or resume Shepherd in the current Herdr tab. Default command: ensure.
 
 Commands:
-  status   Print the current view. Change nothing. This is the default command.
-  auto     Show agent:hunk when the Hunk diff has files. Else show agent:shell.
-  toggle   Switch between 2 and 3 columns. Key: prefix+m.
-             agent:hunk <-> agent:nvim:hunk     agent:shell <-> agent:nvim:shell
-             agent:nvim  -> agent:nvim:hunk     agent:hunk:shell -> agent:hunk
-  cycle    Show the next view with the same number of columns. Key: prefix+t.
-             agent:hunk -> agent:shell -> agent:nvim -> agent:hunk
-             agent:nvim:hunk -> agent:nvim:shell -> agent:hunk:shell -> agent:nvim:hunk
-  <view>   Show this view.
-  From a view outside these six, toggle and cycle act as auto.
+  ensure   Start fresh with agent:shell. Preserve existing views, widths, and focus.
+  status   Report the layout and Hunk file count. Change nothing. Never wait for Hunk.
+  toggle   Switch between paired two-column and three-column views. Key: prefix+m.
+  cycle    Cycle tools within the current column count. Key: prefix+t.
+  <view>   Select one of the six views below.
+
+Views, toggle pairs, and cycle order:
+  Two columns:    agent:shell       -> agent:nvim       -> agent:hunk       -> repeat
+  Three columns: agent:hunk:shell  -> agent:nvim:shell -> agent:nvim:hunk -> repeat
+  Toggle connects matching positions. Toggle twice restores the view.
 
 Options:
-  --base <ref>  Hunk base. Needed only when Hunk is not running. Choose it from context.
-  --root <dir>  Project root for the tools. Default: the Hunk pane folder, else the agent folder.
-                Fails when Neovim or Hunk already runs in another root. Quit it first.
+  --root <dir>  Existing project folder. Default: an owned tool's folder, then the agent folder.
+  --base <ref>  Hunk base commit. Default: branch upstream, then HEAD.
+                Used when starting Hunk. A running Hunk must already use this explicit base.
+  --help       Show this help. Works outside Herdr.
 
-Rules:
-  Finds tool panes by label: shepherd:nvim, shepherd:hunk, shepherd:shell.
-  Hidden tool panes wait in the tab labelled shepherd:shelf. Their processes keep running.
-  Creates missing tool panes on the shelf. Lists them as new=.
-  Starts tools only in panes at a shell prompt. Lists them as started=.
-  Neovim listens on the shepherd-nvim socket. Shell stays at the prompt in the root.
-  Names the space after the root folder and the agent tab "shepherd".
-  Fails after the layout step when Hunk is not running and --base is missing.
-  Moves only panes that differ from the target. A second run changes nothing.
-  Resets column widths only when the number of columns changes.
-  Never moves the agent pane. The first shown tool splits the agent pane.
-  From a Herdr key command, finds the pane labelled shepherd in the active tab.
+Behavior:
+  Start tools only when requested. Keep hidden tools running in a shelf owned by this tab.
+  Equalize widths when column count changes. Preserve widths during tool-only switches.
+  Preserve custom arrangements. Restore tool columns before selecting another view.
+  Validate roots and Hunk bases before changing panes. Never move the agent pane.
+  Key commands use only the active tab's Shepherd agent. Run /gt-shepherd there first.
 
 Output:
-  One line: view=, files=, root=, panes=, widths=, then new= and started= when present.
-  files= is the number of files in the Hunk diff, or "none" when Hunk is not running.
+  view, files, root, panes, widths, and optional new and started fields.
+  files is a count, not-started, or unknown. Unknown never means an empty diff.
 
 Examples:
-  shepherd-layout auto --base origin/main
-  shepherd-layout agent:nvim:shell
-  shepherd-layout auto --root ../worktrees/KAI-580 --base origin/dev
-EOF
+  shepherd-layout
+  shepherd-layout agent:hunk --base origin/main
+  shepherd-layout agent:nvim:shell --root ../worktree
+HELP
 }
 
 die() {
@@ -58,290 +49,377 @@ die() {
   exit 1
 }
 
-declare -A toggled=(
-  [agent:hunk]=agent:nvim:hunk [agent:nvim:hunk]=agent:hunk
-  [agent:shell]=agent:nvim:shell [agent:nvim:shell]=agent:shell
-  [agent:nvim]=agent:nvim:hunk [agent:hunk:shell]=agent:hunk
+declare -A transitions=(
+  [agent:shell]='agent:hunk:shell agent:nvim'
+  [agent:nvim]='agent:nvim:shell agent:hunk'
+  [agent:hunk]='agent:nvim:hunk agent:shell'
+  [agent:hunk:shell]='agent:shell agent:nvim:shell'
+  [agent:nvim:shell]='agent:nvim agent:nvim:hunk'
+  [agent:nvim:hunk]='agent:hunk agent:hunk:shell'
 )
-declare -A cycled=(
-  [agent:hunk]=agent:shell [agent:shell]=agent:nvim [agent:nvim]=agent:hunk
-  [agent:nvim:hunk]=agent:nvim:shell [agent:nvim:shell]=agent:hunk:shell [agent:hunk:shell]=agent:nvim:hunk
-)
+
+command=ensure requested_root="" base=""
+positional=()
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -h | --help) usage; exit 0 ;;
+    --base) [[ -n "${2:-}" ]] || die "--base needs a ref. Pass an existing commit."; base="$2"; shift 2 ;;
+    --root) [[ -n "${2:-}" ]] || die "--root needs a folder. Pass an existing folder."; requested_root="$2"; shift 2 ;;
+    -*) die "Unknown option: $1. Run shepherd-layout --help." ;;
+    *) positional+=("$1"); shift ;;
+  esac
+done
+[[ ${#positional[@]} -le 1 ]] || die "Too many commands. Run shepherd-layout --help."
+[[ ${#positional[@]} -eq 0 ]] || command="${positional[0]}"
+case "$command" in
+  ensure | status | toggle | cycle) ;;
+  *) [[ -n "${transitions[$command]:-}" ]] || die "Unknown command: $command. Run shepherd-layout --help." ;;
+esac
 
 if [[ -n "${HERDR_ACTIVE_WORKSPACE_ID:-}" ]]; then
   agent="" workspace="$HERDR_ACTIVE_WORKSPACE_ID" active_tab="${HERDR_ACTIVE_TAB_ID:-}"
+  [[ -n "$active_tab" ]] || die "No active tab was supplied. Run /gt-shepherd in the target tab."
 elif [[ "${HERDR_ENV:-}" == 1 ]]; then
-  agent="$HERDR_PANE_ID" workspace="$HERDR_WORKSPACE_ID" active_tab=""
+  agent="${HERDR_PANE_ID:?}" workspace="${HERDR_WORKSPACE_ID:?}" active_tab=""
 else
   die "Not inside Herdr. Run from the agent pane or a Herdr key command."
 fi
+
 tools=(nvim hunk shell)
-declare -A pane_of tab_of cwd_of
-root="" view="custom" files="none" main="" shelf="" base="" hunk_error="" layout_json=""
-created=() started=() shown=()
+declare -A pane_of tab_of cwd_of process_of
+root="" view=fresh main="" shelf="" shelf_label="" layout_json="" nvim_command="" sha="" name_workspace=false legacy_shelf=false
+created=() started=() shown=() want=()
 scripts="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 toplevel() { git -C "$1" rev-parse --show-toplevel 2>/dev/null || (cd "$1" && pwd); }
 
 load_panes() {
-  local list id tab label cwd
-  list="$(herdr pane list --workspace "$workspace" 2>&1)" || die "Cannot list panes of workspace $workspace: $list"
+  local list tabs id tab cwd tool
+  list="$(herdr pane list --workspace "$workspace")" || die "Cannot read workspace $workspace. Check socket access."
   if [[ -z "$agent" ]]; then
-    agent="$(jq -r --arg t "$active_tab" '[.result.panes[] | select(.label == "shepherd")] | (map(select(.tab_id == $t)) + .)[0].pane_id // ""' <<<"$list")"
-    [[ -n "$agent" ]] || die "No pane labelled shepherd in workspace $workspace. Run /gt-shepherd first."
+    agent="$(jq -r --arg t "$active_tab" '[.result.panes[] | select(.label == "shepherd" and .tab_id == $t)] | if length == 1 then .[0].pane_id else "" end' <<<"$list")"
+    [[ -n "$agent" ]] || die "No unique Shepherd agent in tab $active_tab. Run /gt-shepherd there first."
   fi
-  main="$(jq -r --arg a "$agent" '.result.panes[] | select(.pane_id == $a) | .tab_id' <<<"$list")"
-  [[ -n "$main" ]] || die "Agent pane $agent is not in workspace $workspace."
-  while IFS=$'\t' read -r id tab label cwd; do
-    pane_of[$label]="$id" tab_of[$id]="$tab" cwd_of[$id]="$cwd"
-  done < <(jq -r '.result.panes[] | select(.label // "" | startswith("shepherd")) | [.pane_id, .tab_id, .label, .cwd] | @tsv' <<<"$list")
-  list="$(herdr tab list --workspace "$workspace")"
-  shelf="$(jq -r '[.result.tabs[] | select(.label == "shepherd:shelf") | .tab_id][0] // ""' <<<"$list")"
+  while IFS=$'\t' read -r id tab cwd; do
+    tab_of[$id]="$tab" cwd_of[$id]="$cwd"
+  done < <(jq -r '.result.panes[] | [.pane_id, .tab_id, .cwd] | @tsv' <<<"$list")
+  main="${tab_of[$agent]:-}"
+  [[ -n "$main" ]] || die "Agent pane $agent is missing. Run from its Herdr pane."
+  shelf_label="shepherd:shelf:$main"
+  tabs="$(herdr tab list --workspace "$workspace")"
+  name_workspace="$(jq -r '.result.tabs | length == 1' <<<"$tabs")"
+  shelf="$(jq -r --arg label "$shelf_label" '[.result.tabs[] | select(.label == $label)] | if length > 1 then error("Duplicate Shepherd shelves") else .[0].tab_id // "" end' <<<"$tabs")"
+  if [[ -z "$shelf" ]]; then
+    shelf="$(jq -r '[.result.tabs[] | select(.label == "shepherd:shelf")] | if length > 1 then error("Duplicate legacy shelves") else .[0].tab_id // "" end' <<<"$tabs")"
+    if [[ -n "$shelf" ]]; then
+      jq -e --arg agent "$agent" '[.result.panes[] | select(.label == "shepherd")] | length == 1 and .[0].pane_id == $agent' <<<"$list" >/dev/null || die "The legacy shelf has multiple possible owners. Separate its tools before resuming Shepherd."
+      legacy_shelf=true
+    fi
+  fi
+  while IFS=$'\t' read -r id tool; do
+    [[ -z "${pane_of[$tool]:-}" ]] || die "Duplicate $tool panes in tab $main. Rename the unrelated pane."
+    pane_of[$tool]="$id"
+  done < <(jq -r --arg m "$main" --arg s "$shelf" '.result.panes[] | select(.tab_id == $m or .tab_id == $s) | select(.label == "shepherd:nvim" or .label == "shepherd:hunk" or .label == "shepherd:shell") | [.pane_id, (.label | ltrimstr("shepherd:"))] | @tsv' <<<"$list")
 }
 
 choose_root() {
-  local requested="$1" hunk="${pane_of[shepherd:hunk]:-}"
-  if [[ -n "$requested" ]]; then
-    [[ -d "$requested" ]] || die "Root $requested is not a folder. Pass an existing project folder."
-    root="$(toplevel "$requested")"
-  elif [[ -n "$hunk" ]]; then
-    root="$(toplevel "${cwd_of[$hunk]}")"
-  else
-    root="$(toplevel "${cwd_of[$agent]}")"
+  local tool cwd processes
+  if [[ -n "$requested_root" ]]; then
+    [[ -d "$requested_root" ]] || die "Root $requested_root is missing. Pass an existing folder."
+    root="$(toplevel "$requested_root")"
+    return
   fi
-}
-
-shelf_pane() {
-  local id
-  for id in "${!tab_of[@]}"; do
-    if [[ "${tab_of[$id]}" == "$shelf" ]]; then printf '%s\n' "$id"; return; fi
+  for tool in hunk nvim shell; do
+    if [[ -n "${pane_of[$tool]:-}" ]]; then
+      if [[ "$tool" != shell ]]; then
+        processes="$(foreground "${pane_of[$tool]}")"
+        cwd="$(jq -r --arg tool "$tool" '[.[] | select(.name == $tool) | .cwd][0] // ""' <<<"$processes")"
+        if [[ -n "$cwd" ]]; then root="$(toplevel "$cwd")"; return; fi
+      fi
+      root="$(toplevel "${cwd_of[${pane_of[$tool]}]}")"
+      return
+    fi
   done
+  root="$(toplevel "${cwd_of[$agent]}")"
 }
 
 load_shown() {
+  local panes
   layout_json="$(herdr pane layout --pane "$agent")"
-  mapfile -t shown < <(jq -r --arg a "$agent" '.result.layout.panes | sort_by(.rect.x, .rect.y)[] | select(.pane_id != $a) | .pane_id' <<<"$layout_json")
+  panes="$(jq -r --arg a "$agent" '.result.layout.panes | sort_by(.rect.x, .rect.y)[] | select(.pane_id != $a) | .pane_id' <<<"$layout_json")"
+  shown=()
+  [[ -z "$panes" ]] || mapfile -t shown <<<"$panes"
 }
 
 tool_of() {
   local tool
   for tool in "${tools[@]}"; do
-    if [[ "${pane_of[shepherd:$tool]:-}" == "$1" ]]; then printf '%s\n' "$tool"; return; fi
+    if [[ "${pane_of[$tool]:-}" == "$1" ]]; then printf '%s\n' "$tool"; return; fi
   done
-}
-
-create_missing() {
-  local tool id result target
-  for tool in "${tools[@]}"; do
-    [[ -z "${pane_of[shepherd:$tool]:-}" ]] || continue
-    target="$(shelf_pane)"
-    if [[ -n "$target" ]]; then
-      id="$(herdr pane split "$target" --direction down --cwd "$root" --no-focus | jq -r '.result.pane.pane_id')"
-    else
-      result="$(herdr tab create --workspace "$workspace" --cwd "$root" --label shepherd:shelf --no-focus)"
-      shelf="$(jq -r '.result.tab.tab_id' <<<"$result")"
-      id="$(jq -r '.result.root_pane.pane_id' <<<"$result")"
-    fi
-    herdr pane rename "$id" "shepherd:$tool" >/dev/null
-    pane_of[shepherd:$tool]="$id" tab_of[$id]="$shelf" cwd_of[$id]="$root"
-    created+=("$tool")
-  done
-}
-
-name_space() {
-  local label
-  label="$(herdr workspace get "$workspace" | jq -r .result.workspace.label)"
-  [[ "$label" == "$(basename "$root")" ]] || herdr workspace rename "$workspace" "$(basename "$root")" >/dev/null
-  label="$(herdr tab get "$main" | jq -r .result.tab.label)"
-  [[ "$label" == shepherd ]] || herdr tab rename "$main" shepherd >/dev/null
-}
-
-move() {
-  local tool="$1" result id tab
-  shift
-  result="$(herdr pane move "${pane_of[shepherd:$tool]}" "$@" --no-focus)"
-  id="$(jq -r '.result.move_result.pane.pane_id' <<<"$result")"
-  tab="$(jq -r '.result.move_result.pane.tab_id' <<<"$result")"
-  pane_of[shepherd:$tool]="$id" tab_of[$id]="$tab"
-}
-
-show() { move "$1" --tab "$main" --target-pane "$2" --split right; }
-
-hide() {
-  local target
-  target="$(shelf_pane)"
-  if [[ -n "$shelf" && -n "$target" ]]; then
-    move "$1" --tab "$shelf" --target-pane "$target" --split down
-  else
-    move "$1" --new-tab --workspace "$workspace" --label shepherd:shelf
-    shelf="${tab_of[${pane_of[shepherd:$1]}]}"
-  fi
-}
-
-set_agent_width() {
-  local ratio="$1" current change
-  load_shown
-  current="$(jq -r --arg a "$agent" '.result.layout as $l | ($l.panes[] | select(.pane_id == $a) | .rect.width) / $l.area.width' <<<"$layout_json")"
-  change="$(jq -n --argjson c "$current" --argjson r "$ratio" '$r - $c')"
-  if jq -e -n --argjson d "$change" '$d > 0.02' >/dev/null; then
-    herdr pane resize --pane "$agent" --direction right --amount "$change" >/dev/null
-  elif jq -e -n --argjson d "$change" '$d < -0.02' >/dev/null; then
-    herdr pane resize --pane "$agent" --direction left --amount "${change#-}" >/dev/null
-  fi
-}
-
-foreground() {
-  local info
-  info="$(herdr pane process-info --pane "$1")" || die "Cannot read processes of pane $1."
-  jq -c '.result.process_info.foreground_processes' <<<"$info"
-}
-
-is_idle() { jq -e 'all(.name == "bash" or .name == "zsh" or .name == "fish" or .name == "sh")' <<<"$(foreground "$1")" >/dev/null; }
-
-check_tool_root() {
-  local tool="$1" id="${pane_of[shepherd:$1]}" cwd
-  is_idle "$id" && return 0
-  cwd="$(jq -r '.[0].cwd // ""' <<<"$(foreground "$id")")"
-  [[ -z "$cwd" || "$(toplevel "$cwd")" == "$root" ]] && return 0
-  die "$tool runs in $cwd, not in root $root. Quit $tool in pane $id first. Then rerun."
-}
-
-start_tools() {
-  local id sha
-  id="${pane_of[shepherd:nvim]}"
-  if is_idle "$id"; then
-    herdr pane run "$id" "cd $(printf '%q' "$root") && $(HERDR_TAB_ID="$main" "$scripts/shepherd-nvim" start)" >/dev/null
-    started+=(nvim)
-  fi
-  id="${pane_of[shepherd:shell]}"
-  if is_idle "$id" && [[ "$(toplevel "${cwd_of[$id]}")" != "$root" ]]; then
-    herdr pane run "$id" "cd $(printf '%q' "$root")" >/dev/null
-  fi
-  id="${pane_of[shepherd:hunk]}"
-  is_idle "$id" || return 0
-  if [[ -z "$base" ]]; then
-    hunk_error="Hunk is not running in $id. Choose a base from context. Rerun with --base <ref>."
-    return 0
-  fi
-  if ! sha="$(git -C "$root" rev-parse --verify --quiet "$base^{commit}")"; then
-    hunk_error="Base $base is not a commit in $root. Fetch it, or choose another base."
-    return 0
-  fi
-  herdr pane run "$id" "cd $(printf '%q' "$root") && hunk diff $sha --watch --agent-notes" >/dev/null
-  started+=(hunk)
-}
-
-# Hunk registers its session a moment after start, so wait for it.
-count_files() {
-  local pid="" _
-  for _ in {1..20}; do
-    pid="$(jq -r '[.[] | select(.name == "hunk") | .pid][0] // ""' <<<"$(foreground "${pane_of[shepherd:hunk]}")")"
-    [[ -n "$pid" ]] || { sleep 0.25; continue; }
-    files="$(hunk session list --json 2>/dev/null | jq -r --argjson p "$pid" '[.sessions[] | select(.pid == $p) | .fileCount][0] // "none"')"
-    [[ "$files" == none ]] || return 0
-    sleep 0.25
-  done
-  files=none
 }
 
 detect() {
   local id tool
   load_shown
+  view=custom
+  jq -e --arg a "$agent" '.result.layout as $l | ($l.panes | sort_by(.rect.x, .rect.y) | .[0].pane_id) == $a and all($l.panes[]; .rect.y == $l.area.y and .rect.height == $l.area.height)' <<<"$layout_json" >/dev/null || return 0
   view=agent
   for id in "${shown[@]}"; do
     tool="$(tool_of "$id")"
     [[ -n "$tool" ]] || { view=custom; return; }
     view+=":$tool"
   done
-  [[ -n "${cycled[$view]:-}" ]] || view=custom
+  if [[ "$view" == agent ]]; then view=fresh
+  elif [[ -z "${transitions[$view]:-}" ]]; then view=custom
+  fi
 }
 
-auto_view() {
-  count_files
-  if [[ "$files" =~ ^[1-9] ]]; then printf 'agent:hunk\n'; else printf 'agent:shell\n'; fi
+foreground() {
+  local info
+  info="$(herdr pane process-info --pane "$1")" || die "Cannot read pane $1. Check socket access."
+  jq -ce '.result.process_info.foreground_processes' <<<"$info"
 }
 
-target_view() {
-  detect
-  case "$1" in
-    auto) auto_view ;;
-    toggle) if [[ "$view" == custom ]]; then auto_view; else printf '%s\n' "${toggled[$view]}"; fi ;;
-    cycle) if [[ "$view" == custom ]]; then auto_view; else printf '%s\n' "${cycled[$view]}"; fi ;;
-    *) printf '%s\n' "$1" ;;
-  esac
+is_idle() { jq -e 'length > 0 and all(.name == "bash" or .name == "zsh" or .name == "fish" or .name == "sh")' <<<"$1" >/dev/null; }
+
+preflight() {
+  local tool id cwd processes state
+  for tool in "${tools[@]}"; do
+    id="${pane_of[$tool]:-}"
+    [[ -n "$id" ]] || continue
+    processes="$(foreground "$id")"
+    process_of[$tool]="$processes"
+    if [[ "$tool" == shell && "$(toplevel "${cwd_of[$id]}")" == "$root" ]]; then continue; fi
+    is_idle "$processes" && continue
+    cwd="$(jq -r '.[0].cwd // ""' <<<"$processes")"
+    [[ -n "$cwd" ]] || die "Cannot locate $tool in pane $id. Check its foreground process."
+    [[ "$(toplevel "$cwd")" == "$root" ]] || die "$tool runs in $cwd. Quit it before switching to $root."
+  done
+  if [[ "$view" != "$target" && -n "${pane_of[nvim]:-}" ]] && jq -e 'any(.name == "nvim")' <<<"${process_of[nvim]}" >/dev/null; then
+    state="$(HERDR_TAB_ID="$main" "$scripts/shepherd-nvim" read)"
+    jq -e '.mode | test("^(i|R|s|S|\u0013|c|t)") | not' <<<"$state" >/dev/null || die "The human is typing in Neovim. Wait before switching views."
+  fi
+  for tool in "${want[@]}"; do
+    processes="${process_of[$tool]:-[]}"
+    if [[ -n "${pane_of[$tool]:-}" ]] && ! is_idle "$processes" && [[ "$tool" != shell ]]; then
+      jq -e --arg tool "$tool" 'any(.name == $tool)' <<<"$processes" >/dev/null || die "Another job occupies the $tool pane. Wait for its shell prompt."
+    fi
+    case "$tool" in
+      nvim)
+        if [[ -z "${pane_of[nvim]:-}" ]] || is_idle "$processes"; then
+          nvim_command="$(HERDR_TAB_ID="$main" "$scripts/shepherd-nvim" start)"
+        fi
+        ;;
+      hunk)
+        if [[ -z "${pane_of[hunk]:-}" ]] || is_idle "$processes" || [[ -n "$base" ]]; then
+          if [[ -z "$base" ]]; then
+            base="$(git -C "$root" rev-parse --abbrev-ref --symbolic-full-name '@{upstream}' 2>/dev/null)" || base=HEAD
+          fi
+          sha="$(git -C "$root" rev-parse --verify --quiet "$base^{commit}")" || die "Base $base is missing in $root. Fetch it or pass --base <ref>."
+          if [[ -n "${pane_of[hunk]:-}" ]] && ! is_idle "$processes"; then
+            jq -e --arg sha "$sha" 'any(.name == "hunk" and any(.argv[]; . == $sha))' <<<"$processes" >/dev/null || die "Hunk uses another base. Quit it, then rerun with --base $base."
+          fi
+        fi
+        ;;
+      shell) ;;
+    esac
+  done
+}
+
+create_missing() {
+  local tool id target_pane result
+  for tool in "${want[@]}"; do
+    [[ -z "${pane_of[$tool]:-}" ]] || continue
+    load_shown
+    target_pane="$agent"
+    [[ ${#shown[@]} -eq 0 ]] || target_pane="${shown[-1]}"
+    result="$(herdr pane split "$target_pane" --direction right --cwd "$root" --no-focus)"
+    id="$(jq -er '.result.pane.pane_id' <<<"$result")"
+    herdr pane rename "$id" "shepherd:$tool" >/dev/null
+    pane_of[$tool]="$id" tab_of[$id]="$main" cwd_of[$id]="$root"
+    created+=("$tool")
+  done
+}
+
+start_tools() {
+  local tool id processes _
+  for tool in "${want[@]}"; do
+    id="${pane_of[$tool]}"
+    for _ in {1..20}; do
+      processes="$(foreground "$id")"
+      is_idle "$processes" && break
+      [[ " ${created[*]} " == *" $tool "* ]] || break
+      sleep 0.1
+    done
+    if ! is_idle "$processes"; then
+      [[ " ${created[*]} " != *" $tool "* ]] || die "The new $tool pane has no shell prompt. Wait, then rerun."
+      continue
+    fi
+    case "$tool" in
+      nvim)
+        [[ -n "$nvim_command" ]] || continue
+        herdr pane run "$id" "cd $(printf '%q' "$root") && $nvim_command" >/dev/null
+        started+=(nvim)
+        ;;
+      hunk)
+        herdr pane run "$id" "cd $(printf '%q' "$root") && hunk diff $sha --watch --agent-notes" >/dev/null
+        started+=(hunk)
+        ;;
+      shell)
+        [[ "${cwd_of[$id]}" == "$root" ]] || herdr pane run "$id" "cd $(printf '%q' "$root")" >/dev/null
+        ;;
+    esac
+    [[ "$tool" != shell ]] || continue
+    for _ in {1..50}; do
+      processes="$(foreground "$id")"
+      jq -e --arg tool "$tool" 'any(.name == $tool)' <<<"$processes" >/dev/null && break
+      sleep 0.1
+    done
+    jq -e --arg tool "$tool" 'any(.name == $tool)' <<<"$processes" >/dev/null || die "$tool did not start in pane $id. Read its output before retrying."
+  done
+}
+
+move() {
+  local tool="$1" result id
+  shift
+  result="$(herdr pane move "${pane_of[$tool]}" "$@" --no-focus)"
+  id="$(jq -er '.result.move_result.pane.pane_id' <<<"$result")"
+  pane_of[$tool]="$id"
+  tab_of[$id]="$(jq -er '.result.move_result.pane.tab_id' <<<"$result")"
+}
+
+hide() {
+  local tool="$1" target_pane="" id
+  for id in "${!tab_of[@]}"; do
+    if [[ -n "$shelf" && "${tab_of[$id]}" == "$shelf" ]]; then target_pane="$id"; break; fi
+  done
+  if [[ -n "$target_pane" ]]; then
+    move "$tool" --tab "$shelf" --target-pane "$target_pane" --split down
+  else
+    move "$tool" --new-tab --workspace "$workspace" --label "$shelf_label"
+    shelf="${tab_of[${pane_of[$tool]}]}"
+  fi
+}
+
+resize_columns() {
+  local weights="$1" order index id change direction measurement
+  load_shown
+  order="$(jq -r '
+    .result.layout as $layout
+    | ($layout.panes | sort_by(.rect.x)) as $panes
+    | [range(0; ($panes | length) - 1) as $index
+        | ($panes[$index].rect.x + $panes[$index].rect.width) as $edge
+        | {index: $index, span: ([$layout.splits[]
+            | select(.direction == "right"
+                and ((.rect.x + ((.rect.width * .ratio) | round) - $edge) | fabs) <= 1)
+            | .rect.width] | max)}]
+    | sort_by(-.span)[].index
+  ' <<<"$layout_json")"
+  while IFS= read -r index; do
+    load_shown
+    measurement="$(jq -c --argjson index "$index" --argjson weights "$weights" '
+      .result.layout as $layout
+      | ($layout.panes | sort_by(.rect.x)) as $panes
+      | ($panes[$index].rect.x + $panes[$index].rect.width) as $edge
+      | ($layout.area.x + ($panes | map(.rect.width) | add)
+          * ($weights[0:($index + 1)] | add) / ($weights | add) - $edge) as $delta
+      | ([$layout.splits[]
+          | select(.direction == "right"
+              and ((.rect.x + ((.rect.width * .ratio) | round) - $edge) | fabs) <= 1)
+          | .rect.width] | max) as $span
+      | {delta: $delta, amount: (($delta | fabs) / $span),
+          pane: $panes[$index + (if $delta < 0 then 1 else 0 end)].pane_id}
+    ' <<<"$layout_json")"
+    if jq -e '(.delta | fabs) > 1' <<<"$measurement" >/dev/null; then
+      direction=right
+      jq -e '.delta >= 0' <<<"$measurement" >/dev/null || direction=left
+      id="$(jq -r .pane <<<"$measurement")"
+      change="$(jq -r .amount <<<"$measurement")"
+      herdr pane resize --pane "$id" --direction "$direction" --amount "$change" >/dev/null
+    fi
+  done <<<"$order"
+}
+
+apply() {
+  local before="$1" id tool target_pane index
+  load_shown
+  for tool in "${want[@]}"; do
+    [[ "${tab_of[${pane_of[$tool]}]}" != "$main" ]] || continue
+    target_pane="$agent"
+    [[ ${#shown[@]} -eq 0 ]] || target_pane="${shown[-1]}"
+    move "$tool" --tab "$main" --target-pane "$target_pane" --split right
+    load_shown
+  done
+  for id in "${shown[@]}"; do
+    tool="$(tool_of "$id")"
+    [[ " ${want[*]} " == *" $tool "* ]] || hide "$tool"
+  done
+  for index in "${!want[@]}"; do
+    load_shown
+    id="${pane_of[${want[$index]}]}"
+    [[ "${shown[$index]}" == "$id" ]] || herdr pane swap --source-pane "$id" --target-pane "${shown[$index]}" >/dev/null
+  done
+  load_shown
+  if [[ "$before" -ne ${#shown[@]} ]]; then
+    weights="$(jq -cn --argjson n "$((${#shown[@]} + 1))" '[range($n) | 1]')"
+  fi
+  resize_columns "$weights"
 }
 
 report() {
-  local id names=() widths
+  local files=not-started id names=() widths sessions processes pid tool
   detect
-  [[ "$files" != none ]] || count_files
-  for id in "${shown[@]}"; do names+=("$(tool_of "$id"):$id"); done
+  id="${pane_of[hunk]:-}"
+  if [[ -n "$id" ]]; then
+    processes="$(foreground "$id")"
+    pid="$(jq -r '[.[] | select(.name == "hunk") | .pid][0] // ""' <<<"$processes")"
+    if [[ -n "$pid" ]]; then
+      files=unknown
+      if sessions="$(hunk session list --json)"; then
+        files="$(jq -r --argjson pid "$pid" '[.sessions[] | select(.pid == $pid) | .fileCount][0] // "unknown"' <<<"$sessions")"
+      fi
+    fi
+  fi
+  for id in "${shown[@]}"; do
+    tool="$(tool_of "$id")"
+    names+=("${tool:-unmanaged}:$id")
+  done
   widths="$(jq -r '[.result.layout.panes | sort_by(.rect.x, .rect.y)[] | .rect.width] | join(",")' <<<"$layout_json")"
   local IFS=,
-  printf 'view=%s files=%s root=%s panes=agent:%s,%s widths=%s' "$view" "$files" "$root" "$agent" "${names[*]}" "$widths"
+  printf 'view=%s files=%s root=%s panes=agent:%s' "$view" "$files" "$root" "$agent"
+  [[ ${#names[@]} -eq 0 ]] || printf ',%s' "${names[*]}"
+  printf ' widths=%s' "$widths"
   [[ ${#created[@]} -eq 0 ]] || printf ' new=%s' "${created[*]}"
   [[ ${#started[@]} -eq 0 ]] || printf ' started=%s' "${started[*]}"
   printf '\n'
 }
 
-apply() {
-  local want=() id tool target before i
-  IFS=: read -r -a want <<<"${1#agent:}"
-  load_shown
-  before=${#shown[@]}
-
-  for tool in "${want[@]}"; do
-    [[ "${tab_of[${pane_of[shepherd:$tool]}]}" != "$main" ]] || continue
-    target="$agent"
-    [[ ${#shown[@]} -eq 0 ]] || target="${shown[-1]}"
-    show "$tool" "$target"
-    shown+=("${pane_of[shepherd:$tool]}")
-  done
-
-  for id in "${shown[@]}"; do
-    tool="$(tool_of "$id")"
-    [[ -n "$tool" && " ${want[*]} " != *" $tool "* ]] || continue
-    hide "$tool"
-  done
-
-  for i in "${!want[@]}"; do
-    load_shown
-    id="${pane_of[shepherd:${want[$i]}]}"
-    [[ "${shown[$i]}" == "$id" ]] || herdr pane swap --source-pane "$id" --target-pane "${shown[$i]}" >/dev/null
-  done
-
-  if [[ $before -ne ${#want[@]} ]]; then set_agent_width "$(jq -n --argjson n "${#want[@]}" '1 / ($n + 1)')"; fi
-}
-
-command="status" requested_root=""
-positional=()
-while [[ $# -gt 0 ]]; do
-  case "$1" in
-    -h | --help) usage; exit 0 ;;
-    --base) [[ -n "${2:-}" ]] || die "--base needs a ref."; base="$2"; shift 2 ;;
-    --root) [[ -n "${2:-}" ]] || die "--root needs a folder."; requested_root="$2"; shift 2 ;;
-    -*) die "Unknown option: $1. Run shepherd-layout --help." ;;
-    *) positional+=("$1"); shift ;;
-  esac
-done
-[[ ${#positional[@]} -le 1 ]] || die "Too many arguments. Run shepherd-layout --help."
-[[ ${#positional[@]} -lt 1 ]] || command="${positional[0]}"
-case "$command" in
-  status | auto | toggle | cycle) ;;
-  agent:*) [[ -n "${cycled[$command]:-}" ]] || die "Unknown view: $command. Run shepherd-layout --help for the six views." ;;
-  *) die "Unknown command: $command. Old develop and review layouts are gone. Read SKILL.md again, or run shepherd-layout --help." ;;
-esac
-
 load_panes
-choose_root "$requested_root"
-if [[ "$command" == status ]]; then report; exit 0; fi
+choose_root
+detect
+if [[ "$command" == status || ( "$command" == ensure && "$view" == custom ) ]]; then report; exit 0; fi
+[[ "$view" != custom ]] || die "Custom layout in tab $main. Restore tool columns before switching views."
 
-herdr pane rename "$agent" shepherd >/dev/null
+target="$command"
+case "$command" in
+  ensure) target="$view"; [[ "$view" != fresh ]] || target=agent:shell ;;
+  toggle | cycle)
+    [[ "$view" != fresh ]] || die "No Shepherd view exists. Run /gt-shepherd first."
+    read -r toggle_target cycle_target <<<"${transitions[$view]}"
+    if [[ "$command" == toggle ]]; then target="$toggle_target"; else target="$cycle_target"; fi
+    ;;
+esac
+IFS=: read -r -a want <<<"${target#agent:}"
+preflight
+before=${#shown[@]}
+weights="$(jq -c '[.result.layout.panes | sort_by(.rect.x)[] | .rect.width]' <<<"$layout_json")"
+[[ "$legacy_shelf" != true ]] || herdr tab rename "$shelf" "$shelf_label" >/dev/null
+if [[ "$view" == fresh ]]; then
+  herdr pane rename "$agent" shepherd >/dev/null
+  [[ "$name_workspace" != true ]] || herdr workspace rename "$workspace" "$(basename "$root")" >/dev/null
+  herdr tab rename "$main" shepherd >/dev/null
+fi
 create_missing
-check_tool_root nvim
-check_tool_root hunk
 start_tools
-name_space
-apply "$(target_view "$command")"
+[[ "$target" == "$view" ]] || apply "$before"
 report
-[[ -z "$hunk_error" ]] || die "$hunk_error"

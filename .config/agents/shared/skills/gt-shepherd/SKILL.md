@@ -1,6 +1,6 @@
 ---
 name: gt-shepherd
-description: Pair with the human inside a Herdr space through Neovim, Hunk, and a shell pane. Use when the user runs /gt-shepherd or asks for shepherd mode. The mode stays on until the user ends it, also after compaction. Requires HERDR_ENV=1.
+description: Pair inside a Herdr space through Neovim, Hunk, and Shell. Use for /gt-shepherd or requests for shepherd mode. Stay active until stopped, including after compaction. Requires HERDR_ENV=1.
 ---
 
 # Shepherd a Herdr space
@@ -25,75 +25,90 @@ If you lose these rules, read `<skill dir>/SKILL.md` again. Then rerun the Start
 
 ## Start
 
-1. Check `test "${HERDR_ENV:-}" = 1`. If it fails, say so and stop.
-2. Load Hunk rules. Run `hunk skill path` and read the returned file.
-3. Choose the Hunk base. See below.
-4. Run `shepherd-layout auto --base <base>`. Add `--root <dir>` when the task is in another worktree.
-5. Report the view and the Hunk base in chat.
+Run `<skill dir>/scripts/shepherd-layout` with no arguments. Report its returned view.
+Add `--root <dir>` only for another project or worktree.
+The helper checks Herdr context, finds owned panes, and creates the default view.
+It handles routine setup. Do not inspect scripts or read tool skills before starting.
+Use `--help` when a command fails or its options matter.
 
-Two helpers live in this skill's `scripts/` directory. Run them with absolute paths.
+Fresh sessions show `agent:shell`, including when the repository has changes.
+Resume preserves the current view, manual widths, focus, and custom arrangements.
+The helper creates and starts tools only when needed.
+Hidden tools keep running in a shelf owned by the agent tab.
+The shelf label is `shepherd:shelf:<agent tab id>`. Never focus it.
+Other tabs have separate tools and shelves.
 
-- `shepherd-layout` sets up, shows, and changes the panes. Read its `--help` once.
-- `shepherd-nvim` reads and drives Neovim. Read its `--help` once.
+Run helpers with absolute paths:
 
-`shepherd-layout` is idempotent. Rerun it after compaction or when panes look wrong.
-It creates missing panes and starts tools only in panes at a shell prompt.
-It never moves your pane. Its first shown tool splits your pane once.
-Invoking this skill asks for that split.
-It names the space after the root folder and your tab `shepherd`. This shows the task in the sidebar.
+- `shepherd-layout` starts, resumes, reports, and changes views.
+- `shepherd-nvim` reads and drives the shared editor.
 
-Herdr, Hunk, and Neovim talk through local sockets.
-In a sandbox, request access to these sockets.
-A socket error does not mean the tool stopped. Do not start a second copy.
-For other Herdr work, use the `herdr` skill if present. Otherwise read `herdr --skill`.
+The first shown tool splits the agent pane. Invoking this skill authorizes that split.
+The helper never moves the agent pane or rearranges unrelated panes.
+It names a new single-tab space after the project folder and its tab `shepherd`.
+Existing names stay unchanged on resume.
+
+Herdr, Hunk, and Neovim use local sockets. Request socket access when sandboxed.
+A socket error does not mean the tool stopped. Do not start another copy.
+For other Herdr work, use its skill or read `herdr --skill`.
 
 ## Views
 
-A view is the agent column plus one or two tool columns.
-Tools always sit left to right in the order Neovim, Hunk, Shell.
-Hidden tools wait in the tab labelled `shepherd:shelf`. They keep running. Never focus that tab.
+Two columns have equal widths. Three columns have equal thirds.
+Changing tools preserves widths. Changing column count restores equal widths.
+Tools appear left to right as Neovim, Hunk, Shell, after the agent.
 
-| View | Use it to |
-|---|---|
-| `agent:hunk` | Read a diff or PR. Discuss it in Hunk threads. Default when the diff has files. |
-| `agent:shell` | Run tests, builds, or servers. Default when the diff is empty. |
-| `agent:nvim` | Read source in depth. Explain code or walk a call path. |
-| `agent:nvim:hunk` | Edit code and watch the diff grow. |
-| `agent:nvim:shell` | Edit code and run tests, builds, or servers. |
-| `agent:hunk:shell` | Run commands and watch their effect on the diff. |
+| View | Purpose | Toggle target |
+|---|---|---|
+| `agent:shell` | Default. Commands, tests, builds, and servers. | `agent:hunk:shell` |
+| `agent:nvim` | Source inspection and explanation. | `agent:nvim:shell` |
+| `agent:hunk` | Review a change or PR. | `agent:nvim:hunk` |
+| `agent:hunk:shell` | Commands and their diff effects. | `agent:shell` |
+| `agent:nvim:shell` | Source edits and commands. | `agent:nvim` |
+| `agent:nvim:hunk` | Source edits and diff inspection. | `agent:hunk` |
 
-### Avoid empty panes
+Toggle twice restores the view. Cycle follows each three-row group in table order.
+Human choices remain until the task changes or the human requests another view.
 
-An empty pane hides useful space. Show a tool only when it has content.
+### Select views deliberately
 
-- Show Hunk only when its diff has files. `status` prints `files=`.
-- Show Neovim only together with a file. Run `shepherd-nvim show <file> <line>` after the switch.
-- When you have no file and no diff, show `agent:shell`.
-- A view the human chose with a key stays, also when a pane is empty.
+Use the view that serves the user's current task.
 
-### Switch proactively
-
-Show the view that best serves the next step. Do not wait for a request.
-
-- Before you run a command the human should watch, show a view with the shell.
-- After a command, show Hunk again when the diff is the next topic.
-- When the human starts to review a PR or a finished change, show `agent:hunk`.
-- When you explain code that is not in the diff, show `agent:nvim`.
-- When the human starts to edit or asks for changes, show `agent:nvim:hunk`.
-- When the task or scope changes, choose the view again. Do not keep a stale view.
-- Do not switch while the human types in Neovim. Check `shepherd-nvim read` first.
-- Do not switch back and forth within one step. One switch per change of task.
-- State each switch and its reason in chat. Example: `Switched to agent:hunk to read the PR.`
-- If the human switches back, keep their choice for the current task.
+- Review requests select `agent:hunk`. An empty diff is a valid review result.
+- Source inspection selects `agent:nvim`. Show the relevant file with `shepherd-nvim show`.
+- Editing with commands uses `agent:nvim:shell`.
+- Editing with diff inspection uses `agent:nvim:hunk`.
+- File changes update Hunk without changing the view.
+- Initialization and resume never replace a recognized view.
+- Do not switch repeatedly within one task or undo the human's choice.
+- The helper blocks view changes while the human types in Neovim.
+- State each switch and its reason in chat.
 
 ### Commands
 
-- Set: `shepherd-layout <view>`. Example: `shepherd-layout agent:nvim:shell`.
-- Choose from content: `shepherd-layout auto`. It picks `agent:hunk` or `agent:shell`.
-- Check: `shepherd-layout status`. Run it before you rely on the current view.
-- The human switches with Herdr keys. `prefix+m` toggles 2 and 3 columns. `prefix+t` cycles the tools.
-  The same moves are `shepherd-layout toggle` and `shepherd-layout cycle`.
-- Never move or split your own pane unless the user directly asks you to.
+- Start or resume: `shepherd-layout`. This replaces the old `auto` command.
+- Select: `shepherd-layout <view>`.
+- Review with a chosen base: `shepherd-layout agent:hunk --base <ref>`.
+- Inspect: `shepherd-layout status`. It changes nothing and never waits for Hunk registration.
+- Toggle: `shepherd-layout toggle`. Herdr key: `prefix+m`.
+- Cycle: `shepherd-layout cycle`. Herdr key: `prefix+t`.
+
+The Herdr prefix is `Ctrl+h`. `prefix+c` creates spaces. `prefix+Shift+c` creates tabs.
+New spaces inherit the directory. Space and tab creation skip name prompts.
+Creating a space opens a shell. Invoke this skill there to start Shepherd.
+
+## Hunk setup
+
+Shell startup does not launch Hunk, fetch Git refs, inspect PRs, or load Hunk guidance.
+First use starts Hunk automatically, using the branch upstream or `HEAD` when none exists.
+Pass `--base <ref>` for reviews that need another comparison.
+The helper validates the base and tool roots before changing panes.
+Its report distinguishes file counts, `not-started`, and `unknown`.
+Unknown never means an empty diff and never selects a view.
+
+Before the first Hunk review action, run `hunk skill path` and read the returned file.
+Read it once when needed, including after losing those rules during compaction.
+Skip it for shell work and routine layout commands.
 
 ## Choose the Hunk base
 
@@ -106,14 +121,14 @@ Show the diff the user cares about now. Choose the base from context.
 | Long-lived branch that never merges | Its upstream, such as `origin/work`. This shows unpushed and uncommitted work. |
 | Unclear | The open PR base, else `origin/HEAD`. |
 
-- Run `git fetch --quiet origin` first.
+- For branch or PR reviews, fetch the required refs once before choosing the base.
 - Find an open PR and its base with `gh pr view --json number,baseRefName,headRefName`.
 - Find the trunk with `origin/HEAD`. If it is unset, run `git remote set-head origin --auto`.
 - If a base ref is missing, the clone may fetch only one branch.
   Check `git config --get-all remote.origin.fetch`.
 - State the base and the reason in chat. Example: `Hunk shows work against origin/work: unpushed changes.`
 - When the context changes, restart Hunk. `hunk session reload` stops watch mode.
-  Quit it with `herdr pane send-keys <hunk pane> q`. Then run `shepherd-layout auto --base <base>`.
+  Quit it with `herdr pane send-keys <hunk pane> q`. Then select the view with `--base <base>`.
   When the task moves to another worktree, also quit Neovim. Check its `unsaved` list first.
   Then add `--root <worktree>`. The script fails while a tool runs in the old root.
   Quitting drops Hunk threads. Ask first when open threads exist.
@@ -128,10 +143,12 @@ Do not close panes you did not create.
 If the message or recent chat names the object, use that object.
 Otherwise read live state before you answer:
 
-- Neovim: `shepherd-nvim read`. Use the selection first, then the cursor line and scope.
+- Neovim, when running: `shepherd-nvim read`. Use the selection first, then cursor line and scope.
 - Hunk: `hunk session context --repo <root> --json`. Use it when the user mentions the diff, a comment, or a review.
 
-Read unsaved text with `shepherd-nvim buffer <file>`. Disk can differ from the editor.
+If Hunk has not started, select `agent:hunk` before reading its session.
+Read unsaved text with `shepherd-nvim buffer <file>` when Neovim runs.
+Disk can differ from the editor.
 Read state again on each request. The human moves between requests.
 
 ## Show, do not describe
@@ -141,13 +158,14 @@ Put the code in front of the human. If the tool is on the shelf, show it first.
 - Neovim: `shepherd-nvim show <file> <line>`. It fails while the human types.
   Then wait, or ask before you use `--force`. Never open tabs or splits.
 - Hunk: `hunk session navigate --repo <root> --file <path> --new-line <n>`.
-- After you change code, show the change in Hunk. The watch picks up edits.
+- When reviewing completed edits, show Hunk. Its watch picks up file changes.
 - To review another branch or PR, check it out in its own worktree. Then choose its base.
 - Use Hunk highlights to point at exact expressions. Clear your stale highlights.
 
 ## Hunk comments
 
-Before each action, read all comments: `hunk session comment list --repo <root> --type all --json`.
+While Hunk runs, read comments before each action:
+`hunk session comment list --repo <root> --type all --json`.
 A user comment is new when no agent reply follows it in its thread.
 Treat new comments as requests. Handle them before other work.
 
@@ -157,7 +175,8 @@ Treat new comments as requests. Handle them before other work.
 
 ## Edit files
 
-The human can type in Neovim at any time. Do not edit concurrently.
+If Neovim has not started, edit on disk. Skip editor RPC and `checktime`.
+Otherwise, the human can type at any time. Do not edit concurrently.
 
 1. Run `shepherd-nvim read`. Check `mode` and `unsaved`.
 2. If the human is in insert mode, wait or ask.
