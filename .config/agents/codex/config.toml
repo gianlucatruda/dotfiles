@@ -1,4 +1,4 @@
-model = "gpt-5.6-terra"
+model = "gpt-6.1-sol"
 model_reasoning_effort = "medium"
 model_reasoning_summary = "detailed"
 personality = "pragmatic"
@@ -15,5 +15,6 @@ status_line_use_colors = true
 "gpt-5.6-sol" = 1
 
 [features]
+fast_mode = true
 daemon_auto_start = false
 reasoning_traces = true

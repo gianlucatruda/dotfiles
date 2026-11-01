@@ -1,5 +1,5 @@
 {
-  "model": "opus[1m]",
+  "model": "claude-opus-5-5",
   "enabledPlugins": {
     "impeccable@impeccable": true
   },
@@ -11,7 +11,11 @@
       }
     }
   },
-  "effortLevel": "high",
+  "modelSettings": {
+    "claude-opus-5-5": {
+      "effortLevel": "medium"
+    }
+  },
   "includeCoAuthoredBy": false,
   "autoMemoryEnabled": false,
   "spinnerTipsEnabled": false,
