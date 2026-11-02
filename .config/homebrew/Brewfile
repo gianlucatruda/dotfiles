@@ -357,6 +357,8 @@ cask "handy"
 cask "hiddenbar"
 # Free and open-source media player
 cask "iina"
+# Incident management platform
+cask "incident-io"
 # Keyboard customiser
 cask "karabiner-elements"
 # File system integration
