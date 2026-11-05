@@ -24,6 +24,7 @@
   "showTurnDuration": true,
   "skipDangerousModePermissionPrompt": true,
   "theme": "auto",
+  "outputStyle": "Concise",
   "agentPushNotifEnabled": true,
   "permissions": {
     "defaultMode": "auto"
