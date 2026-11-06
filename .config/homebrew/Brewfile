@@ -239,6 +239,8 @@ brew "rich-cli"
 brew "rlwrap"
 # Extremely fast tool to remove dupes and other lint from your filesystem
 brew "rmlint"
+# Utility that provides fast incremental file transfer
+brew "rsync"
 # Extremely fast Python linter, written in Rust
 brew "ruff"
 # Rich git commit graph in your terminal
