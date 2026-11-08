@@ -79,6 +79,10 @@ brew "dns2tcp"
 brew "dust"
 # Select default apps for documents and URL schemes on macOS
 brew "duti"
+# ESP8266 and ESP32 serial bootloader utility
+brew "esptool"
+# Test various flash cards
+brew "f3"
 # Like neofetch, but much faster because written mostly in C
 brew "fastfetch"
 # Simple, fast and user-friendly alternative to find
