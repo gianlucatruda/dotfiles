@@ -8,7 +8,7 @@ Write all responses, comments, docs, PRs in ultraconcise and ultraclear Simplifi
 
 A highly technical and specific lecture covering all the concepts, methods, and specific tools mentioned in the source material. Target audience is junior ML engineers who have a firm grasp of CS, maths, stats, and data fundamentals and who are looking for deep technical mastery and strong mental models from the source material (to crush technical interviews and achieve technical excellence in their careers). Cover all the concepts and materials in the source extremely thoroughly and comprehensively. Be exhaustive and complete.
 
-review John Lasseters principles of animation
+Review John Lasseter's principles of animation
 
 Restate my intent before continuing
 
@@ -17,10 +17,40 @@ Prompt guidance - include these three things:
 2. How much effort you want it to spend
 3. How it should verify that it did the right thing
 
-I want a deeper version of this task, not a bigger one. Before rewriting it: (1) say what a top professional in this field would do here that I’m not asking for. If you are lacking even a bit of clarity on what a top professional would do here (you likely are), then let's pull information from the top oracles in this field. Let's read and digest all of the information so we have a good understanding of what and how a top professional in this field would think; Then, and only then, (2) name the rawest material they would start from instead of what has already been digested for me; (3) name the specific methods and tools they would use; (4) say what, other than you or me, would show the result is right. Then rewrite my prompt to ask for exactly that.
+I want a deeper version, not a bigger one. Before rewriting it: (1) say what a top professional in this field would do here that I’m not asking for. If you are lacking even a bit of clarity on what a top professional would do here (you likely are), then let's pull information from the top oracles in this field. Let's read and digest all of the information so we have a good understanding of what and how a top professional in this field would think; Then, and only then, (2) name the rawest material they would start from instead of what has already been digested for me; (3) name the specific methods and tools they would use; (4) say what, other than you or me, would show the result is right. Then rewrite my prompt to ask for exactly that.
 
-Walk through two-way doors and show me after. Stop at one-way doors. If my answer would be a rubber stamp, don't ask. If running something could answer the question, run it instead. Save questions for taste and product calls only I can make, one at a time, with your recommendation and the built in question tool in your harness. "No" is an acceptable answer to me too. Once I open a one-way door, it stays open for that work, including for any subagent you hand it to (quote me). Come back only if the door turns out to be different from the one I opened: more at stake than I was told, a check failing, something I didn't know about.
+Walk through two-way doors and show me after. Stop at one-way doors. 
+If my answer would be a rubber stamp, don't ask. If running something could answer the question, run it instead. Save questions for taste and product calls only I can make, one at a time, with your recommendation and the built in question tool in your harness. "No" is an acceptable answer to me too. Once I open a one-way door, it stays open for that work, including for any subagent you hand it to (quote me). Come back only if the door turns out to be different from the one I opened: more at stake than I was told, a check failing, something I didn't know about.
 
-do a deep scan of all hot paths and fix any unnecessary sequential async functions calls
+Do a deep scan of all hot paths and fix any unnecessary sequential async functions calls
 
+Find every object in this codebase that's referenced without a stable, canonical ID
+
+Find every invariant my app relies on but doesn't explicitly enforce
+
+Find all of the implicit state machines in my app
+
+Exercise abstract thinking
+
+Write a prompt for {insert-query-here} then answer it
+
+I have to go to sleep so I won't be able to respond to any questions or make any decisions. Your goal is to deliver the best production version with this. I understand there may be judgment calls where you would have preferred my input. Cut the production build anyway and flag them at the end as open questions for us to discuss tomorrow. We'll test the next build and see how it looks. Do your best and I'll see you in the morning. Please make sure everything is cleaned up and I have a single thread here to review so I understand where you left things. Thanks.
+
+Find the app's explicit and implicit state machines and document their states, invariants, and transition tables in one file. Identify invalid states or transitions the code can actually reach, with evidence, including through retries and concurrency. Prioritize confirmed bugs by impact, group related fixes into issues, then fix them with regression tests and keep the document updated.
+
+I am uploading a lecture/chapter on [Topic]. Do not summarize it. Instead, scan the document and list the top 5 'Core Concepts' and the 3 'Most Complex Arguments' presented. For each, provide only the heading and a reference to the page number. I will then study these sections myself.
+
+I have just studied [Concept X] from the uploaded PDF. I am going to explain it to you as if you were a 12-year-old student. Your Role: Listen to my explanation. If I miss a key nuance, get a fact wrong, or use jargon without defining it, stop me and ask a clarifying question. Do not just correct me ask me to clarify. Grade my explanation on clarity and accuracy at the end.
+
+Act as a strict professor testing my understanding of [Section Y] in the PDF. Rules:
+- Ask me one question at a time.
+- Do not give me the answer. If I am wrong, give me a subtle hint or ask a follow-up question that highlights my error.
+- Start with a broad conceptual question, then drill down into the specifics.
+
+Create a 5-question multiple-choice quiz based strictly on the evidence in the PDF. Critical Instructions:
+- Make the questions 'Application-based' (e.g., 'Which scenario best applies the theory?') rather than definition-based.
+- ensure the wrong answers (distractors) are plausible they should represent common misconceptions or partial truths mentioned in the text.
+- Do not reveal the answers until I respond.
+
+I have studied concepts A, B, and C from the text. I think the relationship between them is [Insert Your Theory: e.g., 'A causes B, which leads to C']. Is this accurate based on the text? Where does my logic break down?
 
