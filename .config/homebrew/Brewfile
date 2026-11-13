@@ -87,10 +87,6 @@ brew "dns2tcp"
 brew "dust"
 # Select default apps for documents and URL schemes on macOS
 brew "duti"
-# ESP8266 and ESP32 serial bootloader utility
-brew "esptool"
-# Test various flash cards
-brew "f3"
 # Like neofetch, but much faster because written mostly in C
 brew "fastfetch"
 # Simple, fast and user-friendly alternative to find
@@ -267,8 +263,6 @@ brew "rich-cli"
 brew "rlwrap"
 # Extremely fast tool to remove dupes and other lint from your filesystem
 brew "rmlint"
-# Utility that provides fast incremental file transfer
-brew "rsync"
 # Extremely fast Python linter, written in Rust
 brew "ruff"
 # Rich git commit graph in your terminal
