@@ -1,0 +1,151 @@
+#!/usr/bin/env bash
+
+set -uo pipefail
+
+SAMPLE_RATE_HZ=48000
+CHANNEL_COUNT=2
+OUTPUT_DIR="$HOME/Downloads"
+
+usage() {
+  cat <<EOF
+Usage: $(basename "$0") [-o|--output <file>] [-h|--help]
+
+Record macOS system audio to an MP3 file. Press Ctrl-C to stop.
+
+Options:
+  -o, --output <file>  Output file path. The file must not exist.
+                       Default: $OUTPUT_DIR/<ISO datetime>.mp3,
+                       for example 2026-11-13T16-10-00.mp3
+  -h, --help           Show this help.
+
+Quality: ${SAMPLE_RATE_HZ} Hz, ${CHANNEL_COUNT} channels, LAME VBR quality 2
+Needs:   ffmpeg, swift, macOS 13 or later
+         Screen Recording permission for your terminal app
+
+Example: $(basename "$0") --output ~/Music/call.mp3
+EOF
+}
+
+output_file="$OUTPUT_DIR/$(date +%Y-%m-%dT%H-%M-%S).mp3"
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -h|--help) usage; exit 0 ;;
+    -o|--output)
+      if [[ -z "${2:-}" ]]; then
+        echo "Error: '$1' needs a file path. Run '$(basename "$0") --help'." >&2
+        exit 2
+      fi
+      output_file="$2"
+      shift 2
+      ;;
+    *) echo "Error: unknown argument '$1'. Run '$(basename "$0") --help'." >&2; exit 2 ;;
+  esac
+done
+
+if [[ -e "$output_file" ]]; then
+  echo "Error: '$output_file' exists. Give a different path, or delete the file." >&2
+  exit 1
+fi
+if [[ ! -d "$(dirname "$output_file")" ]]; then
+  echo "Error: directory '$(dirname "$output_file")' does not exist. Create it, then run again." >&2
+  exit 1
+fi
+
+for tool in ffmpeg ffprobe swift; do
+  if ! command -v "$tool" >/dev/null; then
+    echo "Error: '$tool' is not installed. Install it, then run again." >&2
+    exit 1
+  fi
+done
+
+# A handler, not an ignore: the children keep the default SIGINT and stop,
+# and this script continues to the report below.
+trap : INT
+
+echo "Recording system audio to $output_file. Press Ctrl-C to stop." >&2
+
+SAMPLE_RATE_HZ=$SAMPLE_RATE_HZ CHANNEL_COUNT=$CHANNEL_COUNT swift - <<'SWIFT' |
+import CoreMedia
+import Foundation
+import ScreenCaptureKit
+
+func fail(_ message: String) -> Never {
+  FileHandle.standardError.write(Data("Error: \(message)\n".utf8))
+  exit(1)
+}
+
+final class StdoutPCMWriter: NSObject, SCStreamOutput, SCStreamDelegate {
+  func stream(_ stream: SCStream, didOutputSampleBuffer sampleBuffer: CMSampleBuffer, of type: SCStreamOutputType) {
+    guard type == .audio else { return }
+    do {
+      try sampleBuffer.withAudioBufferList { channels, _ in
+        let frameCount = Int(channels[0].mDataByteSize) / MemoryLayout<Float32>.size
+        var interleaved = [Float32](repeating: 0, count: frameCount * channels.count)
+        for (channelIndex, channel) in channels.enumerated() {
+          guard let samples = channel.mData?.assumingMemoryBound(to: Float32.self) else { continue }
+          for frame in 0..<frameCount {
+            interleaved[frame * channels.count + channelIndex] = samples[frame]
+          }
+        }
+        try interleaved.withUnsafeBytes { try FileHandle.standardOutput.write(contentsOf: Data($0)) }
+      }
+    } catch {
+      fail("could not write audio: \(error.localizedDescription)")
+    }
+  }
+
+  func stream(_ stream: SCStream, didStopWithError error: Error) {
+    fail("capture stopped: \(error.localizedDescription)")
+  }
+}
+
+func startSystemAudioCapture(to writer: StdoutPCMWriter) async throws -> SCStream {
+  guard let display = try await SCShareableContent.current.displays.first else {
+    fail("no display found. Connect a display, then run again.")
+  }
+  let environment = ProcessInfo.processInfo.environment
+  let configuration = SCStreamConfiguration()
+  configuration.capturesAudio = true
+  configuration.sampleRate = Int(environment["SAMPLE_RATE_HZ"]!)!
+  configuration.channelCount = Int(environment["CHANNEL_COUNT"]!)!
+  configuration.width = 2
+  configuration.height = 2
+  configuration.minimumFrameInterval = CMTime(value: 1, timescale: 1)
+
+  let stream = SCStream(
+    filter: SCContentFilter(display: display, excludingWindows: []),
+    configuration: configuration,
+    delegate: writer
+  )
+  try stream.addStreamOutput(writer, type: .audio, sampleHandlerQueue: DispatchQueue(label: "system-audio"))
+  try await stream.startCapture()
+  return stream
+}
+
+let writer = StdoutPCMWriter()
+// A global keeps the stream alive: capture stops when the stream is released.
+let stream: SCStream
+do {
+  stream = try await startSystemAudioCapture(to: writer)
+} catch {
+  fail("""
+    could not start capture: \(error.localizedDescription)
+    Allow your terminal app in System Settings > Privacy & Security > Screen & System Audio Recording.
+    Restart the terminal app, then run again.
+    """)
+}
+
+await withUnsafeContinuation { (_: UnsafeContinuation<Void, Never>) in }
+SWIFT
+  ffmpeg -hide_banner -loglevel error -stats \
+    -f f32le -ar "$SAMPLE_RATE_HZ" -ac "$CHANNEL_COUNT" -i - \
+    -codec:a libmp3lame -q:a 2 -f mp3 "$output_file"
+
+echo >&2
+if ! ffprobe -v error "$output_file" >/dev/null 2>&1; then
+  rm -f "$output_file"
+  echo "Error: no audio was recorded. Read the messages above." >&2
+  exit 1
+fi
+echo "Saved $output_file"
