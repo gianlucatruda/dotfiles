@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Keypad profiles</title>
+<style>
+:root {color-scheme:dark;font:16px "Helvetica Neue",sans-serif;color:#edece6;background:#171917}
+body {max-width:640px;margin:8vh auto;padding:0 24px}
+h1 {font-size:clamp(32px,6vw,52px);letter-spacing:-.055em;margin:.4em 0}
+h2 {font-size:18px;margin:1.8em 0 .7em}
+section,footer {display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.grid {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+input,button,select {font:inherit;border:1px solid #5a5f55;color:inherit;background:#282c27;border-radius:6px;padding:10px}
+.grid input {width:100%;box-sizing:border-box;font:18px monospace}
+label {font-size:14px;color:#c6cbbf}
+button,select {cursor:pointer}
+button:hover {border-color:#d7e2cc}
+footer {margin-top:32px}
+.primary {background:#d1ecad;color:#192215}
+output {display:block;margin-top:16px;min-height:2em}
+p {color:#bac1b3}
+</style>
+<datalist id="keynames"></datalist>
+<main>
+<h1>Keypad profiles</h1>
+<section><label>Preset <select id="preset"></select></label><button id="load">Import JSON</button>
+<input id="file" type="file" accept=".json,application/json" hidden></section>
+<h2>Keys</h2><p>Enter a key or chord, such as f13 or cmd+shift+a. Face the knob right.</p>
+<div class="grid" id="keys"></div>
+<h2>Knob</h2><div class="grid" id="knob"></div>
+<h2>Lighting</h2><section><label>Mode <input id="mode" type="number" min="0" max="255" placeholder="Keep current"></label>
+<button id="led">Apply lighting only</button></section>
+<footer><button id="apply" class="primary">Write layer one</button><button id="save">Export JSON</button></footer>
+<output id="status" aria-live="polite"></output>
+</main>
+<script>
+const el = id => document.getElementById(id);
+const turns = ["left", "press", "right"];
+const fields = (id, names) => names.map(name => {
+  const label = document.createElement("label");
+  const input = document.createElement("input");
+  label.textContent = name;
+  input.setAttribute("list","keynames");
+  label.append(input);
+  el(id).append(label);
+  return input;
+});
+const keys = fields("keys", ["Top left","Top middle","Top right","Bottom left","Bottom middle","Bottom right"]);
+const knob = fields("knob", turns);
+function display(p) {
+  keys.forEach((input,i) => input.value = p.keys[i]);
+  knob.forEach((input,i) => input.value = p.knob[turns[i]]);
+  el("mode").value = p.lighting ?? "";
+}
+function profile() {
+  if (!el("mode").validity.valid) throw Error("Enter an integer mode from 0 through 255.");
+  return {keys:keys.map(i => i.value.trim()), knob:Object.fromEntries(turns.map((k,i) => [k,knob[i].value.trim()])),
+          lighting:el("mode").value === "" ? null : el("mode").valueAsNumber};
+}
+async function post(path, value) {
+  const r = await fetch(path,{method:"POST",headers:{"Content-Type":"application/json","X-Keypad":"TOKEN"},body:JSON.stringify(value)});
+  const message = await r.json();
+  if (!r.ok) throw Error(message);
+  return message;
+}
+function action(id, event, run) {
+  el(id).addEventListener(event, async () => {
+    try { el("status").textContent = await run() || ""; }
+    catch (e) { el("status").textContent = e.message; }
+  });
+}
+async function init() {
+  for (const name of await (await fetch("/keys")).json()) el("keynames").append(new Option(name,name));
+  const presets = await (await fetch("/profiles")).json();
+  for (const name of Object.keys(presets)) el("preset").add(new Option(name,name));
+  display(presets.mac);
+  el("preset").value = "mac";
+  action("preset","change",() => display(presets[el("preset").value]));
+  for (const id of ["keys","knob","mode"]) el(id).oninput = () => el("preset").selectedIndex = -1;
+  action("load","click",() => el("file").click());
+  action("file","change",async () => {
+    const file = el("file").files[0];
+    if (!file) return;
+    el("file").value = "";
+    const p = JSON.parse(await file.text());
+    await post("/validate",p);
+    display(p);
+    el("preset").selectedIndex = -1;
+    return file.name;
+  });
+  action("led","click",() => post("/led",profile().lighting));
+  action("apply","click",() => post("/apply",profile()));
+  action("save","click",async () => {
+    const p = profile();
+    await post("/validate",p);
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([JSON.stringify(p,null,2)+"\n"],{type:"application/json"}));
+    a.download = (el("preset").value || "keypad")+".json";
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href),1000);
+    return "Profile exported.";
+  });
+}
+init().catch(e => el("status").textContent = e.message);
+</script>
+</html>

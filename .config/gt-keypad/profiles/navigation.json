@@ -1,0 +1,5 @@
+{
+  "keys": ["escape", "up", "enter", "left", "down", "right"],
+  "knob": {"left": "pageup", "press": "home", "right": "pagedown"},
+  "lighting": null
+}

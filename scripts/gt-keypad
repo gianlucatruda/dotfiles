@@ -1,0 +1,160 @@
+#!/usr/bin/python3
+import argparse
+import json
+import secrets
+import subprocess
+import sys
+import tempfile
+import webbrowser
+from http.server import BaseHTTPRequestHandler, HTTPServer
+from pathlib import Path
+
+ASSETS = Path(__file__).resolve().parents[1] / ".config/gt-keypad"
+PROFILES = ASSETS / "profiles"
+KEYS = {key: i for i, key in enumerate("abcdefghijklmnopqrstuvwxyz", 4)}
+KEYS.update({key: i for i, key in enumerate("1234567890", 30)})
+KEYS.update({f"f{i}": 57 + i for i in range(1, 13)})
+KEYS.update({f"f{i}": 91 + i for i in range(13, 25)})
+KEYS.update(zip("enter escape backspace tab space minus equal leftbracket rightbracket backslash nonushash semicolon quote grave comma dot slash capslock".split(), range(40, 58)))
+KEYS.update(zip("insert home pageup delete end pagedown right left down up".split(), range(73, 83)))
+MODS = {"ctrl": 1, "shift": 2, "alt": 4, "cmd": 8}
+KNOB = ("left", "press", "right")
+
+
+def lighting(mode):
+    if type(mode) is not int or not 0 <= mode <= 255:
+        raise ValueError("Use an integer lighting mode from 0 through 255.")
+    return [[3, 161, 1], [3, 176, 24, mode], [3, 170, 161]]
+
+
+def bindings(profile):
+    if not isinstance(profile, dict) or set(profile) != {"keys", "knob", "lighting"}:
+        raise ValueError("Supply keys, knob, and lighting in the profile.")
+    keys, knob = profile["keys"], profile["knob"]
+    if not isinstance(keys, list) or len(keys) != 6:
+        raise ValueError("Supply six keys in row order.")
+    if not isinstance(knob, dict) or set(knob) != set(KNOB):
+        raise ValueError("Supply left, press, and right knob actions.")
+    packets = []
+    for button, chord in zip([1, 2, 3, 4, 5, 6, 13, 14, 15], keys + [knob[k] for k in KNOB]):
+        parts = chord.lower().split("+") if isinstance(chord, str) else []
+        if not parts or parts[-1] not in KEYS or any(m not in MODS for m in parts[:-1]):
+            raise ValueError(f"Unknown chord {chord!r}. Use a key or modifier+key.")
+        mask = sum(MODS[m] for m in set(parts[:-1]))
+        packets.extend([[3, 254, 1, 1, 1], [3, button, 17, 1, 0],
+                        [3, button, 17, 1, 1, mask, KEYS[parts[-1]]], [3, 170, 170]])
+    if profile["lighting"] is not None:
+        packets.extend(lighting(profile["lighting"]))
+    return packets
+
+
+def send(packets):
+    data = b"".join(bytes(p).ljust(64, b"\0") for p in [[]] + packets)
+    with tempfile.TemporaryDirectory() as folder:
+        binary = Path(folder) / "usb"
+        subprocess.run(["/usr/bin/clang", "-Wall", "-Wextra", "-Werror", str(ASSETS / "usb.c"),
+                        "-framework", "IOKit", "-framework", "CoreFoundation", "-o", binary], check=True)
+        result = subprocess.run([binary], input=data, stderr=subprocess.PIPE)
+        if result.returncode:
+            raise ValueError(result.stderr.decode().strip() or "USB transfer failed. Retry the profile.")
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Program layer one on a 1189:8890 six-key keypad.",
+                                     epilog="Example: gt-keypad apply mac --write")
+    commands = parser.add_subparsers(dest="command")
+    commands.add_parser("gui", help="Open the local profile editor (default).")
+    commands.add_parser("list", help="List bundled profiles.")
+    apply = commands.add_parser("apply", help="Preview or write a JSON profile.")
+    apply.add_argument("profile", help="Bundled name or JSON path.")
+    led = commands.add_parser("led", help="Preview or write one lighting mode.")
+    led.add_argument("mode", type=int, help="Firmware mode number, 0 through 255.")
+    for command in (apply, led):
+        command.add_argument("--write", action="store_true", help="Write to the keypad. Default: preview.")
+    args = parser.parse_args()
+    if args.command in (None, "gui"):
+        editor()
+        return
+    if args.command == "list":
+        print("\n".join(p.stem for p in sorted(PROFILES.glob("*.json"))))
+        return
+    if args.command == "led":
+        packets = lighting(args.mode)
+        print(f"Lighting mode {args.mode}")
+    else:
+        path = Path(args.profile)
+        if path.suffix != ".json" and len(path.parts) == 1:
+            path = PROFILES / (path.name + ".json")
+        profile = json.loads(path.read_text())
+        packets = bindings(profile)
+        print(json.dumps(profile, indent=2))
+    if args.write:
+        send(packets)
+        print("Keypad transfer complete.")
+    else:
+        print("Preview only. Add --write to apply.")
+
+
+def editor():
+    token = secrets.token_urlsafe(32)
+    presets = {p.stem: json.loads(p.read_text()) for p in sorted(PROFILES.glob("*.json"))}
+    page = (ASSETS / "editor.html").read_text().replace("TOKEN", token)
+
+    class Editor(BaseHTTPRequestHandler):
+        def reply(self, data, kind="application/json", status=200):
+            self.send_response(status)
+            self.send_header("Content-Type", kind)
+            self.send_header("Cache-Control", "no-store")
+            self.send_header("X-Frame-Options", "DENY")
+            self.end_headers()
+            self.wfile.write(data.encode())
+
+        def do_GET(self):
+            if self.headers.get("Host") != address:
+                self.send_error(403)
+            elif self.path == "/":
+                self.reply(page, "text/html; charset=utf-8")
+            elif self.path == "/keys":
+                self.reply(json.dumps(list(KEYS)))
+            elif self.path == "/profiles":
+                self.reply(json.dumps(presets))
+            else:
+                self.send_error(404)
+
+        def do_POST(self):
+            if (self.headers.get("Host") != address or self.headers.get("Origin") != url
+                    or self.headers.get("X-Keypad") != token):
+                self.send_error(403)
+                return
+            if self.path not in ("/validate", "/apply", "/led"):
+                self.send_error(404)
+                return
+            try:
+                length = int(self.headers.get("Content-Length", "0"))
+                if not 0 < length <= 8192:
+                    raise ValueError("Use a profile under 8 KiB.")
+                value = json.loads(self.rfile.read(length))
+                packets = lighting(value) if self.path == "/led" else bindings(value)
+                if self.path != "/validate":
+                    send(packets)
+                self.reply(json.dumps("Profile valid." if self.path == "/validate" else "Keypad transfer complete."))
+            except (OSError, ValueError, subprocess.CalledProcessError) as error:
+                self.reply(json.dumps(str(error)), status=400)
+
+    with HTTPServer(("127.0.0.1", 0), Editor) as server:
+        address = f"127.0.0.1:{server.server_port}"
+        url = f"http://{address}"
+        print(f"{url}  Press Ctrl-C to close.", flush=True)
+        webbrowser.open(url)
+        try:
+            server.serve_forever()
+        except KeyboardInterrupt:
+            pass
+
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except (OSError, ValueError, subprocess.CalledProcessError) as error:
+        sys.exit(str(error))

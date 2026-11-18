@@ -1,0 +1,5 @@
+{
+  "keys": ["f13", "f14", "f15", "f16", "f17", "f18"],
+  "knob": {"left": "f19", "press": "f20", "right": "f21"},
+  "lighting": null
+}
