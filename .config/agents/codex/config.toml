@@ -1,6 +1,6 @@
-model = "gpt-6.1-sol"
+model = "gpt-6.2-sol"
 model_reasoning_effort = "medium"
-model_reasoning_summary = "detailed"
+model_reasoning_summary = "concise"
 personality = "pragmatic"
 approval_policy = "on-request"
 approvals_reviewer = "auto_review"
@@ -8,7 +8,7 @@ sandbox_mode = "workspace-write"
 service_tier = "fast"
 
 [tui]
-status_line = ["model-with-reasoning", "current-dir", "branch-changes", "run-state", "context-used", "five-hour-limit", "weekly-limit", "used-tokens"]
+status_line = ["model-with-reasoning", "run-state", "context-used", "five-hour-limit", "weekly-limit", "used-tokens", "current-dir", "branch-changes"]
 status_line_use_colors = true
 
 [tui.model_availability_nux]
