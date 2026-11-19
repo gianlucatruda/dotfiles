@@ -1,11 +1,4 @@
 #!/usr/bin/env bash
-# Claude Code status line. Mirrors the codex status_line segments:
-#   model+effort+fast · dir · git · context · usage limits.
-# Reads session JSON on stdin (see statusline docs), prints one line.
-#
-# WHY no cost: on a subscription the dollar figure is noise; the binding numbers
-# are the rate-limit windows, so we show those instead.
-#
 # WHY no `.sh` extension: bootstrap.sh's home-dir rsync excludes `*.sh`, so a
 # `.sh` file never reaches ~. WHY invoked as `bash <file>` in settings: bootstrap
 # strips perms (--no-perms), so the file has no exec bit.
@@ -16,7 +9,7 @@ model=$(jq -r '.model.display_name // "?"' <<<"$input")
 effort=$(jq -r '.effort.level // empty' <<<"$input")
 fast=$(jq -r 'if .fast_mode then "fast" else empty end' <<<"$input")
 dir=$(jq -r '.workspace.current_dir // .cwd // ""' <<<"$input")
-pct=$(jq -r '(.context_window.used_percentage // 0) | floor' <<<"$input")
+pct=$(jq -r '.context_window.used_percentage | numbers | floor' <<<"$input")
 
 # Subscription windows, as percent LEFT to match codex ("weekly 89% left").
 # Absent off-subscription and until the first API reply; then show each.
@@ -33,16 +26,24 @@ git_seg=""
 if [ -n "$dir" ]; then
 	if branch=$(git -C "$dir" symbolic-ref --quiet --short HEAD 2>/dev/null) ||
 		branch=$(git -C "$dir" rev-parse --short HEAD 2>/dev/null); then
-		dirty=$(git -C "$dir" status --porcelain 2>/dev/null | grep -c .)
+		if changes=$(git -C "$dir" status --porcelain 2>/dev/null); then
+			dirty=$(printf '%s\n' "$changes" | grep -c .)
+			[ "$dirty" -gt 0 ] && branch="${branch}±${dirty}"
+		fi
 		git_seg="${c_git}${branch}${reset}"
-		[ "$dirty" -gt 0 ] && git_seg="${git_seg}${dim}±${dirty}${reset}"
 	fi
 fi
 
 # Context gauge: green < 60, yellow < 85, red at/above 85.
-if [ "$pct" -ge 85 ]; then c_ctx=$'\033[31m'
-elif [ "$pct" -ge 60 ]; then c_ctx=$'\033[33m'
-else c_ctx=$'\033[32m'; fi
+if [ -z "$pct" ]; then
+	ctx='?'
+	c_ctx=$dim
+else
+	ctx="${pct}% used"
+	if [ "$pct" -ge 85 ]; then c_ctx=$'\033[31m'
+	elif [ "$pct" -ge 60 ]; then c_ctx=$'\033[33m'
+	else c_ctx=$'\033[32m'; fi
+fi
 
 # Usage window: red near empty, yellow low, green with headroom. "left" semantics.
 usage_seg() { # $1=label  $2=percent-left
@@ -53,14 +54,13 @@ usage_seg() { # $1=label  $2=percent-left
 	printf '%s%s %s%s%%%s %sleft%s' "$dim" "$label" "$c" "$left" "$reset" "$dim" "$reset"
 }
 
-# Model + effort + fast, like codex `gpt-5.6-terra medium fast`.
 out="${c_model}${model}${reset}"
 [ -n "$effort" ] && out="${out} ${dim}${effort}${reset}"
 [ -n "$fast" ] && out="${out} ${dim}${fast}${reset}"
-[ -n "$dir" ] && out="${out}${sep}${c_dir}${dir##*/}${reset}"
-[ -n "$git_seg" ] && out="${out}${sep}${git_seg}"
-out="${out}${sep}${c_ctx}${pct}% ctx${reset}"
+out="${out}${sep}${c_ctx}Context ${ctx}${reset}"
 [ -n "$h5" ] && out="${out}${sep}$(usage_seg 5h "$h5")"
 [ -n "$wk" ] && out="${out}${sep}$(usage_seg weekly "$wk")"
+[ -n "$dir" ] && out="${out}${sep}${c_dir}${dir##*/}${reset}"
+[ -n "$git_seg" ] && out="${out}${sep}${git_seg}"
 
 printf '%s' "$out"

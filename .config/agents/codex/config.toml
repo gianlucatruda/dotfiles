@@ -8,6 +8,8 @@ sandbox_mode = "workspace-write"
 service_tier = "fast"
 
 [tui]
+fullscreen_transcript = true
+collapse_turn_details = true
 status_line = ["model-with-reasoning", "run-state", "context-used", "five-hour-limit", "weekly-limit", "used-tokens", "current-dir", "branch-changes"]
 status_line_use_colors = true
 

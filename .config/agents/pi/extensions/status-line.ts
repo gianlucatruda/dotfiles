@@ -12,17 +12,20 @@ function formatTokens(tokens: number): string {
 }
 
 export default function (pi: ExtensionAPI) {
-	let dirty: number | undefined;
-
 	pi.on("session_start", (_event, ctx) => {
+		if (ctx.mode !== "tui") return;
+
+		let dirty: number | undefined;
 		let requestRender = () => {};
 		const refreshDirty = async () => {
-			const result = await pi.exec("git", ["status", "--porcelain"], { timeout: 1_000 });
+			const result = await pi.exec("git", ["-C", ctx.cwd, "status", "--porcelain"], { timeout: 1_000 });
 			dirty = result.code === 0 ? result.stdout.split("\n").filter(Boolean).length : undefined;
 			requestRender();
 		};
 
 		pi.on("tool_execution_end", () => void refreshDirty());
+		pi.on("agent_start", () => requestRender());
+		pi.on("agent_settled", () => void refreshDirty());
 		ctx.ui.setFooter((tui, theme, footerData) => {
 			requestRender = () => tui.requestRender();
 			return {
@@ -30,7 +33,7 @@ export default function (pi: ExtensionAPI) {
 				invalidate() {},
 				render(width) {
 				const model = ctx.model?.id ?? "no-model";
-				const effort = ctx.thinkingLevel ?? "off";
+				const effort = pi.getThinkingLevel();
 				const branch = footerData.getGitBranch();
 				const git = branch && `${branch}${dirty ? `±${dirty}` : ""}`;
 				const context = ctx.getContextUsage();
@@ -39,8 +42,8 @@ export default function (pi: ExtensionAPI) {
 					? "dim"
 					: percent >= 85 ? "error" : percent >= 60 ? "warning" : "success";
 				const contextText = percent === null || percent === undefined
-					? "? ctx"
-					: `${Math.floor(percent)}% ctx`;
+					? "Context ?"
+					: `Context ${Math.floor(percent)}% used`;
 				let tokens = 0;
 				for (const entry of ctx.sessionManager.getEntries()) {
 					if (entry.type === "message" && entry.message.role === "assistant") {
@@ -50,15 +53,15 @@ export default function (pi: ExtensionAPI) {
 				const used = `${formatTokens(tokens)} used`;
 
 				const parts = [
-					theme.fg("mdCode", model),
-					theme.fg("dim", effort),
-					theme.fg("mdLink", basename(ctx.cwd)),
-					git && theme.fg("customMessageLabel", git),
+					`${theme.fg("mdCode", model)} ${theme.fg("dim", effort)}`,
+					theme.fg("dim", ctx.isIdle() ? "Idle" : "Working"),
 					theme.fg(contextColor, contextText),
 					theme.fg("dim", used),
+					theme.fg("mdLink", basename(ctx.cwd) || ctx.cwd),
+					git && theme.fg("customMessageLabel", git),
 				].filter((part): part is string => Boolean(part));
 
-					return [truncateToWidth(parts.join(theme.fg("dim", separator)), width)];
+				return [truncateToWidth(parts.join(theme.fg("dim", separator)), width)];
 				},
 			};
 		});

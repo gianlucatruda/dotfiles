@@ -37,6 +37,10 @@
       "target": ".pi/agent/settings.json"
     },
     {
+      "source": "pi/models.json",
+      "target": ".pi/agent/models.json"
+    },
+    {
       "source": "pi/extensions",
       "target": ".pi/agent/extensions"
     },
